@@ -1,4 +1,3 @@
--- Slopix Hub: one script per Roblox place ID.
 local REPOSITORY = "TrustyCoding/slopix-hub"
 local BRANCH = "main"
 local placeId = tostring(game.PlaceId)
