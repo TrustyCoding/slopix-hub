@@ -1,2 +1,5084 @@
--- This script was generated using MoonVeil 2.0.24 [https://moonveil.cc]
-return({function(g)local d,f,c,i,_,a,b,l l=string f,l,b,_=l.byte,bit32,l.unpack,l.sub l,i,a=table,l.rshift,l.band c,l=l.concat,{}d=l b={[0b10]=1,[1]=b}b[0b11]=b _={[0b10]=1,[1]=_}_[0b11]=_ f={[0b10]=1,[1]=f}f[0b11]=f i={[0b10]=1,[1]=i}i[0b11]=i a={[0b10]=1,[1]=a}a[0b11]=a c={[0b10]=1,[1]=c}c[0b11]=c d={[0b10]=1,[1]=d}d[0b11]=d l=g:p{d,i,b,c,f,a,_}return l end,function(ga,O)return function(t,Qa)local a,p,x,va,w,q,V,ya,oa,Ua,Ca,ia,ta,l,F,Y,T,fa,db,xa,b,M,qb,ea,Ja,I,ka,Ya,rb,bb,Ia,Q,pb,ja,Ma,Ba,nb,n,_,gb,Na,u,Xa,La,mb,fb,na,ra,cb,hb,Ha,C,P,Fa,kb,s,e,Ga,za,ba,D,Ta,L,ma,Pa,ib,E,K,_b,sa,S,R,W,Wa,o,eb,jb,B,ca,Va,pa,Da,Oa,j,k,G,d,g,m,ua,wa,lb,la,Ra,z,ob,Ka,H,ha,Sa,h,A,c,Ea,U,N,_a,aa,ab,qa,i,v,Aa,r,f,J,X,y k=0b11010111 repeat if k<0x343 then if k<=0x176 then if k>0b11000010 then if k<=0x112 then if k<0b11101000 then if k<0xd5 then if k<0xcc then if k>=0b11001000 then if k<0xca then if k>0b11001000 then A,k,Ja=1,0x23a,db-G j=Ja+A else G=0xc4 k=ab<G and 0b11101100 or 0b110100101-k end elseif k>0xca then y,h,Ya,G=0b10101011,0x45,0x50,0b100001 k=ab<G and 0x15299/k or 0x34c else G=0b11010011 k=ab<=G and k+0x281 or 0x298 end elseif k<0xc5 then G=0xbc k=ab<G and 0x4e18/k or k+0b100 elseif k>0xc5 then G=0x1b8 k=ab>G and 0xd0d4/k or 0x2d7ce/k else G=0xbf k=ab<G and k+0xae or 0x292 end elseif k>=0xcf then if k<0xd1 then if k>0b11001111 then G=0x52 k=ab>=G and 0x6a70/k or 0xcbf0/k else G,pa=0b101,0xe0 k=ab>=G and 0xaa or 0b11001101 end elseif k>0b11010001 then e,za=Da[0xc5d1],0b101 G,A,Ja=e-za,0x26,Da[0x689c]j=Ja-A za=t[j]e=#za t[G]=e j,Ja=Da[0x3f16],0b101011 j,Ja,G=Da[0x9a41],0b1000,j-Ja e,j,Ja=j-Ja,Da[0x5a22],0b10011 za,Ja=j-Ja,0 j=e==Ja k=j and k+0x25c or 0x3e6 else sa=A(_a,V)V=sa k=V==nil and k+0x235 or 0x338-k end elseif k>=0xcd then if k>0b11001101 then G=0b110100 k=ab>=G and 0x9e or 0x3abe/k else G,cb=0b10,0x47 k=ab<G and 0x339 or 0x349 end else za,e=0x33,Da[0xc5d1]G,j,za=e-za,0b110110,Da[0x689c]j,e,Ja=Da[0x5b59],za-j,0b10100 A,za,Ja=0x39,j-Ja,Da[0x2dd8]Ja,j,A=t[G],Ja-A,t[e]k=Ja>=A and k+0b11111110 or k+0x2c5 end elseif k<=0b11100000 then if k>=0b11011100 then if k<0xde then if k>0xdc then G=0b11000111 k=ab<G and k+-0b1101110 or 0xbd0f/k else k,Ja=0x2ae,db-e end elseif k>0xde then Ja=1 k,j=0x224,e-Ja else e,za=Da[0xc5d1],0x1c A,Ja,G=0x10,Da[0x689c],e-za j=Ja-A _a,A,za=0b11110,Da[0x3f16],t[j]Ja=A-_a k,j=0b11011010,t[Ja]e=za//j t[G]=e za,e=0x27,Da[0x9a41]Ja,j,G=0b110110,Da[0x5a22],e-za za=j-Ja e=t[za]t[G]=e end elseif k<0b11011010 then if k<=0b11010101 then G=0b100100100 k=ab<=G and 0x207 or 0x1bf else lb,Ba,z,ma,gb,s,_,oa,M,d,f,a,db,n,Wa,xa=0b11100110,0b100110,1,0xe5,0b11011101,0b1000101,0b1100001,0xdb,O[0b1111][0b11][O[0b1111][0b10]],{},0b1110111,0b1011101,-1,0b11111110,0b10010100,0x47 k,d,Na=0xf1a,O[0b1011][0b11][O[0b1011][0b10]],d end elseif k<=0b11011010 then Ma,Sa,Xa,D,bb,aa,Da,S=0b10000,0x55,0x76,0b10011,0xca,0xe1,l[z],0xcd G,ab=1,Da[0xe610]z,G=z+G,0b11001110 k=ab>=G and k+0b1111 or 0x8766/k else fb,g,G=0x39,0b1010011,0xca k=ab<=G and 0x337 or 0x41f-k end elseif k<=0b11100101 then if k>=0b11100100 then if k<=0b11100100 then G=0b11111 k=ab>=G and 0x1af-k or k+-0b1001110 else G=0b11110001 k=ab>=G and 0x3c or 0b1000 end elseif k<=0b11100001 then G=0x2dd k=ab<=G and k+0x24c or 0x32b else G=0x176 k=ab<G and k+0b1110 or 1 end elseif k>0b11100110 then G=0x34 k=ab<=G and 0x31af7/k or 0x3c4-k else G=0xb8 k=ab<=G and 0x3ac or 0xda end elseif k<=0xff then if k>0xf4 then if k>=0xfb then if k>=0xfd then if k>0xfd then G=0b100111 k=ab<G and 0b101000101 or 0x15b else G=0x8f k=ab<G and 0b1101000 or 0x34 end elseif k>0b11111011 then G=0x3bf k=ab<=G and 0x58 or 0b111 else G,J,c=0x41,0x3e,0x58 k=ab<G and 0xce or 0xac90/k end elseif k>=0xf7 then if k<=0b11110111 then G,i,Ua=0b10001010,0b1001,0x34 k=ab>=G and 0x73 or 0x18 else za,e=0x16,Da[0xc5d1]A,G,Ja=0b110011,e-za,Da[0x689c]j=Ja-A A,_a,za=Da[0x3f16],0x24,t[j]k,Ja=0xd4e4/k,A-_a j=t[Ja]e=za+j t[G]=e end else e,za=Da[0xc5d1],0x13 j,G,Ja=Da[0x689c],e-za,0x31 za=j-Ja k,e=0x1d0-k,t[za]t[G]=e za,j=Da[0x3f16],0b1110 e=za-j Ja,G,j=0b11000,t[e],Da[0x9a41]za=j-Ja Ja,e,A=Da[0x5a22],t[za],0x20 j=Ja-A za=t[j]G[e]=za end elseif k>0xf0 then if k<0b11110011 then G=0b1001001 k=ab<=G and 0x37c60/k or k+0x111 elseif k<=0xf3 then G=0b10110110 k=ab<=G and k+-0b11000111 or 0b11100110 else j,k,za,G=Da[0x2651],0x1ce-k,O[0b10][0b11][O[0b10][0b10]],Da[0xc5d1]e=za[j]t[G]=e e,za=Da[0x689c],0b1101 j,Ja,G=Da[0x3f16],0x14,e-za za=j-Ja e=t[za]t[G]=e end elseif k<=0b11101010 then if k<=0b11101001 then if k<=0xe8 then G=0x255 k=ab<G and 0x159-k or 0b100 else G,u,Aa,ca,E=0x216,0b10000101,0xe8,0b11101110,0b110100 k=ab>G and k+-0x67 or k+-0b1010001 end else za,k,e=0b10,k+-0x10,Da[0xc5d1]A,G,Ja=0x1e,e-za,Da[0x689c]j=Ja-A za,_a,A=t[j],0b1001,Da[0x3f16]Ja=A-_a j=t[Ja]e=za[j]t[G]=e za,e=0x16,Da[0x9a41]G,j,Ja=e-za,Da[0x5a22],0b100 za=j-Ja e=t[za]t[G]=e end elseif k<=0xec then G=0b11000001 k=ab>G and 0x1a or k+-0b100111 else G=0x144 k=ab<=G and k+0x136 or 0x3eb-k end elseif k<0x10a then if k>0x106 then if k>0x107 then G=0b11100011 k=ab<=G and 0x225 or 0b110001111 else k=j and 0x7ee-k or 0xcfe end elseif k<=0x104 then if k<=0b100000011 then if k>0b100000001 then e,za=Da[0xc5d1],0x34 A,G,Ja=0x38,e-za,Da[0x689c]j=Ja-A za,_a,A=t[j],0x22,Da[0x3f16]Ja=A-_a k,j=0x1dd-k,t[Ja]e=za[j]t[G]=e e,za=Da[0x9a41],0b11010 j,G,Ja=Da[0x5a22],e-za,0b1011 j,za=1,j-Ja e=za==j t[G]=e else G=0x26d k=ab<=G and 0x3f4 or 0x2c4 end else e,za=Da[0xc5d1],0x30 G,Ja,A=e-za,Da[0x689c],0x33 j=Ja-A A,_a,za=Da[0x3f16],0b1001,t[j]Ja=A-_a k,j=0xdd68/k,t[Ja]e=za<j t[G]=e end else G=0x7d k=ab<=G and 0x2d2 or 0x4e4-k end elseif k<=0b100001101 then if k>=0b100001100 then if k>0b100001100 then za,e=0x3a,Da[0xc5d1]G,j,Ja=e-za,Da[0x689c],0x1f za=j-Ja e=t[za]t[G]=e e,za=Da[0x3f16],0x12 G,za,j=e-za,Da[0x9a41],0x1d j,e=1,za-j za,Ja,j=e-j,-1,nil k=za==Ja and 0x393 or 0x3ba-k else G,Ka=0x255,0x66 k=ab>G and k+0x1df or 0x15a end elseif k>0b100001010 then A=e<=j Ja=not A k=Ja and 0xc50 or 0xbb3 else e,za=Da[0xc5d1],0x11 G,Ja,A=e-za,Da[0x689c],0x32 j=Ja-A za,A,_a=t[j],Da[0x3f16],0b10110 Ja=A-_a j=t[Ja]e=za..j t[G]=e k=K<_a and 0b1001010 or 0xda end elseif k<0b100010001 then j,za=0b110110,Da[0xc5d1]e=za-j G,Ja,j=t[e],0b111,Da[0x689c]k,za=0xda,j-Ja A,Ja,e=0b1101,Da[0x3f16],t[za]j=Ja-A za=t[j]G[e]=za e,G=nil,Da[0x9a41]t[G]=e elseif k>0x111 then j=db-G k=xa<a and 0x2c5 or 0xd1fb6/k else G=0x226 k=ab<=G and 0x26d-k or 0x10656/k end elseif k>=0x146 then if k<=0b101011010 then if k>=0x152 then if k>=0x157 then if k<=0x159 then if k<=0x158 then if k>0b101010111 then G=0x365 k=ab<G and 0b101110000 or 0x48fb8/k else k=j and 0xb8904/k or 0xf3c49/k end else e,za=Da[0xc5d1],0x27 G,j,za=e-za,Da[0x2651],O[0b10][0b11][O[0b10][0b10]]k,e=0x125ca/k,za[j]t[G]=e za,e=0b1110,Da[0x689c]j,Ja,G=Da[0x3f16],0b101010,e-za j,za=1,j-Ja e=za==j t[G]=e end else j,e,Ja=Da[0x689c],O[0b111][0b11][O[0b111][0b10]],0b111100 za=j-Ja j,G,za=0x12,e[za],Da[0xc5d1]e,Ja,j=za-j,G[0b10],G[0b11]za=j[Ja]t[e]=za za,j=Da[0x3f16],0x24 e,_a,A=za-j,0b10,Da[0x9a41]Ja=A-_a j=t[Ja]za=#j t[e]=za k=Ka>_a and 0x234-k or 0x73a end elseif k<=0x154 then if k>=0x153 then if k>0b101010011 then e,za=Da[0xc5d1],0b100101 G,j,za=e-za,0x3b,Da[0x5924]e=za-j t[G]=e e,za=Da[0x689c],0x24 Ja,j,G=0x39,Da[0x3f16],e-za j,za=1,j-Ja e=za==j k,t[G]=0b11011010,e else e,za=Da[0xc5d1],0x27 A,G,Ja=0x19,e-za,Da[0x689c]j=Ja-A _a,A,za=0b111001,Da[0x3f16],t[j]Ja=A-_a j=t[Ja]e=za..j t[G]=e e,za=Da[0x9a41],0b1011 j,za,G=0x2a,Da[0x5a22],e-za j,e=1,za-j Ja,j,za=-1,nil,e-j k=za==Ja and 0x411 or k+0x2ed end else e,za=Da[0xc5d1],0x29 G,e=e-za,nil t[G]=e j,Ja,e=Da[0x3f16],0b111010,O[0b111][0b11][O[0b111][0b10]]za=j-Ja G=e[za]_a,e,A,za=0b10110,G[0b11],Da[0x689c],G[0b10]k,Ja=0xda,A-_a j=t[Ja]e[za]=j end else e,k,za=Da[0xc5d1],0xda,0b10111 Ja,G,A=Da[0x689c],e-za,0b100010 j=Ja-A za=t[j]e=not za t[G]=e za,e=0b10111,Da[0x3f16]za,G,j=O[0b10][0b11][O[0b10][0b10]],e-za,Da[0x2651]e=za[j]t[G]=e end elseif k>0b101001010 then if k>0x14e then j=0x4f58b68e k=za~=j and 0x532 or 0x24f elseif k>0b101001100 then _a,V=l[z],1 z,V,sa=z+V,_a[0xc5d1],1 k=V==sa and k+0xdce or 0xf55ce/k else e,za=Da[0xc5d1],0b111110 Ja,A,G=Da[0x689c],0x15,e-za j=Ja-A A,_a,za=Da[0x3f16],0b110010,t[j]Ja=A-_a j=t[Ja]e=za>=j t[G]=e e,za=Da[0x9a41],0x36 G,za,j=e-za,Da[0x5a22],0b1001 e,j=za-j,1 za,j,Ja=e-j,nil,-1 k=za==Ja and 0b10101001 or 0x308 end elseif k<0b101001001 then if k>0x146 then za,e=0b11101,Da[0xc5d1]za,j,G=Da[0x5924],0b11101,e-za e=za-j t[G]=e e,za=Da[0x689c],0b110001 G,za,j=e-za,Da[0x3f16],0b101001 j,e=1,za-j Ja,za,j=-1,e-j,nil k=za==Ja and 0x36498/k or k+-0b11000110 else G=0x15 k=ab>G and 0x1e2 or 0x2aa end elseif k>0x149 then G=0b11001001 k=ab>G and 0xeed-k or 0x137cac/k else Ja,j,e=0x12,Da[0x689c],O[0b111][0b11][O[0b111][0b10]]za=j-Ja G=e[za]e,_a,A,za=G[0b11],0b110,Da[0xc5d1],G[0b10]Ja=A-_a j=t[Ja]e[za]=j A,k,Ja,za=0x1e,0xda,Da[0x9a41],O[0b111][0b11][O[0b111][0b10]]j=Ja-A j,e,Ja=Da[0x3f16],za[j],0b111010 A,Ja,za=e[0b10],e[0b11],j-Ja j=Ja[A]t[za]=j end elseif k>=0x166 then if k>=0b101101111 then if k<=0b101110011 then if k<0b101110000 then k,j=0x107,db-G elseif k<=0x170 then e,za=Da[0xc5d1],0b100111 A,G,Ja=0x15,e-za,Da[0x689c]j=Ja-A za,A,_a=t[j],Da[0x3f16],0x11 Ja=A-_a j=t[Ja]k,e=0xda,za+j t[G]=e za,e=0x16,Da[0x9a41]G,Ja,j=e-za,0b1111,Da[0x5a22]za=j-Ja e=t[za]t[G]=e else G=0xbc k=ab>G and 0x3b2 or k+-0b1001 end else G=0x87 k=ab<=G and k+-0x23 or 0x5c7ee/k end elseif k<0b101101001 then k,e,za=0x240-k,Da[0xc5d1],0x19 A,G,Ja=0b110111,e-za,Da[0x689c]j=Ja-A A,za,_a=Da[0x3f16],t[j],0b1111 Ja=A-_a j=t[Ja]e=za>=j t[G]=e e,Ja,j=O[0b111][0b11][O[0b111][0b10]],0x36,Da[0x5a22]za=j-Ja j,za,G=0x3c,Da[0x9a41],e[za]e,Ja,j=za-j,G[0b10],G[0b11]za=j[Ja]t[e]=za elseif k>0b101101001 then e,za=Da[0xc5d1],0x11 G,j,za=e-za,0x2d,Da[0x689c]j,Ja,e=Da[0x5b59],0b1001,za-j A,za,Ja=0x1a,j-Ja,Da[0x2dd8]Ja,A,j=t[G],t[e],Ja-A k=Ja<=A and 0x75b88/k or 0xd39 else j,e,Ja=Da[0x689c],O[0b111][0b11][O[0b111][0b10]],0b10 za=j-Ja G=e[za]A,_a,e,za=Da[0xc5d1],0b110110,G[0b11],G[0b10]Ja=A-_a j=t[Ja]e[za]=j za,j=Da[0x3f16],0b11100 j,e,Ja=Da[0x9a41],za-j,0x19 za,Ja=j-Ja,1 j,Ja,A=za-Ja,nil,-1 k=j==A and 0x281 or 0x24d end elseif k<=0x15e then if k<0x15d then if k<=0x15b then G=0x27 k=ab<=G and 0x336 or 0x40372/k else j,Ja,e=Da[0x689c],0b100011,O[0b111][0b11][O[0b111][0b10]]za=j-Ja G,za,j=e[za],Da[0xc5d1],0x35 e,Ja,j=za-j,G[0b10],G[0b11]za=j[Ja]t[e]=za j,za=0b11111,Da[0x3f16]j,Ja,za,e=nil,nil,M,za-j za,j,Ja=ga.b(za,j,Ja)A,_a=za(j,Ja)Ja=A k=Ja==nil and 0b11011010 or k+-0x23 end elseif k>0x15d then A=j<=e Ja=not A k=Ja and 0x563-k or 0xbb3 else e,za=Da[0xc5d1],0x32 G,A,Ja=e-za,0b111,Da[0x689c]j=Ja-A A,za,_a=Da[0x3f16],t[j],0b11011 Ja=A-_a j=t[Ja]e=za+j t[G]=e j,Ja,e=Da[0x5a22],0b1100,O[0b111][0b11][O[0b111][0b10]]za=j-Ja za,j,G=Da[0x9a41],0b110000,e[za]j,e,Ja=G[0b11],za-j,G[0b10]za=j[Ja]k,t[e]=0xda,za end elseif k<=0b101011111 then za,e=0x16,Da[0xc5d1]A,Ja,G=0b1110,Da[0x689c],e-za j=Ja-A j,za=Da[0x2651],t[j]e=za[j]t[G]=e za,e=0b110010,Da[0x3f16]e,k,G=nil,0xda,e-za t[G]=e else za,e=0x32,Da[0xc5d1]e,k,G=Da[0x2651],0xda,e-za t[G]=e end elseif k>=0b100101110 then if k<0b100111011 then if k<0b100110110 then if k>0b100110000 then sa,V=A[0b10],A[0b11]_a=V[sa]A[1]=_a A[0b11]=A k,_a=k+0xaa2,1 A[0b10]=_a _a=nil M[Ja]=_a elseif k>0b100101110 then e,za=Da[0xc5d1],0b1100 G,A,Ja=e-za,0b1110,Da[0x689c]j=Ja-A _a,A,za=0b1110,Da[0x3f16],t[j]k,Ja=0b11011010,A-_a j=t[Ja]e=za/j t[G]=e e,za=Da[0x9a41],0x22 G,Ja,A=e-za,Da[0x5a22],0b110001 j=Ja-A za=t[j]e=not za t[G]=e else G=0b100100000 k=ab>G and 0b111100001 or 0x3e8 end elseif k<0b100111001 then if k<=0b100110110 then _a,A=0b100011,Da[0x5b59]k,Ja=0x210-k,A-_a z=z+Ja else j,Ja=Da[0xc5d1],0b101111 Ja,G,j=0b1001,j-Ja,Da[0x689c]Ja,j,e=0x16,Da[0x3f16],j-Ja za,Ja=j-Ja,0 j=e==Ja k=j and 0x1ee or k+0xe8 end elseif k<=0x139 then V=_a[0b10]k=V>=e and 0x96e or 0x5ea-k else G=0b11011101 k=ab<=G and 0x27c or 0b110110101 end elseif k<=0b101000001 then if k>0x13e then G=0x189 k=ab<=G and 0x234 or 0x1ea elseif k<=0x13d then if k>0b100111011 then za,e=0b111111,Da[0xc5d1]za,e,G,j=nil,M,e-za,nil e,za,j=ga.b(e,za,j)Ja,A=e(za,j)j=Ja k=j==nil and 0b11011010 or k+0x173 else k=j and 0x35f-k or 0x113a0/k end else e,za=O[0b111][0b11][O[0b111][0b10]],Da[0x689c]za,j,G=Da[0xc5d1],0b1011,e[za]e,Ja,j=za-j,G[0b10],G[0b11]za=j[Ja]t[e]=za za,k,j=Da[0x3f16],0b11011010,0b1010 e,A,_a=za-j,Da[0x9a41],0b100001 Ja=A-_a j,V,_a=t[Ja],0b1101,Da[0x5a22]A=_a-V Ja=t[A]za=j+Ja t[e]=za end elseif k>0x143 then G=0x25 k=ab>G and k+0b111011010 or 0x357aa/k elseif k<=0b101000010 then j,za=0x16,Da[0xc5d1]e=za-j G,Ja,j=t[e],0b11011,Da[0x689c]za=j-Ja A,Ja,e=0b110,Da[0x3f16],t[za]j=Ja-A za=t[j]k,G[e]=k+-0x68,za za,e=0b100110,Da[0x9a41]G,j,Ja=e-za,Da[0x5a22],1 za=j-Ja e=t[za]t[G]=e else G,mb=0b101110110,0x28 k=ab<=G and 0x50b-k or 0x41f-k end elseif k>0x121 then if k<0b100101010 then if k<0x127 then I,e,za,Pa=0b11110000,Da[0xc5d1],0b101111,0x37 j,e,G,za=nil,M,e-za,nil e,za,j=ga.b(e,za,j)Ja,A=e(za,j)j=Ja k=j==nil and 0x3f1-k or 0x431-k elseif k<=0x127 then Fa,Va=O[1][0b11][O[1][0b10]],0x37 fa,k,Va,kb=Ga*Va,0xfb6,O[0b1010][0b11][O[0b1010][0b10]],ha else Ja,j,e=0b111110,Da[0x689c],O[0b111][0b11][O[0b111][0b10]]k,za=k+-0b1001110,j-Ja G=e[za]A,e,_a,za=Da[0xc5d1],G[0b11],1,G[0b10]Ja=A-_a j=t[Ja]e[za]=j j,za=0x24,Da[0x3f16]za,e=nil,za-j t[e]=za end elseif k<0b100101011 then k=j and 0x85a-k or k+0x43b elseif k>0b100101011 then G=0x2a k=ab<=G and 0x4a5-k or k+-0b111001 else e,j,Ja=O[0b111][0b11][O[0b111][0b10]],Da[0x689c],0x37 za=j-Ja j,za,G=0b100110,Da[0xc5d1],e[za]Ja,j,e=G[0b10],G[0b11],za-j za=j[Ja]k,t[e]=0xda,za za,j=Da[0x3f16],0b100111 j,e={},za-j za=j t[e]=za end elseif k<0x11b then if k<=0x116 then if k<=0b100010011 then k,Ja,A=0x334b4/k,db-G,1 j=Ja+A else za,e=0x21,Da[0xc5d1]za,j,G=Da[0x5924],0b10010,e-za e=za-j t[G]=e e,za=Da[0x689c],0x2c Ja,G,j=0b10010,e-za,Da[0x3f16]za=j-Ja e=t[za]t[G]=e k=w>=Ja and 0x1f0-k or 0x36f end else Ja,j=0x37,Da[0xc5d1]G,Ja,j=j-Ja,0b1000,Da[0x689c]e,Ja,j=j-Ja,0x18,Da[0x3f16]za,Ja=j-Ja,0 j=e==Ja k=j and 0x21d or 0x13b end elseif k<=0b100011111 then if k>0x11d then G=0b11001111 k=ab<=G and 0x1b8 or 0x209-k elseif k>0x11b then za,e=0x33,Da[0xc5d1]za,j,G=Da[0x689c],0b100010,e-za Ja,e,A=Da[0x3f16],za-j,0b11110 j,Ja=Ja-A,1 za,A,Ja=j-Ja,0x32,Da[0x9a41]j,Ja=Ja-A,-1 k=za==Ja and 0x39a or k+0x30f else _a,sa,pb,k,V,A=t,e+Ja,1,k+0x3fe,e,O[0x11][0b11][O[0x11][0b10]]sa=sa-pb end else e,za=Da[0xc5d1],0b111 G,e=e-za,Da[0x2651]t[G]=e e,za=Da[0x689c],0b10001 k,za,G=k+-0x47,{},e-za e=za t[G]=e end elseif k<0x74 then if k>0x3f then if k>0x60 then if k<0x6b then if k<0x65 then if k>=0x63 then if k<=0x63 then G=0b1101100 k=ab<G and k+0b10110111 or 0x1c2 else G=0x26b k=ab>=G and 0x3840/k or 0xe8 end else G=0x87 k=ab>=G and 0x176 or 0xab end elseif k<=0b1100110 then if k>0b1100101 then G=0xb0 k=ab<G and 0b1011 or 0x159-k else G=0b11111010 k=ab>G and 0b11110 or 0b1001000 end else G=0b10001101 k=ab<G and 0x189 or 0x130b0/k end elseif k>0x6f then if k<0x71 then G,H=0b100100000,0x41 k=ab<G and 0xd0-k or 0b11010101 elseif k<=0x71 then G=0x226 k=ab>=G and k+0xa0 or 0x9e06/k else G=0b10010110 k=ab<G and 0b11111101 or 0b1010110 end elseif k>0b1101110 then G=0b11000101 k=ab>G and 0x3b6 or 0x363 elseif k<=0x6d then if k<=0x6b then G=0xe4 k=ab>G and 0x26a-k or 0x108 else G=0b100101110 k=ab<=G and 0b1110000 or 0b11100010 end else G=0x347 k=ab>G and 0x2ff-k or 0x3a7 end elseif k>0b1010011 then if k>=0x5a then if k>0x5d then G=0b100001100 k=ab<=G and k+0x39c or 0b100111110 elseif k<=0b1011010 then G=0x28 k=ab>G and 0b110 or 0xff else G=0x98 k=ab>G and 0x261 or 0x205 end elseif k>0b1010110 then G=0x3ac k=ab<=G and 0b11010010-k or 0xb7 elseif k>0b1010100 then G=0b10011011 k=ab>G and k+-0x43 or 0x5d else G=0x2c8 k=ab<G and k+0b110111010 or 0x3ba end elseif k<0b1001010 then if k>0x48 then G=0b101110 k=ab<G and 0x330 or 0x2af elseif k<0b1000011 then G=0b1100 k=ab<G and 0b11001111 or k+-0b111110 elseif k<=0x43 then G=0b11011100 k=ab<=G and 0x135e/k or 0x75 else G=0xf9 k=ab<G and 0b10000101 or 0x9318/k end elseif k>0b1010000 then G=0xaa k=ab<=G and k+0b111010100 or 0x7273/k elseif k<0b1001110 then G,_b=0xd4,0b11100101 k=ab<=G and 0b11100111-k or k+0x63 elseif k>0b1001110 then G=0x5c k=ab<G and 0b10111000 or 0x2760/k else G=0x26d k=ab<G and 0x1b7-k or 0x4e4e/k end elseif k>=0b11010 then if k<0b101111 then if k>=0x1e then if k>=0x2b then if k>0b101011 then G=0xb3 k=ab>G and 0x4bf8/k or 0x1e6c/k else G=0b111110011 k=ab<G and 0x362 or 0x214 end elseif k>0b11110 then G=0x3c2 k=ab<=G and 0x1a5-k or 0x1c0-k else G=0b11111101 k=ab>=G and 0x226-k or 0x3e2 end elseif k>0x1b then G=0b1111111 k=ab<=G and 0x1dae/k or 0x3351/k elseif k>0x1a then w,ob,G=0b11110011,0b11011000,0x14 k=ab>G and 0x51/k or 0b1000000 else G=0b11000010 k=ab<=G and 0x8f or k+0x1f0 end elseif k<0b111000 then if k<0x34 then if k>0x2f then G=0b10000100 k=ab>=G and 0b1100001 or 0b11101 else G=0x357 k=ab<G and 0b10001000 or 0b1001000-k end elseif k<=0b110100 then G=0x91 k=ab<G and 0b111110000-k or 0x260 else G=0x33b k=ab<=G and 0x233 or 0x345 end elseif k<=0x3c then if k<0x39 then G=0x297 k=ab>G and 0x6a18/k or 0x180 elseif k<=0x39 then G,na=0x2d0,0b11101100 k=ab>G and k+0x73 or 0b10111100 else G=0b11110101 k=ab>=G and 0x329 or 0x8ca0/k end else G=0b111000010 k=ab>G and 0xcd-k or 0x74 end elseif k<0b1010 then if k<0b100 then if k<=0b10 then if k<=1 then G=0b101111111 k=ab<=G and 0b101000011/k or k+0b110100000 else G=0b1111 k=ab<=G and 0xbd or 0b10010110-k end else G=0b100101 k=ab<G and 0xe4 or 0b100001110/k end elseif k>=0b111 then if k>0b111 then G=0xec k=ab>=G and 0x3cc or 0x222 else L,G=0b10,0x3da k=ab<G and k+0b100010 or k+0x86 end elseif k>0b100 then G=0x2b k=ab>G and 0x104 or k+0b100100111 else G=0x256 k=ab<=G and 0x110-k or 0xb94/k end elseif k>=0b10100 then if k>=0x18 then if k<=0b11000 then G=0x7d k=ab>=G and k+0b11011 or 0x210/k else G=0x37d k=ab>G and 0b11010111-k or k+0xa2 end elseif k<=0x14 then G=0x275 k=ab>=G and k+0x392 or 0x1e0 else G=0x77 k=ab>G and 0xe18/k or k+0b10010010 end elseif k>0b1011 then G=0x9e k=ab>G and 0b11011110 or 0x1b8-k elseif k<=0b1010 then G=0b1100110 k=ab<G and 0x32a or 0x254 else G=0b10101000 k=ab<G and k+0b10011011 or 0x53 end elseif k>=0x98 then if k<0b10101010 then if k<0xa2 then if k>=0x9d then if k>=0b10011111 then if k<=0x9f then R,G,La,Ta,Ia,qb,r=0b11111111,0b1101111,0b11010111,0xa6,0b10110011,0x2c,0xaa k=ab<=G and 0b1110110 or 0x6045/k else G=0b11011111 k=ab<=G and 0b100111010 or 0x3d3 end elseif k>0b10011101 then G=0x35 k=ab<=G and 0b110000101-k or 0x819c/k else G=0xd1 k=ab<=G and k+0b10000010 or 0x7be2/k end elseif k>0x9a then o,jb,N,eb,G=0b111001,0b10010011,0b1000101,0b111,0b10011111 k=ab>G and 0b11000100 or k+0b1011100 elseif k>0x98 then Ja=1 k,j=0x2e9,e-Ja else Oa,b,G=0b10001010,0b11001100,0xfe k=ab<=G and 0b10110100 or 0b10010011 end elseif k<=0b10100110 then if k>0xa4 then G=0xa6 k=ab<G and 0b110101101 or 0x2cb elseif k>=0xa3 then if k>0b10100011 then G=0x7a k=ab>G and 0x125 or 0x16578/k else za,e=0x1d,Da[0xc5d1]G,Ja,j=e-za,0x3b,Da[0x689c]za=j-Ja e=t[za]t[G]=e e,za=Da[0x3f16],0x25 e,G=Da[0x2651],e-za t[G]=e k=ea<=za and 0x1f330/k or 0x8ace/k end else G=0x3a1 k=ab>G and 0x1c3-k or 0x324-k end elseif k>0b10101000 then Ja,A=db-G,1 k,j=0xa5a87/k,Ja+A elseif k>0b10100111 then G=0b1110101 k=ab<=G and 0x1c770/k or 0x13d else za,e=0b11101,Da[0xc5d1]za,j,G=Da[0x5b59],0x32,e-za Ja,e,j=0x18,za-j,Da[0x2dd8]j,za=t[G],j-Ja k=j and 0xff6-k or k+0x218 end elseif k>=0xb7 then if k>0b10111100 then if k<0b10111110 then G=0b1110 k=ab<G and 0x268 or 0x493-k elseif k>0b10111110 then nb,G,qa=0x13,0x280,0b1110001 k=ab<G and 0x4bc8/k or 0b111001 else G=0x38d k=ab<=G and 0x15cd4/k or 0b111010111 end elseif k<0b10111010 then if k>0xb7 then G=0x55 k=ab<=G and 0x1c4 or 0x230 else X,G=0x51,0x3be k=ab>G and 0x23d-k or 0x295 end elseif k<=0xbb then if k>0xba then G=0x36c k=ab>G and 0b110101110 or 0b101011000 else k=j and 0x5a2-k or 0x78b end else G,U=0x2a0,0xd0 k=ab>G and 0x3db0/k or 0x38 end elseif k<=0xad then if k<=0xac then if k<=0b10101011 then if k>0xaa then G=0b10000100 k=ab>G and 0xe31c/k or 0x379 else G=0b1010 k=ab>=G and k+0x2ae or k+0x2c5 end else G=0x2f6 k=ab>=G and 0x7d or k+0x35 end else G=0b11011000 k=ab<=G and k+0x26d or 0x1b949/k end elseif k>0xb1 then G=0xe9 k=ab<G and 0x43 or 0x80 elseif k>0xb0 then G=0xb1 k=ab<=G and 0x34f-k or 0x1b70b/k else G=0x44 k=ab<=G and 0x8c or k+0x42 end elseif k>=0x87 then if k<=0x90 then if k<=0x8d then if k<0b10001011 then if k<=0x87 then G,W=0x213,0xd3 k=ab>G and k+0x7c or k+0x86 else G,ta=0x342,0b1011 k=ab<=G and 0x37 or k+-0b11010 end elseif k<=0b10001100 then if k>0x8b then G=0x43 k=ab<G and 0b100010010-k or 0x3a4 else za,e=0b111011,Da[0xc5d1]A,G,Ja=0x2d,e-za,Da[0x689c]j=Ja-A za,_a,A=t[j],0b111011,Da[0x3f16]k,Ja=0xda,A-_a j=t[Ja]e=za>j t[G]=e end else G=0x3e2 k=ab<G and 0x1d42a/k or 0x33f-k end elseif k<0b10001111 then ja,G,Ca,x=0xbc,0x1f4,0xf7,0b1101101 k=ab>G and 0x4ae2/k or 0xb9-k elseif k<=0x8f then j,za=0b101111,Da[0xc5d1]e=za-j Ja,j,G=0b101111,Da[0x689c],t[e]za=j-Ja Ja,e,A=Da[0x3f16],t[za],0x35 j=Ja-A za=t[j]G[e]=za za,e=0b100000,Da[0x9a41]A,G,Ja=0b1011,e-za,Da[0x5a22]j=Ja-A za=t[j]e=#za t[G]=e k=jb>A and 0b11011010 or 0x34c else G=0x273 k=ab>=G and 0b10100 or 0x4e end elseif k<0b10010100 then if k<=0b10010010 then if k<=0b10010001 then G=0x69 k=ab>=G and 0b11110100-k or k+-0b10000111 else G=0x390 k=ab>G and 0x8fb8/k or 0b101111 end else la,G=0b10010001,0b110000101 k=ab<G and 0b100000000-k or 0x242d/k end elseif k<0b10010110 then G=0b10010 k=ab>=G and 0x2fd or k+0b111011001 elseif k<=0b10010110 then G=0b11010 k=ab>G and 0x23b4a/k or 0x146 else za,e=0b1111,Da[0xc5d1]za,G={},e-za e=za t[G]=e e,za=Da[0x689c],0b101101 G,e=e-za,nil k,t[G]=0b11011010,e end elseif k<=0b10000000 then if k<=0b1111010 then if k<=0x76 then if k>0x75 then P,G,T,Q=0x63,0x2d,0x93,0b10100100 k=ab>=G and 0b11010000 or 0x1b elseif k>0x74 then G,v=0xe3,0xf7 k=ab>=G and 0b1101011 or 0x4920/k else G=0b110101011 k=ab<G and k+0b11 or 0x59b8/k end elseif k>0x77 then G=0x3a9 k=ab<=G and 0b10100010 or 0xcc else G=0x189 k=ab<G and 0x249 or 0b110111000-k end elseif k<0x7e then G=0x308 k=ab>=G and k+0x194 or 0x386-k elseif k<=0b1111110 then G=0x5f k=ab<G and 0x10b42/k or 0x3a5-k else G=0b11110111 k=ab>=G and 0b11100101-k or 0b11100101 end elseif k<0b10000100 then if k<0b10000010 then Ja=1 k,j=0xc0f,e-Ja elseif k<=0x82 then Ra,Ha,G=0b111000,0b110010,0x321 k=ab>G and 0x92 or k+0b1000000 else ea,G=0x34,0x63 k=ab<=G and 0x50 or 0x91 end elseif k<0x85 then j,za=1,Da[0xc5d1]e=za-j j,G,Ja=Da[0x689c],t[e],0b101 za=j-Ja Ja,e,A=Da[0x3f16],t[za],0b111011 j=Ja-A k,za=k+0x56,t[j]G[e]=za Ja,e,j=0b111001,O[0b111][0b11][O[0b111][0b10]],Da[0x5a22]za=j-Ja G,za,j=e[za],Da[0x9a41],1 Ja,j,e=G[0b10],G[0b11],za-j za=j[Ja]t[e]=za elseif k>0x85 then G=0b1000001 k=ab>G and 0x2b9 or 0x289 else G=0b11110111 k=ab<=G and k+0x21e or 0x380 end elseif k<=0x26d then if k>0x1ff then if k<=0x22d then if k<=0x218 then if k>=0x20a then if k>=0x20f then if k<=0x214 then if k<=0x211 then if k>0x20f then G=0x308 k=ab<=G and 0x709e8/k or 0x263a8/k else e,za=Da[0xc5d1],0b11 j,G,Ja=Da[0x689c],e-za,0x15 za,j=j-Ja,1 e=za==j t[G]=e e,za=Da[0x3f16],0b10001 A,k,Ja,G=0b100100,k+-0b100110101,Da[0x9a41],e-za j=Ja-A _a,A,za=0x35,Da[0x5a22],t[j]Ja=A-_a j=t[Ja]e=za==j t[G]=e end else G=0x1f3 k=ab<=G and 0x578-k or 0x294 end else B,pb,va,k,V,sa,Ga=_a,1,G,k+0x794,O[0b100][0b11][O[0b100][0b10]],A,t end elseif k<=0x20d then if k>=0x20b then if k>0x20b then A=1 k,Ja=0x9f9-k,za-A else G=0xf9 k=ab>G and k+-0x7a or 0x296-k end else e,za=Da[0xc5d1],0x3b j,za,G=0b111100,Da[0x689c],e-za za,e=Da[0x2651],za-j k,A,j=0x2e4-k,1,t[e]Ja=G+A t[Ja]=j Ja=j[za]t[G]=Ja end else e,za=Da[0xc5d1],0b1100 A,G,Ja=0b1011,e-za,Da[0x689c]j=Ja-A za=t[j]e=#za t[G]=e za,e=0x2b,Da[0x3f16]G,A,Ja=e-za,0x39,Da[0x9a41]j=Ja-A za,_a,A=t[j],0b10110,Da[0x5a22]Ja=A-_a j=t[Ja]e=za<j t[G]=e k=gb<_a and 0x813-k or 0b11011010 end elseif k>=0x205 then if k<=0x208 then if k<=0x207 then if k<=0x205 then G=0x97 k=ab<G and 0x152 or 0x1f9 else ba,G=0x3d,0b100100011 k=ab>G and 0x2ff or 0x335-k end else G=0b11111101 k=ab<=G and 0x3a2 or 0x2e2-k end else za,e=0b1101,Da[0xc5d1]Ja,G,A=Da[0x689c],e-za,0b11011 j=Ja-A k,za=0x1bbaa/k,t[j]e=-za t[G]=e end elseif k<0x202 then Ja,j,e=0b10010,Da[0x689c],O[0b111][0b11][O[0b111][0b10]]k,za=0x2db-k,j-Ja j,za,G=0b11011,Da[0xc5d1],e[za]e,j,Ja=za-j,G[0b11],G[0b10]za=j[Ja]t[e]=za za,j=Da[0x3f16],0b11 za,e=nil,za-j t[e]=za elseif k>0x202 then Ja,j,e=0b110,Da[0x689c],O[0b111][0b11][O[0b111][0b10]]za=j-Ja G,e=e[za],Da[0xc5d1]j,Ja=G[0b11],G[0b10]za=j[Ja]t[e]=za Ja,A=Da[0x3f16],0x30 e,A,Ja=Ja-A,0x2e,Da[0x9a41]A,Ja,za=0b100101,Da[0x5a22],Ja-A j,A=Ja-A,0 Ja=za==A k=Ja and 0x2df-k or 0x2ae else k=j>Ja and k+-0x128 or 0x147c68/k end elseif k>=0x222 then if k<0x226 then if k<0x224 then za,e=0x2e,Da[0xd24d]G=e-za z=z+G k=oa>za and 0b11011010 or k+0x139 elseif k<=0x224 then A,Ja=O[0b1101][0b11][O[0b1101][0b10]],t[G]_a,B,V,sa=Ja,1,O[0b10001][0b11][O[0x11][0b10]],t k,B,pb=0x51c,G+j,G+B else za,e=0b1101,Da[0xc5d1]G,za=e-za,{}e=za t[G]=e za,e=0b101,Da[0x689c]k,j,G,za=0b11011010,0x18,e-za,Da[0x5924]e=za-j t[G]=e end elseif k<=0x228 then if k<0x227 then G,ra=0b100111011,0b1001110 k=ab>G and k+0b11101 or k+0x1b1 elseif k>0x227 then k,B,pb=0xf2c-k,_a[0x689c],O[0b111][0b11][O[0b111][0b10]]sa=pb[B]za[j]=sa else G=0xa8 k=ab<=G and 0x18b or 0x3f8 end else za,e=0b1100,Da[0xc5d1]j,za,G=0x20,Da[0x5924],e-za e=za-j t[G]=e k=T<j and 0x3ef or 0x1da52/k end elseif k<0x21f then if k>0x21d then A,Ja=1,db-G k,j=0x9c4,Ja+A elseif k>0x21a then k,j=0x299af/k,db-G else k=j and k+0b110101010 or k+0b101110001 end elseif k>=0x220 then if k>0x220 then k,j=0x12a,db-G else k=j and 0xf92 or 0x731-k end else G=0x5c k=ab>G and k+0xee or 0x6c0b1/k end elseif k>=0x251 then if k>=0x261 then if k>=0x269 then if k<0x26c then if k<=0x269 then A,Ja=1,db-G j=Ja+A k=L<A and 0x44c-k or 0x2e9 else j,Ja=Da[0xc5d1],0b11000 Ja,G,j=0x3a,j-Ja,Da[0x689c]Ja,j,e=0b101011,Da[0x3f16],j-Ja za,Ja=j-Ja,0 j=e==Ja k=j and 0xc43 or 0xfecb2/k end elseif k>0x26c then za,e=1,Da[0xc5d1]Ja,G,j=0b100100,e-za,Da[0x689c]za=j-Ja e=t[za]t[G]=e j,e,Ja=Da[0x9a41],O[0b111][0b11][O[0b111][0b10]],1 k,za=0xda,j-Ja j,G,za=0b111101,e[za],Da[0x3f16]j,e,Ja=G[0b11],za-j,G[0b10]za=j[Ja]t[e]=za else sa,V=1,G+_a db=V-sa k=r>sa and 0xc93 or 0b101111100 end elseif k<0x267 then za,j=Da[0xc5d1],0b111101 e=za-j A,Ja,e,G=0b1110,Da[0x689c],Da[0x2651],t[e]k,j=0x33b-k,Ja-A za=t[j]G[e]=za e,za=Da[0x3f16],0b1000 G,za=e-za,{}e=za t[G]=e elseif k>0x267 then G=0b1100 k=ab<=G and 0x927b0/k or 0x3a0d0/k else B,k,q=O[1][0b11][O[1][0b10]],0x905,0b101101 Ga,ua,q=Ja*q,sa,O[0b1010][0b11][O[0b1010][0b10]]end elseif k>=0x257 then if k<=0x25b then if k>0x258 then k,j=0xba,db-G elseif k>0x257 then G=0b11110001 k=ab<=G and k+0b110000001 or 0x320 else j,Ja=Da[0xc5d1],0b11111 G,Ja,j=j-Ja,0b1100,Da[0x689c]Ja,j,e=0b101110,Da[0x3f16],j-Ja Ja,za=0,j-Ja j=e==Ja k=j and 0x353 or k+-0x100 end else G=0b10010001 k=ab<=G and 0x37d-k or 0x3ef end elseif k>0x253 then G=0b1100110 k=ab<=G and 0x3312c/k or 0b111011001 elseif k>0x251 then Ja,A=t[G],O[0b1101][0b11][O[0b1101][0b10]]k,_a,V,sa,B=0x992,Ja,O[0x11][0b11][O[0b10001][0b10]],t,1 pb,B=G+B,G+j else sa=_a[0x689c]pb,B=M[sa],nil k=pb==B and k+0b110110111 or 0x48d end elseif k<0x23a then if k<=0x234 then if k<=0x233 then if k<0x230 then za,e=0b110101,Da[0xc5d1]G,j,za=e-za,0b100,Da[0x5924]e=za-j t[G]=e e,za=Da[0x689c],0b110111 za,G,k,j=Da[0xf28b],e-za,0b11011010,0b1000 e=za-j t[G]=e elseif k>0x230 then G=0x339 k=ab>G and k+0b1000000 or 0x1e3 else e,za=Da[0xc5d1],0x1b G,Ja,A=e-za,Da[0x689c],0b100101 j=Ja-A A,_a,za=Da[0x3f16],0b101011,t[j]Ja=A-_a j=t[Ja]e=za+j t[G]=e k,za,e=k+-0b101010110,0x3d,Da[0x9a41]Ja,A,G=Da[0x5a22],0x25,e-za j=Ja-A za=t[j]e=#za t[G]=e end else j,e,Ja=Da[0x689c],O[0b111][0b11][O[0b111][0b10]],0x3e za=j-Ja G=e[za]e,za,_a,A=G[0b11],G[0b10],0b111010,Da[0xc5d1]k,Ja=0xda,A-_a j=t[Ja]e[za]=j end elseif k>0x237 then A,k,Ja=1,k+0x245,db-G j=Ja+A else B={}B[0b10]=sa k,B[0b11]=0x115f-k,t pb=B M[sa]=pb end elseif k>=0x24b then if k>=0x24f then if k<=0x24f then Ja=1 j=G+Ja k,za,Ja=0x4b0,t[j],O[0b101][0b11][O[0b101][0b10]]A=za else j,Ja,e=Da[0x689c],0b100111,O[0b111][0b11][O[0b111][0b10]]za=j-Ja G=e[za]A,e,za,_a=Da[0xc5d1],G[0b11],G[0b10],0b10001 k,Ja=0b11011010,A-_a j=t[Ja]e[za]=j za,j=Da[0x3f16],0b101110 e,Ja,j=za-j,Da[0x2651],O[0b10][0b11][O[0b10][0b10]]za=j[Ja]t[e]=za end elseif k>0x24b then k,A=0b100011011,1 Ja=za-A else A,k,Ja=1,0x7a632/k,db-G j=Ja+A end elseif k<=0x243 then if k>0x23a then za,e=0b110,Da[0xc5d1]A,Ja,G=0x3d,Da[0x689c],e-za j=Ja-A A,_a,za=Da[0x3f16],0b101001,t[j]Ja=A-_a j=t[Ja]e=za>=j t[G]=e e,za=Da[0x9a41],0b101000 G,j,Ja=e-za,Da[0x5a22],0b11010 za=j-Ja e=t[za]t[G]=e k=ra<_a and 0x3c8 or 0xda else Ja,_a,A,sa,V=O[0x11][0b11][O[0b10001][0b10]],G,t,1,G+j k,V=0xa24-k,V-sa end else e,za=Da[0xc5d1],0b11 G,A,Ja=e-za,0x14,Da[0x689c]j=Ja-A A,_a,za=Da[0x3f16],0x3c,t[j]Ja=A-_a j=t[Ja]k,e=0xda,za//j t[G]=e end elseif k>0x1c1 then if k>0x1e5 then if k<0x1f1 then if k>=0b111101100 then if k>0b111101110 then e,Ja,j=O[0b111][0b11][O[0b111][0b10]],0x2c,Da[0x689c]za=j-Ja G=e[za]za,A,e,_a=G[0b10],Da[0xc5d1],G[0b11],0b110111 Ja=A-_a j=t[Ja]e[za]=j za,j=Da[0x3f16],0x35 Ja,e,A=Da[0x9a41],za-j,0b1101 j,Ja=Ja-A,1 za=j==Ja t[e]=za k=Ra>=A and 0b11011010 or 0x3ef elseif k<=0x1ec then e,za=Da[0xc5d1],0b101000 Ja,G,j=0b101,e-za,Da[0x689c]za,j=j-Ja,1 e=za==j t[G]=e za,j=Da[0x5a22],0b111111 e=za-j za,G,k,j=Da[0x9a41],Na[e],0xae7,0b111 e,za=za-j,O[0b10000][0b11][O[0x10][0b10]]j=e else k,j=0x220,db-G end elseif k>=0x1ea then if k<=0b111101010 then e,za=Da[0xc5d1],0x32 Ja,A,k,G=Da[0x689c],0b110101,0xda,e-za j=Ja-A _a,A,za=0b101001,Da[0x3f16],t[j]Ja=A-_a j=t[Ja]e=za-j t[G]=e e,za=Da[0x9a41],0b111110 za,G={},e-za e=za t[G]=e else Ja,k,A=db-G,0xece-k,1 j=Ja+A end else Ja=1 k,j=0x253,e-Ja end elseif k<=0b111111001 then if k>0b111111000 then G=0x97 k=ab<=G and 0x615 or 0x585 elseif k>=0b111110110 then if k<=0b111110110 then za,e=0b111,Da[0xc5d1]G,Ja,j=e-za,0b100000,Da[0x689c]za=j-Ja e=t[za]t[G]=e j,Ja,e=Da[0x9a41],0x1d,O[0b111][0b11][O[0b111][0b10]]za=j-Ja G=e[za]za,_a,A,e=G[0b10],0b111,Da[0x3f16],G[0b11]Ja=A-_a j=t[Ja]e[za]=j k=bb<=_a and k+-0b101100010 or 0x1ab7c/k else e,za=Da[0xc5d1],0x22 Ja,G,A=Da[0x689c],e-za,0b1000 j=Ja-A za,A,_a=t[j],Da[0x3f16],0b1001 Ja=A-_a j=t[Ja]e=za<=j k,t[G]=k+-0b100011110,e end else za,e=0b11000,Da[0xc5d1]j,G,za=0x10,e-za,Da[0x689c]Ja,j,e=1,Da[0x5b59],za-j za,Ja,A=j-Ja,Da[0x2dd8],0b10010 Ja,j,A=t[G],Ja-A,t[e]k=Ja<A and 0x8ec or 0x627 end elseif k>=0x1fd then if k>0x1fd then Ja,j,e=0b11000,Da[0x689c],O[0b111][0b11][O[0b111][0b10]]za=j-Ja G,za,j=e[za],Da[0xc5d1],0x1a j,Ja,e=G[0b11],G[0b10],za-j za=j[Ja]t[e]=za za,j=Da[0x3f16],0x17 Ja,j,e=0b111110,Da[0x5924],za-j k,za=0xda,j-Ja t[e]=za else k,Ja=0xce3,1 j=e-Ja end else Ja=1 j=e-Ja k=ba>Ja and 0x9c4 or k+-0b110000100 end elseif k<0x1d6 then if k<=0x1c5 then if k>0x1c4 then k,za,e=0x46a,0x11,Da[0xc5d1]j,za,G=0b110,Da[0x689c],e-za za,j,_a,e=O[0b1101][0b11][O[0b1101][0b10]],t[G],1,za-j A=G+_a _a,Ja=0b10,t[A]A=G+_a A=t[A]elseif k<0b111000011 then G=0x6c k=ab<=G and k+0x149 or k+0x17f elseif k>0x1c3 then G=0x53 k=ab<G and k+-0b100100001 or 0x37c else e,za=Da[0xc5d1],0b110100 G,e=e-za,Da[0x2651]t[G]=e e,za=Da[0x689c],0x26 j,Ja,G=Da[0x3f16],0b101011,e-za za=j-Ja e=t[za]t[G]=e k=pa>Ja and k+-0b11101001 or 0x1594c/k end elseif k>=0x1cf then if k>0b111001111 then Ja=1 k,j=0x47e,e-Ja else k,j=0x3da,db-G end else k,z=0xda,z+za end elseif k<0b111100001 then if k>0b111011001 then G=0x273 k=ab<=G and 0x3df or 0xf780/k elseif k<0x1d7 then G=0x389 k=ab>G and k+0x20f or 0x3b1 elseif k>0x1d7 then za,e=0x1d,Da[0xc5d1]G,Ja,A=e-za,Da[0x689c],0b1110 j=Ja-A k,za,_a,A=0x2b3-k,t[j],0x24,Da[0x3f16]Ja=A-_a j=t[Ja]e=za+j t[G]=e e,Ja,j=O[0b111][0b11][O[0b111][0b10]],0b1110,Da[0x5a22]za=j-Ja G=e[za]_a,e,za,A=0b100011,G[0b11],G[0b10],Da[0x9a41]Ja=A-_a j=t[Ja]e[za]=j else e,za=Da[0xc5d1],0b101110 G,j,Ja=e-za,Da[0x689c],0b11110 za=j-Ja k,e=k+0x65f,t[za]t[G]=e j,za=0b110001,Da[0x5a22]e=za-j G,j,za=Na[e],0b10101,Da[0x9a41]e,za=za-j,O[0x10][0b11][O[0x10][0b10]]j=e end elseif k<0x1e3 then if k<=0x1e1 then e,za=Da[0xc5d1],0b110000 k,Ja,G,j=0b11011010,0b1111,e-za,Da[0x689c]za=j-Ja e=t[za]t[G]=e e,za=Da[0x3f16],0b110010 Ja,G,A=Da[0x9a41],e-za,0b101101 j=Ja-A za,_a,A=t[j],0b10111,Da[0x5a22]Ja=A-_a j=t[Ja]e=za..j t[G]=e else e,j,Ja=O[0b111][0b11][O[0b111][0b10]],Da[0x689c],0b1001 za=j-Ja G,za,j=e[za],Da[0xc5d1],0b1011 j,Ja,e=G[0b11],G[0b10],za-j za=j[Ja]t[e]=za j,za=0b101011,Da[0x3f16]k,_a,A,e=0xda,0b1010,Da[0x9a41],za-j Ja=A-_a V,_a,j=0b1011,Da[0x5a22],t[Ja]A=_a-V Ja=t[A]za=j>Ja t[e]=za end elseif k<=0b111100011 then G=0x330 k=ab>G and 0x250 or 0x27a-k else G=0x29c k=ab>G and 0x388 or 0x280 end elseif k>0x1a1 then if k<=0b110110101 then if k<0b110101101 then if k>=0b110101011 then if k<=0x1ab then za,e=0x33,Da[0xc5d1]e,G=Da[0x2651],e-za t[G]=e e,za=Da[0x689c],0x26 G,e=e-za,Da[0x2f32]t[G]=e k=h<=za and k+0x37 or 0b11011010 else za,e=0b10111,Da[0xc5d1]e,G=nil,e-za t[G]=e za,e=0b101,Da[0x689c]G,za=e-za,{}e=za t[G]=e k=Ya>y and k+0x3f7 or k+-0b11010010 end elseif k<=0x1a5 then G=0x9c k=ab>G and k+0b1001100 or 0x302-k else za,e=0x18,Da[0xc5d1]G,e=e-za,nil t[G]=e za,e=0x27,Da[0x689c]Ja,G,A=Da[0x3f16],e-za,0b111 k,j=k+-0b11010000,Ja-A za,j=t[j],Da[0x2651]e=za[j]t[G]=e end elseif k<0x1b0 then if k<=0x1ad then za,e=0b11101,Da[0xc5d1]G=e-za j,k,e=O[0b101][0b11][O[0b101][0b10]],0x92b,t[G]Ja=e else e,za=Da[0xc5d1],0b111000 Ja,G,A=Da[0x689c],e-za,0b100000 j=Ja-A k,A,_a,za=0xda,Da[0x3f16],0b11,t[j]Ja=A-_a j=t[Ja]e=za-j t[G]=e j,Ja,e=Da[0x5a22],0x19,O[0b111][0b11][O[0b111][0b10]]za=j-Ja za,G,j=Da[0x9a41],e[za],_a j,e,Ja=G[0b11],za-j,G[0b10]za=j[Ja]t[e]=za end elseif k<=0x1b0 then za,e=0b11001,Da[0xc5d1]A,Ja,G=0x3e,Da[0x689c],e-za j=Ja-A za,A,_a=t[j],Da[0x3f16],0b11011 Ja=A-_a j=t[Ja]e=za-j t[G]=e za,e=0x1d,Da[0x9a41]G,j,Ja=e-za,Da[0x5a22],0b101010 za=j-Ja e=t[za]t[G]=e k=ya<=_a and k+0x70 or 0x16fe0/k else k,e,za=0xda,Da[0xc5d1],0x34 j,Ja,G=Da[0x689c],0b1000,e-za za,j=j-Ja,1 e=za==j t[G]=e e,za=Da[0x3f16],0b10101 za,j,G=O[0b10][0b11][O[0b10][0b10]],Da[0x2651],e-za e=za[j]t[G]=e end elseif k<0b110111110 then if k>0x1ba then G=0x8f k=ab<=G and 0x4ce-k or 0x3b4-k elseif k>0b110111000 then e,za=Da[0xc5d1],0x24 A,Ja,G=0b11001,Da[0x689c],e-za j=Ja-A A,_a,za=Da[0x3f16],0b1000,t[j]Ja=A-_a j=t[Ja]k,e=0xda,za+j t[G]=e e,za=Da[0x9a41],0b100 e,G=nil,e-za t[G]=e else G=0xce k=ab>G and k+0x142 or 0x4a0-k end elseif k<0b110111111 then sa,_a,k,A,V,Ja=1,G,0x16ab3a/k,t,G+j,O[0x11][0b11][O[0x11][0b10]]V=V-sa elseif k>0b110111111 then z=z+j k=J<c and k+-0xe7 or k+-0x13f else e,za=Da[0xc5d1],0b11010 A,G,Ja=0x2d,e-za,Da[0x689c]j=Ja-A za,A,_a=t[j],Da[0x3f16],0x2c Ja=A-_a j=t[Ja]e=za==j t[G]=e za,e=0b1101,Da[0x9a41]j,G,za=0b1111,e-za,Da[0x5a22]j,e=1,za-j za,j,Ja=e-j,nil,-1 k=za==Ja and k+-0b10101100 or k+0b11011000 end elseif k<=0x189 then if k>0b110000010 then if k>0b110001000 then za,e=0b1000,Da[0xc5d1]e,G=nil,e-za t[G]=e e,za=Da[0x689c],0x2d j,G,k,za=Da[0x2651],e-za,0xda,O[0b10][0b11][O[0b10][0b10]]e=za[j]t[G]=e elseif k>0b110000110 then za,e=0b11110,Da[0xc5d1]G,za,j=e-za,O[0b10][0b11][O[0b10][0b10]],Da[0x2651]e=za[j]t[G]=e e,j,Ja=O[0b111][0b11][O[0b111][0b10]],Da[0x3f16],0x28 za=j-Ja G,j,za=e[za],0x1f,Da[0x689c]Ja,j,e=G[0b10],G[0b11],za-j za=j[Ja]t[e]=za k=N>eb and k+-0b10101110 or 0x3ac else za,e=0b100111,Da[0xc5d1]Ja,G,j=0b101000,e-za,Da[0x689c]za=j-Ja e=t[za]t[G]=e e,za=Da[0x3f16],0b1111 A,G,Ja=0b10,e-za,Da[0x9a41]j=Ja-A _a,za,A=0b10100,t[j],Da[0x5a22]Ja=A-_a j=t[Ja]e=za-j t[G]=e k=X<=_a and 0x4ca-k or 0b11011010 end elseif k>0b101111110 then if k<=0x180 then G=0x28a k=ab>G and 0x56580/k or k+0x238 else za,e=0x13,Da[0xc5d1]j,za,G=Da[0x2651],O[0b10][0b11][O[0b10][0b10]],e-za e=za[j]t[G]=e za,e=0b100111,Da[0x689c]e,G=Da[0x2f32],e-za k,t[G]=0x25c-k,e end elseif k<=0b101111101 then if k>0x17c then A,_a=Da[0x2dd8],0b1011 Ja=A-_a k,z=0b11011010,z+Ja else e,za=Da[0xc5d1],0x3b Ja,G,A=Da[0x689c],e-za,1 j=Ja-A A,za,_a=Da[0x3f16],t[j],0b110011 Ja=A-_a j=t[Ja]e=za<j t[G]=e e,za=Da[0x9a41],0b10001 G,j,za=e-za,0b110,Da[0x5a22]j,e=1,za-j Ja,za,j=-1,e-j,nil k=za==Ja and k+0b11101101 or 0x216-k end else A=1 k,Ja=0x4d20a/k,za-A end elseif k>0b110010001 then if k<=0x1a0 then if k>0x197 then za,e=0x22,Da[0xc5d1]Ja,G,A=Da[0x689c],e-za,0x2e j=Ja-A j,za=Da[0x2651],t[j]e=za[j]k,t[G]=k+-0b11000110,e else Ja,e,j=0x21,O[0b111][0b11][O[0b111][0b10]],Da[0x689c]za=j-Ja k,G=0xda,e[za]za,e,_a,A=G[0b10],G[0b11],1,Da[0xc5d1]Ja=A-_a j=t[Ja]e[za]=j Ja,A,za=Da[0x9a41],0b101110,O[0b111][0b11][O[0b111][0b10]]j=Ja-A e=za[j]za,_a,V,j=e[0b11],Da[0x3f16],0x31,e[0b10]A=_a-V Ja=t[A]za[j]=Ja end else za,e=0b110,Da[0xc5d1]A,G,Ja=0x33,e-za,Da[0x689c]j=Ja-A _a,A,za=0b100110,Da[0x3f16],t[j]Ja=A-_a j=t[Ja]e=za==j t[G]=e za,e=0x1f,Da[0x9a41]k,Ja,G,j=0xda,0b101101,e-za,Da[0x5a22]za=j-Ja e=t[za]t[G]=e end elseif k>0x18f then Ja,j,e=0b11110,Da[0x689c],O[0b111][0b11][O[0b111][0b10]]za=j-Ja j,za,G=0b100001,Da[0xc5d1],e[za]Ja,e,j=G[0b10],za-j,G[0b11]za=j[Ja]t[e]=za j,za=0x37,Da[0x3f16]A,e,Ja=0b1001,za-j,Da[0x9a41]Ja,j=1,Ja-A za=j==Ja t[e]=za k=b>A and 0b11011010 or k+0xb52 elseif k<=0x18d then if k>0b110001011 then e,za=Da[0xc5d1],0b1101 G,e=e-za,nil t[G]=e za,j=Da[0x689c],0b101001 e=za-j Ja,G,j=0b100001,t[e],Da[0x3f16]za=j-Ja e,Ja,A=t[za],Da[0x9a41],0x29 j=Ja-A k,za=0x267-k,t[j]G[e]=za else za,e=0b10000,Da[0xc5d1]G,za=e-za,{}e=za t[G]=e za,e=0b101000,Da[0x689c]G,j,Ja=e-za,Da[0x3f16],0x2e za=j-Ja e=t[za]k,t[G]=0xda,e end else e,za=Da[0xc5d1],0b101100 Ja,j,G=0b111110,Da[0x689c],e-za za,j=j-Ja,1 e=za==j t[G]=e e,za=Da[0x3f16],0b101001 e,G=Da[0x2651],e-za t[G]=e k=Aa>j and 0x153c6/k or 0x2e0 end elseif k>0x2dc then if k>=0x312 then if k<=0x32b then if k>0x320 then if k>0x329 then if k<=0x32a then e,za=Da[0xc5d1],0b10010 A,Ja,G=0b110,Da[0x689c],e-za j=Ja-A A,_a,za=Da[0x3f16],0b10000,t[j]Ja=A-_a j=t[Ja]e=za[j]t[G]=e e,Ja,j=O[0b111][0b11][O[0b111][0b10]],0x3d,Da[0x5a22]za=j-Ja za,j,G=Da[0x9a41],0b1110,e[za]Ja,j,e=G[0b10],G[0b11],za-j za=j[Ja]t[e]=za k=Ia<_a and 0x501 or 0x2b1c4/k else e,za=Da[0xc5d1],0b110010 e,G=Da[0x2651],e-za t[G]=e e,za=Da[0x689c],0x28 za,G,j=Da[0x3f16],e-za,0b10000 j,e=1,za-j j,Ja,za=nil,-1,e-j k=za==Ja and 0x27cc3/k or 0x726-k end elseif k<=0x327 then if k<0x325 then k,Ja=0x30a7b8/k,1 j=e-Ja elseif k<=0x325 then Ja,A=e(za,j)j=Ja k=j==nil and 0x2ad82/k or 0x29c else rb,G=0b1010010,0x5f k=ab<=G and 0x257 or 0x138 end else G=0b11110101 k=ab>G and k+-0x74 or 0x47f-k end elseif k<0x31d then if k<0x317 then if k>0x312 then za,e=0b110101,Da[0xc5d1]G,A,Ja=e-za,0x2a,Da[0x689c]j=Ja-A _a,A,za=0x1e,Da[0x3f16],t[j]Ja=A-_a j=t[Ja]e=za-j t[G]=e e,za=Da[0x9a41],0x2f G,j,e,za=e-za,nil,M,nil e,za,j=ga.b(e,za,j)Ja,A=e(za,j)j=Ja k=j==nil and k+-0x23b or 0x29c else e,za=Da[0xc5d1],0b101000 Ja,k,G,j=0b111,0x3ec-k,e-za,Da[0x689c]za=j-Ja e=t[za]t[G]=e end elseif k>0x317 then G=0b11010111 k=ab<=G and k+-0b111101111 or 0x6d1-k else j,za=0x18,Da[0xc5d1]e=za-j Ja,e,A,G=Da[0x689c],Da[0x2651],1,t[e]j=Ja-A za=t[j]G[e]=za k,e,za=0b11011010,Da[0x3f16],0x15 G,e=e-za,nil t[G]=e end elseif k>0x31f then e,k,za=Da[0xc5d1],0b11011010,0x3f Ja,j,G=0b10011,Da[0x689c],e-za za,j=j-Ja,1 e=za==j t[G]=e elseif k>0x31e then G,za=Da[0xc5d1],{}e=za t[G]=e za,j=Da[0x689c],0x10 e=za-j e,A,Ja,k,G=Da[0x2651],0x28,Da[0x3f16],0xda,t[e]j=Ja-A za=t[j]G[e]=za elseif k>0x31d then k,z=0xda,z+za else sa=_a[0x689c]pb,B=M[sa],nil k=pb==B and k+-0b11100110 or 0xf28 end elseif k<0x337 then if k<=0x330 then if k<=0x32f then if k>=0x32e then if k>0x32e then za,j=Da[0xc5d1],0x17 e=za-j e,G,A,Ja=Da[0x2651],t[e],0x16,Da[0x689c]k,j=0x409-k,Ja-A za=t[j]G[e]=za else k,j=k+0b10111000,db-G end else G=0x2d7 k=ab>G and 0x45d-k or 0x14c end else e,j,Ja=O[0b111][0b11][O[0b111][0b10]],Da[0x689c],0b10110 za=j-Ja k,j,G,za=0xda,0b1110,e[za],Da[0xc5d1]e,j,Ja=za-j,G[0b11],G[0b10]za=j[Ja]t[e]=za Ja,j=0b100101,Da[0x3f16]za=j-Ja A,Ja,e=0b10101,Da[0x9a41],t[za]j=Ja-A _a,A,za=0b10110,Da[0x5a22],t[j]Ja=A-_a j=t[Ja]e[za]=j end elseif k>0x333 then za,e=0x24,Da[0xc5d1]G,e=e-za,nil t[G]=e za,k,e=0b11110,0xda,Da[0x689c]G,Ja,A=e-za,Da[0x3f16],0b1101 j=Ja-A A,_a,za=Da[0x9a41],0x36,t[j]Ja=A-_a j=t[Ja]e=za~=j t[G]=e else V,_a=1,l[z]V,sa,z=_a[0xc5d1],1,z+V k=V==sa and k+-0xe2 or 0x2bb end elseif k<=0x33b then if k>0x339 then _a,A=O[0b1101][0b11][O[0b1101][0b10]],t[e]va,V,sa,pb=1,A,O[0x11][0b11][O[0x11][0b10]],t k,va,B=k+0x76f,e+Ja,e+va elseif k>0x338 then Ja,j=0x3b,Da[0xc5d1]G,Ja,j=j-Ja,0b1000,Da[0x689c]j,e,Ja=Da[0x3f16],j-Ja,0x10 za,Ja=j-Ja,0 j=e==Ja k=j and 0x28a or 0x21a elseif k>0x337 then za,k,j=Da[0x3f16],k+0x966,0x39 e=za-j za,G,j=Da[0x689c],Na[e],0x34 za,e=O[0b10000][0b11][O[0x10][0b10]],za-j j=e else Y,hb,G=0xa2,0xdc,0b11001001 k=ab<G and k+-0x14b or k+-0x1ed end elseif k>0x340 then za,e=0b1100,Da[0xc5d1]Ja,A,G=Da[0x689c],0b1001,e-za k,j=0x2c55a/k,Ja-A za=t[j]e=not za t[G]=e elseif k>0x33d then k=j and 0xec3 or 0xb2580/k else j,e,Ja=Da[0x689c],O[0b111][0b11][O[0b111][0b10]],0b1001 za=j-Ja j,G,za=0b100111,e[za],Da[0xc5d1]Ja,j,e=G[0b10],G[0b11],za-j za=j[Ja]t[e]=za za,Ja,A=O[0b111][0b11][O[0b111][0b10]],Da[0x9a41],0b100100 j=Ja-A e=za[j]_a,V,j,za=Da[0x3f16],0b111001,e[0b10],e[0b11]A=_a-V Ja=t[A]za[j]=Ja k=o<=V and 0x417-k or 0x5ee end elseif k>=0x2fb then if k>=0x307 then if k<=0x30b then if k<0x309 then if k<=0x307 then Ja=0x4f58b68e k=j~=Ja and 0x2a3190/k or 0xc1b else k,Ja=0xfaf,1 j=e-Ja end elseif k>0x309 then za,e=0b1101,Da[0xc5d1]k,j,za,G=0xda,Da[0x2651],O[0b10][0b11][O[0b10][0b10]],e-za e=za[j]t[G]=e else j,za=0x1f,Da[0x3f16]k,e=0x9c5,za-j j,G,za=1,Na[e],Da[0x689c]za,e=O[0b10000][0b11][O[0x10][0b10]],za-j j=e end elseif k<0x30d then _a=A[0b10]k=_a>=G and 0xdd2 or 0xd40 elseif k<=0x30d then e,za=Da[0xc5d1],0b11011 G,j,Ja=e-za,Da[0x689c],0b10010 za=j-Ja e=t[za]t[G]=e k,za,e=0xda,0b11110,Da[0x3f16]G,za,j=e-za,Da[0x5924],0b10111 e=za-j t[G]=e else za,e=0x34,Da[0xc5d1]G,za=e-za,{}e=za k,t[G]=0b11011010,e e,za=Da[0x689c],0x3c G,Ja,A=e-za,Da[0x3f16],0b110100 j=Ja-A za,j=t[j],Da[0x2651]e=za[j]t[G]=e end elseif k>0x2ff then if k<0x302 then k,_a=0x230fac/k,ga.c(_a(ga.d(V)))elseif k>0x302 then k,za=0x150,Ja else _a,V=l[z],1 z,sa,V=z+V,1,_a[0xc5d1]k=V==sa and k+0b11011 or 0x52a-k end elseif k<=0x2fd then if k>=0x2fc then if k>0x2fc then G=0b10010 k=ab<=G and 0x347 or 0x116 else Ja,sa,k,_a,V,A=O[0x11][0b11][O[0b10001][0b10]],1,0x500,G,G+j,t V=V-sa end else za,e=0x32,Da[0xc5d1]G,j,Ja=e-za,Da[0x689c],0x2c za=j-Ja e=t[za]t[G]=e e,za=Da[0x3f16],0b101101 G,Ja,j=e-za,0x1b,Da[0x9a41]j,za=1,j-Ja e=za==j t[G]=e k=Ba>=j and k+-0x221 or 0xf0 end else e,za=Da[0xc5d1],0b110011 G,Ja,A=e-za,Da[0x689c],0x3b j=Ja-A _a,A,za=0x16,Da[0x3f16],t[j]Ja=A-_a j=t[Ja]e=za[j]t[G]=e e,za=Da[0x9a41],0b101 G,j,za=e-za,0b101111,Da[0x5a22]e,j=za-j,1 Ja,j,za=-1,nil,e-j k=za==Ja and 0x51d-k or 0x4f9-k end elseif k<0x2e9 then if k<0x2e1 then if k<0x2df then e,za=Da[0xc5d1],0b111100 G,e=e-za,nil t[G]=e e,za=Da[0x689c],0x1a za,G,j=Da[0x3f16],e-za,0b100101 e,j=za-j,1 Ja,za,j=-1,e-j,nil k=za==Ja and 0x239 or 0x1d4 elseif k>0x2df then V,sa=G+_a,1 k,db=0xe44,V-sa else j,e,Ja=Da[0x689c],O[0b111][0b11][O[0b111][0b10]],0x28 za=j-Ja G,za,j=e[za],Da[0xc5d1],0x29 j,e,Ja=G[0b11],za-j,G[0b10]za=j[Ja]t[e]=za za,j=Da[0x3f16],0x34 e,A,_a=za-j,Da[0x9a41],0x3d Ja=A-_a j,V,_a=t[Ja],0x2e,Da[0x5a22]A=_a-V Ja=t[A]k,za=0x3b9-k,j-Ja t[e]=za end elseif k<0x2e5 then j,Ja,e=Da[0x689c],0b110111,O[0b111][0b11][O[0b111][0b10]]za=j-Ja j,za,G=0b10,Da[0xc5d1],e[za]k,Ja,e,j=0x3bb-k,G[0b10],za-j,G[0b11]za=j[Ja]t[e]=za j,za=0x12,Da[0x3f16]za,e=Da[0x2651],za-j t[e]=za elseif k<=0x2e5 then e,za=Da[0xc5d1],0x32 G,j,Ja=e-za,Da[0x689c],0x2a j,za=1,j-Ja e=za==j t[G]=e j,Ja,e=Da[0x9a41],0b11111,O[0b111][0b11][O[0b111][0b10]]za=j-Ja G,za,j=e[za],Da[0x3f16],0b111111 e,j,Ja=za-j,G[0b11],G[0b10]za=j[Ja]t[e]=za k=qa<nb and 0xa7b3b/k or 0b11011010 else e,za=Da[0xc5d1],0x13 G,A,Ja=e-za,0b1100,Da[0x689c]j=Ja-A A,_a,za=Da[0x3f16],0b10100,t[j]Ja=A-_a j=t[Ja]e=za~=j t[G]=e k=_b<=_a and 0b111101100 or 0xda end elseif k<0x2ef then if k<0x2eb then A,sa,Ja,k,_a,V=t,1,O[0x11][0b11][O[0b10001][0b10]],0x37e,G,G+j V=V-sa elseif k>0x2eb then G=0x8d k=ab>G and 0x5a1-k or k+-0x4e else za,k,e=0b110110,0x27c1e/k,Da[0xc5d1]za,G={},e-za e=za t[G]=e e,za=Da[0x689c],0x3d G,e=e-za,Da[0x2651]t[G]=e end elseif k<0x2f6 then if k<=0x2ef then A,Ja=1,db-G j=Ja+A k=na>=A and 0xf7e or 0b111100000 else k=_a~=_a and 0xc9eb8/k or 0xd44 end elseif k>0x2f6 then za,e=0b101,Da[0xc5d1]G,Ja,A=e-za,Da[0x689c],0b11010 j=Ja-A A,za,_a=Da[0x3f16],t[j],1 Ja=A-_a j=t[Ja]k,e=0x288e4/k,za[j]t[G]=e e,Ja,j=O[0b111][0b11][O[0b111][0b10]],0x2c,Da[0x5a22]za=j-Ja G=e[za]A,za,_a,e=Da[0x9a41],G[0b10],0b1110,G[0b11]Ja=A-_a j=t[Ja]e[za]=j else e,Ja,j=O[0b111][0b11][O[0b111][0b10]],0x1b,Da[0x689c]za=j-Ja G,za,j=e[za],Da[0xc5d1],0b110 j,Ja,e=G[0b11],G[0b10],za-j za=j[Ja]t[e]=za k,j,za=0xda,0b110001,Da[0x3f16]e,Ja,A=za-j,Da[0x9a41],0x22 j=Ja-A za=t[j]t[e]=za end elseif k>0x2a3 then if k<0x2b9 then if k<=0x2af then if k<0x2ab then if k<0x2a8 then j,Ja,e=Da[0x689c],0b11,O[0b111][0b11][O[0b111][0b10]]za=j-Ja j,za,G=0b100,Da[0xc5d1],e[za]Ja,e,j=G[0b10],za-j,G[0b11]za=j[Ja]t[e]=za j,za=0x36,Da[0x3f16]_a,e,A=0x21,za-j,Da[0x9a41]Ja=A-_a V,j,_a=0b10100,t[Ja],Da[0x5a22]A=_a-V Ja=t[A]za=j[Ja]t[e]=za k=Ta<V and 0x6c2 or 0x24082/k elseif k>0x2a8 then e,za=Da[0xc5d1],0b110 e,G=Da[0x2651],e-za t[G]=e za,e=0b1010,Da[0x689c]Ja,G,A=Da[0x3f16],e-za,0x1f j=Ja-A za=t[j]e=#za t[G]=e k=ob<=A and 0x8af-k or 0x244c4/k else k,Ja,A=0xc0f,db-G,1 j=Ja+A end elseif k>=0x2ae then if k<=0x2ae then k=Ja and 0x8a81a/k or 0x42c-k else G=0b101110 k=ab>G and 0x3a3 or 0x44f-k end elseif k>0x2ab then Ja=1 j=e-Ja k=W>Ja and 0b110111110 or 0x4a3-k else k=j>Ja and 0x2459e/k or 0xb7e-k end elseif k<=0x2b5 then if k>0x2b3 then e,za=Da[0xc5d1],0b111000 G,za,j=e-za,Da[0x689c],0b10 j,e=1,za-j j,za,Ja=nil,e-j,-1 k=za==Ja and k+-0xca or 0x1fd elseif k<0x2b2 then _a=A[0b10]k=_a>=G and 0xfca or 0xabb-k elseif k<=0x2b2 then G=0x3e2 k=ab>G and 0x40b-k or 0x6ca7a/k else za,e=0x10,Da[0xc5d1]e,k,G=nil,0x24c6e/k,e-za t[G]=e end elseif k<=0x2b6 then G=0x73 k=ab>=G and 0x288 or 0x26b else k=j>Ja and 0x24fd6/k or 0xb04-k end elseif k>=0x2c6 then if k<0x2d0 then if k>=0x2cb then if k<=0x2cb then G,ya=0xa6,0xeb k=ab>G and 0x1b0 or 0xa7 else za,j=Da[0x689c],0b1001 Ja,j,e=0x37,Da[0x3f16],za-j za,Ja=j-Ja,1 Ja,j,A=nil,za-Ja,-1 k=j==A and 0x71b or 0xe47 end else za,e=0b1011,Da[0xc5d1]j,G,za=Da[0x2651],e-za,O[0b10][0b11][O[0b10][0b10]]e=za[j]t[G]=e za,e=0b111010,Da[0x689c]G,A,Ja=e-za,0x13,Da[0x3f16]j=Ja-A za=t[j]e=not za t[G]=e k=U>=A and 0x25c9c/k or 0x269 end elseif k<=0x2da then if k<0x2d2 then e,za=Da[0xc5d1],0b10000 j,G,Ja=Da[0x689c],e-za,0b1010 j,za=1,j-Ja e=za==j t[G]=e za,e=0x35,Da[0x3f16]j,Ja,G=Da[0x9a41],0b111011,e-za j,za=1,j-Ja e=za==j t[G]=e k=Ha<Ja and 0x26520/k or 0x680-k elseif k<=0x2d2 then za,e=0x3a,Da[0xc5d1]j,Ja,G=Da[0x689c],0x2a,e-za za,j=j-Ja,1 e=za==j t[G]=e e,za=Da[0x3f16],0x16 e,za,j,G=M,nil,nil,e-za e,za,j=ga.b(e,za,j)Ja,A=e(za,j)j=Ja k=j==nil and 0b11011010 or 0xc39 else A,pb,k,_a,sa,V=O[0x11][0b11][O[0b10001][0b10]],1,0x1197-k,t,e+Ja,e sa=sa-pb end else e,za=Da[0xc5d1],0b10001 Ja,j,G=0b1110,Da[0x689c],e-za za=j-Ja e=t[za]t[G]=e za,k,e=1,0x26f58/k,Da[0x3f16]G,za=e-za,{}e=za t[G]=e end elseif k>0x2be then if k<=0x2c4 then if k<=0x2bf then k,z=0b11011010,z+za else Ja,e,j=0b100001,O[0b111][0b11][O[0b111][0b10]],Da[0x689c]za=j-Ja za,j,G=Da[0xc5d1],0x10,e[za]j,k,e,Ja=G[0b11],0b11011010,za-j,G[0b10]za=j[Ja]t[e]=za za,j=Da[0x3f16],0x34 e,A,_a=za-j,Da[0x9a41],0x1b Ja=A-_a j,_a,V=t[Ja],Da[0x5a22],0x22 A=_a-V Ja=t[A]za=j>=Ja t[e]=za end else k=j and k+0xb15 or 0xb4d end elseif k<0x2bc then if k>0x2b9 then B,pb=_a[0x689c],O[0b111][0b11][O[0b111][0b10]]sa=pb[B]k,za[j]=k+0xba1,sa else za,e=0x1f,Da[0xc5d1]j,Ja,G=Da[0x689c],0b10001,e-za za,j=j-Ja,1 e=za==j t[G]=e za,e=0b101010,Da[0x3f16]za,j,G=Da[0x5924],0b101011,e-za k,e=0xda,za-j t[G]=e end elseif k<=0x2bc then _a=A[0b10]k=_a>=G and 0x132 or 0x2057b0/k else za[j]=pb k=hb>=Y and 0xb6a or 0x14af2a/k end elseif k<0x28b then if k<=0x280 then if k<0x27a then if k>=0x273 then if k<=0x273 then za,e=0b10110,Da[0xc5d1]G,Ja,A=e-za,Da[0x689c],0b1001 j=Ja-A A,_a,za=Da[0x3f16],0b111000,t[j]Ja=A-_a k,j=k+-0x199,t[Ja]e=za+j t[G]=e e,za=Da[0x9a41],1 G,za=e-za,{}e=za t[G]=e else Ja=1 k,j=k+0b11011110,e-Ja end elseif k>0x26e then Ja=1 k,j=0x99d,e-Ja else k=_a~=_a and 0xda or 0x38a end elseif k<0x27c then if k>0x27a then za,e=0b101111,Da[0xc5d1]Ja,G,A=Da[0x689c],e-za,0x24 k,j=0xda,Ja-A _a,A,za=0x1a,Da[0x3f16],t[j]Ja=A-_a j=t[Ja]e=za[j]t[G]=e e,za=Da[0x9a41],0b100110 Ja,G,A=Da[0x5a22],e-za,0b11011 j=Ja-A za=t[j]e=not za t[G]=e else q=Ga[0b10]k=q>=V and 0x698 or 0xe04 end elseif k>0x27c then za,e=0b10,Da[0xc5d1]A,G,Ja=0x3c,e-za,Da[0x689c]j=Ja-A A,_a,za=Da[0x3f16],0b100100,t[j]Ja=A-_a j=t[Ja]e=za~=j t[G]=e k,za,e=0x22100/k,0x3c,Da[0x9a41]Ja,G,j=0b111101,e-za,Da[0x5a22]za=j-Ja e=t[za]t[G]=e else e,za=Da[0xc5d1],0b10 G,Ja,j=e-za,0x28,Da[0x689c]za=j-Ja e=t[za]t[G]=e Ja,j=0x14,Da[0x3f16]G,j,Ja=j-Ja,Da[0x9a41],0b111110 e,j,Ja=j-Ja,Da[0x5a22],0b101 za,Ja=j-Ja,0 j=e==Ja k=j and 0x38e-k or 0x2c5 end elseif k>0x288 then if k>0x289 then k,j=0x21a,db-G else j,Ja=Da[0xc5d1],0x3d G,j,Ja=j-Ja,Da[0x689c],0x1b e,Ja,za=j-Ja,0,Da[0x3f16]j=e==Ja k=j and 0x3a267/k or 0b100000111 end elseif k<=0x285 then if k>=0x282 then if k<=0x282 then G=0x399 k=ab>G and 0x2df or 0x48b-k else za,e=0b111001,Da[0xc5d1]A,Ja,G=0b1110,Da[0x689c],e-za j=Ja-A A,_a,za=Da[0x3f16],0b11110,t[j]Ja=A-_a j=t[Ja]e=za%j t[G]=e k=u<=_a and 0xf7e or 0b11011010 end else A,_a=db-e,1 k,Ja=0x11b,A+_a end else G=0b1110011 k=ab>G and 0x54b or k+0x348 end elseif k>=0x297 then if k<0x29e then if k<=0x299 then if k<0x298 then Ja=1 k,j=0x2fc,e-Ja elseif k>0x298 then G=0b110101101 k=ab<=G and 0x3e1 or 0x317 else za,e=0b110110,Da[0xc5d1]Ja,j,G=0b110011,Da[0x689c],e-za za=j-Ja e=t[za]k,t[G]=0x23570/k,e e,za=Da[0x3f16],0b100111 G,Ja,j=e-za,0b100000,Da[0x9a41]za=j-Ja e=t[za]t[G]=e end else _a=A[0b10]k=_a>=G and k+0x6a0 or 0x325 end elseif k<0x2a2 then if k>0x29e then Ja,e,j=0x33,O[0b111][0b11][O[0b111][0b10]],Da[0x689c]za=j-Ja j,G,za=0x36,e[za],Da[0xc5d1]Ja,j,e=G[0b10],G[0b11],za-j za=j[Ja]t[e]=za za,j=Da[0x3f16],0b1000 e,A,_a=za-j,Da[0x9a41],0x27 Ja=A-_a j=t[Ja]za=not j k,t[e]=0xda,za else G=0xb0 k=ab>G and 0x1ac3cc/k or 0x7d5-k end elseif k<=0x2a2 then e,za=Da[0xc5d1],0b111110 Ja,A,G=Da[0x689c],0b1010,e-za j=Ja-A za=t[j]k,e=0b11011010,#za t[G]=e else za,e=0x34,Da[0xc5d1]j,G=1,e-za za=G+j Ja,e=0b10,t[za]j=G+Ja Ja,za=t[G],t[j]j=Ja+za t[G]=j Ja=0 k=za>Ja and 0x15e or 0x3ae-k end elseif k<=0x291 then if k<=0x28f then if k>0x28d then k=j and 0x1898b3/k or 0x271 elseif k<=0x28b then k,j=0x28f,db-G else j,e,k,Ja=Da[0x689c],O[0b111][0b11][O[0b111][0b10]],0xda,0b1010 za=j-Ja za,G,j=Da[0xc5d1],e[za],0b110000 Ja,j,e=G[0b10],G[0b11],za-j za=j[Ja]t[e]=za za,j=Da[0x3f16],0b1111 e,_a,A=za-j,0b110000,Da[0x9a41]Ja=A-_a V,_a,j=0b110,Da[0x5a22],t[Ja]A=_a-V Ja=t[A]za=j==Ja t[e]=za end else e,za=Da[0xc5d1],0x30 Ja,G,A=Da[0x689c],e-za,0x1f j=Ja-A _a,A,za=0x1a,Da[0x3f16],t[j]Ja=A-_a j=t[Ja]e=za>j t[G]=e za,e=0b111100,Da[0x9a41]j,Ja,G=Da[0x5a22],0b110010,e-za za=j-Ja e=t[za]t[G]=e k=ta>=_a and 0x73a or 0x22f7a/k end elseif k>=0x294 then if k<=0x294 then Ja,e,j=0b11110,O[0b111][0b11][O[0b111][0b10]],Da[0x689c]k,za=0x97f-k,j-Ja G,za,j=e[za],Da[0xc5d1],0b101101 j,Ja,e=G[0b11],G[0b10],za-j za=j[Ja]t[e]=za j,Ja=Da[0x5a22],0b111101 za=j-Ja j,Ja,e=Da[0x9a41],0b111010,Na[za]j,za=O[0b10000][0b11][O[0b10000][0b10]],j-Ja Ja=za else G=0x3b9 k=ab>G and 0x351 or 0x310 end else G=0b10111111 k=ab<=G and 0x188 or 0x201 end elseif k>=0x81f then if k<0xc65 then if k>0xa00 then if k>=0xb4d then if k>=0xbeb then if k>=0xc39 then if k>0xc4d then if k<0xc59 then A,_a=Da[0x2dd8],0x32 Ja=A-_a k,z=0xda,z+Ja elseif k<=0xc59 then va={}va[0b10]=pb va[0b11]=t k,B=0x571,va M[pb]=B else k=j<Ja and k+-0xb83 or 0x80e599/k end elseif k<0xc49 then if k<=0xc39 then _a=A[0b10]k=_a>=G and 0x6fa092/k or 0x804 else k,j=0x696,db-G end elseif k>0xc49 then k,V=k+-0x466,ga.c(V(sa,pb,B))else k=0b11011010 V(sa,pb,B,va,Ga)end elseif k<0xc0f then if k<=0xbf5 then if k>0xbeb then sa,va,k,Ga,B,V,pb=A,G,0x5fcbdf/k,t,_a,O[0b100][0b11][O[0b100][0b10]],1 else fa,wa=O[1][0b11][O[1][0b10]],0b11001 m,k,kb,wa=Fa,0x1854-k,ua*wa,O[0b1010][0b11][O[0b1010][0b10]]end else k,sa,V=0x412e24/k,A[0b10],A[0b11]_a=V[sa]A[1]=_a A[0b11]=A _a=1 A[0b10]=_a _a=nil M[Ja]=_a end elseif k<=0xc1b then if k>0xc19 then A=0b10 Ja=G+A A,j=O[0b101][0b11][O[0b101][0b10]],t[Ja]k,_a=0x11e9-k,j elseif k<=0xc0f then k,V,A,_a,sa,Ja=0xc02301/k,G+j,t,G,1,O[0x11][0b11][O[0b10001][0b10]]V=V-sa else k=A<=0 and k+-0b111100001 or 0x367080/k end else V(sa,pb,B,va,Ga)pb,k,sa=0x3f,0xda,Da[0x9a41]V,Ga,va=sa-pb,pb,Da[0x5a22]B=va-Ga pb=t[B]sa=#pb t[V]=sa end elseif k<=0xbac then if k<0xb68 then if k>0xb5e then Ja=1 k,j=0x89c,e-Ja elseif k<=0xb51 then if k<=0xb4d then k,Ja=k+0x28d,1 j=e-Ja else sa,V=1,G+_a db=V-sa k=H>sa and k+-0x48f or 0x931d0/k end else sa,V=1,G+_a k,db=0x17ccd0/k,V-sa end elseif k<0xb9e then if k<=0xb68 then va=ga.c(va(Ga,q,ua))return ga.d(va)else j=j+A k=A>0 and 0x3f9 or 0xf1b end elseif k>0xb9e then A,_a=A(ga.d(_a))V=0 k=za==V and 0x170a-k or 0x73a else k=A>0 and 0x2ab or 0x8d3 end elseif k<0xbc3 then if k<0xbbf then _a,A=0x2b,Da[0x5b59]Ja=A-_a k,z=0xc8d-k,z+Ja elseif k>0xbbf then pb,k,B=O[0b111][0b11][O[0b111][0b10]],0x1844-k,_a[0x689c]sa=pb[B]za[j]=sa else k=0xc99-k Ja(A,_a,V,sa,pb)end elseif k<0xbd4 then k,z=k+-0xae9,z+za elseif k<=0xbd4 then Ja,A=e(za,j)j=Ja k=j==nil and 0xa1288/k or 0x2bc else k=A<=0 and 0x637 or k+-0x8df end elseif k>0xad8 then if k>0xb15 then if k<0xb34 then if k<0xb1d then p,ha,C=p(ha,C)p,ha,C=ga.b(p,ha,C)Fa=p(ha,C)C=Fa k=C==nil and 0x1526-k or k+0xcf elseif k<=0xb1d then Ja,k,A=db-G,0xa27,1 j=Ja+A else k,sa=0x77b55a/k,1 V=j-sa end elseif k>=0xb3d then if k>0xb3d then q=0x3ef3006d va=Ga==q k=Ea>=q and 0xcff or 0xa9bf50/k else p,Ga=0b101101,O[1][0b11][O[1][0b10]]k,ua,p,ha=0x1671-k,_a*p,O[0b1010][0b11][O[0b1010][0b10]],B end else k,p=k+-0x619,p(ha)q,ua=ua+p,4294967295 end elseif k>=0xae9 then if k<=0xb06 then if k>=0xb03 then if k<=0xb03 then k=j>Ja and k+-0xa29 or 0xc8a else sa,V=1,G+_a k,db=0xa184ea/k,V-sa end else V(sa,pb,B,va,Ga)sa,pb=Da[0x9a41],0b111000 pb,B,V=Da[0x5a22],0x29,sa-pb B,sa=1,pb-B pb,va,B=sa-B,-1,nil k=pb==va and 0xacc5c6/k or 0xd25 end else Ja=0 k=j>Ja and 0x6c17d5/k or 0x3f6b2d/k end elseif k>0xae2 then k,za=0x755,za(j)Ja,A=Da[0x3f16],0x33 _a,Ja,A,j=za,O[0b110][0b11][O[0b110][0b10]],G,Ja-A elseif k>0xadc then _a,A=0x13,Da[0x2dd8]k,Ja=k+-0xa08,A-_a z=z+Ja else k,j=k+-0x7d5,A end elseif k>0xa5e then if k<0xab9 then if k>=0xa99 then if k<=0xa99 then V,sa=G+_a,1 k,db=0xbf5,V-sa else k,sa=k+-0x492,ga.c(sa(pb,B,va))end else k=A~=A and k+-0x993 or 0b101001110 end elseif k>0xac5 then V=1 _a=za-V k=F<=V and 0xe03-k or 0x62a718/k elseif k>0xab9 then k,_a=k+-0x123,ga.c(_a(ga.d(V)))else k,pb,va,Ga,B,sa,q=0x120c-k,_a,V,e,1,O[0b100][0b11][O[0b100][0b10]],t end elseif k<0xa3a then if k>0xa34 then k=j<Ja and k+-0x69b or 0x2dfc00/k elseif k<0xa27 then k,Ga=0x154f-k,ua elseif k<=0xa27 then V,Ja,_a,sa,A=G+j,O[0x11][0b11][O[0b10001][0b10]],G,1,t k,V=0x5b0dc8/k,V-sa else k=A<=0 and 0x1928-k or 0x37b end elseif k<0xa5b then if k<=0xa3a then za,e=0x11,Da[0xc5d1]za,G,j=Da[0x689c],e-za,0x16 j,e,Ja=Da[0x5b59],za-j,0b110110 Ja,A,za=Da[0x2dd8],0b100011,j-Ja A,j,Ja=t[e],Ja-A,t[G]k=Ja==A and k+0b110001001 or 0xe84 else B=V(sa,pb)pb=B k=pb==nil and 0x6d7 or 0xb3d end elseif k>0xa5b then Ga,p,ua,q,k,va=t,1,V+B,V,0xb68,O[0x11][0b11][O[0x11][0b10]]ua=ua-p else k,j=0xe64,db-G end elseif k<0x92b then if k>=0x8ce then if k>=0x8f8 then if k>=0x916 then if k<=0x922 then if k>0x919 then V,sa=A[0b11],A[0b10]_a=V[sa]A[1]=_a A[0b11]=A _a=1 k,A[0b10]=0x804,_a _a=nil M[Ja]=_a elseif k<=0x916 then va=va(Ga,q)k,A=0xf8c-k,va else B,k,pb,va,sa,Ga,V=_a,0x73c,1,G,A,t,O[0b100][0b11][O[0b100][0b10]]end else A,k,_a=Da[0x2dd8],k+-0x84b,0x13 Ja=A-_a z=z+Ja end elseif k>0x902 then q=q(ua)k,va,Ga=0x1305-k,Ga+q,4294967295 elseif k>0x8f8 then k,V=0x367818/k,ga.c(V(sa,pb,B))else Ja=ga.c(Ja(A,_a,V))return ga.d(Ja)end elseif k>0x8d5 then if k>=0x8ec then if k<=0x8ec then k,z=0xda,z+za else k,za=0x24f,za(j)t[G]=za e=za end else Ja=ga.c(Ja(A,_a,V))return ga.d(Ja)end elseif k>=0x8d3 then if k<=0x8d3 then k=A~=A and 0xf33 or 0x94a else A,_a=A(ga.d(_a))V=0 k=za==V and 0x2c31d5/k or k+0x5b6 end elseif k<=0x8ce then k,_a=0x74d586/k,ga.c(_a(ga.d(V)))else q,ua,p=q(ua,p)q,ua,p=ga.b(q,ua,p)ha=q(ua,p)p=ha k=p==nil and k+-0x50e or 0b100100111 end elseif k<0x87f then if k>0x838 then if k<0x86d then k=A~=A and 0xd80 or 0x4dd elseif k<=0x86d then k=j<Ja and 0x39d or 0x333 else va=0x48df4a05 k=B~=va and k+-0x2ff or 0xcff end elseif k>=0x836 then if k<=0x836 then k,za=k+0x703,za(j)A,Ja=0x11,Da[0x3f16]_a,A,Ja,j=za,G,O[0b110][0b11][O[0b110][0b10]],Ja-A else Ja=ga.c(Ja(A,_a,V))return ga.d(Ja)end elseif k>0x81f then V,sa=G+_a,1 k,db=k+-0x230,V-sa else sa,V=1,G+_a db=V-sa k=Ca>=sa and 0x249bbe/k or 0x2a0 end elseif k<0x8aa then if k>0x886 then k,Ja,A=0x560,t[G],O[0b1101][0b11][O[0b1101][0b10]]_a,sa,V,B=Ja,t,O[0b10001][0b11][O[0x11][0b10]],1 B,pb=G+j,G+B elseif k>0x87f then Ja(A,_a,V,sa,pb)A=0b10 Ja,V=G+A,0b11 _a=G+V A=t[_a]t[Ja]=A _a=0b10 A=G+_a A,Ja=nil,t[A]k=Ja==A and 0x6eabe8/k or 0xd5c else sa=_a[0x689c]B,pb=nil,M[sa]k=pb==B and 0xf25 or 0x996 end elseif k>0x8c7 then _a,V=_a(ga.d(V))sa=0 k=j==sa and 0x343 or 0xb2a elseif k<=0x8bd then if k>0x8aa then va,Ga,q=va(Ga)k,A,Ja,_a=0xd3c,Ga,va,q else k=0b11011010 V(sa,pb,B,va,Ga)end else Ja=ga.c(Ja(A,_a,V))return ga.d(Ja)end elseif k<=0x995 then if k>=0x96a then if k<=0x983 then if k<0x971 then if k>0x96a then pb,sa=_a[0b10],_a[0b11]V=sa[pb]_a[1]=V _a[0b11]=_a V=1 k,_a[0b10]=0x4b1,V V=nil M[A]=V else V(sa,pb,B,va,Ga)k,pb,sa=0xda,0b100000,Da[0x9a41]B,va,V=Da[0x5a22],0b101011,sa-pb pb,B=B-va,1 sa=pb==B t[V]=sa end elseif k>=0x97e then if k>0x97e then A=0x4f58b68e k=Ja~=A and 0xce9 or 0x1498-k else k=j<Ja and 0xda or 0x7f7a24/k end else Ja=1 k,j=0x7f6,e-Ja end elseif k>=0x992 then if k>0x992 then k,V=0xe5f-k,ga.c(V(sa,pb,B))else k,V=0x189d-k,ga.c(V(sa,pb,B))end else V=1 k,_a=k+0x30f,za-V end elseif k<0x93c then if k>=0x92f then if k>0x92f then k,pb,sa,V,va,B,Ga=0x4fd686/k,1,A,O[0b100][0b11][O[0b100][0b10]],G,_a,t else sa=_a[0x689c]pb,B=M[sa],nil k=pb==B and k+0x3f0 or 0x2be end else j=j(Ja)_a,Ja,A,k,V=j,0x1505,O[0b1100][0b11][O[0b1100][0b10]],0x546,"."end elseif k>=0x954 then if k>0x954 then _a,V=l[z],1 sa,z,V=1,z+V,_a[0xc5d1]k=V==sa and k+-0b101001 or 0x76b1e0/k else k=A<=0 and 0xef7 or k+-0x5d3 end elseif k>0x93c then k=A<=0 and 0x8d2fbe/k or 0x14e else sa,V=A[0b10],A[0b11]_a=V[sa]A[1]=_a A[0b11]=A _a=1 A[0b10]=_a _a=nil M[Ja]=_a k=x<ja and 0x1d09ac/k or 0x3fbd24/k end elseif k>=0x9c1 then if k<=0x9ce then if k>=0x9c5 then if k<=0x9c5 then za=za(j)Ja,A=Da[0xc5d1],0b1101 Ja,A,_a,k,j=O[0b110][0b11][O[0b110][0b10]],G,za,0x119b-k,Ja-A else V,sa=A[0b11],A[0b10]_a=V[sa]A[1]=_a A[0b11]=A k,_a=0x1864-k,1 A[0b10]=_a _a=nil M[Ja]=_a end elseif k<=0x9c1 then A=e<=za Ja=not A k=Ja and 0x925 or 0x335c44/k else _a,sa,V,Ja,A=G,1,G+j,O[0b10001][0b11][O[0b10001][0b10]],t k,V=k+-0b11111101,V-sa end elseif k<0x9f5 then q=q(ua)ha,k,ua,C,p=q,0xb1c,0x1505,".",O[0b1100][0b11][O[0b1100][0b10]]elseif k<=0x9f5 then A=A(_a,V)t[Ja]=A A,Ja=za,1 _a=Ja k=A~=A and 0xda or 0x1004-k else k,B=k+-0x92f,B(va,Ga)Ja=B end elseif k<0x9ac then if k<=0x99d then if k>0x996 then k,Ja,A=0x6f6,t[G],O[0b1101][0b11][O[0b1101][0b10]]_a,sa,V,B=Ja,t,O[0x11][0b11][O[0b10001][0b10]],1 B,pb=G+j,G+B else k,za[j]=k+-0x3f3,pb end else A,_a=A(ga.d(_a))V=0 k=za==V and k+0x1af or 0x4c9 end elseif k<0x9b4 then V(sa,pb,B,va,Ga)sa,pb=Da[0x9a41],0b111000 sa,V,pb,B=M,sa-pb,nil,nil sa,pb,B=ga.b(sa,pb,B)va,Ga=sa(pb,B)B=va k=B==nil and 0x83c78/k or 0xc26-k elseif k>0x9b4 then j=j(Ja)A=1 Ja=G+A t[Ja]=j k,za=0xc1b,j else k,A,Ja=0xc85,O[0b1101][0b11][O[0b1101][0b10]],t[G]V,_a,B,sa=O[0x11][0b11][O[0b10001][0b10]],Ja,1,t pb,B=G+B,G+j end elseif k>0xdfb then if k<0xf0c then if k<0xe64 then if k<0xe42 then if k<0xe13 then if k>=0xe04 then if k<=0xe04 then va,Ga=sa(pb,B)B=va k=B==nil and 0xede-k or 0x107e-k else k,V=0x937,1 _a=za-V end else k=Ja>A and 0xda or 0x152e-k end elseif k>=0xe18 then if k<=0xe18 then k=j>Ja and 0x39d or 0xd19 else B,va=O[0b111][0b11][O[0b111][0b10]],V[0x689c]pb=B[va]k,j[Ja]=0xf4a,pb end else va,k,Ga=B.__iter,0xbf7c81/k,V end elseif k>=0xe47 then if k>=0xe5c then if k>0xe5c then za,j=za(ga.d(j))V,k,A,pb,_a,Ja=e,0x516,za,0b11,1,O[0b100][0b11][O[0b100][0b10]]pb,sa=t,G+pb else j=j+A k=A>0 and 0xcce or 0xc19 end elseif k>0xe47 then Ja=1 k,j=0xf7f,e-Ja else A=1 Ja=za-A k=Sa>A and 0x1121-k or 0x11a end elseif k>0xe44 then A,_a=A(ga.d(_a))V=0 k=za==V and 0xb06 or 0x1d52-k elseif k>0xe42 then k,B,Ga,V,va,sa,pb=0xad8728/k,_a,t,O[0b100][0b11][O[0b100][0b10]],G,A,1 else V(sa,pb,B,va,Ga)sa,pb=Da[0x9a41],0x3e k,pb,V=0xda,{},sa-pb sa=pb t[V]=sa end elseif k>0xec3 then if k<=0xef7 then if k<0xef5 then if k>0xef1 then k=j<Ja and 0b11011010 or k+-0xb79 else V=1 _a=za-V k=ia<V and 0x388 or 0x605 end elseif k>0xef5 then k=j<Ja and k+-0xe1d or k+-0xb76 else k=A~=A and 0xef7 or 0x954 end elseif k>0xf05 then k,_a=0x384b2a/k,ga.c(_a(ga.d(V)))else k=A>0 and k+-0b11101101 or 0xd19 end elseif k<=0xea7 then if k>=0xe8b then if k<0xe96 then V=1 _a=za-V k=La<V and 0xde3 or 0xd7a elseif k>0xe96 then va,B,sa,k,pb,Ga,V=G,_a,A,0x490,1,t,O[0b100][0b11][O[0b100][0b10]]else Ja,A=e(za,j)j=Ja k=j==nil and 0xda or 0x127d-k end elseif k<=0xe64 then k=j and k+-0x66e or 0x971 else k,z=0xc5c68/k,z+j end elseif k<0xebd then k,_a=0xfd0,ga.c(_a(ga.d(V)))elseif k<=0xebd then A=ga.c(A(_a,V,sa))return ga.d(A)else Ja,A=t[G],O[0b1101][0b11][O[0b1101][0b10]]_a,V,B,sa=Ja,O[0b10001][0b11][O[0b10001][0b10]],1,t k,B,pb=0x995,G+j,G+B end elseif k<=0xf69 then if k>=0xf28 then if k>0xf4f then if k>=0xf63 then if k<=0xf63 then k,Ja=0x9b4,1 j=e-Ja else va,k,ua=O[1][0b11][O[1][0b10]],0xdc9,0b101101 q,p,ua=A*ua,pb,O[0b1010][0b11][O[0b1010][0b10]]end else k,V=0x1dff-k,ga.c(V(sa,pb,B))end elseif k>0xf39 then if k<=0xf4a then Ja=Ja+_a k=_a>0 and 0x1d4b-k or k+-0x81d else k,z=k+-0xe75,z+e end elseif k<=0xf33 then if k>0xf28 then k=j<Ja and 0xda or 0b101001110 else k,za[j]=0xd04,pb end else Ja=Ja(A,_a)t[j]=Ja Ja,j=e,1 A=j k=Ja~=Ja and k+-0xe5f or 0xd4c2aa/k end elseif k>0xf1b then if k<=0xf1e then if k<=0xf1c then sa=_a[0x689c]pb,B=M[sa],nil k=pb==B and 0x161d-k or 0x598 else e,k,za=Da[0xc5d1],k+-0xe44,0x22 Ja,j,G=0b10,Da[0x689c],e-za za,j=j-Ja,1 e=za==j t[G]=e G,Ja,j=Da[0x3f16],0b100101,Da[0x9a41]za=j-Ja e=t[za]t[G]=e end else B={}B[0b10]=sa B[0b11]=t pb=B M[sa]=pb k=Ma>D and 0x348858/k or 0x996 end elseif k<=0xf1a then if k>=0xf10 then if k<=0xf10 then k=va and 0x6b8 or 0xcff else k,M=0xcdc24/k,M(Na,d)d=O[0b1000][0b11][O[0b1000][0b10]]Na,l=d[0x857c],d Da,d=l,l[0x2b5e]Da,ab,l=nil,nil,Da[0xf7d3]end else V=1 k,_a=0xea7,za-V end else k=A<=0 and 0x97e or 0xd6e end elseif k<0xfb6 then if k>0xf92 then if k>0xf9c then A,_a,V,Ja,sa=t,G,G+j,O[0b10001][0b11][O[0x11][0b10]],1 k,V=0xd2a,V-sa else sa,k,pb,V,B,va,Ga=A,0x665,1,O[0b100][0b11][O[0b100][0b10]],_a,G,t end elseif k>0xf84 then k,A,Ja=0xc4d,O[0b1101][0b11][O[0b1101][0b10]],t[G]V,_a,B,sa=O[0x11][0b11][O[0b10001][0b10]],Ja,1,t pb,B=G+B,G+j elseif k<=0xf7f then if k<=0xf7e then sa,_a,V,A,Ja=1,G,G+j,t,O[0b10001][0b11][O[0x11][0b10]]k,V=0x1c59-k,V-sa else A,k,Ja=O[0b1101][0b11][O[0b1101][0b10]],0xce7,t[G]_a,V,sa,B=Ja,O[0x11][0b11][O[0x11][0b10]],t,1 B,pb=G+j,G+B end else k,V=0x731,ga.c(V(sa,pb,B))end elseif k<0xfd6 then if k>0xfca then A,_a=A(ga.d(_a))V=0 k=za==V and 0x2e0 or 0x1570-k elseif k<=0xfb6 then k,Va=0x80e,Va(kb)ka,fa=fa+Va,4294967295 else V,sa=A[0b11],A[0b10]_a=V[sa]A[1]=_a A[0b11]=A _a=1 A[0b10]=_a _a=nil M[Ja]=_a k=Xa>=S and 0x135e-k or k+-0x7bf end elseif k<0xfe4 then if k<=0xfd6 then va,k,Ga=db-V,0xa5e,1 B=va+Ga else k,z=k+-0xf09,z+j end elseif k<=0xfe4 then Ja=ga.c(Ja(A,_a,V))return ga.d(Ja)else Ja=ga.c(Ja(A,_a,V))return ga.d(Ja)end elseif k<0xd13 then if k>=0xcbc then if k<=0xce8 then if k>=0xcdb then if k>=0xce7 then if k<=0xce7 then k,V=0x6da,ga.c(V(sa,pb,B))else k=A~=A and k+-0x6b1 or 0xbe1 end elseif k>0xcdb then _a,sa,A,Ja,V=G,1,t,O[0b10001][0b11][O[0b10001][0b10]],G+j k,V=0x42e673/k,V-sa else Ja=ga.c(Ja(A,_a,V))return ga.d(Ja)end elseif k>=0xcc7 then if k>0xcc7 then k=j>Ja and 0x106b-k or 0xc19 else V(sa,pb,B,va,Ga)k,pb,sa=0xda,0b1110,Da[0x9a41]V,va,Ga=sa-pb,Da[0x5a22],0x1e B=va-Ga pb=t[B]sa=not pb t[V]=sa end elseif k>0xcbc then q=nil va=Ga==q k=va and 0x12b3-k or 0xc05750/k else Ja=ga.c(Ja(A,_a,V))return ga.d(Ja)end elseif k<=0xcff then if k>0xcfe then A,_a,Ja=sa,pb,V k=g<=fb and 0b110111000 or 0xd3c elseif k>0xcfc then Ja=1 k,j=k+-0x617,e-Ja elseif k<=0xce9 then A,k,Ja=j,0x632,O[0b1001][0b11][O[0b1001][0b10]]else k,_a,A=0xda,0b111101,Da[0x2dd8]Ja=A-_a z=z+Ja end elseif k>0xd03 then j=j+A k=A>0 and 0x1a2208/k or 0xa34 else Ja=ga.c(Ja(A,_a,V))return ga.d(Ja)end elseif k>0xc8a then if k>=0xc9e then if k<=0xca5 then if k>0xc9e then k,Ga=0xcc5,B.__call else k,za=k+-0x62b,za(j)Ja,A=Da[0xc5d1],0b111101 _a,j,Ja,A=za,Ja-A,O[0b110][0b11][O[0b110][0b10]],G end else B,pb=_a[0x689c],O[0b111][0b11][O[0b111][0b10]]sa=pb[B]k,za[j]=0x90fe88/k,sa end elseif k>=0xc94 then if k>0xc94 then pb,V,B,Ga,k,va,sa=1,O[0b100][0b11][O[0b100][0b10]],_a,t,0x1960-k,G,A else V=1 k,_a=0x482,za-V end else pb,Ga,sa,B,V,k,va=1,t,A,_a,O[0b100][0b11][O[0b100][0b10]],0xc49,G end elseif k<0xc83 then if k<0xc69 then if k<=0xc65 then Ja=Ja(A,_a)t[j]=Ja Ja,j=e,1 A=j k=Ja~=Ja and 0xd3f-k or 0x125d-k else k=j>Ja and 0xd40-k or 0xb9719e/k end elseif k>0xc69 then sa,V=1,G+_a db=V-sa k=mb>sa and k+0x324 or k+-0xa07 else k,wa=0xd17,wa(m)kb,Va=4294967295,kb+wa end elseif k>0xc86 then k=A<=0 and 0x14a8-k or 0x4d63b8/k elseif k<=0xc85 then if k>0xc83 then k,V=0xac5,ga.c(V(sa,pb,B))else j=j+A k=A>0 and 0xd7c or 0xd13 end else sa,V=1,G+_a k,db=0x71ef16/k,V-sa end elseif k>0xd79 then if k<=0xdd2 then if k<0xd9b then if k<0xd80 then if k<=0xd7a then B,Ga,sa,k,va,V,pb=_a,t,A,0x96a,G,O[0b100][0b11][O[0b100][0b10]],1 else k=j>Ja and k+-0xca2 or 0x1a8f-k end elseif k>0xd80 then V=1 _a=za-V k=rb<V and 0b11001000 or 0x1978-k else k=j<Ja and k+-0xca6 or k+-0x428 end elseif k>0xdc9 then V,sa=A[0b11],A[0b10]_a=V[sa]A[1]=_a A[0b11]=A _a=1 A[0b10]=_a _a=nil M[Ja]=_a k=I<=Pa and 0xbc3 or k+-0x92 elseif k>0xda3 then ua=ua(p)Ga,k,q=q+ua,0x7d4046/k,4294967295 elseif k>0xd9b then za,e=0b11101,Da[0xc5d1]G,Ja,A=e-za,Da[0x689c],0b11100 j=Ja-A k,za=0xb9cce/k,t[j]e=#za t[G]=e za,e=0x30,Da[0x3f16]j,za,G=0b100,Da[0x5924],e-za e=za-j t[G]=e else va,Ga,q=va(Ga)Ja,A,_a=va,Ga,q k=Wa<=f and 0b111101011 or 0x1ad7-k end elseif k<=0xdf0 then if k<0xde3 then if k>0xdd8 then A,Ja=O[0b1101][0b11][O[0b1101][0b10]],t[G]sa,k,B,_a,V=t,0xdfb,1,Ja,O[0x11][0b11][O[0x11][0b10]]pb,B=G+B,G+j else A,_a=A(ga.d(_a))V=0 k=za==V and 0xc78 or 0x4d5490/k end elseif k>0xde3 then k,j,Ja=0x876690/k,O[0b1001][0b11][O[0b1001][0b10]],za else Ja=1 k,j=k+-0x3bc,e-Ja end elseif k<=0xdfa then k=A>0 and 0x30dd06/k or 0xb46290/k else k,V=0x3c6666/k,ga.c(V(sa,pb,B))end elseif k<0xd3c then if k<=0xd1f then if k<0xd19 then if k>0xd13 then fa=fa(Va,kb)k,ua=0x5fa,fa else k=A<=0 and 0xc5d or 0x884f17/k end elseif k>0xd19 then B={}B[0b10]=sa B[0b11]=t pb=B k,M[sa]=0x2be,pb else k=A~=A and 0x1586-k or 0x1226-k end elseif k>=0xd2a then if k<=0xd2a then Ja=ga.c(Ja(A,_a,V))return ga.d(Ja)else k,z=0xda,z+j end else va=1 B=sa-va k=P>va and 0x1783-k or 0x1bd456/k end elseif k<0xd5c then if k>=0xd44 then if k>0xd44 then A,_a=A(ga.d(_a))V=0 k=za==V and 0xa62e1e/k or 0xad8 else k=_a<=0 and k+-0x8fe or 0x10ce-k end elseif k<=0xd3c then t[G]=Ja t[za]=A t[j]=_a _a,j,za=1,t[G],O[0b1101][0b11][O[0b1101][0b10]]A=G+_a k,Ja,_a=0x470,t[A],0b10 A=G+_a A=t[A]else Ja,A=e(za,j)j=Ja k=j==nil and 0x2cc or 0x285f00/k end elseif k>0xd6e then Ea,Ga=0xfa,B k=Ga and 0x1a1e-k or 0xac0a1d/k elseif k<0xd61 then A,_a=Da[0x5b59],0b100101 k,Ja=0xda,A-_a z=z+Ja elseif k<=0xd61 then k,za=0xc65,za(j)Ja,A=Da[0x689c],0x18 j,_a,Ja,A=Ja-A,za,O[0b110][0b11][O[0b110][0b10]],G else k=A~=A and 0xda or 0x16c6-k end elseif k<=0x470 then if k<=0x3b0 then if k>0x37c then if k>0x39c then if k<0x3a7 then if k<0x3a3 then if k>=0x39f then if k<=0x39f then _a,Ja,V,A,sa=G,O[0x11][0b11][O[0x11][0b10]],G+j,t,1 k,V=0xfe4,V-sa else e,za=Da[0xc5d1],0b100101 G,e=e-za,nil k,t[G]=0b11011010,e za,e=0b10001,Da[0x689c]e,G=nil,e-za t[G]=e end else A,Ja=0b111001,Da[0x9a41]Ja,k,j=nil,0b11011010,Ja-A t[j]=Ja end elseif k<=0x3a4 then if k>0x3a3 then G=0b1000011 k=ab>G and 0x357 or 0x338 else e,za=Da[0xc5d1],0x13 G,e=e-za,Da[0x2651]k,t[G]=0xda,e za,e=0x16,Da[0x689c]za,G,j=O[0b10][0b11][O[0b10][0b10]],e-za,Da[0x2f32]e=za[j]t[G]=e end else G=0x275 k=ab<=G and 0x20f or 0x18d end elseif k<0x3ab then if k<=0x3a8 then if k<=0x3a7 then k,e,za=0b11011010,Da[0xc5d1],0b1000 G,j,Ja=e-za,Da[0x689c],0x33 j,za=1,j-Ja e=za==j t[G]=e e,za=Da[0x3f16],0b1011 Ja,G,A=Da[0x9a41],e-za,0b10000 j=Ja-A _a,A,za=1,Da[0x5a22],t[j]Ja=A-_a j=t[Ja]e=za~=j t[G]=e else Ja,j=0b100111,Da[0xc5d1]G,j,Ja=j-Ja,Da[0x689c],0b1111 Ja,j,e=0x2b,Da[0x3f16],j-Ja Ja,za=0,j-Ja j=e==Ja k=j and 0x603-k or 0b10111010 end else Ja,e,j=0b100101,O[0b111][0b11][O[0b111][0b10]],Da[0x689c]za=j-Ja G,j,za=e[za],0x3b,Da[0xc5d1]Ja,e,j=G[0b10],za-j,G[0b11]za=j[Ja]t[e]=za j,za=0b111,Da[0x3f16]Ja,j,e=0x29,Da[0x9a41],za-j za,Ja=j-Ja,1 j,Ja,A=za-Ja,nil,-1 k=j==A and 0x35b or 0x20d end elseif k<=0x3ad then if k>=0x3ac then if k<=0x3ac then k,Ja,j,e=k+-0x2d2,0b1001,Da[0x689c],O[0b111][0b11][O[0b111][0b10]]za=j-Ja za,G,j=Da[0xc5d1],e[za],0x19 e,Ja,j=za-j,G[0b10],G[0b11]za=j[Ja]t[e]=za else G=0b110101101 k=ab>=G and 0x299 or 0x1f6 end else A=ga.c(A(_a,V,sa))return ga.d(A)end else G=0b1001000 k=ab>G and 0x744-k or 0b101000010 end elseif k<0x38b then if k>=0x381 then if k>0x388 then sa,V=1,l[z]pb,sa,z=1,V[0xc5d1],z+sa k=sa==pb and 0x6bb or k+0xa93 elseif k<0x387 then V,_a=1,l[z]V,sa,z=_a[0xc5d1],1,z+V k=V==sa and k+0x4fe or k+0x3d6 elseif k<=0x387 then e,za=Da[0xc5d1],0b110 e,G=nil,e-za t[G]=e za,e=0b110101,Da[0x689c]k,j,G,za=0x461-k,0b1110,e-za,Da[0x5924]e=za-j t[G]=e else za,e=0b1100,Da[0xc5d1]e,G=nil,e-za t[G]=e za,j=Da[0x689c],0b100 e=za-j Ja,A,e,G=Da[0x3f16],0x2e,Da[0x2651],t[e]j=Ja-A za=t[j]k,G[e]=0b11011010,za end elseif k<=0x37f then if k>0x37e then k=j>Ja and 0x459-k or 0xce8 else Ja=ga.c(Ja(A,_a,V))return ga.d(Ja)end else za,e=0b110010,Da[0xc5d1]G,j,Ja=e-za,Da[0x689c],0x2d za=j-Ja e=t[za]k,t[G]=0x45a-k,e e,za=Da[0x3f16],0x3d G,e=e-za,nil t[G]=e end elseif k<=0x394 then if k<0x391 then if k<=0x38b then Ja=1 j=e-Ja k=cb<Ja and 0xa4bf8/k or 0xd576c/k else za,e=0b111011,Da[0xc5d1]A,G,Ja=za,e-za,Da[0x689c]j=Ja-A A,za,_a=Da[0x3f16],t[j],0b1010 Ja=A-_a j=t[Ja]e=za~=j t[G]=e za,e=0b110111,Da[0x9a41]j,za,G=0b100100,Da[0x5a22],e-za j,e=1,za-j j,za,Ja=nil,e-j,-1 k=za==Ja and 0x2ef or 0x324 end elseif k>=0x393 then if k>0x393 then e,za=Da[0xc5d1],0b11100 za,j,G=Da[0x689c],0b101111,e-za Ja,e,j=0b11010,za-j,Da[0x5b59]A,Ja,za=0x30,Da[0x2dd8],j-Ja j,Ja,A=Ja-A,t[G],t[e]k=Ja~=A and 0x31e or 0x1c1 else A,Ja=1,db-G k,j=0x551-k,Ja+A end else k,z=0b11011010,z+j end elseif k<0x39a then k,e,za=0x3021f9/k,Da[0xc5d1],0x11 G,e=e-za,nil t[G]=e za,j=Da[0x9a41],0x39 e=za-j za,j,G=Da[0x3f16],0b1100,Na[e]e,za=za-j,O[0x10][0b11][O[0x10][0b10]]j=e elseif k<=0x39a then A,Ja=1,db-e k,za=0x7c6-k,Ja+A else k,V=0x189df8/k,ga.c(V(sa,pb,B))end elseif k>=0x35b then if k<=0x36e then if k>0x364 then if k<0x368 then G=0x365 k=ab<=G and 0b111101111 or 0x2d0 elseif k<=0x368 then j,za=0b11,Da[0xc5d1]e=za-j A,G,Ja,e=0b110111,t[e],Da[0x689c],Da[0x2651]j=Ja-A za=t[j]G[e]=za za,e=0b10100,Da[0x3f16]e,G,za,j=M,e-za,nil,nil e,za,j=ga.b(e,za,j)Ja,A=e(za,j)j=Ja k=j==nil and 0xda or 0xc9d20/k else k,Ja=0xec3,1 j=e-Ja end elseif k>0x362 then if k>0x363 then e,Ja,j=O[0b111][0b11][O[0b111][0b10]],0b1110,Da[0x689c]za=j-Ja k,G=0x43e-k,e[za]e,_a,za,A=G[0b11],0b10110,G[0b10],Da[0xc5d1]Ja=A-_a j=t[Ja]e[za]=j za,j=Da[0x3f16],0b11100 Ja,e,j=0x31,za-j,Da[0x5924]za=j-Ja t[e]=za else G=0b11000100 k=ab>G and 0x33d or 0x3dc end elseif k<0x360 then _a,A=1,db-e k,Ja=0xb47-k,A+_a elseif k>0x360 then G=0b111100010 k=ab>G and 0x3a8 or 0x315 else A,_a=A(ga.d(_a))V=0 k=za==V and 0xa99 or k+0xa23 end elseif k>=0x378 then if k>=0x37b then if k>0x37b then G=0b1010011 k=ab>G and 0x3e9 or 0b11111010 else k=A~=A and 0x2f6be/k or k+-0x79 end elseif k<=0x378 then j,za=0b11110,Da[0xc5d1]e=za-j j,Ja,G=Da[0x689c],0b110110,t[e]za=j-Ja e,Ja,A=t[za],Da[0x3f16],0b111111 j=Ja-A za=t[j]k,G[e]=0x452-k,za e,za=Da[0x9a41],0b111000 j,Ja,G=Da[0x5a22],0b10000,e-za j,za=1,j-Ja e=za==j t[G]=e else Ja,ia,j=0x1b,0b1001111,Da[0xc5d1]Ja,j,G=0b1111,Da[0x689c],j-Ja j,e,Ja=Da[0x3f16],j-Ja,0x2d Ja,za=0,j-Ja j=e==Ja k=j and 0xa5b or k+0xaeb end elseif k<=0x371 then if k>0x36f then k,za,e=0x44b-k,0x2a,Da[0xc5d1]Ja,G,A=Da[0x689c],e-za,0b110011 j=Ja-A _a,za,A=0x3e,t[j],Da[0x3f16]Ja=A-_a j=t[Ja]e=za/j t[G]=e else G,K=0b101,0b1000100 k=ab>G and 0xc9147/k or 0x479-k end else j,ib,Ja=Da[0xc5d1],0xb4,0x2f Ja,G,j=1,j-Ja,Da[0x689c]e,Ja,j=j-Ja,0x2b,Da[0x3f16]za,Ja=j-Ja,0 j=e==Ja k=j and 0x221 or 0x49e-k end elseif k<=0x351 then if k>0x349 then if k>0x34c then za,e=0b10000,Da[0xc5d1]G,e=e-za,Da[0x2651]t[G]=e za,e=0b100,Da[0x689c]A,Ja,G=0b111,Da[0x3f16],e-za j=Ja-A k,za=0xda,t[j]e=not za t[G]=e elseif k>0x34b then G=0x21 k=ab>G and 0b110101100 or 0x3d8 else za,e=0x36,Da[0xc5d1]Ja,j,G=za,Da[0x689c],e-za za,j=j-Ja,1 e=za==j t[G]=e za,j=Da[0x3f16],0x28 e=za-j j,G,Ja=Da[0x9a41],t[e],0b1000 za=j-Ja e,A,Ja=t[za],0b100010,Da[0x5a22]j=Ja-A k,za=0xda,t[j]G[e]=za end elseif k>0x345 then if k>0x347 then G=0b10 k=ab>G and 0x3ed or k+-0b110000110 else e,za=Da[0xc5d1],0b100100 e,G=nil,e-za k,t[G]=0b11011010,e za,e=0b1000,Da[0x689c]e,G=Da[0x2651],e-za t[G]=e end elseif k<=0x344 then if k>0x343 then e,za=Da[0xc5d1],0b101111 j,G,za=0b100101,e-za,Da[0x689c]j,e=1,za-j Ja,za=0b10,G+j B,j,V=1,G+Ja,t[G]pb=G+B va,sa=Ja,t[pb]k,B=0x444,G+va Ga,va,pb=V,O[0b101][0b11][O[0b101][0b10]],t[B]else pb,sa=1,e+V k,db=k+0x776,sa-pb end else za,e=0b10,Da[0xc5d1]Ja,G,j=0x16,e-za,Da[0x689c]za=j-Ja e=t[za]t[G]=e e,za=Da[0x3f16],0b10111 A,Ja,G=0x21,Da[0x9a41],e-za k,j=0x41f-k,Ja-A za=t[j]e=#za t[G]=e end elseif k>=0x357 then if k>0x358 then e,za=Da[0xc5d1],1 A,Ja,G=0x3d,Da[0x689c],e-za j=Ja-A za,_a,A=t[j],0x39,Da[0x3f16]Ja=A-_a j=t[Ja]k,e=0xda,za>=j t[G]=e elseif k<=0x357 then e,za=Da[0xc5d1],0b101111 za,j,G=Da[0x5924],0x31,e-za e=za-j t[G]=e za,e=0x1e,Da[0x689c]za,G={},e-za e=za t[G]=e k=Q<=j and 0x2a8 or 0b11011010 else G=0b1010 k=ab<=G and 0x22d or 0x9a058/k end elseif k>=0x353 then if k<=0x353 then k,j=0x4aa-k,db-G else A,_a,sa,Ja,k,V=t,G,1,O[0b10001][0b11][O[0b10001][0b10]],0xcbc,G+j V=V-sa end else e,za=Da[0xc5d1],0b101 G,e=e-za,nil t[G]=e e,za=Da[0x689c],0x22 e,j,za,G=M,nil,nil,e-za e,za,j=ga.b(e,za,j)Ja,A=e(za,j)j=Ja k=j==nil and 0xda or 0x60e-k end elseif k>0x3e5 then if k<=0x400 then if k>0x3f4 then if k<=0x3fb then if k>=0x3f9 then if k>0x3f9 then k,Ja=k+-0x1c1,1 j=e-Ja else k=j>Ja and 0xda or 0xf1b end elseif k<=0x3f5 then e,za=Da[0xc5d1],0x11 za,G,k,j=O[0b10][0b11][O[0b10][0b10]],e-za,0b11011010,Da[0x2651]e=za[j]t[G]=e za,e=0b110010,Da[0x689c]G,za=e-za,{}e=za t[G]=e else za,j=Da[0xc5d1],0b111100 e=za-j G,Ja,j=t[e],0x1b,Da[0x689c]za=j-Ja Ja,A,e=Da[0x3f16],0x24,t[za]j=Ja-A za=t[j]G[e]=za k=n>=A and 0x36130/k or k+0x3f4 end elseif k<=0x3fc then G=0x100 k=ab>G and k+-0x2b3 or 0x7ef-k else k,V=0x301,ga.c(V(sa,pb,B))end elseif k<0x3ed then if k<0x3e8 then if k>0x3e6 then _a=A[0b10]k=_a>=G and 0xdb5-k or 0xe96 else k=j and 0x253 or 0b111101000 end elseif k>0x3e8 then e,za=Da[0xc5d1],0b1100 G,j,za=e-za,0b111011,Da[0x689c]Ja,j,e=0b110010,Da[0x5b59],za-j za,A,Ja=j-Ja,0x3f,Da[0x2dd8]j,A,Ja=Ja-A,t[e],t[G]k=Ja>A and 0x5a5 or 0xfe3 else za,e=0x1c,Da[0xc5d1]G,A,Ja=e-za,0x21,Da[0x689c]j=Ja-A za,A,_a=t[j],Da[0x3f16],0x14 Ja=A-_a j=t[Ja]e=za>j t[G]=e e,za=Da[0x9a41],0b110000 G,za,j=e-za,Da[0x5a22],0x13 j,e=1,za-j za,j,Ja=e-j,nil,-1 k=za==Ja and 0x44f or 0x4e7 end elseif k<=0x3f3 then if k<=0x3ef then if k>0x3ed then za,e=0b1010,Da[0xc5d1]j,Ja,G=Da[0x689c],0x38,e-za za=j-Ja e=t[za]t[G]=e e,za=Da[0x3f16],0b111 G,j,za=e-za,Da[0x2651],O[0b10][0b11][O[0b10][0b10]]k,e=0b11011010,za[j]t[G]=e else k,za,e=0x357d2/k,1,Da[0xc5d1]G,j,Ja=e-za,Da[0x689c],0b111111 za,j=j-Ja,1 e=za==j t[G]=e e,Ja,j=O[0b111][0b11][O[0b111][0b10]],0b11011,Da[0x9a41]za=j-Ja G=e[za]A,za,e,_a=Da[0x3f16],G[0b10],G[0b11],0b111 Ja=A-_a j=t[Ja]e[za]=j end else Ja,j=0b10,Da[0xc5d1]Ja,G,j=0b110,j-Ja,Da[0x689c]Ja,j,e=0x11,Da[0x3f16],j-Ja za,Ja=j-Ja,0 j=e==Ja k=j and 0x5c2-k or 0xf35ee/k end else za,e=0b1101,Da[0xc5d1]G,e=e-za,nil k,t[G]=0b11011010,e Ja,e,j=1,O[0b111][0b11][O[0b111][0b10]],Da[0x3f16]za=j-Ja G,e=e[za],Da[0x689c]Ja,j=G[0b10],G[0b11]za=j[Ja]t[e]=za end elseif k>0x446 then if k>=0x465 then if k<=0x46a then if k>0x465 then k,j=0xe63,ga.c(j(Ja,A))else k=va and 0x3dd97f/k or 0xd79 end else k,j=k+0b101110100,ga.c(j(Ja,A))end elseif k>=0x451 then if k<=0x451 then k,_a=k+-0b11110001,ga.c(_a(ga.d(V)))else k,_a=k+0x37a,ga.c(_a(ga.d(V)))end else Ja,A=db-G,1 k,j=0x6bc,Ja+A end elseif k>0x42c then if k>=0x444 then if k>0x444 then k=Ja<A and 0x3a39c/k or 0x38a else va=va(Ga)Ga,q,k,p,ua=0x1505,O[0b1100][0b11][O[0b1100][0b10]],0x8d1,".",va end else k,Ja=0x7df-k,1 j=e-Ja end elseif k>0x411 then pb,Ja,_a,sa,A=1,O[0b100][0b11][O[0b100][0b10]],e,e+za,t pb,V,k,sa=t[G],sa-pb,0xfeb-k,j elseif k<0x408 then _a,A=0x32,Da[0x2dd8]k,Ja=0xda,A-_a z=z+Ja elseif k<=0x408 then k,B=0x895-k,{}B[0b10]=sa B[0b11]=t pb=B M[sa]=pb else k,A,Ja=0x39f,1,db-G j=Ja+A end elseif k<=0x3cf then if k<=0x3be then if k>0x3b7 then if k>0x3ba then A,_a=A(ga.d(_a))V=0 k=za==V and 0x26c or 0xd42-k elseif k>0x3b8 then G=0x2c8 k=ab<=G and 0x1aa or 0x38d else G=0x280 k=ab>G and 0x387 or 0x2c6 end elseif k<=0x3b4 then if k>=0x3b2 then if k<=0x3b2 then e,za=Da[0xc5d1],0x1a e,G=Da[0x2651],e-za t[G]=e za,e=0b110,Da[0x689c]Ja,j,G=0x3e,Da[0x3f16],e-za j,za=1,j-Ja e=za==j k,t[G]=0b11011010,e else _a=A[0b10]k=_a>=G and 0xc0a or 0x140c88/k end else e,za=Da[0xc5d1],0x13 j,za,G=0x1a,Da[0x5924],e-za e=za-j t[G]=e za,e=0b110011,Da[0x689c]j,G,e,za=nil,e-za,M,nil e,za,j=ga.b(e,za,j)Ja,A=e(za,j)j=Ja k=j==nil and k+-0x2d7 or 0x798-k end elseif k>0x3b6 then za,e=0b111011,Da[0xc5d1]e,G=nil,e-za t[G]=e za,e=0b111000,Da[0x689c]Ja,A,k,G=Da[0x3f16],0b100111,k+-0x2dd,e-za j=Ja-A _a,A,za=0b111010,Da[0x9a41],t[j]Ja=A-_a j=t[Ja]e=za==j t[G]=e else j,Ja,e=Da[0x689c],0x26,O[0b111][0b11][O[0b111][0b10]]za=j-Ja G,za,j=e[za],Da[0xc5d1],0x2e e,Ja,j=za-j,G[0b10],G[0b11]za=j[Ja]k,t[e]=0b11011010,za j,za=0b10111,Da[0x3f16]Ja,e,j=Da[0x2651],za-j,O[0b10][0b11][O[0b10][0b10]]za=j[Ja]t[e]=za end elseif k>0x3c8 then if k<=0x3ce then if k<=0x3cc then G=0xec k=ab>G and 0x374 or k+-0b1110010 else F,Ja,j=0b10001001,0b1010,Da[0xc5d1]Ja,G,j=0x36,j-Ja,Da[0x689c]e,Ja,j=j-Ja,0x1a,Da[0x3f16]Ja,za=0,j-Ja j=e==Ja k=j and 0x9acda/k or 0x9bc12/k end else Ja,e,j=0b101010,O[0b111][0b11][O[0b111][0b10]],Da[0x689c]za=j-Ja G,za,j=e[za],Da[0xc5d1],0b1111 j,e,Ja=G[0b11],za-j,G[0b10]za=j[Ja]t[e]=za A,Ja,za=0b10100,Da[0x9a41],O[0b111][0b11][O[0b111][0b10]]j=Ja-A j,e,Ja=Da[0x3f16],za[j],0b1111 Ja,za,A=e[0b11],j-Ja,e[0b10]j=Ja[A]k,t[za]=0xda,j end elseif k<=0x3c4 then if k>=0x3c3 then if k<=0x3c3 then B=Ga k=ma<lb and 0x1fe6b1/k or k+-0b111000010 else k,Ja,A=k+0x53e,t[G],O[0b1101][0b11][O[0b1101][0b10]]sa,B,V,_a=t,1,O[0x11][0b11][O[0x11][0b10]],Ja pb,B=G+B,G+j end else k,j=0x700-k,db-G end else za,e=0x31,Da[0xc5d1]j,G,Ja=Da[0x689c],e-za,0b1101 j,za=1,j-Ja e=za==j t[G]=e Ja,j=0b10010,Da[0x3f16]Ja,j,G=0b10,Da[0x9a41],j-Ja e,j,Ja=j-Ja,Da[0x5a22],0x1d Ja,za=0,j-Ja j=e==Ja k=j and 0x3c0 or 0x340 end elseif k<0x3dc then if k<0x3d8 then if k>0x3d6 then za,j=Da[0xc5d1],0b101101 e=za-j G,Ja,j=t[e],0b100110,Da[0x689c]za=j-Ja e,A,Ja=t[za],0b101110,Da[0x3f16]j=Ja-A za=t[j]G[e]=za za,e=0b10011,Da[0x9a41]za,G={},e-za e=za t[G]=e k=la<=A and k+0x380 or k+-0x2fd elseif k<=0x3d3 then e,za=Da[0xc5d1],0b1010 G,A,Ja=e-za,0b111111,Da[0x689c]j=Ja-A A,_a,za=Da[0x3f16],0b110100,t[j]Ja=A-_a j=t[Ja]e=za+j t[G]=e e,za=Da[0x9a41],0b11101 j,G,za=0x16,e-za,Da[0x5a22]e,j=za-j,1 j,Ja,za=nil,-1,e-j k=za==Ja and 0x8c4d1/k or 0x278 else G=0b1110 k=ab>G and 0x51d-k or 0x2a5 end elseif k<=0x3d9 then if k>0x3d8 then e,za=Da[0xc5d1],0b10111 A,G,Ja=0b1110,e-za,Da[0x689c]j=Ja-A _a,A,za=0b100001,Da[0x3f16],t[j]Ja=A-_a j=t[Ja]e=za-j k,t[G]=k+-0x2ff,e else e,za=Da[0xc5d1],0b110000 G,Ja,A=e-za,Da[0x689c],0x1d j=Ja-A A,_a,za=Da[0x3f16],0x11,t[j]Ja=A-_a j=t[Ja]e=za[j]t[G]=e k=R<_a and 0x733-k or 0xda end else k=j and 0x255f48/k or k+0xb89 end elseif k<0x3df then if k>=0x3dd then if k<=0x3dd then A,_a=A(ga.d(_a))V=0 k=za==V and 0x81f or 0xc94 else e,za=Da[0xc5d1],0b1111 G,e=e-za,Da[0x2651]t[G]=e Ja,e,j=0x1d,O[0b111][0b11][O[0b111][0b10]],Da[0x3f16]za=j-Ja G=e[za]_a,za,A,k,e=0b111111,G[0b10],Da[0x689c],0xda,G[0b11]Ja=A-_a j=t[Ja]e[za]=j end else e,za=Da[0xc5d1],0x2f j,G,Ja=Da[0x689c],e-za,0b110010 j,za=1,j-Ja e=za==j t[G]=e e,za=Da[0x3f16],0b110101 G,j,za=e-za,0x28,Da[0x9a41]j,e=1,za-j Ja,za,j=-1,e-j,nil k=za==Ja and 0x2ae3ec/k or 0xde3 end elseif k<0x3e2 then if k<=0x3df then j,Ja,e=Da[0x689c],0b11011,O[0b111][0b11][O[0b111][0b10]]za=j-Ja G,j,za=e[za],0b1110,Da[0xc5d1]e,j,Ja=za-j,G[0b11],G[0b10]za=j[Ja]t[e]=za j,za=0x2e,Da[0x3f16]_a,e,A=0x13,za-j,Da[0x9a41]Ja=A-_a _a,k,V,j=Da[0x5a22],0b11011010,0b1110,t[Ja]A=_a-V Ja=t[A]za=j<Ja t[e]=za else k,za,e=0x34d9a/k,0x28,Da[0xc5d1]G,A,Ja=e-za,za,Da[0x689c]j=Ja-A za,_a,A=t[j],0b110111,Da[0x3f16]Ja=A-_a j=t[Ja]e=za*j t[G]=e e,j,Ja=O[0b111][0b11][O[0b111][0b10]],Da[0x5a22],0b100110 za=j-Ja j,za,G=0b110010,Da[0x9a41],e[za]e,j,Ja=za-j,G[0b11],G[0b10]za=j[Ja]t[e]=za end elseif k<=0x3e2 then A,Ja,G=0b10000,Da[0x689c],Da[0xc5d1]j=Ja-A za,j=t[j],Da[0x2651]e=za[j]t[G]=e e,za=Da[0x3f16],0x2e G,za=e-za,{}e=za k,t[G]=0xda,e else Ja,j,e=0b111111,Da[0x689c],O[0b111][0b11][O[0b111][0b10]]za=j-Ja G,j,za=e[za],0b101110,Da[0xc5d1]Ja,e,j=G[0b10],za-j,G[0b11]k,za=0x35102/k,j[Ja]t[e]=za za,j=Da[0x3f16],0b100 _a,e,A=0b1100,za-j,Da[0x9a41]Ja=A-_a j,V,_a=t[Ja],0b100000,Da[0x5a22]A=_a-V Ja=t[A]za=j*Ja t[e]=za end elseif k<=0x605 then if k<0x531 then if k<0x4e7 then if k<0x4b0 then if k>0x48d then if k<=0x4a1 then if k>0x490 then k=Ja>A and 0xda or 0x2f4 else V(sa,pb,B,va,Ga)pb,sa=0b100,Da[0x9a41]V,sa=sa-pb,nil k,t[V]=k+-0x3b6,sa end else k,V,sa=0x76f,G+_a,1 db=V-sa end elseif k>=0x482 then if k<=0x482 then V,va,Ga,k,B,sa,pb=O[0b100][0b11][O[0b100][0b10]],G,t,0x568,_a,A,1 else za[j]=pb k=ca<=E and 0xf1e or 0xe5c end elseif k>0x47e then k=A~=A and 0x39d or 0xe6580/k else V,A,sa,k,_a,Ja=G+j,t,1,0x838,G,O[0x11][0b11][O[0x11][0b10]]V=V-sa end elseif k<=0x4c0 then if k<=0x4bc then if k<0x4b1 then Ja=Ja(A)sa,A,_a,k,V=".",0x1505,O[0b1100][0b11][O[0b1100][0b10]],0x508,Ja elseif k>0x4b1 then V,sa,pb=V(sa,pb)V,sa,pb=ga.b(V,sa,pb)B=V(sa,pb)pb=B k=pb==nil and k+0x21b or 0xb3d else A,_a=za(j,Ja)Ja=A k=Ja==nil and 0x3feba/k or 0b100111001 end else k,V=0x76f,1 _a=za-V end elseif k<0x4ca then k,V=0x205652/k,1 _a=za-V elseif k>0x4ca then k=A<=0 and k+0x8a3 or 0x2d70f8/k else k,_a=k+0x90e,ga.c(_a(ga.d(V)))end elseif k>0x50f then if k<=0x519 then if k>=0x516 then if k>0x516 then A=ga.c(A(_a,V,sa))return ga.d(A)else Ja(A,_a,V,sa,pb)A=0b10 V,Ja=0b11,G+A _a=G+V A=t[_a]t[Ja]=A _a=0b10 A=G+_a Ja,A=t[A],nil k=Ja==A and 0x17d or 0b100110110 end elseif k<=0x511 then k,Ja=0xf92,1 j=e-Ja else V(sa,pb,B,va,Ga)sa,pb=Da[0x9a41],0x2d va,B,V=0b1111,Da[0x5a22],sa-pb k,pb=0x5ef-k,B-va sa=t[pb]t[V]=sa end elseif k>0x51b then k,V=0x6ca,ga.c(V(sa,pb,B))else k,Ga=0xf69-k,Ga(q,ua)_a=Ga end elseif k>0x506 then if k>=0x50d then if k>0x50d then Ga,q=B.__iter,nil k,va=0x163aeb/k,Ga~=q else k=A<=0 and 0xd7a-k or 0x840-k end else _a,V,sa=_a(V,sa)_a,V,sa=ga.b(_a,V,sa)pb=_a(V,sa)sa=pb k=sa==nil and 0xfe4-k or 0xf69 end elseif k>0x500 then if k>0x501 then A,_a=A(ga.d(_a))V=0 k=za==V and 0x835 or k+0x9eb else sa,V=1,G+_a k,db=0x127b-k,V-sa end elseif k<=0x4e8 then if k>0x4e7 then A,Ja=O[0b1101][0b11][O[0b1101][0b10]],t[G]B,sa,V,_a=1,t,O[0x11][0b11][O[0b10001][0b10]],Ja pb,k,B=G+B,0x39c,G+j else Ja=1 k,j=0xba3-k,e-Ja end else Ja=ga.c(Ja(A,_a,V))return ga.d(Ja)end elseif k<0x596 then if k>=0x560 then if k<=0x56a then if k>=0x568 then if k>0x568 then Ja,A=e(za,j)j=Ja k=j==nil and 0x49c44/k or 0x140c88/k else V(sa,pb,B,va,Ga)B,sa,va=Da[0x5a22],O[0b111][0b11][O[0b111][0b10]],0x1b pb=B-va V=sa[pb]q,sa,Ga,pb=0b10,V[0b11],Da[0x9a41],V[0b10]va=Ga-q B=t[va]sa[pb]=B k=Oa>q and 0x642-k or 0x358 end elseif k>0x560 then Ja=1 j=e-Ja k=ib>Ja and 0x26c5f0/k or 0x33d else k,V=0x451,ga.c(V(sa,pb,B))end elseif k>0x57c then e,za=Da[0xc5d1],0b100000 k,e,G=0b11011010,Da[0x2651],e-za t[G]=e Ja,j,e=0b100,Da[0x3f16],O[0b111][0b11][O[0b111][0b10]]za=j-Ja G,j,za=e[za],0x38,Da[0x689c]Ja,e,j=G[0b10],za-j,G[0b11]za=j[Ja]t[e]=za elseif k<=0x571 then k,j[Ja]=0xf4a,B else va,k,B=V,0x70d,O[0b1110][0b11][O[0b1110][0b10]]end elseif k<0x537 then if k>=0x532 then if k<=0x532 then k,j,za=k+0x3bb,e,O[0b1001][0b11][O[0b1001][0b10]]else k,z=0x60e-k,z+za end else Ja=ga.c(Ja(A,_a,V))return ga.d(Ja)end elseif k>=0x546 then if k>0x546 then za,k,e=0x23,0xda,Da[0xc5d1]G,j,za=e-za,Da[0x2651],O[0b10][0b11][O[0b10][0b10]]e=za[j]t[G]=e za,e=0b1001,Da[0x689c]j,za,G=Da[0x2f32],O[0b10][0b11][O[0b10][0b10]],e-za e=za[j]t[G]=e else A,_a,V=A(_a,V)A,_a,V=ga.b(A,_a,V)sa=A(_a,V)V=sa k=V==nil and 0x306 or 0x267 end elseif k>0x537 then _a,k,A=0x22,0xda,Da[0x5b59]Ja=A-_a z=z+Ja else za,e=0b101000,Da[0xc5d1]e,G=nil,e-za t[G]=e e,za=Da[0x689c],0x16 Ja,G,j=0b11,e-za,Da[0x3f16]za=j-Ja e=t[za]t[G]=e k=_>Ja and 0xda or 0x39f end elseif k<=0x5d0 then if k<0x5a5 then if k<=0x5a0 then if k>=0x598 then if k<=0x598 then k,za[j]=0x45fcc8/k,pb else V=1 k,_a=0xe44,za-V end else V=1 _a=za-V k=s>V and 0xf9c or 0xfe3 end else j=j+A k=A>0 and 0x10a6-k or 0xc8a end elseif k<0x5ce then if k>0x5a5 then A=za<=e Ja=not A k=Ja and 0xae2 or 0x1e2224/k else k,z=0xda,z+za end elseif k>0x5ce then za,e=0b1101,Da[0xc5d1]Ja,G,A=Da[0x689c],e-za,0b111001 j=Ja-A za,A,_a=t[j],Da[0x3f16],0b101101 Ja=A-_a j=t[Ja]e=za*j t[G]=e k=aa<=_a and 0x875-k or 0b11011010 else k,A=0x4bc,A(_a)_a,sa,pb,V=0x1505,A,".",O[0b1100][0b11][O[0b1100][0b10]]end elseif k>=0x5f8 then if k>0x5fa then pb,V,B,Ga,k,sa,va=1,O[0b100][0b11][O[0b100][0b10]],_a,t,0x515,A,G elseif k<=0x5f8 then k=A>0 and 0xc66 or 0xef5 else Fa=p(ha,C)C=Fa k=C==nil and 0xa0a or 0xbeb end elseif k>=0x5e4 then if k>0x5e4 then k,ua,q=k+0x3fd,V,O[0b101][0b11][O[0b101][0b10]]else k=0x323558/k za,j=za(ga.d(j))A,pb,Ja,_a,V=za,0b11,O[0b100][0b11][O[0b100][0b10]],1,e sa,pb=G+pb,t end else V,sa=G+_a,1 db=V-sa k=v<sa and 0x912-k or k+0x35e end elseif k<0x701 then if k>0x68b then if k>=0x6ca then if k<=0x6da then if k>=0x6d7 then if k>0x6d7 then k,_a=0xe46,ga.c(_a(ga.d(V)))else k,Ja=0x983,_a end elseif k>0x6ca then k,_a=0x3dd,ga.c(_a(ga.d(V)))else k,_a=0x8d5,ga.c(_a(ga.d(V)))end elseif k>0x6eb then k,V=k+0x1d8,ga.c(V(sa,pb,B))elseif k<=0x6e7 then A,Ja=O[0b1101][0b11][O[0b1101][0b10]],t[G]B,V,sa,k,_a=1,O[0b10001][0b11][O[0x11][0b10]],t,0xae7-k,Ja pb,B=G+B,G+j else j=j(Ja)A,k,_a=Da[0x3f16],0x9f5,0b101001 Ja,_a,V,A=A-_a,e,j,O[0b110][0b11][O[0b110][0b10]]end elseif k>=0x6bb then if k<0x6bc then pb=V[0x689c]va,B=nil,M[pb]k=B==va and 0xc59 or 0x249f8b/k elseif k>0x6bc then pb,Ga,va,V,B,k,sa=1,t,G,O[0b100][0b11][O[0b100][0b10]],_a,0x605a04/k,A else A,sa,k,V,Ja,_a=t,1,0x3bb04c/k,G+j,O[0b10001][0b11][O[0x11][0b10]],G V=V-sa end elseif k<=0x698 then if k>0x696 then k,p,ua=0x5c6a60/k,Ga[0b10],Ga[0b11]q=ua[p]Ga[1]=q Ga[0b11]=Ga q=1 Ga[0b10]=q q=nil M[va]=q else k=j and 0xf7f or 0xe4c end else va,k,Ga=O[0b11][0b11][O[0b11][0b10]],k+0x205,V end elseif k<0x637 then if k<0x618 then if k>0x60f then e,za=Da[0xc5d1],0b111100 k,Ja,G,A=0xda,Da[0x689c],e-za,0b1010 j=Ja-A za,_a,A=t[j],0b1010,Da[0x3f16]Ja=A-_a j=t[Ja]e=za==j t[G]=e elseif k<=0x60c then k,_a=0x7bb,ga.c(_a(ga.d(V)))else k=_a>0 and 0x4a1 or 0x11e44c/k end elseif k>=0x62c then if k>0x62c then Ja=Ja(A)_a=0b10 A=G+_a t[A]=Ja k,j=0xb15,Ja else k=A~=A and 0xda or 0x381 end elseif k<=0x618 then k,V=0x8cb,ga.c(V(ga.d(sa)))else z=z+j k=Ua>i and 0xda or k+0x75c end elseif k<0x665 then if k<=0x643 then if k<=0x637 then k=j<Ja and k+-0x55d or 0x12b16e/k else V=1 k,_a=0xc99,za-V end else ha=q(ua,p)p=ha k=p==nil and 0x3c3 or 0x74194/k end elseif k>0x676 then k=Ja<A and 0xda or 0xfe5ba/k elseif k<=0x673 then if k>0x665 then Ja=Ja(A,_a)t[j]=Ja j,Ja=1,e A=j k=Ja~=Ja and 0b11011010 or 0xb9e else k=0x57202/k V(sa,pb,B,va,Ga)end else pb=_a(V,sa)sa=pb k=sa==nil and 0x462968/k or k+0x8f3 end elseif k<0x78b then if k>0x73a then if k>0x755 then if k>0x757 then pb,sa,k,B,Ga,va,V=1,A,0xae9,_a,t,G,O[0b100][0b11][O[0b100][0b10]]else B,pb=_a[0x689c],O[0b111][0b11][O[0b111][0b10]]sa=pb[B]k,za[j]=k+-0x1b4,sa end elseif k<=0x753 then if k<=0x74e then if k<=0x73c then V(sa,pb,B,va,Ga)sa,B,va=O[0b111][0b11][O[0b111][0b10]],Da[0x5a22],0x11 k,pb=0x62918/k,B-va V,B,pb=sa[pb],0b101010,Da[0x9a41]B,sa,va=V[0b11],pb-B,V[0b10]pb=B[va]t[sa]=pb else V,sa=G+_a,1 k,db=0xc99,V-sa end else k=0xda sa(pb,B,va,Ga,q)end else Ja=Ja(A,_a)t[j]=Ja j,Ja=1,e A=j k=Ja~=Ja and k+-0x67b or 0xe83-k end elseif k<0x72e then if k>0x71b then k=_a<=0 and 0x68b or 0x26e elseif k>0x70d then _a,A=1,db-e Ja=A+_a k=qb>=_a and 0x9f5-k or 0x96c-k elseif k>0x701 then B=B(va)Ga=nil va=B~=Ga k=va and 0x50f or 0x465 else B={}B[0b10]=sa B[0b11]=t k,pb=0x598,B M[sa]=pb end elseif k<0x731 then if k>0x72e then Ja,k,A=t[G],0x1684-k,O[0b1101][0b11][O[0b1101][0b10]]V,sa,B,_a=O[0x11][0b11][O[0b10001][0b10]],t,1,Ja pb,B=G+B,G+j else k=A>0 and 0x2b7 or 0x3b98d6/k end elseif k>0x731 then k,V=0x218,1 _a=za-V else k,_a=0xc37-k,ga.c(_a(ga.d(V)))end elseif k<=0x7ec then if k<0x7d6 then if k>0x7bb then A,_a=A(ga.d(_a))V=0 k=za==V and 0xda5-k or 0xe0a elseif k<=0x7a8 then if k>0x78b then A,_a=A(ga.d(_a))V=0 k=za==V and 0x4ad or 0x4c0 else k,Ja=0xc73-k,1 j=e-Ja end else A,_a=A(ga.d(_a))V=0 k=za==V and 0x74e or 0x643 end elseif k>0x7ea then V,sa,pb,A,_a=e,e+Ja,1,O[0b10001][0b11][O[0x11][0b10]],t k,sa=0x3ab,sa-pb elseif k<0x7e7 then Ja=Ja(A,_a)t[j]=Ja j,Ja=1,e A=j k=Ja~=Ja and 0x1c503e/k or 0xf05 elseif k>0x7e7 then Ja=ga.c(Ja(A,_a,V))return ga.d(Ja)else k,_a=0x7a8,ga.c(_a(ga.d(V)))end elseif k>0x80b then if k>0x80e then k=j<Ja and 0xda or 0x62c else k,Fa=0x64c,Fa(ka,fa)Ga=Fa end elseif k>=0x804 then if k<=0x804 then Ja,A=e(za,j)j=Ja k=j==nil and 0xda or 0xc39 else Ja,A=e(za,j)j=Ja k=j==nil and 0b11011010 or 0xabb-k end elseif k>0x7f6 then k=0x8dd-k V(sa,pb,B,va,Ga)else Ja,A=t[G],O[0b1101][0b11][O[0b1101][0b10]]V,k,_a,sa,B=O[0b10001][0b11][O[0x11][0b10]],0xf84,Ja,t,1 pb,B=G+B,G+j end until false end end,function(g)local b,a,i,f,_ f=string _,b=f.gsub,f.char b={[0b10]=1,[1]=b}b[0b11]=b _={[0b10]=1,[1]=_}_[0b11]=_ a=bit32 f,i=a.rshift,a.band f={[0b10]=1,[1]=f}f[0b11]=f i={[0b10]=1,[1]=i}i[0b11]=i a=g:m{_,i,b,f}return a end,function(g,h)return function(b,_,f)local k,i,c,a,l,d k=g.M[-0x6e0e]or g:N(0xe5b2,0x6c85,-0x6e0e)while true do if k<=0b10011011 then if k<=0b1111001 then if k<=0b11100 then k,i,c,l,a=g.I[0x7261]or g:K(0x36ec80,0x7402,0x7261),b[_],b,1,h[1][0b11][h[1][0b10]]d,l=_+l,f else a=g.c(a(c,d,l))return i,g.d(a)end else k=_>f and(g.M[-0x149]or g:N(0xd63e,0x5e10,-0b101001001))or g.M[0x6b2e]or g:N(0xa44a,0x2cbc,0x6b2e)end else return end end end end,function(g,h)return function(b,_)local a,i,c,f b={[0b10]=1,[1]=b}b[0b11]=b _={[0b10]=1,[1]=_}_[0b11]=_ f=g:H{h[0b1111]}f={[0b10]=1,[1]=f}f[0b11]=f i=nil i={[0b10]=1,[1]=i}i[0b11]=i i[0b11][i[0b10]]=g:E{i}a={[0b10]=1,[1]=a}a[0b11]=a a[0b11][a[0b10]]=g:G{h[0b1011],h[0b1000],h[0b111],h[0b10001],h[0b10],h[0x10],_,b,h[0b110],h[0b1101],h[0b100],h[0b101],f,h[0b1100],h[1],h[0b1010],i}c=g:F{h[0b1001],h[0b1110],f,a,h[0b1010],i,h[0b10001],b,h[0b11]}return c end end,function(a,b,c,d)a.I[d]=b-c return a.I[d]end,function(a,b,c,d)a.Q[d]=a.j(b,c)return a.Q[d]end,bit32 .bxor,function(g)local _,d,f,b d=string b,_,d=d.char,d.byte,bit32 f=d.bxor b={[0b10]=1,[1]=b}b[0b11]=b _={[0b10]=1,[1]=_}_[0b11]=_ f={[0b10]=1,[1]=f}f[0b11]=f d=g:i{b,_,f}return d end,d=(function()local function m(i,j,k)if j>k then return end return i[j],m(i,j+1,k)end return function(o)return m(o[1],1,o[0b10])end end)(),function(a,b,c,d)a.M[d]=a.j(b,c)return a.M[d]end,{},function(g)local t,c,a,b,n,q,w,x,i,s,z,m,B,_,f,u,j,o,h,C,l,d,A,e,v t=g t={[0b10]=1,[1]=t}t[0b11]=t x=type x={[0b10]=1,[1]=x}x[0b11]=x f=pcall f={[0b10]=1,[1]=f}f[0b11]=f z=error z={[0b10]=1,[1]=z}z[0b11]=z o=tonumber o={[0b10]=1,[1]=o}o[0b11]=o c=pairs c={[0b10]=1,[1]=c}c[0b11]=c d=select d={[0b10]=1,[1]=d}d[0b11]=d l=setmetatable l={[0b10]=1,[1]=l}l[0b11]=l m=getmetatable m={[0b10]=1,[1]=m}m[0b11]=m e,w=g.I[0x5550]or g:J(g.l"Gd2",g.l"MF",0x5550),{}w[g.I[0x5998]or g:J(g.l"*$*q}G$Q",g.l"hEPT",0x5998)]=e u=w u={[0b10]=1,[1]=u}u[0b11]=u e=string w=e[g.I[-0x6203]or g:J(g.l"JMl&@{9O",g.l"PM<a",-0x6203)]w={[0b10]=1,[1]=w}w[0b11]=w C=e e=C[g.I[0x519d]or g:J(g.l"iWQs*",g.l"=xh",0x519d)]e={[0b10]=1,[1]=e}e[0b11]=e j=C C,i=j[g.I[0x36b0]or g:J(g.l"Ie0r_",g.l"S`Y",0x36b0)],j j=i[g.I[-0x6946]or g:J(g.l"-d6I>So;",g.l"xjT~",-0x6946)]j={[0b10]=1,[1]=j}j[0b11]=j A=table i=A[g.I[-0x2809]or g:J(g.l"iBFP6",g.l"<RA",-0x2809)]i={[0b10]=1,[1]=i}i[0b11]=i b=A A=b[g.I[-0x1f2e]or g:J(g.l"3&j}E",g.l"d!z",-0x1f2e)]A={[0b10]=1,[1]=A}A[0b11]=A s=b b=s[g.I[-0x2b3d]or g:J(g.l"-au>IMr!",g.l"y)q5",-0x2b3d)]b={[0b10]=1,[1]=b}b[0b11]=b n=s s=n[g.I[0x371f]or g:J(g.l"<z%qwc((",g.l"j0(d",0x371f)]s={[0b10]=1,[1]=s}s[0b11]=s n=getfenv n={[0b10]=1,[1]=n}n[0b11]=n B=bit32 a=B[g.I[0x162f]or g:J(g.l"|MKq",g.l"od",0x162f)]a={[0b10]=1,[1]=a}a[0b11]=a _=B B,v=_[g.I[0x31f6]or g:J(g.l"|M2qq",g.l"orn",0x31f6)],_ _=v[g.I[-0x19ab]or g:J(g.l"^NatE",g.l"k?H",-0x19ab)]_={[0b10]=1,[1]=_}_[0b11]=_ q=v v=q[g.I[-0x55a]or g:J(g.l">8$Rn{{",g.l"i`W",-0x55a)]v={[0b10]=1,[1]=v}v[0b11]=v h=q q=h[g.I[0x2b7]or g:J(g.l"yh%a1TwM",g.l"&^jp",0x2b7)]q={[0b10]=1,[1]=q}q[0b11]=q h=g:B{u,a,z,d,x,v,t,q,o,j,_,A,n,f,s,e,i,c,w,m,l,b}return h end,function(a,b,c,d)a.Q[d]=a.a(b,0x4811)-c return a.Q[d]end,function(a,b,c,d)a.M[d]=a.a(b,0x2ab2)+c return a.M[d]end,g=function(g,_,f,...)local k,n,q,o,a,l,d,p,b,c,m,e k=0x8d while true do if k<=0b10001101 then if k<0b1100011 then if k<0x5e then if k>0x2c then k=d~=d and 0x131-k or k+0x31 else k=d>0 and k+0xb7 or 0b1100000 end elseif k<=0b1011110 then k=o<c and 0b11101011 or 0xd5-k else k=d~=d and 0x5e or 0x98 end elseif k>0b1110111 then q,b,o,l=#_,g,0,1 c,d=q-l,l k=c~=c and 0b11101011 or 0x2c elseif k>=0x6e then if k>0b1101110 then a=0x18737 e,k,a=a*o,0b1101110,0x4f75 p=e+a n,p=p%q,1 m=n+p n,l=o+p,_[m]m=b[n]b[l]=m else o=o+d k=d>0 and 0x104-k or k+-0b1011 end else k=d<=0 and k+0x58 or 0x46 end elseif k>0b11100011 then if k>0b11101011 then o=g.c(o(c,g.d(d)))return g.d(o)else o,d,k,c=b[f],g.c(...),0b111100101-k,b end elseif k>0b10111011 then k=o>c and 0b111001110-k or 0b1100000 elseif k>=0x98 then if k<=0b10011000 then k=d<=0 and 0x37d0/k or 0b1110111 else k=o<c and 0b11101011 or 0x101-k end else k=o>c and 0x181-k or 0x3a02/k end end end,function(e,f,...)local h={...}local d=select("#",...)for i=1,d do e[f+i-1]=h[i]end end,c=function(...)return{[1]={...},[0b10]=select("#",...)}end,function(a,b,c,d)a.I[d]=b+a.a(c,0x53dc)return a.I[d]end,function(a,...)a.h,a.l,a.j,a.o=a:h(),a:l(),a:j(),a:o()a.A=a:A()return a:f()(...)end,function(a,b,c,d)a.M[d]=a.a(b,0x8892)-c return a.M[d]end,function(g,h)return function(...)local b,d,f,_,e e=g.M[-0x7666]or g:O(0x5ff69e,0x3e96,-0x7666)while true do if e>=0b11100011 then d,f=g.c(...),{}g.e(f,1,g.d(d))_,d,e,b,f=h[1][0b11][h[1][0b10]],g.c(...),g.I[0x3463]or g:L(0x5913,0x58a2,0x3463),f,"#"else _=g.c(_(f,g.d(d)))return b,g.d(_)end end end end,{},function(a,b,c,d)a.Q[d]=b/c return a.Q[d]end,function(g,r)return function(b,_)local j,e,m,c,q,a,o,l,n,f,p,d,k k=0x13 while true do if k>=0b10101010 then if k<=0b11010001 then if k<0xba then if k>0b10101010 then k,m=0b100101,m(n,p)j,e,n,p=#_,#_,r[0b10][0b11][r[0b10][0b10]],_ a=q%j e=e-a else k=c~=c and 0b11 or 0x8822/k end elseif k<=0b11001101 then if k>0xba then m,n,p,l,d=r[0b10][0b11][r[0b10][0b10]],b,1,r[0b11][0b11][r[0b11][0b10]],r[1][0b11][r[1][0b10]]k,p=0b10101111,q+p else k,l=0x147-k,g.c(l(m,g.d(n)))end else k=q<o and 0xd4-k or k+-0b100 end elseif k>=0xe1 then if k>0b11100001 then k=c~=c and 0b11010001 or 0xfd-k else k=q<o and 0x2a3/k or 0x18b-k end elseif k<=0xd2 then k=c<=0 and 0xe1 or 0b10101010 else q=q+c k=c>0 and k+-0b10111001 or k+-0b100 end elseif k<=0b100101 then if k<=0b10011 then if k<0b100 then return f elseif k>0b100 then d,l,f,q=#b,1,"",0 o,c=d-l,l k=o~=o and 0b11 or 0x97 else k=c<=0 and k+0xcd or 0b11001101 end elseif k>0x1d then k,n=0b10111010,g.c(n(p,e))else k=q>o and 0b100000-k or 0xef-k end elseif k>=0b10001101 then if k>0x8d then k=c>0 and k+-0b1011011 or 0b11111001 else d=d(g.d(l))k,f=0xd6,f..d end else k=q>o and 0b11 or 0b11111001 end end end end,{},function(g,h)return function(...)local n,i,o,c,k,l,_,m,b,f,j,d k=0x39 while true do if k>0xa0 then if k>0xbe then if k>0b11000001 then c=h[0b1000][0b11][h[0b1000][0b10]]k,o,c=0xa068/k,c[0xf19],1 c,i,l=b.n,o+c,h[0b1000][0b11][h[0b1000][0b10]]d=l[0xf19]o=c-d f[0xb85e]=o c,n,d,l,j=h[0b111][0b11][h[0b111][0b10]],i+o,b,i,1 j,m,n=f[0x6718],n-j,j else d=g.c(d(l,m))return g.d(d)end elseif k>=0b10110001 then if k<=0xb1 then k=0x86 c(d,l,m,n,j)else b=b(g.d(_))_,k,f=h[0b101][0b11][h[0b101][0b10]],0b10000,h[0b1000][0b11][h[0b1000][0b10]]f=f[0xc4b3]end elseif k<=0b10100110 then k,o=0b11101001-k,g.c(o(c,d,l))else c,k,d,m,l=h[0b110][0b11][h[0b110][0b10]],0x3e,i,o,0b10 end elseif k>=0b1000011 then if k>0b10000110 then i(o,c,d,l,m)o=h[0b1000][0b11][h[0b1000][0b10]]i,o=o[0xf19],b.n k=i<o and k+0b1001000 or 0x53c0/k elseif k<=0x5e then if k<=0b1000011 then i,o=i(g.d(o))c=i[1]k=c and 0b11101011-k or 0xa1-k else c,d=i[0b10],h[1][0b11][h[1][0b10]]k,l,m=0b11000001,c,0 end else i,l,c,k,o,d=h[0b11][0b11][h[0b11][0b10]],f,h[0b100][0b11][h[0b100][0b10]],0b100101100-k,h[0b10][0b11][h[0b10][0b10]],_ end elseif k<=0x39 then if k<=0b10000 then _=_(f)c,i={},{}o=c k,i[0x6718]=0xa0,o o=0 i[0xb85e]=o c,l,o,f,i=1,h[0b1000][0b11][h[0b1000][0b10]],b,i,h[0b111][0b11][h[0b111][0b10]]l,d,m=c,l[0xf19],_ else k,_,b=0xbe,g.c(...),h[0b1001][0b11][h[0b1001][0b10]]end else c=g.c(c(d,l,m))return g.d(c)end end end end,function(g,h)return function(b)local o,p,_,f,i,l,n,k,m,e,a,d,c k=0b101 repeat if k<=0b10110100 then if k<=0b111001 then if k<=0b101 then i,f,_=0b101,1,0 o=f k=(i~=i or o>0 and f>i or(o<=0 or o~=o)and f<i)and 0b10110100 or 0x39 else l=0x55 l,n,e,a,p,d="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!#$%&()*+-;<=>?@^_`{|}~",b.sub,f,f,b,_*l n=n(p,e,a)p,l,m,e=1,l.find,l,true l=l(m,n,p,e)k,c,d=0b11101001,d+l,1 _=c-d end else i,f,c,o=h[0b11][0b11][h[0b11][0b10]],h[1][0b11][h[1][0b10]],0b11000,_ i=i(o,c)o,l,c,d=h[0b10][0b11][h[0b10][0b10]],0x10,h[0b11][0b11][h[0b11][0b10]],_ c=c(d,l)d=0b11111111 o=o(c,d)d,m,l,c=h[0b11][0b11][h[0b11][0b10]],0b1000,_,h[0b10][0b11][h[0b10][0b10]]d=d(l,m)l=0b11111111 c=c(d,l)l,m,d=_,0b11111111,h[0b10][0b11][h[0b10][0b10]]d=g.c(d(l,m))f=g.c(f(i,o,c,g.d(d)))return g.d(f)end else f=f+o k=(o>0 and f>i or o<=0 and f<i or o~=o)and 0xa3d4/k or 0b111001 end until false end end,(function()local q,i,s=type,getmetatable,pairs return function(u,v,w)if q(u)~="function"then local p=i(u)if p~=nil and p.__iter~=nil then return p.__iter(u)elseif(p and p.__call)==nil and q(u)=="table"then return s(u)end end return u,v,w end end)(),function(ga,O)return function()local f,v,i,Na,la,T,za,Va,_a,s,ja,r,Ba,J,ab,h,n,Ua,H,p,Da,ka,Ra,Ea,W,Ja,ta,Ka,_,Ia,qa,wa,E,ca,a,o,pa,ua,ib,bb,oa,Ha,xa,Aa,va,M,ea,ia,K,db,Wa,ya,aa,V,c,ha,Ga,D,q,e,jb,R,B,U,cb,g,X,k,Q,t,x,I,fb,m,Oa,L,j,d,La,C,Sa,fa,ra,Y,ma,sa,na,z,S,b,G,Ta,u,Pa,Xa,w,_b,N,gb,P,Fa,eb,y,da,l,Ca,Ma,F,Qa,Ya,A,ba k=ga.Q[0x33f]or ga:R(0x5528,0x1cfa,0x33f)while true do if k>=0x316 then if k>=0x7d9 then if k<=0xbea then if k<0xa11 then if k>=0x901 then if k<0x95f then if k<=0x936 then if k>0x92a then if k<0x92e then k,G=0x295cda/k,G(e,za,j)za,e=1,j e=e+za O[0b1000][0b11][O[0b1000][0b10]],ab=e,G elseif k>0x92e then G=G(e,za)ab=not G k=ab and(ga.I[0x5ad]or ga:K(0x4908fc,0x6ede,0x5ad))or ga.I[0x4cac]or ga:L(0x863,0x7fb,0x4cac)else k,G=0x7a4fea/k,G(e,za,j)e,za=j,1 e=e+za ab,O[0b1000][0b11][O[0b1000][0b10]]=G,e end elseif k<=0x90b then if k<0x902 then k,Ja=0x5c9b49/k,0 elseif k>0x902 then Da[0xc5d1]=ab j,e,za,k,G=O[0b1000][0b11][O[0b1000][0b10]],"B",O[0b1011][0b11][O[0b1011][0b10]],ga.Q[-0x1144]or ga:R(0x7a02,0x2c79,-0x1144),O[0b1001][0b11][O[0b1001][0b10]]else k,Da[0x689c]=ga.M[-0x4005]or ga:N(0xdb3a,0x4f65,-0x4005),ab end else k=e>za and k+-0x6c6 or ga.I[-0x6c90]or ga:K(0x46a050,0xade,-0x6c90)end elseif k>0x94c then if k<=0x950 then V=V(sa,ga.d(P))za,k,P,B,sa=V,ga.I[-0x750e]or ga:K(0x191810e,0x1ada,-0x750e),_a,0x80,O[0b1010][0b11][O[0b1010][0b10]]else k=za<=0 and 0xbde-k or ga.I[0xdd7]or ga:K(0x11401aa,0x44ec,0xdd7)end elseif k<=0x94b then if k>=0x949 then if k>0x949 then k=Ja and(ga.M[-0x18f]or ga:P(0x228f,0x20c,-0b110001111))or 0x53ac4b/k else Da=Da(ab,G,e)G,ab=1,e k,ab=k+-0x5c4,ab+G l,O[0b1000][0b11][O[0b1000][0b10]]=Da,ab end else k=ab<=0 and 0xb76-k or 0x991-k end else k,j=0xcdb-k,ga.c(j(Ja,A))end elseif k<0x9b8 then if k<=0x978 then if k>0x973 then k=Na<d and(ga.I[0x5ad]or ga:L(0x67bb,0x6712,0x5ad))or k+-0x935 elseif k<=0x96f then if k<=0x95f then za=za(j,Ja)j=0b111 k,j=0x14d5-k,Na*j else k,Da[0x9a41]=ga.M[-0x5d80]or ga:O(0x11d6abd,0x71df,-0x5d80),ab j,za,G,e=O[0b1000][0b11][O[0b1000][0b10]],O[0b1011][0b11][O[0b1011][0b10]],O[0b1001][0b11][O[0b1001][0b10]],"B"end else M=M(Na,d,l)Na=l k,Na=0x46475/k,Na+db O[0b1000][0b11][O[0b1000][0b10]],Qa=Na,M end elseif k<0x99a then k=l>Da and 0xa84-k or k+-0xc0 elseif k<=0x99a then k=ab>0 and 0x1027-k or 0x282b46/k else l=l(Da,ab,G)ab,Da=0b10,G Da=Da+ab d,O[0b1000][0b11][O[0b1000][0b10]]=l,Da k=q<=ab and(ga.I[0x2032]or ga:L(0x80c3,0x7ef9,0x2032))or k+-0x9aa end elseif k<=0x9dc then if k>0x9c2 then za,k,G,e,j=O[0b1011][0b11][O[0b1011][0b10]],ga.I[0xa45]or ga:L(0x833b,0x7824,0xa45),O[0b1001][0b11][O[0b1001][0b10]],"B",O[0b1000][0b11][O[0b1000][0b10]]elseif k>=0x9bc then if k>0x9bc then za=za(j,Ja)k,j=0x15eabe/k,0b111 j=Na*j else k=l<Da and(ga.M[0x5325]or ga:O(0x3d2e18,0x177e,0x5325))or ga.I[-0x4e6d]or ga:K(0x764002,0x2c15,-0x4e6d)end else k=l~=l and 0xa52-k or 0xa7f-k end elseif k>0x9f5 then k=z<M and k+-0x9a9 or 0xa18-k elseif k>0x9f3 then k,Da[0x689c]=0x55af57/k,ab G,j,e,za=O[0b1001][0b11][O[0b1001][0b10]],O[0b1000][0b11][O[0b1000][0b10]],ga.M[0x3bac]or ga:U(ga.l"@4Dd",ga.l"(*",0x3bac),O[0b1011][0b11][O[0b1011][0b10]]else G=G(e,za,j)k,e,za=ga.M[-0x2f99]or ga:N(0xf4ac,0x70d6,-0x2f99),j,1 e=e+za O[0b1000][0b11][O[0b1000][0b10]],ab=e,G end elseif k>=0x897 then if k>=0x8ae then if k<0x8d7 then if k<=0x8b8 then if k>0x8ae then G=G(e,za,j)za,e=0b10,j k,e=k+0x503,e+za ab,O[0b1000][0b11][O[0b1000][0b10]]=G,e else k,ab=ga.I[0x7788]or ga:L(0x413a,0x31f3,0x7788),ga.c(ab(G,e))end else k=Na>0 and 0x13c4-k or 0xe82-k end elseif k>0x8ee then k,Da[0x2dd8]=0x609174/k,ab e,za,G,j="B",O[0b1011][0b11][O[0b1011][0b10]],O[0b1001][0b11][O[0b1001][0b10]],O[0b1000][0b11][O[0b1000][0b10]]elseif k>=0x8ec then if k>0x8ec then V=V(sa,P,B)k,sa,P=ga.I[0x59b7]or ga:K(0x87f596,0x4fbd,0x59b7),B,1 sa=sa+P _a,O[0b1000][0b11][O[0b1000][0b10]]=V,sa else A=A(_a,V,sa)_a,V=sa,1 _a=_a+V k,O[0b1000][0b11][O[0b1000][0b10]],Ja=0x2f53e8/k,_a,A end else k=ab~=ab and(ga.I[-0x7f7e]or ga:K(0x11e2ce0,0x7f97,-0x7f7e))or k+0b1100001 end elseif k>0x8a9 then if k<=0x8ab then Da[0x5924],H,Oa=ab,0x44,0b1110100 k,G,za,j,e=k+-0x3a5,O[0b1001][0b11][O[0b1001][0b10]],O[0b1011][0b11][O[0b1011][0b10]],O[0b1000][0b11][O[0b1000][0b10]],"B"else k,e,za,j,G=k+-0x207,"B",O[0b1011][0b11][O[0b1011][0b10]],O[0b1000][0b11][O[0b1000][0b10]],O[0b1001][0b11][O[0b1001][0b10]]end elseif k<=0x8a6 then if k>=0x89b then if k>0x89b then k=j~=j and 0xb0a-k or ga.M[-0x6bc3]or ga:N(0xf86b,0x6f02,-0x6bc3)else k,G=0x37322e/k,G(e,za,j)e,za=j,0b10 e=e+za ab,O[0b1000][0b11][O[0b1000][0b10]]=G,e end else j,G,k,za,e=O[0b1000][0b11][O[0b1000][0b10]],O[0b1001][0b11][O[0b1001][0b10]],ga.M[0b110001011]or ga:O(0x19bc0d5,0x65f0,0x18b),O[0b1011][0b11][O[0b1011][0b10]],"B"end else k,A=ga.I[-0x1cee]or ga:K(0x1bd00e2,0x71fa,-0x1cee),O[0b101][0b11][O[0b101][0b10]]end elseif k<0x849 then if k<0x806 then if k>0x7ef then G=G(e,za,j)e,za=j,0b10 k,e=0x13dd-k,e+za O[0b1000][0b11][O[0b1000][0b10]],ab=e,G elseif k<=0x7d9 then G=G(e,za,j)e,k,za=j,k+0x5f0,1 e=e+za ab,O[0b1000][0b11][O[0b1000][0b10]]=G,e else k=Ja>0 and 0x79c317/k or 0x19c0d1/k end elseif k>=0x81d then if k>0x81d then d=d(l)Da,l=Na,1 ab=l k=Da~=Da and 0x87c-k or ga.I[0x3bce]or ga:K(0x4e04ae,0x826,0x3bce)else k=d~=d and 0xdd7-k or k+-0x424 end else k,Da[0x2651]=0xcfa-k,ab e,za,j,G="B",O[0b1011][0b11][O[0b1011][0b10]],O[0b1000][0b11][O[0b1000][0b10]],O[0b1001][0b11][O[0b1001][0b10]]end elseif k>0x868 then if k<=0x872 then if k>0x869 then k=l<=0 and(ga.I[-0x1d3d]or ga:L(0x2987,0x1e4b,-0x1d3d))or ga.I[-0x7c2e]or ga:L(0x43b8,0x3a00,-0x7c2e)else G=G(e,za,j)k,e,za=ga.M[0x1978]or ga:O(0x1f21503,0x7da1,0x1978),j,0b10 e=e+za O[0b1000][0b11][O[0b1000][0b10]],ab=e,G end else G=G(e,za,j)e,za=j,1 k,e=ga.Q[-0x34cb]or ga:R(0x7975,0x246c,-0x34cb),e+za O[0b1000][0b11][O[0b1000][0b10]],ab=e,G end elseif k>0x859 then Da[0x689c]=ab k,G,j,e,za=0x14fb98/k,O[0b1001][0b11][O[0b1001][0b10]],O[0b1000][0b11][O[0b1000][0b10]],ga.M[0x3bac]or ga:U(ga.l"sr;t",ga.l"l>",0x3bac),O[0b1011][0b11][O[0b1011][0b10]]elseif k<0x84a then _a=_a(V,sa)A=not _a k=A and k+-0x5e5 or k+0x3ce elseif k<=0x84a then k=l<Da and(ga.I[0x5dbb]or ga:L(0x57f5,0x57ac,0x5dbb))or 0xbc6-k else k,Da[0x2dd8]=k+0b111011001,ab j,G,e,za=O[0b1000][0b11][O[0b1000][0b10]],O[0b1001][0b11][O[0b1001][0b10]],"B",O[0b1011][0b11][O[0b1011][0b10]]end elseif k>0xae1 then if k<0xb6a then if k<0xb17 then if k<0xaf7 then if k>=0xaef then if k<=0xaef then G=G(e,za,j)e,za=j,1 e=e+za ab,O[0b1000][0b11][O[0b1000][0b10]]=G,e k=La<=za and(ga.M[0x7bc8]or ga:O(0x85b31,0x3b11,0x7bc8))or ga.Q[-0x4883]or ga:R(0x5c10,0xfd8,-0x4883)else e,za,j,k,G="B",O[0b1011][0b11][O[0b1011][0b10]],O[0b1000][0b11][O[0b1000][0b10]],k+0b111011,O[0b1001][0b11][O[0b1001][0b10]]end else k=Ja~=Ja and k+-0x5b4 or 0x1944-k end elseif k>0xb0d then k,Da[0xc5d1]=0xf51-k,ab elseif k>0xaf7 then ab=ab(G,e,za)e,G=1,za G=G+e Da,O[0b1000][0b11][O[0b1000][0b10]]=ab,G k=u>e and(ga.I[0x124]or ga:K(0xd4eaea,0x6638,0x124))or ga.Q[0x7cf0]or ga:R(0x20d2,0x6269,0x7cf0)else k=z>M and 0xb55-k or 0x10ac-k end elseif k>=0xb4c then if k>=0xb62 then if k>0xb62 then k,Da[0xc5d1]=k+-0b11011001,ab za,G,e,j=O[0b1011][0b11][O[0b1011][0b10]],O[0b1001][0b11][O[0b1001][0b10]],"B",O[0b1000][0b11][O[0b1000][0b10]]else k=za<j and 0x189a-k or ga.Q[-0x65ef]or ga:S(0x412e382,0x4582,-0x65ef)end elseif k<=0xb4c then G=G(e,za,j)e,za=j,0b10 k,e=k+-0x2f3,e+za ab,O[0b1000][0b11][O[0b1000][0b10]]=G,e else k=Na>d and k+-0xb51 or ga.I[0x74c9]or ga:L(0x4b04,0x3ec1,0x74c9)end elseif k<0xb2f then G=G(e,za,j)e,za=j,1 e=e+za ab,O[0b1000][0b11][O[0b1000][0b10]]=G,e k=E<=za and(ga.Q[0xa73]or ga:S(0x5e8fc,0x3609,0xa73))or 0x689df9/k elseif k>0xb2f then k=Na<d and 0x6c218/k or ga.M[0x50d6]or ga:O(0x5fd291,0x5c70,0x50d6)else G=G(e,za,j)za,e=1,j k,e=ga.I[0xe9e]or ga:K(0x2ca22ca,0x54f3,0xe9e),e+za O[0b1000][0b11][O[0b1000][0b10]],ab=e,G end elseif k<=0xbc2 then if k>0xba2 then if k>0xbba then k=z>M and k+-0xacc or k+0x24c elseif k>0xbb8 then k=Ja~=Ja and 0x15b664/k or 0xf5d-k else Da[0x2651]=ab za,G,e,k,j=O[0b1011][0b11][O[0b1011][0b10]],O[0b1001][0b11][O[0b1001][0b10]],"B",0x1798-k,O[0b1000][0b11][O[0b1000][0b10]]end elseif k>=0xb81 then if k<=0xb81 then k,Da[0x689c]=ga.M[-0x4005]or ga:O(0x19c060c,0x355c,-0x4005),ab else za=za(j,Ja)e=not za k=e and(ga.I[0x357]or ga:L(0x40fd,0x4010,0x357))or ga.I[-0x6d87]or ga:K(0xc4c985,0x3315,-0x6d87)end elseif k<=0xb6a then k=Ja<=0 and 0x16cc-k or 0xab416a/k else k,e=ga.I[-0x6ef8]or ga:K(0x45a57c,0xab9,-0x6ef8),ga.c(e(za,j))end elseif k<=0xbe2 then if k>=0xbe0 then if k<=0xbe0 then k,G=ga.M[0x761a]or ga:N(0x954b,0x107c,0x761a),G(e,za,j)e,za=j,1 e=e+za ab,O[0b1000][0b11][O[0b1000][0b10]]=G,e else Da[0x2f32]=ab e,G,za,k,j="B",O[0b1001][0b11][O[0b1001][0b10]],O[0b1011][0b11][O[0b1011][0b10]],ga.I[0xea5]or ga:L(0x1d8d,0xefd,0xea5),O[0b1000][0b11][O[0b1000][0b10]]end elseif k>0xbca then k,A=k+-0x390,A(_a,ga.d(V))V,sa,_a,G=Ja,0x80,O[0b1010][0b11][O[0b1010][0b10]],A else k=j<=0 and(ga.Q[0x7fc7]or ga:S(0x435e5c0,0x6620,0x7fc7))or 0x1729e6/k end elseif k>0xbe5 then j,k,e,G,za=O[0b1000][0b11][O[0b1000][0b10]],ga.Q[0x2003]or ga:S(0x9f5ef0,0x18f8,0x2003),ga.M[0x3bac]or ga:U(ga.l"3SR^",ga.l"HU",0x3bac),O[0b1001][0b11][O[0b1001][0b10]],O[0b1011][0b11][O[0b1011][0b10]]else Da[0x9a41]=ab k=da<=F and k+-0x7a2 or ga.I[0x1e2e]or ga:K(0x566014,0x3c65,0x1e2e)end elseif k<0xa85 then if k<0xa32 then if k<0xa24 then if k<0xa1d then k=l~=l and(ga.I[0x1cce]or ga:K(0x3cad94a,0x6689,0x1cce))or k+-0x2a9 elseif k<=0xa1d then k=M>Na and(ga.I[-0x731b]or ga:K(0x232d32,0x7044,-0x731b))or ga.I[0x2e0b]or ga:K(0x1a42df9,0x33c7,0x2e0b)else k=za<j and(ga.I[-0x2006]or ga:K(0xac0a72,0x5d00,-0x2006))or k+-0x67b end elseif k<=0xa29 then if k>0xa24 then k,Da[0x689c]=0x2b4cbb/k,ab else k=l~=l and 0xacd-k or ga.I[-0x6748]or ga:K(0x1e196f,0x731f,-0x6748)end else k=Na<d and(ga.I[0x7029]or ga:K(0x2730fc,0x40e3,0x7029))or k+-0x966 end elseif k>=0xa5f then if k>0xa69 then k=A>0 and(ga.I[0x1d85]or ga:K(0x27d728b,0x3057,0x1d85))or 0x10b0-k elseif k>=0xa67 then if k>0xa67 then e=e(za)za,j=1,G Ja=za k=j~=j and 0x443c3e/k or ga.I[0x6758]or ga:K(0xf0b5f3,0x6149,0x6758)else k=ab<=0 and(ga.I[-0x37ea]or ga:L(0x7596,0x67ea,-0x37ea))or ga.I[0x4043]or ga:K(0x34368,0x556,0x4043)end else za=za(j,Ja,A)j=A j=j+G O[0b1000][0b11][O[0b1000][0b10]],ab=j,za k=aa<Xa and(ga.M[0x7861]or ga:N(0xfa87,0x6d70,0x7861))or k+-0x9a3 end elseif k<=0xa48 then if k>0xa32 then e=e(za,j,Ja)j,k,za=1,0xa57-k,Ja za=za+j G,O[0b1000][0b11][O[0b1000][0b10]]=e,za else G=G(e,za,j)za,e=1,j k,e=0x1540-k,e+za O[0b1000][0b11][O[0b1000][0b10]],ab=e,G end else j[0x2651]=Ja A,_a=j[0x2f32],0 Ja=A~=_a k=Ja and(ga.I[-0x6b05]or ga:L(0x67b4,0x5cd3,-0x6b05))or 0x4a0b8b/k end elseif k<=0xabb then if k>=0xaaa then if k<=0xab7 then if k>0xab2 then e=0 k=G==e and k+0b110111111 or 0x18ab-k elseif k>0xaaa then _a=_a(V,sa,P)sa,V=1,P k,V=k+-0x2e0,V+sa A,O[0b1000][0b11][O[0b1000][0b10]]=_a,V else k=Na<d and(ga.I[0x7548]or ga:L(0x5a08,0x59fb,0x7548))or ga.I[-0x1ee3]or ga:K(0xed1f6c,0x2dc9,-0x1ee3)end else k=M<Na and(ga.I[-0x731b]or ga:K(0x26a902,0x7b6b,-0x731b))or 0x250301/k end elseif k<=0xa8f then if k>0xa8e then k,G=ga.Q[0xf14]or ga:R(0x107a,0x4d9d,0xf14),G(e,za,j)za,e=1,j e=e+za O[0b1000][0b11][O[0b1000][0b10]],ab=e,G elseif k<=0xa85 then Da=Da(ab,G,e)G,ab=1,e ab=ab+G l,k,O[0b1000][0b11][O[0b1000][0b10]]=Da,0xae6-k,ab else k=e<za and(ga.Q[-0x7749]or ga:R(0x613d,0x26c8,-0x7749))or k+-0x897 end else k=za>j and 0x139d70/k or k+-0x2de end elseif k<=0xac5 then if k>=0xac4 then if k>0xac4 then k=Ja<=0 and k+-0xa7 or k+-0x722 else k=ab<=0 and 0x593ca8/k or 0xe40-k end elseif k>0xac1 then k,G=ga.M[-0x4437]or ga:O(0x182a88a,0x7f02,-0x4437),G(e,za,j)e,za=j,1 e=e+za O[0b1000][0b11][O[0b1000][0b10]],ab=e,G else k,G=ga.M[0x3704]or ga:O(0x33efacb,0x32c8,0x3704),G(e,za,j)za,e=0b10,j e=e+za O[0b1000][0b11][O[0b1000][0b10]],ab=e,G end elseif k<=0xace then Da[0x3f16]=ab za,G,j,k,e=O[0b1011][0b11][O[0b1011][0b10]],O[0b1001][0b11][O[0b1001][0b10]],O[0b1000][0b11][O[0b1000][0b10]],0x901734/k,"B"else A=j[0x2f32]Ja=M[A]k=fb>Ma and 0x4e51d3/k or 0xbb1-k end elseif k>=0xdf9 then if k<=0xea7 then if k<0xe58 then if k<=0xe31 then if k<=0xe0e then if k<=0xe01 then if k<=0xdfe then if k>0xdf9 then k,sa=0x1138-k,sa(P,B)P=0b111 P=e*P else k,G=ga.I[-0x81]or ga:K(0x24a7e1f,0x7a85,-0b10000001),G(e,za,j)e,za=j,1 e=e+za O[0b1000][0b11][O[0b1000][0b10]],ab=e,G end else k=ab<=0 and 0x8851bc/k or 0x10b1-k end else k=Na<=0 and(ga.I[-0x5ead]or ga:L(0x6e36,0x5e9f,-0x5ead))or ga.I[-0x5a29]or ga:K(0x13a57a0,0x186e,-0x5a29)end elseif k>0xe2a then k=Na>0 and(ga.I[0x78ee]or ga:L(0x7808,0x72d9,0x78ee))or 0x1cefea/k elseif k>0xe1d then k,G=0x3e1414/k,G(e,za,j)za,e=0b10,j e=e+za ab,O[0b1000][0b11][O[0b1000][0b10]]=G,e else za,k,j,G,e=O[0b1011][0b11][O[0b1011][0b10]],0x1686-k,O[0b1000][0b11][O[0b1000][0b10]],O[0b1001][0b11][O[0b1001][0b10]],ga.Q[-0x3e44]or ga:V(ga.l"*P__",ga.l">i",-0x3e44)end elseif k>0xe4c then if k<=0xe54 then k,Da[0xc5d1]=0xcaf1c8/k,ab e,j,za,G=ga.Q[0x3a1]or ga:V(ga.l"r}C)",ga.l"n*",0x3a1),O[0b1000][0b11][O[0b1000][0b10]],O[0b1011][0b11][O[0b1011][0b10]],O[0b1001][0b11][O[0b1001][0b10]]else k=Ja<=0 and(ga.Q[0xecd]or ga:R(0x5dbe,0x1075,0xecd))or k+-0x5ad end elseif k<0xe40 then if k<=0xe3a then k=Ja<=0 and k+0b10100000 or k+-0b11001111 else Da[0x5924]=ab e,j,G,k,za="B",O[0b1000][0b11][O[0b1000][0b10]],O[0b1001][0b11][O[0b1001][0b10]],0x9b9715/k,O[0b1011][0b11][O[0b1011][0b10]]end elseif k<=0xe40 then k=Na>d and(ga.I[0x7548]or ga:L(0x7077,0x706a,0x7548))or ga.I[0x200c]or ga:L(0x7602,0x69bc,0x200c)else k=G>e and 0x69f12c/k or k+-0x8b end elseif k<=0xe77 then if k<=0xe62 then if k<=0xe5a then if k<=0xe59 then if k<=0xe58 then k=Na<=0 and(ga.I[0x7f1a]or ga:K(0x197f8fe,0x4c15,0x7f1a))or ga.I[-0x4f8b]or ga:L(0x973,0x8a7,-0x4f8b)else k=ab>0 and 0x89977f/k or ga.I[-0x2f7d]or ga:L(0x6dc0,0x64e9,-0x2f7d)end else k=j<=0 and k+-0x259 or ga.Q[-0x6b4e]or ga:R(0x7d06,0x2c71,-0x6b4e)end elseif k<=0xe5b then Da[0xc5d1]=ab k=s>=Ca and(ga.M[-0x4005]or ga:O(0x1721cac,0x2bc,-0x4005))or ga.Q[-0x35fc]or ga:R(0x6f8,0x4bbf,-0x35fc)else k=d<=0 and(ga.I[-0x12d5]or ga:K(0x8fbd52,0xd60,-0x12d5))or ga.I[-0x29e0]or ga:L(0x6d3e,0x69cb,-0x29e0)end elseif k>=0xe6d then if k>0xe6d then k=z<M and(ga.I[0x21c1]or ga:L(0x416d,0x410f,0x21c1))or k+0b1010101 else k,Ja=ga.M[0x7861]or ga:O(0x2044c5,0x52b7,0x7861),0 end else k=l>Da and 0x41ccc/k or ga.Q[-0x79f5]or ga:S(0x1a7c534,0x275d,-0x79f5)end elseif k<=0xe8a then if k>0xe82 then Da=Da(ab,G)l=not Da k=l and(ga.I[0x21c1]or ga:K(0x242a7a,0x623c,0x21c1))or ga.I[-0x45a6]or ga:L(0x53d9,0x5395,-0x45a6)elseif k<0xe80 then k=Na<=0 and(ga.I[-0x4256]or ga:K(0x321e7ba,0x4ff8,-0x4256))or k+-0xe6b elseif k>0xe80 then k,ab=k+-0xe56,ab(G,e,za)e,G=1,za G=G+e O[0b1000][0b11][O[0b1000][0b10]],Da=G,ab else Da[0xc5d1]=ab k=r>=g and(ga.Q[0x798d]or ga:R(0xd3c,0x40ea,0x798d))or k+-0xdb8 end elseif k<=0xe90 then G=G(e,za,j)e,k,za=j,ga.I[0x1fe6]or ga:K(0x1f379be,0x4bac,0x1fe6),1 e=e+za O[0b1000][0b11][O[0b1000][0b10]],ab=e,G else k=za>j and 0x1535-k or ga.I[0x1077]or ga:K(0xcde686,0x12d6,0x1077)end elseif k<0xf49 then if k>0xf01 then if k<0xf3e then if k<=0xf36 then k,Da[0x2651]=0x1379-k,ab else k=M>Na and 0x4c270/k or ga.I[0xff3]or ga:L(0x6795,0x5933,0xff3)end elseif k<=0xf41 then if k<=0xf3e then k,e=0x1cb6-k,e(za,j)za=0b111 za=M*za else k,_a=0x14c3-k,_a(V,ga.d(sa))P,V,sa,e=0b10000000,O[0b1010][0b11][O[0b1010][0b10]],A,_a end else l=l(Da,ga.d(ab))db,ab,G,k,Da=l,d,0x80,0x1dd1-k,O[0b1010][0b11][O[0b1010][0b10]]end elseif k<=0xed0 then if k<=0xecc then if k<0xec6 then k,e,za,j,G=k+-0b111100001,"B",O[0b1011][0b11][O[0b1011][0b10]],O[0b1000][0b11][O[0b1000][0b10]],O[0b1001][0b11][O[0b1001][0b10]]elseif k<=0xec6 then k,Da[0xd24d]=ga.M[-0x4005]or ga:O(0x1f6cd3c,0x206c,-0x4005),ab else k=Na~=Na and 0xf2a-k or 0xedd-k end else k,Da[0xc5d1]=ga.Q[-0x5039]or ga:S(0x1268565,0x2019,-0x5039),ab e,za,j,G="B",O[0b1011][0b11][O[0b1011][0b10]],O[0b1000][0b11][O[0b1000][0b10]],O[0b1001][0b11][O[0b1001][0b10]]end elseif k<=0xef6 then if k>0xeda then sa=sa(P,B)V=not sa k=V and 0x10c0-k or 0x10be-k else k=za<j and(ga.M[0x564]or ga:O(0x25c69af,0x986,0x564))or 0xc7471e/k end else k=Ja~=Ja and(ga.Q[-0x6833]or ga:W(0xc21a,0x251,-0x6833))or ga.I[-0b10101101]or ga:L(0x3d87,0x2fb1,-0xad)end elseif k<0xf9a then if k>0xf85 then if k<=0xf89 then k,Da[0x689c]=k+-0b110111111,ab e,G,j,za="B",O[0b1001][0b11][O[0b1001][0b10]],O[0b1000][0b11][O[0b1000][0b10]],O[0b1011][0b11][O[0b1011][0b10]]else k=z<M and 0xefb1a/k or ga.M[0x2aea]or ga:N(0x8475,0b1000,0x2aea)end elseif k<0xf74 then if k<=0xf49 then k,B=0x417fd1/k,B(va,Ga)va=0b111 va=j*va else k=za>j and(ga.I[0x6419]or ga:K(0x2ea0512,0x3874,0x6419))or k+-0xc1a end elseif k<=0xf74 then ab=ab(G,e)Da=not ab k=Da and(ga.I[-0x731b]or ga:K(0x24c732,0x7664,-0x731b))or ga.I[0x689b]or ga:L(0x4711,0x464f,0x689b)else l=l(Da,ab,G)Da,ab=G,1 k,Da=k+-0xf71,Da+ab O[0b1000][0b11][O[0b1000][0b10]],d=Da,l end elseif k<0xfc7 then if k<0xfa0 then k=G>e and(ga.Q[0x509a]or ga:R(0x2fba,0x6042,0x509a))or 0x18ef-k elseif k>0xfa0 then k=Na>d and(ga.I[0x5ad]or ga:K(0x232670,0x3532,0x5ad))or 0x15f0-k else k=l<=0 and 0x127f-k or ga.I[-0x2990]or ga:L(0x2e94,0x2da8,-0x2990)end elseif k>0xfee then k,ab=0x1c1f-k,ab(G,ga.d(e))e,za,M,G=Da,0b10000000,ab,O[0b1010][0b11][O[0b1010][0b10]]elseif k>0xfd9 then za,k,j,e,G=O[0b1011][0b11][O[0b1011][0b10]],ga.Q[0x126]or ga:S(0x4be078a,0x62b2,0x126),O[0b1000][0b11][O[0b1000][0b10]],ga.I[-0x7b74]or ga:J(ga.l"22%(",ga.l"Is",-0x7b74),O[0b1001][0b11][O[0b1001][0b10]]elseif k<=0xfc7 then G=G(e,za,j)e,za=j,1 k,e=ga.M[0x386f]or ga:N(0xdedf,0x4e7d,0x386f),e+za ab,O[0b1000][0b11][O[0b1000][0b10]]=G,e else Ja=Ja(A,_a)k,A=0x93556c/k,0b111 A=l*A end elseif k>0xd32 then if k<=0xd99 then if k<0xd5d then if k<0xd54 then if k>=0xd38 then if k>0xd38 then Da[0x689c]=ab k=H>=Oa and(ga.Q[-0x38d2]or ga:S(0x106fc0e,0x4b0e,-0x38d2))or ga.I[-0x21f0]or ga:T(0x244,0x5223,-0x21f0)else k,G=0x1ad1-k,e end else G=G(e,za,j)za,e=0b10,j e=e+za O[0b1000][0b11][O[0b1000][0b10]],k,ab=e,ga.M[0x35e3]or ga:O(0x65c9,0x55e5,0x35e3),G end elseif k<=0xd56 then if k<=0xd54 then k,Da[0xf28b]=0x1682-k,ab za,e,j,G=O[0b1011][0b11][O[0b1011][0b10]],"B",O[0b1000][0b11][O[0b1000][0b10]],O[0b1001][0b11][O[0b1001][0b10]]else G=G(e,za,j)e,za=j,1 e=e+za k,O[0b1000][0b11][O[0b1000][0b10]],ab=0xcf2d06/k,e,G end else k=l>0 and(ga.I[0x6c45]or ga:L(0x827f,0x7e45,0x6c45))or ga.I[0x17af]or ga:L(0x15ef,0xbde,0x17af)end elseif k>0xd7a then if k>=0xd7d then if k<=0xd7d then za=za(j,Ja,A)j=A j=j+G k,O[0b1000][0b11][O[0b1000][0b10]],ab=ga.M[0x3e7d]or ga:O(0x5d80b9,0x2aeb,0x3e7d),j,za else za,k,e=G,ga.Q[0x4639]or ga:R(0x1bba,0x4942,0x4639),O[0b110][0b11][O[0b110][0b10]]end else G=G(e,za,j)za,e=1,j e=e+za O[0b1000][0b11][O[0b1000][0b10]],ab=e,G k=ja>=za and(ga.Q[0x6d81]or ga:W(0xc928,0b10010010,0x6d81))or 0x23e9ae/k end elseif k<0xd78 then if k<=0xd5d then k,Da[0x689c]=0x11a0-k,ab else k=Ja~=Ja and k+-0x6dd or ga.Q[-0xee6]or ga:S(0x1d71956,0x3666,-0xee6)end elseif k>0xd78 then V=V(sa,P)_a=not V k=_a and(ga.Q[-0x7db8]or ga:R(0x3714,0x7d2b,-0x7db8))or 0x1270-k else k,G=ga.I[0x6ca6]or ga:L(0x89eb,0x7c44,0x6ca6),ga.c(G(e,za))end elseif k>0xdca then if k>=0xdea then if k>=0xdf4 then if k<=0xdf4 then k,za=k+-0x77,"c"za,e=O[0b1001][0b11][O[0b1001][0b10]],za..G j,A,Ja=e,O[0b1000][0b11][O[0b1000][0b10]],O[0b1011][0b11][O[0b1011][0b10]]else k=l>Da and k+-0xd09 or ga.M[0x538e]or ga:O(0x695e02c,0x2dee,0x538e)end else k,sa=ga.I[0x4949]or ga:L(0x12f0,0x3af,0x4949),ga.c(sa(P,B))end elseif k>0xdd6 then G=G(e,za,j)k,e,za=ga.I[-0x3ef2]or ga:L(0x428d,0x3357,-0x3ef2),j,0b10 e=e+za O[0b1000][0b11][O[0b1000][0b10]],ab=e,G else V,_a,P,k,sa="B",O[0b1001][0b11][O[0b1001][0b10]],O[0b1000][0b11][O[0b1000][0b10]],ga.Q[0x3a34]or ga:R(0x1dc3,0x4b20,0x3a34),O[0b1011][0b11][O[0b1011][0b10]]end elseif k>0xdbb then if k>0xdc9 then G=G(e,za,j)e,za=j,1 k,e=0x1424-k,e+za O[0b1000][0b11][O[0b1000][0b10]],ab=e,G elseif k>0xdc1 then k,Da[0x3f16]=ga.Q[0x66ca]or ga:S(0x2e8476,0x5f2,0x66ca),ab G,e,j,za=O[0b1001][0b11][O[0b1001][0b10]],"B",O[0b1000][0b11][O[0b1000][0b10]],O[0b1011][0b11][O[0b1011][0b10]]else k=za~=za and k+-0b101101011 or 0x1a53-k end elseif k>0xdaf then Da[0x5924]=ab e,j,k,za,G="B",O[0b1000][0b11][O[0b1000][0b10]],ga.Q[-0x5011]or ga:S(0x52798e9,0x5e71,-0x5011),O[0b1011][0b11][O[0b1011][0b10]],O[0b1001][0b11][O[0b1001][0b10]]elseif k>0xdac then k=A<=0 and(ga.I[0x5eeb]or ga:K(0xd42836,0x1ea3,0x5eeb))or k+-0xa40 elseif k<=0xda7 then Da=Da(ab,ga.d(G))ab,z,k,e,G=O[0b1010][0b11][O[0b1010][0b10]],Da,ga.I[-0x43cb]or ga:K(0x3997dea,0x3b9e,-0x43cb),0b10000000,l else k=l<Da and 0xdf5-k or 0xe53-k end elseif k<0xc56 then if k>0xc31 then if k<0xc44 then if k<0xc3b then G=G(e,za,j)e,za=j,1 e=e+za O[0b1000][0b11][O[0b1000][0b10]],ab=e,G k=ca>za and k+0x21a or ga.M[0x16a9]or ga:N(0xe5a9,0x6d2c,0x16a9)elseif k>0xc3b then k=l<=0 and 0x82c27e/k or ga.I[-0x1ee3]or ga:L(0x2584,0x2056,-0x1ee3)else k=za<j and 0xe15-k or k+-0b10000001 end elseif k>=0xc46 then if k>0xc46 then G=G(e,za,j)za,k,e=0b10,0x6e6b32/k,j e=e+za ab,O[0b1000][0b11][O[0b1000][0b10]]=G,e else k=l~=l and(ga.I[-0x4049]or ga:K(0x421dc4,0x170a,-0x4049))or 0xbfc5c0/k end else k=e>za and(ga.I[0x73c]or ga:L(0x9b7,0x753,0x73c))or k+0x216 end elseif k<=0xc17 then if k<0xc15 then if k>0xbfd then k=e<za and k+-0x99d or ga.I[-0x5437]or ga:K(0x10e6cbe,0x1f42,-0x5437)else k,za,e,j,G=ga.M[0x291c]or ga:N(0xf22b,0x70c6,0x291c),O[0b1011][0b11][O[0b1011][0b10]],"B",O[0b1000][0b11][O[0b1000][0b10]],O[0b1001][0b11][O[0b1001][0b10]]end elseif k>0xc15 then e=e+j k=j>0 and 0x185b-k or 0x1a71-k else k=Na>d and 0x744a2/k or ga.I[-0x3957]or ga:L(0x72e8,0x6a76,-0x3957)end elseif k>=0xc24 then if k<=0xc24 then G=G(e,za)ab=not G k=ab and(ga.I[0x7548]or ga:L(0x430e,0x4301,0x7548))or ga.I[0x80f]or ga:L(0x371a,0x36e7,0x80f)else j=db[G]A,_a=j[0x2651],0 Ja=A~=_a k=Ja and(ga.I[0x6aeb]or ga:K(0x162cafa,0x6dbe,0x6aeb))or ga.Q[0x6781]or ga:R(0x1bfb,0x4a9f,0x6781)end else k=A<=0 and 0x12cd-k or ga.Q[-0x10ce]or ga:S(0x6263c0,0x1030,-0x10ce)end elseif k<0xcd8 then if k<0xc76 then if k>0xc6f then Da[0x2651]=ab e,za,j,k,G="B",O[0b1011][0b11][O[0b1011][0b10]],O[0b1000][0b11][O[0b1000][0b10]],0x193f-k,O[0b1001][0b11][O[0b1001][0b10]]elseif k>0xc56 then ab=0b101110 k=l<=ab and(ga.I[0x6924]or ga:L(0x63ed,0x5e77,0x6924))or 0x1506-k else k=G<e and(ga.I[0x4ab3]or ga:L(0x453c,0x3dd3,0x4ab3))or ga.Q[0x73a6]or ga:R(0x581a,0x3da,0x73a6)end elseif k<=0xc92 then if k<=0xc80 then if k<=0xc76 then k,ab=0x926a8/k,""else k,G=ga.I[-0x6b2a]or ga:L(0x4592,0x3ce4,-0x6b2a),G(e,za)e=0b111 e=z*e end else k=za<=0 and(ga.I[0x6073]or ga:K(0x5cbd540,0x784b,0x6073))or ga.M[-0x521a]or ga:N(0xb3dd,0x2f1e,-0x521a)end else G=G(e,za,j)za,e=1,j k,e=k+0b110110010,e+za O[0b1000][0b11][O[0b1000][0b10]],ab=e,G end elseif k>=0xd1c then if k>=0xd2f then if k>0xd2f then k=l>0 and(ga.I[-0x54ca]or ga:L(0x6dda,0x69f0,-0x54ca))or ga.I[0x6a6c]or ga:L(0x425a,0x353e,0x6a6c)else k=j>Ja and(ga.I[0x2032]or ga:L(0x716f,0x6fa5,0x2032))or ga.I[0x1cee]or ga:K(0x87f1c2,0x15ac,0x1cee)end elseif k<=0xd1c then k=l~=l and 0x1749-k or 0x142a-k else za=za+Ja k=Ja>0 and(ga.Q[0x5691]or ga:S(0x11d2529,0x2f4f,0x5691))or 0x1b57-k end elseif k>=0xcdf then if k<=0xcdf then k=Na~=Na and(ga.Q[0x278]or ga:S(0x3f84fc,0x421a,0x278))or ga.I[-0x4f8b]or ga:K(0x1213e,0x161,-0x4f8b)else Da[0xc5d1]=ab k,za,j,G,e=ga.M[-0x63f1]or ga:O(0x985eae,0x41ec,-0x63f1),O[0b1011][0b11][O[0b1011][0b10]],O[0b1000][0b11][O[0b1000][0b10]],O[0b1001][0b11][O[0b1001][0b10]],"B"end else k,G=ga.I[0x5eab]or ga:K(0x4072eb2,0x459c,0x5eab),G(e,za,j)za,e=1,j e=e+za ab,O[0b1000][0b11][O[0b1000][0b10]]=G,e end elseif k<0x3db then if k>0x373 then if k<0x3a1 then if k>0x38b then if k>=0x399 then if k<0x39d then if k>=0x39a then if k>0x39a then Da=0x3e2 k=d>=Da and 0x7fe84/k or 0x9ff0c/k else k,l=ga.M[0x4ef3]or ga:N(0xdf03,0x54a3,0x4ef3),0x78 end else ab,v,D=0b10110010,0,0b10010011 k=l<=ab and(ga.I[-0x69ad]or ga:L(0x629e,0x600b,-0x69ad))or 0xd8c24/k end elseif k<=0x39e then if k<=0x39d then k,l=ga.Q[-0x3bc9]or ga:R(0x69a3,0x1ec4,-0x3bc9),0x68 else Da=0xd8 k=d>=Da and(ga.I[-0x2d0d]or ga:K(0x435026,0x309c,-0x2d0d))or 0x6f746/k end else Da=0xa6 k=d<=Da and(ga.M[0x5745]or ga:N(0x8f2,0x7c79,0x5745))or ga.M[-0x5d84]or ga:N(0xf309,0x79c9,-0x5d84)end elseif k>=0x394 then if k<=0x395 then if k<=0x394 then G=0b110 k=Da==G and(ga.Q[0x6cd4]or ga:R(0x5cb5,0x1282,0x6cd4))or ga.M[0x64ce]or ga:O(0x42e6b9,0x67e7,0x64ce)else k,l=0xa7e86/k,0b11001111 end else l=0b1111000 k=W<=l and 0xa8750/k or 0x6ce-k end elseif k<0x38e then k,l=ga.I[-0x370d]or ga:L(0x6b7e,0x6890,-0x370d),0b10100100 elseif k>0x38e then e=e(za,ga.d(j))j,za,Ja,k,d=G,O[0b1010][0b11][O[0b1010][0b10]],0x80,ga.I[0x4b8c]or ga:K(0x2c5a272,0x3d00,0x4b8c),e else Da=0b110111000 k=d>Da and k+-0x29c or 0x77b-k end elseif k>0x37d then if k>0x386 then if k<=0x388 then _a=_a(V,ga.d(sa))V,sa,P,k,e=O[0b1010][0b11][O[0b1010][0b10]],A,0b10000000,0x2f96d0/k,_a else ab=0b1101000 k=l<=ab and 0x2a795f/k or ga.I[0x6b6]or ga:L(0x2c2d,0x1d74,0x6b6)end elseif k>=0x385 then if k<=0x385 then G,k,za,e,ab="B",0x26e4c1/k,O[0b1000][0b11][O[0b1000][0b10]],O[0b1011][0b11][O[0b1011][0b10]],O[0b1001][0b11][O[0b1001][0b10]]else k,l=0x674-k,0xcc end elseif k>0x381 then k,l=ga.I[-0x370d]or ga:L(0x121d,0xf2f,-0x370d),0xbf else Da=0xe4 k=d<Da and 0xa9f08/k or k+-0b111001000 end elseif k<0x37a then if k>0x376 then k,l=ga.Q[-0x3bc9]or ga:R(0x2bae,0x60d1,-0x3bc9),0x68 elseif k<=0x375 then if k>0x374 then k,l=ga.I[-0x370d]or ga:L(0x6fa3,0x6cb5,-0x370d),0b1010111 else k,l=0xa1dd8/k,0x2e end else k,l=ga.M[0x4ef3]or ga:N(0xc0d2,0x4552,0x4ef3),0b1111100 end elseif k>0x37c then l=0x78 k=w<l and 0x66b-k or 0x1d36e/k elseif k<=0x37b then if k<=0x37a then k,l=k+-0b10001100,0x68 else l=0xa4 k=n>=l and(ga.I[-0x370d]or ga:L(0x28d0,0x25e2,-0x370d))or ga.I[-0x3359]or ga:L(0x8099,0x7fb2,-0x3359)end else k=ab~=ab and k+-0x333 or ga.M[0x76d7]or ga:N(0x9e6e,0x1655,0x76d7)end elseif k<=0x3bd then if k>=0x3ab then if k<0x3b8 then if k<0x3af then k,l=0x699-k,0xa4 elseif k<=0x3af then k,l=ga.M[0x4ef3]or ga:O(0xadde29,0x6ea3,0x4ef3),0xa4 else ab=0b1111010 k=l>=ab and 0x8fb7d/k or ga.M[0x7d36]or ga:N(0xe944,0x607a,0x7d36)end elseif k<=0x3bc then if k<0x3b9 then k,l=0xae510/k,0xbf elseif k>0x3b9 then Da=0xb9 k=d>=Da and 0x6c3-k or ga.I[-0b101111011]or ga:L(0x159a,0x1236,-0b101111011)else Da=0b101 k=d<=Da and 0x796-k or k+-0x204 end else Da,U=0x389,0b11100110 k=d>Da and(ga.M[-0x3885]or ga:O(0x13c8705,0x28d1,-0x3885))or ga.I[0x4188]or ga:L(0x589a,0x5620,0x4188)end elseif k<=0x3a4 then if k>0x3a3 then k,l=k+-0b10110110,0xa4 elseif k>=0x3a2 then if k>0x3a2 then V,k,sa,P,_a="B",ga.I[-0x5138]or ga:L(0x69fa,0x6605,-0x5138),O[0b1011][0b11][O[0b1011][0b10]],O[0b1000][0b11][O[0b1000][0b10]],O[0b1001][0b11][O[0b1001][0b10]]else k,l=ga.I[-0x370d]or ga:K(0x4bb5be,0x19ca,-0x370d),0x70 end else Na=Na(d,l,Da)d=Da k,d=0x42b-k,d+z O[0b1000][0b11][O[0b1000][0b10]],db=d,Na end elseif k<0x3a7 then k,l=ga.I[-0x370d]or ga:L(0x61a9,0x5ebb,-0x370d),0b1101000 elseif k<=0x3a7 then k,l=k+-0b10111001,0x68 else k,l=ga.I[-0x370d]or ga:L(0x67c6,0x64d8,-0x370d),0x68 end elseif k<=0x3cf then if k<=0x3c5 then if k<0x3c4 then if k>0x3c1 then k,l=ga.M[0x4ef3]or ga:N(0xf2c2,0x7762,0x4ef3),0x68 else k,l=0xaff6e/k,0b1010111 end elseif k>0x3c4 then k,l=ga.I[-0x370d]or ga:L(0x2aad,0x27bf,-0x370d),0b1101000 else k,za,e,j,G=ga.Q[-0x6910]or ga:R(0x2430,0x69b8,-0x6910),O[0b1011][0b11][O[0b1011][0b10]],"B",O[0b1000][0b11][O[0b1000][0b10]],O[0b1001][0b11][O[0b1001][0b10]]end elseif k>=0x3cb then if k<=0x3cb then k,l=0x6b9-k,0b1101000 else Da=0x352 k=d<=Da and(ga.I[-0x1044]or ga:K(0x11512ba,0x50e8,-0x1044))or ga.I[-0x4788]or ga:L(0x738d,0x7214,-0x4788)end else k,l=0xb19cc/k,0xbf end elseif k<0x3d6 then if k<=0x3d1 then Da=0b11010001 k=d>Da and 0xc81f7/k or ga.I[0x3681]or ga:L(0x25f2,0x22cb,0x3681)else l=0b101110 k=na<=l and k+-0x289 or 0xb342a/k end elseif k>=0x3d8 then if k>0x3d8 then l=0x68 k=Ka>l and 0xb45be/k or 0x5ae-k else k,l=k+-0xea,0x78 end else G=G(e,za,j)e,za=j,1 k,e=ga.I[-0x45e5]or ga:L(0x8626,0x7fed,-0x45e5),e+za ab,O[0b1000][0b11][O[0b1000][0b10]]=G,e end elseif k<0x346 then if k<=0x330 then if k>0x324 then if k<=0x32c then if k<0x32b then if k<=0x327 then Da=0xcf k=d<=Da and(ga.M[-0x79d]or ga:N(0xd62c,0x5e05,-0x79d))or 0x6ac92/k else k,l=0x9450c/k,0b1101000 end elseif k<=0x32b then Da=0x26d k=d>Da and(ga.I[0b110001010]or ga:K(0x1ab196c,0x7636,0x18a))or ga.I[0x77da]or ga:L(0x791e,0x75e0,0x77da)else Da=0x7f k=d>Da and(ga.M[-0xa89]or ga:O(0x222944,0x4d0e,-0xa89))or k+-0x189 end elseif k>0x32e then k,l=ga.I[-0x370d]or ga:K(0xd1d642,0x47a8,-0x370d),0x68 else k,l=0x950c4/k,0b101110 end elseif k<=0x31e then if k<=0x31b then if k<=0x317 then if k<=0x316 then Da=0b101000 k=d<=Da and k+0x20 or k+-0b100010111 else k,e,za,Ja,j=ga.M[0x1c7]or ga:O(0x203031d,0xcb8,0x1c7),O[0b1001][0b11][O[0b1001][0b10]],"B",O[0b1000][0b11][O[0b1000][0b10]],O[0b1011][0b11][O[0b1011][0b10]]end else Da=0x2f6 k=d<=Da and(ga.I[0x59fc]or ga:L(0x3d6a,0x3b15,0x59fc))or ga.Q[0x4494]or ga:S(0x3839d9,0x2e95,0x4494)end elseif k<=0x31d then Da=0b10001010 k=d>Da and k+0b10000111 or k+-0x134 else k,l=ga.I[-0x370d]or ga:L(0x2b30,0x2842,-0x370d),0b101110 end elseif k>=0x323 then if k<=0x323 then k,l=0x9308a/k,0b101110 else ab=0xcf k=l<ab and(ga.Q[-0x262f]or ga:S(0xd4398e,0x62f6,-0x262f))or ga.M[-0x7429]or ga:N(0xf791,0x7c09,-0x7429)end else k,l=0x60e-k,0b10111111 end elseif k<0x33e then if k>0x338 then if k>0x33a then k,A=ga.M[-0x7978]or ga:N(0xe4ca,0x630d,-0x7978),j[0x2651]Ja=M[A]else k,V=k+0x89f,ga.c(V(sa,P))end elseif k>=0x336 then if k<=0x336 then k,l=ga.M[0x4ef3]or ga:O(0xd32afd,0x1df5,0x4ef3),0xa4 else Da=0b11110110 k=d<=Da and(ga.M[0x238f]or ga:N(0xa706,0x2c1f,0x238f))or k+-0b11111000 end elseif k>0x334 then za=ga.M[-0x3686]or ga:U(ga.l"q4W",ga.l"od",-0x3686)za,e=O[0b1001][0b11][O[0b1001][0b10]],za..G j,A,k,Ja=e,O[0b1000][0b11][O[0b1000][0b10]],0x2142ab/k,O[0b1011][0b11][O[0b1011][0b10]]else k,l=0x622-k,0xbf end elseif k>0x342 then if k<=0x344 then k,l=0x632-k,0x97 else k,l=0x633-k,0x68 end elseif k>0x341 then k,l=0x98b5c/k,0x2e elseif k>0x33f then e=0 Ja,j,za=1,0b100,e k=j~=j and(ga.I[-0x2006]or ga:L(0xf65,0xd8b,-0x2006))or ga.M[0x5d58]or ga:N(0xd2d2,0x57da,0x5d58)elseif k<=0x33e then k,l=0x97fa4/k,0b10111111 else k=Ja~=Ja and k+0x495 or 0x8a2-k end elseif k<0x360 then if k<=0x350 then if k>0x34b then if k<0x34f then Da=0b1101 k=d>=Da and(ga.I[-0x6605]or ga:L(0x35d2,0x34cc,-0x6605))or ga.M[0x4f5f]or ga:O(0xb66df1,0x6c0f,0x4f5f)elseif k<=0x34f then k,l=0x63d-k,0xbf else G=G+za k=za>0 and(ga.M[0x57b0]or ga:N(0xad36,0x160a,0x57b0))or 0xca5-k end elseif k>=0x349 then if k>0x349 then k,l=k+-0b1011101,0b1101000 else Da=0xaf k=d>=Da and k+-0b1001110 or 0x67d-k end elseif k>0x346 then Da=0b11010011 k=d<=Da and(ga.M[0x6196]or ga:O(0xeed9fa,0x276a,0x6196))or ga.M[0x78d4]or ga:N(0xd76d,0x5d1e,0x78d4)else k,l=ga.I[-0x370d]or ga:L(0x4efa,0x4c0c,-0x370d),0x68 end elseif k<0x359 then if k>=0x354 then if k>0x354 then k,l=0x646-k,0b10111111 else k,l=0x9c018/k,0b1101000 end else k,l=ga.I[-0x370d]or ga:K(0x159f302,0x7608,-0x370d),0b10100100 end elseif k<=0x35d then if k<=0x359 then Da=0x226 k=d>=Da and 0x798fd/k or 0x69f-k else l=0b1110000 k=eb<l and 0x38a-k or ga.Q[-0x3bc9]or ga:R(0x6619,0x2b1a,-0x3bc9)end else k,l=ga.I[-0x370d]or ga:L(0x6aa1,0x67b3,-0x370d),0x2e end elseif k<=0x36a then if k>=0x367 then if k<=0x369 then if k>=0x368 then if k>0x368 then Qa=Qa(db,z,M)db,z=M,1 k,db=ga.I[-0x4555]or ga:K(0x3bf6a,0x4b42,-0x4555),db+z O[0b1000][0b11][O[0b1000][0b10]],t=db,Qa else k,l=0x9fab0/k,0xa4 end else l=0b1101000 k=ma>=l and(ga.M[0x4ef3]or ga:O(0x1695b77,0x2eca,0x4ef3))or ga.Q[-0xf81]or ga:S(0x9e6d85,0x37f1,-0xf81)end else za=0 k=e==za and 0xd4bd2/k or 0x8a450/k end elseif k>=0x364 then if k>0x364 then Na=Na+l k=l>0 and 0x290349/k or ga.M[-0x5384]or ga:O(0x34f3ddd,0x31d9,-0x5384)else k,l=0x652-k,0x57 end elseif k<=0x360 then Da=0b11011111 k=d>Da and k+0b1100101 or 0x3be80/k else k,l=0x9e91c/k,0b1101000 end elseif k<=0x36f then if k>0x36e then sa,k,B,V,P="B",ga.I[-0xd3e]or ga:K(0x3814f9c,0x6481,-0xd3e),O[0b1000][0b11][O[0b1000][0b10]],O[0b1001][0b11][O[0b1001][0b10]],O[0b1011][0b11][O[0b1011][0b10]]elseif k>=0x36d then if k<=0x36d then Da=0x347 k=d>=Da and k+-0x1cf or ga.M[-0x6bd0]or ga:N(0xce9b,0x452b,-0x6bd0)else k,P=ga.I[-0x17c9]or ga:L(0x6141,0x5c70,-0x17c9),P(B,va)B=0b111 B=za*B end else k,l=0xa0668/k,0x2e end elseif k<=0x370 then G=G(e,za,j)za,e=0b10,j k,e=0x284880/k,e+za ab,O[0b1000][0b11][O[0b1000][0b10]]=G,e else k=d~=d and(ga.I[-0x731b]or ga:K(0x233d82,0x7013,-0x731b))or 0x128a2/k end elseif k<=0x57d then if k>0x443 then if k<0x506 then if k>0x4b4 then if k>=0x4f0 then if k<0x4f4 then G=G(e,za,j)e,za=j,0b10 k,e=ga.I[0x2518]or ga:L(0x88e6,0x7b92,0x2518),e+za ab,O[0b1000][0b11][O[0b1000][0b10]]=G,e elseif k<=0x4f4 then G=G(e,za,j)za,e=1,j e=e+za k,ab,O[0b1000][0b11][O[0b1000][0b10]]=ga.Q[-0x16b4]or ga:S(0x5ec5bd,0x83d,-0x16b4),G,e else za=za+Ja k=Ja>0 and k+0x5a2 or 0xcb0-k end elseif k>=0x4c9 then if k>0x4c9 then k,sa=ga.Q[-0x5cd0]or ga:S(0x19037b0,0x7156,-0x5cd0),ga.c(sa(P,B))else Da[0xc5d1]=ab e,j,G,k,za="B",O[0b1000][0b11][O[0b1000][0b10]],O[0b1001][0b11][O[0b1001][0b10]],0x2196ed/k,O[0b1011][0b11][O[0b1011][0b10]]end else P=P(B,va)k,B=0x12a0-k,0b111 B=za*B end elseif k>0x492 then if k>=0x4b3 then if k>0x4b3 then M=M(Na)Na,d=1,z l=Na k=d~=d and 0x2d448/k or ga.I[-0x2af3]or ga:K(0x2d97408,0x3745,-0x2af3)else k=Na<=0 and 0x132a-k or ga.I[-0x5537]or ga:L(0x565c,0x4790,-0x5537)end else k,j[0x2f32]=ga.M[-0x49ed]or ga:N(0xc5e5,0x4a27,-0x49ed),Ja end elseif k>0x482 then k=j>0 and(ga.Q[-0x3b08]or ga:R(0x799b,0x2860,-0x3b08))or 0xb11-k elseif k>=0x462 then if k<=0x462 then k,Da[0x5924]=k+-0x1f,ab else k,Da[0x689c]=0x1269-k,ab j,e,G,za=O[0b1000][0b11][O[0b1000][0b10]],ga.M[-0x69a3]or ga:U(ga.l"fc1_",ga.l"yZ",-0x69a3),O[0b1001][0b11][O[0b1001][0b10]],O[0b1011][0b11][O[0b1011][0b10]]end else k,P=k+0x507,ga.c(P(B,va))end elseif k>=0x54d then if k>=0x563 then if k<=0x576 then if k>0x565 then j,k,G,za,e=O[0b1000][0b11][O[0b1000][0b10]],ga.Q[-0x2d67]or ga:S(0x74b55bd,0x765b,-0x2d67),O[0b1001][0b11][O[0b1001][0b10]],O[0b1011][0b11][O[0b1011][0b10]],"B"elseif k<=0x563 then k=Ja<=0 and 0xd37-k or 0x1339-k else db=db(z)M,z=Qa,1 Na=z k=M~=M and(ga.I[0x72bd]or ga:L(0x7ab3,0x79bd,0x72bd))or 0x4c8e55/k end else G=G(e,za,j)za,e=0b1000,j e=e+za O[0b1000][0b11][O[0b1000][0b10]],ab=e,G k=fa<za and(ga.I[0x5e87]or ga:L(0x5470,0x522c,0x5e87))or 0x407cc/k end elseif k<0x54e then j=j(Ja,A,_a)Ja=_a Ja=Ja+e O[0b1000][0b11][O[0b1000][0b10]],G=Ja,j k=a>=ba and(ga.M[0x5656]or ga:O(0x870e3a,0x6666,0x5656))or ga.I[0xe20]or ga:L(0x30c4,0x2dbf,0xe20)elseif k>0x54e then k=z<M and 0x652-k or ga.I[-0x4f8b]or ga:L(0x6cc7,0x6bfb,-0x4f8b)else B,_a,sa,P,A,k,V=0x7f,G,O[0b10][0b11][O[0b10][0b10]],Ja,O[0b111][0b11][O[0b111][0b10]],0x4a3964/k,O[0b11][0b11][O[0b11][0b10]]end elseif k<0x52e then if k>=0x508 then if k<=0x508 then k=l>0 and(ga.I[0x3d9d]or ga:L(0x4d55,0x3f15,0x3d9d))or ga.I[0x200c]or ga:K(0x67a294,0x871,0x200c)else k=za>j and k+-0x338 or 0x1fe846/k end else G=G(e,za,j)za,e=1,j k,e=0x22fcca/k,e+za ab,O[0b1000][0b11][O[0b1000][0b10]]=G,e end elseif k>0x52f then k=za<j and(ga.I[0x2eb1]or ga:K(0xda7ec4,0x214d,0x2eb1))or ga.Q[-0xee6]or ga:R(0x324c,0x71b4,-0xee6)elseif k<=0x52e then k=l~=l and 0x53b-k or 0x4c668/k else k=z>M and 0x625-k or ga.I[0x1061]or ga:L(0x650b,0x6301,0x1061)end elseif k<=0x3f1 then if k<=0x3e8 then if k>0x3e3 then if k<0x3e7 then G=""k=_b<xa and 0x3281d8/k or ga.I[-0x441d]or ga:L(0x6010,0x5d71,-0x441d)elseif k<=0x3e7 then Da=0b10100010 k=d>Da and 0x478-k or ga.I[-0x19e3]or ga:L(0x818c,0x7e06,-0x19e3)else k,A=k+0x935,A()e[za]=A end elseif k>0x3de then if k>0x3df then k,l=0x6d1-k,0x2e else Da=0x1c k=d>Da and(ga.M[0x6b95]or ga:O(0xc3d79,0x4c3d,0x6b95))or 0xe4271/k end elseif k<=0x3dd then if k>0x3db then l=0xbf k=bb>=l and(ga.M[0x4ef3]or ga:O(0x8972b,0x5764,0x4ef3))or ga.Q[-0x1362]or ga:R(0b1001111,0x483f,-0x1362)else l=l+ab k=ab>0 and 0x35d372/k or ga.I[0x3f53]or ga:K(0x2d8b074,0x3406,0x3f53)end else Da=0x21 k=d>Da and k+-0x253 or ga.I[0x2185]or ga:L(0x4dd4,0x4ad7,0x2185)end elseif k>0x3ed then if k<=0x3ef then l=0b101110 k=Ha>l and 0x6dd-k or 0x75064/k else ab(G,e)ab=0b1111100 k=l>ab and(ga.M[0x345]or ga:O(0xbfdede,0x10dc,0x345))or 0x5cd-k end elseif k>0x3ec then Da=0x1ad k=d>Da and 0x54e-k or 0x641-k elseif k<0x3ea then k,l=ga.I[-0x370d]or ga:L(0x8a6,0x5b8,-0x370d),0b1101000 elseif k>0x3ea then k,l=0x6da-k,0x68 else k=Na>d and k+-0x350 or ga.I[0x6a6c]or ga:L(0x6f11,0x61f5,0x6a6c)end elseif k<=0x3fb then if k>0x3f7 then if k<0x3f9 then k,l=ga.I[-0x370d]or ga:K(0x6abae8,0x245b,-0x370d),0b1110110 elseif k>0x3f9 then k,l=k+-0b100001101,0x2e else k=d<=0 and(ga.I[-0x1462]or ga:K(0x1ac9c16,0x4ada,-0x1462))or ga.I[-0x4cf8]or ga:L(0x1391,0x133b,-0x4cf8)end elseif k>=0x3f6 then if k>0x3f6 then k,l=ga.M[0x4ef3]or ga:P(0x28a9,0b11010011,0x4ef3),0x70 else k,l=k+-0b100001000,0b1101000 end elseif k>0x3f2 then _a=_a(V,sa,P)sa,V=1,P V=V+sa O[0b1000][0b11][O[0b1000][0b10]],k,A=V,k+0x20a,_a else k,l=ga.I[-0x370d]or ga:L(0x51dd,0x4eef,-0x370d),0b10100100 end elseif k>=0x43a then if k>0x43d then z=z+Na k=Na>0 and(ga.M[0x6187]or ga:O(0x472bfa7,0x3574,0x6187))or ga.Q[-0x4973]or ga:S(0x142612,0x16f,-0x4973)elseif k<=0x43a then k=Na>d and 0x2ca4a/k or k+0x5d7 else G=G(e,za,j)e,za=j,1 e=e+za O[0b1000][0b11][O[0b1000][0b10]],k,ab=e,ga.Q[0x3f84]or ga:R(0x227a,0x644c,0x3f84),G end elseif k>=0x429 then if k<=0x429 then k,Da[0xc5d1]=k+0x1b1,ab G,e,za,j=O[0b1001][0b11][O[0b1001][0b10]],"B",O[0b1011][0b11][O[0b1011][0b10]],O[0b1000][0b11][O[0b1000][0b10]]else k=ab~=ab and(ga.I[-0x37ea]or ga:K(0x64c699a,0x75ee,-0x37ea))or k+0x638 end else k=za~=za and k+0x367 or 0x1033-k end elseif k<0x68e then if k<=0x638 then if k>0x5e1 then if k<=0x615 then if k>=0x614 then if k<=0x614 then k=A~=A and 0xadfc8/k or ga.M[0x5ab9]or ga:N(0xca2b,0x3f4a,0x5ab9)else k=za>j and(ga.M[-0x5bf2]or ga:O(0x4fa6dd9,0x35d7,-0x5bf2))or k+0x555 end elseif k<=0x5ff then va,B,P,V,k,sa,_a=0x7f,A,O[0b10][0b11][O[0b10][0b10]],e,0x96d-k,O[0b11][0b11][O[0b11][0b10]],O[0b111][0b11][O[0b111][0b10]]else k=za>j and 0xc95-k or k+0x833 end elseif k>0x61f then k=l<=0 and(ga.I[-0x108a]or ga:L(0x501e,0x494a,-0x108a))or 0x105c-k else k,Da[0xc5d1]=k+0x4a2,ab j,za,e,G=O[0b1000][0b11][O[0b1000][0b10]],O[0b1011][0b11][O[0b1011][0b10]],ga.M[-0x69a3]or ga:U(ga.l"{E6}",ga.l"zy",-0x69a3),O[0b1001][0b11][O[0b1001][0b10]]end elseif k>=0x5ba then if k<0x5da then if k<=0x5ba then k=M<Na and(ga.I[-0x731b]or ga:L(0x35d8,0x3588,-0x731b))or 0x610-k else e=e(za,j,Ja)j,za=1,Ja k,za=k+-0x297,za+j G,O[0b1000][0b11][O[0b1000][0b10]]=e,za end elseif k<=0x5da then G=G(e,za,j)e,za=j,1 k,e=k+0x1f0,e+za ab,O[0b1000][0b11][O[0b1000][0b10]]=G,e else G=G(e,za,j)k,e,za=ga.M[-0x6adb]or ga:O(0x4a52ad,0x50b5,-0x6adb),j,0b10 e=e+za O[0b1000][0b11][O[0b1000][0b10]],ab=e,G end elseif k<=0x5b1 then if k<=0x59a then if k>0x582 then G=G(e,za,j)e,za=j,1 k,e=0xf8f-k,e+za O[0b1000][0b11][O[0b1000][0b10]],ab=e,G else V=V(sa,P)_a=not V k=_a and 0x48ce70/k or k+-0x28d end else Da[0x689c]=ab j,e,za,k,G=O[0b1000][0b11][O[0b1000][0b10]],"B",O[0b1011][0b11][O[0b1011][0b10]],ga.Q[0x5858]or ga:S(0x6d9926,0x1121,0x5858),O[0b1001][0b11][O[0b1001][0b10]]end else k=Na~=Na and 0x3939f3/k or 0x52a9ac/k end elseif k>=0x66a then if k<0x67f then if k<0x676 then k,Da[0x5b59]=0x1b55be/k,ab elseif k>0x676 then ab=ab(G,ga.d(e))e,za,M,k,G=Da,0b10000000,ab,ga.I[-0x6c7b]or ga:L(0x17e1,0xeab,-0x6c7b),O[0b1010][0b11][O[0b1010][0b10]]else k,ab=ga.I[-0x6d14]or ga:L(0x2ae2,0x2a30,-0x6d14),ab(G,e,za)G,e=za,1 G=G+e Da,O[0b1000][0b11][O[0b1000][0b10]]=ab,G end elseif k<=0x686 then if k>0x67f then ab=0x97 k=l>ab and 0x405128/k or ga.I[-0x2db3]or ga:L(0x6c9b,0x5cad,-0x2db3)else k=j~=j and 0x110d-k or 0x4c9536/k end else k=l>Da and(ga.I[0x5dbb]or ga:K(0x1979d0,0x5892,0x5dbb))or 0xabc-k end elseif k<=0x65a then if k<=0x64b then if k<0x644 then Da[0x689c]=ab za,k,j,G,e=O[0b1011][0b11][O[0b1011][0b10]],ga.M[-0x759]or ga:N(0xd8bc,0x42b3,-0x759),O[0b1000][0b11][O[0b1000][0b10]],O[0b1001][0b11][O[0b1001][0b10]],"B"elseif k>0x644 then k=Ja~=Ja and k+0x3d3 or 0x1110-k else k=A~=A and(ga.I[0x5eeb]or ga:K(0x18259ea,0x37d2,0x5eeb))or ga.I[0x173f]or ga:L(0x27ab,0x19fc,0x173f)end else Da[0x5a22]=ab G,e,za,k,j=O[0b1001][0b11][O[0b1001][0b10]],"B",O[0b1011][0b11][O[0b1011][0b10]],k+-0x454,O[0b1000][0b11][O[0b1000][0b10]]end elseif k>0x662 then G=G(e,za,j)e,k,za=j,0x14c1-k,1 e=e+za O[0b1000][0b11][O[0b1000][0b10]],ab=e,G else k,G=0x375376/k,G(e,za,j)za,e=0b10,j e=e+za O[0b1000][0b11][O[0b1000][0b10]],ab=e,G end elseif k<=0x768 then if k<0x6f7 then if k<0x6aa then if k<0x699 then j={}j[0xc4b3]=ab j[0xf19]=l j[0x64de]=Da j[0xf7d3]=db j[0x857c]=e j[0x2b5e]=d Ja=0 j[0xa8e]=Ja j[0xfa1c]=Ja za=j return za elseif k<=0x699 then Da[0xc5d1]=ab za,k,j,e,G=O[0b1011][0b11][O[0b1011][0b10]],ga.I[-0xf7]or ga:K(0x18889c2,0x723d,-0b11110111),O[0b1000][0b11][O[0b1000][0b10]],ga.I[0x145a]or ga:J(ga.l"N<Ty",ga.l"b^",0x145a),O[0b1001][0b11][O[0b1001][0b10]]else G=G(e,za,j)e,za=j,1 e=e+za k,O[0b1000][0b11][O[0b1000][0b10]],ab=0xe58-k,e,G end elseif k>0x6e7 then k=j<Ja and(ga.I[0x2032]or ga:K(0x63365e,0x375e,0x2032))or ga.I[-0x2b35]or ga:L(0x6d1e,0x69af,-0x2b35)elseif k<=0x6d4 then if k<=0x6aa then k=j<Ja and 0x874-k or ga.Q[-0x10ce]or ga:R(0x25c2,0x67bf,-0x10ce)else k=Na<d and k+-0x62b or 0x453dd0/k end else k=d>0 and k+0x336 or 0xf04-k end elseif k<=0x711 then if k>=0x70e then if k<=0x70e then k=l<=0 and(ga.I[-0x73bc]or ga:K(0x97be66,0xee4,-0x73bc))or k+-0x647 else e,k,j,G,za=ga.Q[0x3a1]or ga:V(ga.l"sQsn",ga.l"lm",0x3a1),ga.M[0xbed]or ga:N(0xcd27,0x3fd4,0xbed),O[0b1000][0b11][O[0b1000][0b10]],O[0b1001][0b11][O[0b1001][0b10]],O[0b1011][0b11][O[0b1011][0b10]]end elseif k<=0x6f7 then k,Da[0xc5d1]=ga.I[-0x62a9]or ga:K(0xeb8252,0x2fbe,-0x62a9),ab za,e,j,G=O[0b1011][0b11][O[0b1011][0b10]],ga.Q[0x3a1]or ga:V(ga.l"<gw}",ga.l"*Z",0x3a1),O[0b1000][0b11][O[0b1000][0b10]],O[0b1001][0b11][O[0b1001][0b10]]else G=G(e,za,j)za,k,e=1,0x3f3b0a/k,j e=e+za O[0b1000][0b11][O[0b1000][0b10]],ab=e,G end elseif k>=0x733 then if k>0x733 then k=l<=0 and k+0x210 or ga.I[-0x6748]or ga:L(0x4dc,0x499,-0x6748)else k=Ja and 0x216fdf/k or k+0x73a end else ab=ab(G,e,za)e,G=1,za k,G=ga.I[-0x7bdd]or ga:K(0x94bdc,0x7f5a,-0x7bdd),G+e Da,O[0b1000][0b11][O[0b1000][0b10]]=ab,G end elseif k>=0x7ba then if k>=0x7d2 then if k>0x7d3 then k=za<j and(ga.Q[-0x6833]or ga:R(0x231e,0x5dd7,-0x6833))or k+0x602 elseif k<=0x7d2 then _a,B,va,V,P,k,sa=O[0b111][0b11][O[0b111][0b10]],A,0b1111111,e,O[0b10][0b11][O[0b10][0b10]],ga.Q[0x3d70]or ga:R(0x7808,0x2b63,0x3d70),O[0b11][0b11][O[0b11][0b10]]else k,G=0xd84-k,G(e,za,j)e,za=j,1 e=e+za ab,O[0b1000][0b11][O[0b1000][0b10]]=G,e end elseif k>=0x7ca then if k<=0x7ca then k,Da[0x3f16]=0xc0d-k,ab else k,Da[0x3f16]=0xc0d-k,ab G,j,e,za=O[0b1001][0b11][O[0b1001][0b10]],O[0b1000][0b11][O[0b1000][0b10]],"B",O[0b1011][0b11][O[0b1011][0b10]]end else k=Ja<=0 and(ga.M[-0x844]or ga:O(0x53803d2,0x38ea,-0x844))or 0x1374-k end elseif k>=0x781 then if k>=0x7a0 then if k>0x7a0 then Da[0xc5d1]=ab k=ib<=x and(ga.M[-0xc23]or ga:O(0x131dfd,0x497f,-0xc23))or ga.I[-0x21f0]or ga:L(0x7e55,0x7a12,-0x21f0)else k=z>M and 0x7fe-k or 0x23d4e0/k end else k,G=k+0x2a8,G(e,za,j)za,e=1,j e=e+za O[0b1000][0b11][O[0b1000][0b10]],ab=e,G end elseif k<=0x76f then if k<=0x769 then e=0 j,za,Ja=0b100,e,1 k=j~=j and k+0x5cf or k+0x86 else k=j>Ja and(ga.M[0x2b97]or ga:N(0xc37e,0x4a22,0x2b97))or ga.M[-0x6d6b]or ga:O(0x159b9c0,0x49c8,-0x6d6b)end else k,za,j,G,e=k+0b100111111,O[0b1011][0b11][O[0b1011][0b10]],O[0b1000][0b11][O[0b1000][0b10]],O[0b1001][0b11][O[0b1001][0b10]],ga.M[0x3bac]or ga:U(ga.l"TnSP",ga.l"U;",0x3bac)end elseif k>0x166 then if k>=0x248 then if k>0x2b4 then if k>0x2e7 then if k>0x2fc then if k<0x308 then if k>0x303 then if k>0x305 then Da=0b10111001 k=d<=Da and 0x551-k or k+-0b10111111 else l=0xbf k=y>=l and k+-0x2e0 or 0x5f3-k end elseif k>0x302 then l=0x68 k=L>l and 0xe11-k or ga.I[-0x370d]or ga:L(0x744a,0x715c,-0x370d)elseif k<0x301 then k,l=ga.Q[-0x3bc9]or ga:S(0x9a1b2c,0x349a,-0x3bc9),0b10111111 elseif k>0x301 then k,l=ga.M[0x4ef3]or ga:N(0xa5b0,0x2a34,0x4ef3),0b10110010 else k,l=ga.I[-0x370d]or ga:L(0x431b,0x402d,-0x370d),0b1010111 end elseif k>0x311 then if k<=0x312 then l=0xbf k=b<l and(ga.Q[-0x3bc9]or ga:S(0x1566840,0x74e0,-0x3bc9))or 0xbb4a/k else Da=0xc4 k=d<Da and k+-0b101110110 or ga.I[-0x72a0]or ga:K(0x2d0b4b,0x23d3,-0x72a0)end elseif k<=0x30b then if k>=0x309 then if k>0x309 then k,l=ga.M[0x4ef3]or ga:N(0x9d3f,0x12bf,0x4ef3),0xa4 else l=0xa4 k=Ea<=l and 0x5f7-k or ga.I[0x451d]or ga:L(0x2101,0x1fd7,0x451d)end else l=0b1110110 k=Wa>l and(ga.I[-0x370d]or ga:L(0x2deb,0x2afd,-0x370d))or 0x81f70/k end else l=0xbf k=oa<=l and(ga.M[0x4ef3]or ga:N(0x9df5,0x1279,0x4ef3))or ga.M[-0x4005]or ga:P(0x2b87,0x30e,-0x4005)end elseif k>0x2f5 then if k>=0x2fa then if k<=0x2fb then if k>0x2fa then Da=0b10101111 k=d>Da and k+-0b100010000 or 0x3f9-k else ab=0xcf k=l<=ab and(ga.I[-0x5832]or ga:L(0x3b17,0x3a07,-0x5832))or k+-0b101100 end else Da,c=0x30,0xf2 k=d<=Da and(ga.M[0x4e9d]or ga:N(0xaf80,0x265d,0x4e9d))or ga.M[0x4663]or ga:O(0x15f6969,0x3c9d,0x4663)end elseif k<=0x2f8 then if k>0x2f7 then Da=0x13b k=d<=Da and(ga.I[-0x542a]or ga:K(0x1164203,0x5003,-0x542a))or 0xb42a8/k else k,l=ga.I[-0x370d]or ga:L(0x3f6c,0x3c7e,-0x370d),0b1111000 end else ab=0x2e k=l>=ab and(ga.I[-0x3716]or ga:L(0x3242,0x25d3,-0x3716))or k+0xb24 end elseif k>0x2ee then if k>0x2f2 then za=za+Ja k=Ja>0 and k+0x320 or ga.M[0x7838]or ga:O(0x333dd51,0x127f,0x7838)elseif k<=0x2f0 then k,l=ga.I[-0x370d]or ga:L(0x31a5,0x2eb7,-0x370d),0b1101000 else Da=0x25f k=d<Da and 0x1ce6a/k or 0x47b-k end elseif k>0x2ec then F,da,ab=0b11111111,0b1000001,{}ab[0xe610]=d G=0 ab[0xc5d1]=G ab[0x689c]=G ab[0x3f16]=G ab[0x9a41]=G ab[0x5a22]=G ab[0x2651]=G ab[0x2f32]=G ab[0x5924]=G k,ab[0xf28b]=k+0b100000011,G ab[0x5b59]=G ab[0x2dd8]=G ab[0xd24d]=G G,Da,ab=db,ab,O[1][0b11][O[1][0b10]]e=Da elseif k<=0x2eb then if k<=0x2e9 then Da=0xc1 k=d<=Da and(ga.I[-0x48f1]or ga:L(0x4557,0x4377,-0x48f1))or 0x584-k else Da=0x90 k=d<=Da and 0x51855/k or 0x5f6-k end else Da=0xbf k=d<=Da and(ga.I[-0x6285]or ga:L(0x110f,0x1015,-0x6285))or 0x3bb-k end elseif k>0x2cd then if k<0x2dc then if k>=0x2d6 then if k<0x2da then k,l=ga.M[0x4ef3]or ga:O(0x1313d1d,0x3de5,0x4ef3),0b1101000 elseif k>0x2da then k,l=ga.I[-0x370d]or ga:L(0x1f63,0x1c75,-0x370d),0x70 else k,l=0x5c8-k,0b10111111 end elseif k>=0x2d4 then if k<=0x2d4 then k=za>0 and(ga.I[0x2f59]or ga:K(0x53877d2,0x5d78,0x2f59))or k+0xaed else Da=0x275 k=d<=Da and 0x9d882/k or ga.M[0x2eed]or ga:O(0x1affb9,0x4751,0x2eed)end else e,k,G,j,za=ga.M[-0x69a3]or ga:U(ga.l"M>0t",ga.l"dj",-0x69a3),0xac9-k,O[0b1001][0b11][O[0b1001][0b10]],O[0b1000][0b11][O[0b1000][0b10]],O[0b1011][0b11][O[0b1011][0b10]]end elseif k<0x2df then if k<=0x2dd then if k<=0x2dc then Da=0x57 k=d>Da and(ga.M[-0xb8a]or ga:O(0x14894fa,0x76e,-0xb8a))or ga.M[-0x3a38]or ga:O(0x6e329b,0x7e41,-0x3a38)else Da=0xf8 k=d>Da and 0x97933/k or 0x361-k end else Da=0x12 k=d<Da and(ga.M[-0x358a]or ga:N(0xcdcf,0x4430,-0x358a))or ga.I[0x270e]or ga:L(0x50e2,0x4fe1,0x270e)end elseif k<0x2e2 then if k>0x2df then k,l=ga.M[0x4ef3]or ga:O(0x9a3b61,0x616f,0x4ef3),0xa4 else k=Na<d and 0x2ec-k or 0x2a594/k end elseif k<=0x2e2 then Da=0b10011110 k=d<=Da and 0x49a-k or 0x7c242/k else l=0b10100100 k=R<l and k+0xc4f or 0x880c2/k end elseif k<0x2c2 then if k>=0x2be then if k<=0x2c0 then if k<=0x2bf then if k<=0x2be then l=l+ab k=ab>0 and 0x112a-k or 0xd82-k else k,l=ga.I[-0x370d]or ga:K(0x16757d2,0x7ab0,-0x370d),0b101110 end else Ia,Da=0xd3,0x26f k=d<=Da and(ga.I[-0x4e07]or ga:L(0x6c2b,0x6900,-0x4e07))or 0x587-k end else ab,x,ib=0b10111111,0x3f,0b10111101 k=l>ab and k+0b1100011 or ga.M[-0x6ed3]or ga:N(0xa7ae,0x2ba3,-0x6ed3)end elseif k>=0x2b7 then if k<=0x2b7 then k,l=0x5a5-k,0b1101000 else G=0b101 k=Da==G and k+-0x1ac or k+0xdc end else Da=0x28a k=d>=Da and(ga.M[-0x79d5]or ga:N(0xc6aa,0x4bba,-0x79d5))or 0xac677/k end elseif k>=0x2c6 then if k>=0x2c8 then if k>0x2c8 then k,l=ga.I[-0x370d]or ga:L(0x2607,0x2319,-0x370d),0b101110 else k,l=ga.Q[-0x3bc9]or ga:R(0x5297,0x1798,-0x3bc9),0xa4 end elseif k<=0x2c6 then Da=0x100 k=d<=Da and(ga.M[-0xc0f]or ga:N(0xb3d0,0x3954,-0xc0f))or ga.I[-0x765e]or ga:L(0x5a60,0x56d4,-0x765e)else l=0x68 k=Ia>=l and(ga.I[-0x370d]or ga:K(0x12c0e0c,0x6679,-0x370d))or ga.M[0x7670]or ga:O(0x19076c,0x4dba,0x7670)end elseif k<0x2c3 then k,l=k+0x2c,0xb2 elseif k<=0x2c3 then k,l=0x8174a/k,0b101110 else k,l=k+0b101001,0x57 end elseif k<0x27e then if k<=0x266 then if k>=0x255 then if k<=0x25f then if k>0x25c then Da=0x63 k=d<=Da and(ga.M[-0x691b]or ga:N(0xe3cb,0x6780,-0x691b))or 0x648-k elseif k>=0x256 then if k<=0x256 then k,l=0x544-k,0x7a else k,l=ga.Q[-0x3bc9]or ga:S(0xd1cdf6,0x479d,-0x3bc9),0b1101000 end else l=0xa4 k=I>=l and(ga.Q[0x1dba]or ga:R(0xc6b,0x43fc,0x1dba))or ga.M[0x4ef3]or ga:O(0x131e8f3,0x3d98,0x4ef3)end elseif k<0x264 then k,l=k+0b10001100,0x97 elseif k>0x264 then k=Ja>0 and 0xc292c/k or 0x8b1-k else k,ab=ga.M[-0x58e8]or ga:O(0x1d8411,0x5b77,-0x58e8),G end elseif k>=0x24e then if k<0x252 then if k>0x24e then Da=0xf9 k=d>Da and 0x519-k or k+0b10001100 else Da=0x2d7 k=d>=Da and 0x38f-k or ga.I[0x41d0]or ga:L(0x615b,0x5ec1,0x41d0)end elseif k>0x252 then k,l=k+0x9a,0x68 else k,l=0x6cc3c/k,0xbf end elseif k<0x24a then k,l=ga.Q[-0x3bc9]or ga:S(0x86b848,0x2dfc,-0x3bc9),0b10010111 elseif k<=0x24a then k,l=0x538-k,0b10110010 else l=0x68 k=gb<=l and 0x5c0-k or ga.I[-0x370d]or ga:K(0x13fd62a,0x6d34,-0x370d)end elseif k<=0x270 then if k>0x26d then if k<=0x26f then if k<=0x26e then Da=0b11001010 k=d<=Da and 0x73422/k or 0x513e2/k else Da=0b10010111 k=d<=Da and(ga.M[-0x4691]or ga:N(0xc1fc,0x480f,-0x4691))or ga.I[0x2f62]or ga:K(0x11776b8,0x65b6,0x2f62)end else Da=0xc7 k=d>Da and(ga.I[-0x6acd]or ga:L(0x21c3,0x1dd1,-0x6acd))or ga.I[-0x32c2]or ga:L(0x7484,0x7098,-0x32c2)end elseif k<=0x26b then if k>=0x269 then if k>0x269 then ab=0x7a k=l>ab and(ga.M[-0x235c]or ga:N(0xe587,0x612b,-0x235c))or 0x11161b/k else G=G(e,za,j)za,e=1,j e=e+za ab,O[0b1000][0b11][O[0b1000][0b10]]=G,e k=S<za and 0x12d922/k or ga.Q[-0x128d]or ga:R(0x7983,0x2f87,-0x128d)end else Da[0x3f16]=ab k=D>v and(ga.I[-0x21f0]or ga:K(0x148deb5,0x4d2d,-0x21f0))or ga.I[-0xfca]or ga:K(0x1bda25a,0x31a4,-0xfca)end else l=0x2e k=Sa<=l and 0x21a86/k or 0x55b-k end elseif k>=0x279 then if k>0x27a then k,l=ga.M[0x4ef3]or ga:O(0x12964ff,0x302e,0x4ef3),0x2e elseif k<=0x279 then k=Ja>0 and k+0xc2e or k+0x875 else l=0b1110110 k=U<=l and k+0b100001100 or k+0x74 end elseif k<=0x276 then l=0b10100100 k=f>l and 0x9ef-k or 0x564-k else Da=0x3b9 k=d<=Da and 0x457a5/k or ga.M[0x6f20]or ga:N(0xe9b0,0x5f98,0x6f20)end elseif k>0x298 then if k<0x2aa then if k>0x29f then if k>0x2a4 then k,l=ga.M[0x4ef3]or ga:O(0x7a0ae9,0x7c43,0x4ef3),0xbf else l=0xbf k=ia<=l and 0x592-k or ga.I[0x160c]or ga:K(0x3a096e,0x52c3,0x160c)end elseif k>=0x29d then if k<=0x29d then Da=0b11101001 k=d<=Da and(ga.M[0x27a9]or ga:O(0xb794d7,0x1b3e,0x27a9))or 0x2ee03/k else k,za=ga.M[-0x3444]or ga:P(0x2bba,0b110110110,-0x3444),O[0b100][0b11][O[0b100][0b10]]e=za[G]d[l]=e end elseif k>0x29a then k,l=k+0x53,0x68 else k,l=0x79f2c/k,0x68 end elseif k>=0x2b0 then if k<=0x2b3 then if k<=0x2b1 then if k<=0x2b0 then k=ab~=ab and k+-0x1c3 or 0x309-k else k,l=ga.I[-0x370d]or ga:K(0xd896c6,0x49f6,-0x370d),0x68 end else k,l=0x7e86a/k,0b1101000 end else l=0b10111111 k=h>=l and 0x31c-k or 0x7eb58/k end elseif k<=0x2ab then if k<=0x2aa then k,l=0x598-k,0b10111111 else Da=0b101110011 k=d<Da and(ga.I[-0x6c40]or ga:K(0xe235aa,0x4c25,-0x6c40))or 0x3cb24/k end else l=0b1101000 k=J<l and 0xa9d34/k or 0x7d9c4/k end elseif k<=0x28e then if k>=0x288 then if k<=0x28a then if k<0x289 then j="c"za,j=j..e,O[0b1001][0b11][O[0b1001][0b10]]_a,k,A,Ja=O[0b1000][0b11][O[0b1000][0b10]],0x7d5-k,O[0b1011][0b11][O[0b1011][0b10]],za elseif k<=0x289 then k=G<e and(ga.Q[0x509a]or ga:S(0xa4e7a9,0x1641,0x509a))or 0x68b-k else k,l=ga.Q[-0x3bc9]or ga:R(0x2a62,0x5f85,-0x3bc9),0x57 end else Da=0x2c k=d<=Da and 0x9ae0c/k or ga.I[-0x4d06]or ga:K(0x7e9eea,0x260e,-0x4d06)end elseif k>=0x285 then if k<=0x285 then l=0x68 k=ra>l and(ga.M[0x4ef3]or ga:O(0x6e546d,0x707d,0x4ef3))or ga.I[-0x6b05]or ga:L(0x8a89,0x7fa8,-0x6b05)else k,l=ga.Q[-0x3bc9]or ga:R(0x1a4d,0x4f6e,-0x3bc9),0b1101000 end elseif k>0x27e then G=G(e,za,j)za,e=0b10,j e=e+za k,ab,O[0b1000][0b11][O[0b1000][0b10]]=ga.Q[0x6a3e]or ga:S(0x37ba0b8,0x3ea8,0x6a3e),G,e else Da=0x28a k=d>Da and 0x7906e/k or ga.I[0x4169]or ga:L(0x63a5,0x624c,0x4169)end elseif k<=0x295 then if k<=0x294 then if k<=0x293 then if k>0x292 then s,Ca,ab=0b10000011,0x33,0xa4 k=l<=ab and k+0x3f3 or k+0x61a else k,l=ga.I[-0x370d]or ga:K(0x5b17b2,0x1f20,-0x370d),0x57 end else Da=0b11101101 k=d>Da and k+-0x42 or ga.I[-0x38ec]or ga:L(0x1014,0xf6c,-0x38ec)end else k,l=0x583-k,0b1111000 end elseif k<=0x297 then Da=0xfd k=d<=Da and(ga.I[-0x4c5e]or ga:K(0x69e948,0x233a,-0x4c5e))or ga.I[0x6d01]or ga:L(0x627f,0x6072,0x6d01)else k,l=ga.I[-0x370d]or ga:K(0x14b6c22,0x7118,-0x370d),0b10111111 end elseif k>=0x1e0 then if k<=0x214 then if k>=0b111111011 then if k<=0x20a then if k<0x205 then if k>0b111111111 then l=0x68 k=Ba>l and k+0b11101011 or 0x2c420/k elseif k>=0x1fe then if k<=0b111111110 then G,e=1,Qa za=G k=e~=e and(ga.I[0x4ab3]or ga:L(0xd99,0x630,0x4ab3))or 0x4d2-k else l=0x68 k=ea>=l and 0x4ed-k or k+-0b111010100 end else k,l=ga.I[-0x370d]or ga:K(0x144a4e4,0x6ecd,-0x370d),0b11110010 end elseif k>0x207 then k=Na~=Na and k+0x352 or 0x1d3f70/k elseif k<=0x206 then if k>0x205 then k,G=0xdeb-k,G(e,za,j)e,za=j,1 e=e+za O[0b1000][0b11][O[0b1000][0b10]],ab=e,G else Da=0x11d k=d>Da and(ga.M[0x288a]or ga:N(0xd09c,0x54c9,0x288a))or 0x468eb/k end else k,l=0x4f5-k,0b1101000 end elseif k<=0x211 then if k<=0x20e then if k>0x20d then k,l=ga.I[-0x370d]or ga:K(0x627676,0x218e,-0x370d),0b1101000 elseif k>0x20b then k,l=0x60216/k,0x57 else Da[0xc5d1],ja=ab,0x21 j,k,G,e,za=O[0b1000][0b11][O[0b1000][0b10]],0x7d632/k,O[0b1001][0b11][O[0b1001][0b10]],"B",O[0b1011][0b11][O[0b1011][0b10]]end else Da=0xb3 k=d<=Da and k+-0b11011111 or k+-0b10011010 end elseif k<=0x213 then k,l=k+0b11011011,0x68 else k,l=0x502-k,0x68 end elseif k<0x1eb then if k>0x1e7 then if k<=0x1e8 then k,l=0x4d6-k,0b1101000 else l=0b1110000 k=Ya>l and 0x5989e/k or 0x43b-k end elseif k<0x1e4 then if k>0x1e0 then k,l=ga.I[-0x370d]or ga:L(0x20d9,0x1deb,-0x370d),0b10100100 else Da=0b10111111 k=d>=Da and k+0b100001100 or 0x54c-k end elseif k>0b111100100 then Da=0b10000111 k=d>Da and(ga.M[0x3b6f]or ga:N(0xdc84,0x52fc,0x3b6f))or k+0b101101 else Da=0x297 k=d<=Da and 0x499-k or k+0b111000110 end elseif k>=0b111110010 then if k<=0b111110111 then if k<=0b111110110 then if k>0b111110010 then k,l=ga.M[0x4ef3]or ga:N(0xa153,0x26d3,0x4ef3),0xa4 else k,l=k+0xfc,0b10100100 end else _a,A,k,V,sa="B",O[0b1001][0b11][O[0b1001][0b10]],k+0x6f5,O[0b1011][0b11][O[0b1011][0b10]],O[0b1000][0b11][O[0b1000][0b10]]end else k,l=ga.M[0x4ef3]or ga:O(0x14c5c35,0x2431,0x4ef3),0b1101000 end elseif k>=0b111101101 then if k>0b111101101 then k,l=ga.I[-0x370d]or ga:K(0xce6452,0x4670,-0x370d),0b10100100 else k,l=0x5a456/k,0b10111111 end else l=0b10111111 k=K>l and 0xe02-k or ga.Q[-0x3bc9]or ga:S(0x9c5c52,0x355f,-0x3bc9)end elseif k>=0x233 then if k>0x23b then if k>0x244 then if k<=0x245 then Da=0x226 k=d>Da and(ga.I[-0x83b]or ga:L(0x1fc1,0x1c5a,-0x83b))or 0x4e9-k else Da=0b1101001 k=d<=Da and(ga.Q[0x77f5]or ga:R(0x56d4,0x1c17,0x77f5))or 0x3d9-k end elseif k>0x240 then l=0b101110 k=wa>l and 0x532-k or k+0x12b elseif k>=0x23f then if k>0x23f then k,l=ga.I[-0x370d]or ga:K(0x57dc72,0x1e00,-0x370d),0b11001100 else k,e=k+0xdbc,ga.c(e(za,j))end else k=l<Da and(ga.I[0x357]or ga:K(0x69c4be,0x727c,0x357))or ga.I[0x5046]or ga:L(0x715b,0x7102,0x5046)end elseif k<0x238 then if k>=0x234 then if k>0x234 then Da=0x3e2 k=d>Da and(ga.M[-0x7680]or ga:O(0x1ad5ef1,0x25e3,-0x7680))or ga.I[-0x6f44]or ga:L(0x564d,0x5373,-0x6f44)else k,l=k+0b10111010,0xbf end else Da=0x3a1 k=d<Da and 0x5a716/k or ga.I[-0x2ab2]or ga:K(0x2f7878,0x2abe,-0x2ab2)end elseif k>0x23a then Da=0x7a k=d>Da and(ga.I[-0x4658]or ga:K(0x2492ca,0x14dc,-0x4658))or ga.I[-0x2885]or ga:K(0x4fc492,0x65e0,-0x2885)elseif k>0x239 then k,l=ga.M[0x4ef3]or ga:N(0xe888,0x5d2c,0x4ef3),0b101110 elseif k>0x238 then Da=0 k=d>Da and 0x567-k or ga.M[0x7d5e]or ga:N(0xb70e,0x3cc6,0x7d5e)else k,l=ga.M[0x4ef3]or ga:N(0x876a,0xd0a,0x4ef3),0b11110010 end elseif k<0x225 then if k<0x21e then if k<0x217 then G=0 j,za,e=1,0b100,G k=za~=za and 0x479-k or ga.M[0x1744]or ga:O(0xef045d,0x6139,0x1744)elseif k<=0x217 then k,l=ga.M[0x4ef3]or ga:O(0xf146a5,0x739,0x4ef3),0b10010111 else Da=0x1ee k=d>Da and(ga.M[0x5c9b]or ga:O(0x1a983d1,0x239f,0x5c9b))or ga.M[-0x72da]or ga:N(0x861f,0xcc1,-0x72da)end elseif k<0x221 then l=0x68 k=Ta<=l and 0x56f-k or 0x50c-k elseif k<=0x221 then k,l=0x50f-k,0x68 else k,ab=0x190f8/k,1/-0 end elseif k<=0x22d then if k>0x228 then Da=0b11110100 k=d>Da and(ga.I[0x7c64]or ga:L(0x5110,0x4fdd,0x7c64))or k+-0x14c elseif k>=0x226 then if k<=0x226 then l=0b10100100 k=o>=l and 0x64b54/k or ga.Q[-0x54aa]or ga:R(0x2c92,0x6324,-0x54aa)else Da=0x2af k=d<=Da and k+-0b11011110 or ga.I[-0x2f0a]or ga:K(0x1662c0a,0x5b08,-0x2f0a)end else j,e,G,k,za=O[0b1000][0b11][O[0b1000][0b10]],ga.M[0x3bac]or ga:U(ga.l"%bvv",ga.l"_W",0x3bac),O[0b1001][0b11][O[0b1001][0b10]],ga.Q[0x7056]or ga:R(0x1199,0x4c52,0x7056),O[0b1011][0b11][O[0b1011][0b10]]end elseif k<=0x22e then Da=0x2f6 k=d<Da and 0x6d64a/k or ga.I[0xe1b]or ga:L(0x40e7,0x3dcc,0xe1b)else k,l=0x51d-k,0x68 end elseif k>=0b110100011 then if k>0b111000011 then if k>0b111010010 then if k<0b111011001 then if k<=0x1d5 then Da=0x123 k=d<=Da and 0x6328a/k or k+0b110100010 else k,l=0x4c6-k,0xa4 end elseif k>0b111011010 then ab=0x70 k=l>ab and 0x593-k or 0x2195c/k elseif k<=0b111011001 then Da=0x41 k=d<=Da and k+-0x4c or ga.I[0x634e]or ga:K(0x1b14c4a,0x789d,0x634e)else k,G=0xc91-k,e end elseif k<0x1cc then if k<0b111001000 then Da=0x330 k=d<=Da and 0x154c4/k or ga.I[-0xc06]or ga:K(0x167ef76,0x6835,-0xc06)elseif k<=0b111001000 then j=j+A k=A>0 and 0x937-k or 0xdeb-k else a,e,ba=0b11,za,0b10 k=Va>Y and k+0x11f or 0x534-k end elseif k<0x1d1 then if k<=0b111001100 then l=0b1101000 k=ya<=l and(ga.M[-0x391a]or ga:N(0xea2a,0x625a,-0x391a))or ga.M[0x4ef3]or ga:N(0xdde5,0x5289,0x4ef3)else k,l=0x54f60/k,0b1111000 end elseif k<=0b111010001 then Da=0b1101001 k=d>=Da and 0x417-k or 0x3f2-k else l=0b1101000 k=T<=l and(ga.Q[-0x6181]or ga:S(0x3cf35c,0x506e,-0x6181))or k+0b100011100 end elseif k<0b110110110 then if k>0b110101001 then if k>0b110110100 then k,l=ga.Q[-0x3bc9]or ga:S(0x10cc992,0x5bbf,-0x3bc9),0xa4 elseif k>0x1ae then Ga,sa,V,k,B,va,P=0x7f,za,O[0b111][0b11][O[0b111][0b10]],ga.M[-0x2a3]or ga:N(0xef00,0x5849,-0x2a3),O[0b10][0b11][O[0b10][0b10]],_a,O[0b11][0b11][O[0b11][0b10]]else l=0xa4 k=N<=l and k+0x140 or ga.M[-0x18f]or ga:O(0x1e5241c,0x7a86,-0x18f)end elseif k>0b110101000 then Da=0b110011010 k=d<Da and 0x1eeba/k or 0x2cd-k elseif k>0x1a5 then Da[0x5b59]=ab za,j,e,k,G=O[0b1011][0b11][O[0b1011][0b10]],O[0b1000][0b11][O[0b1000][0b10]],ga.Q[0x3a1]or ga:V(ga.l"DSRg",ga.l"6#",0x3a1),ga.M[-0x47e3]or ga:N(0xf29e,0x6ec0,-0x47e3),O[0b1001][0b11][O[0b1001][0b10]]elseif k>0b110100011 then k,l=k+0b101001001,0b1010111 else k,l=0x491-k,0x2e end elseif k<0b110111010 then if k<0b110111000 then k,e,G,za,j=0x733-k,ga.I[0x813]or ga:J(ga.l"$dC",ga.l"^Z",0x813),O[0b1001][0b11][O[0b1001][0b10]],O[0b1011][0b11][O[0b1011][0b10]],O[0b1000][0b11][O[0b1000][0b10]]elseif k>0x1b8 then Da,w=0xe4,0x5c k=d>Da and 0x60255/k or ga.M[0x4dbb]or ga:O(0x97f7c1,0x267f,0x4dbb)else k,l=ga.I[-0x370d]or ga:L(0x64c4,0x61d6,-0x370d),0x97 end elseif k>=0b111000010 then if k>0b111000010 then Da=0x3ac k=d>Da and 0x44607/k or k+0b110000001 else l=0xbf k=ta<l and k+0b100101100 or ga.I[-0x4cf8]or ga:L(0x162b,0x15d5,-0x4cf8)end elseif k<=0x1ba then Da=0xf6 k=d<Da and(ga.I[0x5db3]or ga:L(0x5486,0x5259,0x5db3))or ga.I[0x2a5c]or ga:K(0x9a352,0x2fc,0x2a5c)else l=0xbf k=Q>=l and(ga.I[-0x370d]or ga:L(0x378e,0x34a0,-0x370d))or ga.M[-0x3f01]or ga:O(0x275061,0x628e,-0x3f01)end elseif k>=0x181 then if k>0b110001101 then if k>0x19e then if k<=0x19f then l=0b1110000 k=qa<=l and(ga.I[0x66eb]or ga:K(0x72b823,0x3bb3,0x66eb))or ga.M[0x4ef3]or ga:O(0x13950c5,0x3ea9,0x4ef3)else Da=0x124 k=d>Da and 0x330-k or 0x2fbf5/k end elseif k<=0b110011101 then if k>=0x193 then if k<=0x193 then k,l=k+0b101011011,0b1100 else k,l=k+0x151,0xa4 end else k,l=ga.I[-0x370d]or ga:K(0x1232516,0x635e,-0x370d),0b1101000 end else Da=0x347 k=d>Da and(ga.Q[-0x5bd]or ga:R(0x1527,0x5990,-0x5bd))or ga.M[-0x4d69]or ga:O(0x619854,0x1762,-0x4d69)end elseif k<0b110001010 then if k>=0b110000010 then if k>0b110000010 then Da=0x25f k=d>Da and(ga.I[-0x731d]or ga:L(0x1f6f,0x1e18,-0x731d))or ga.M[-0x1798]or ga:O(0x1bda31,0x4747,-0x1798)else Da=0b11000111 k=d<Da and 0x145b0/k or 0x3f2-k end else k,l=ga.I[-0x370d]or ga:L(0x5370,0x5082,-0x370d),0b10111111 end elseif k<=0b110001100 then if k>0x18b then l=0xf2 k=c<l and k+0x644 or ga.Q[-0x3bc9]or ga:S(0x116cd0c,0x5f2a,-0x3bc9)elseif k>0x18a then k,l=0x479-k,0b1010111 else k,l=ga.M[0x4ef3]or ga:N(0xe279,0x67fd,0x4ef3),0x2e end else l=0xa4 k=la>l and(ga.Q[0x3240]or ga:R(0x64b,0x4d17,0x3240))or 0x47b-k end elseif k>0x177 then if k<0b101111101 then if k>0x17a then k,l=ga.Q[-0x3bc9]or ga:S(0x44e7a6,0x1785,-0x3bc9),0b1101000 elseif k>0b101111001 then Da=0x365 k=d<=Da and k+0b1111000 or k+-0x87 else l=0x68 k=jb>=l and(ga.M[0x6844]or ga:O(0x34f528,0x472e,0x6844))or ga.I[-0x370d]or ga:L(0x6b67,0x6879,-0x370d)end elseif k>=0b101111111 then if k>0x17f then Da=0x25 k=d>Da and(ga.M[-0x2ef6]or ga:O(0x7242a9,0x6633,-0x2ef6))or 0x20100/k else Da=0x275 k=d<Da and k+0x84 or 0x454-k end else Da=0x3be k=d<=Da and 0x3f4-k or 0x376-k end elseif k>0b101101110 then if k>0x176 then k,l=ga.M[0x4ef3]or ga:N(0xee13,0x6393,0x4ef3),0xa4 elseif k>0b101110101 then l=0b1101000 k=i>l and 0x464-k or ga.M[0x3575]or ga:O(0xc5cec1,0x1543,0x3575)else k,l=k+0b101111001,0b1101000 end elseif k<=0x16d then if k>0b101101100 then k,l=k+0b110000001,0b10100100 elseif k<=0x169 then l=0b10010111 k=_<=l and 0x457-k or ga.M[0xffd]or ga:N(0xd952,0x4e8b,0xffd)else Da=0b101110011 k=d<=Da and k+0x42 or 0x1fd08/k end else k,l=ga.I[-0x370d]or ga:L(0xfad,0xcbf,-0x370d),0xa4 end elseif k<0b10110010 then if k>0b1100000 then if k<=0b10010000 then if k<0b1111110 then if k<0x71 then if k<0x68 then if k>=0x65 then if k>0b1100101 then ya,q,db,S,T,Wa,i=0xd6,0x67,0,0b10101100,0b10010001,0b11110000,0b10100110 z,M,Na=db,0b100,1 k=M~=M and 0x2574/k or 0x381ae/k else Da=0b1010 k=d>=Da and(ga.I[-0x7b91]or ga:K(0x344e72,0x29f8,-0x7b91))or ga.I[0x4fe]or ga:L(0x4a91,0x46d8,0x4fe)end else G,za,k,e,ab,j,Da=O[0b11][0b11][O[0b11][0b10]],l,ga.I[0x5997]or ga:L(0x1158,0x21a,0x5997),O[0b10][0b11][O[0b10][0b10]],z,0x7f,O[0b111][0b11][O[0b111][0b10]]end elseif k<0x6c then Na=Na+l k=l>0 and(ga.I[0x7716]or ga:L(0x4d7c,0x3dc4,0x7716))or k+0x5d0 elseif k<=0b1101100 then k,Na=ga.I[-0x5d31]or ga:K(0x1821b1a,0x6a68,-0x5d31),"c"M,Na=Na..z,O[0b1001][0b11][O[0b1001][0b10]]l,Da,d=O[0b1011][0b11][O[0b1011][0b10]],O[0b1000][0b11][O[0b1000][0b10]],M else Da=0b111000010 k=d<=Da and(ga.I[0x6661]or ga:K(0x67ee5a,0x7848,0x6661))or ga.I[-0x4162]or ga:K(0x842cf,0x1c31,-0x4162)end elseif k<=0b1110111 then if k<=0b1110101 then if k<0b1110011 then Da=0x2c k=d>=Da and 0x120ae/k or k+0xb6 elseif k>0x73 then Da=0b1000001 k=d<Da and 0x27c-k or ga.I[-0x7c53]or ga:K(0xdbcd5e,0x770c,-0x7c53)else Da=0x6c k=d<=Da and(ga.I[-0x23d6]or ga:K(0x884647,0x4b25,-0x23d6))or ga.I[-0x6f45]or ga:K(0xb8626e,0x311c,-0x6f45)end else M=0 Na,l,d=M,1,0b100 k=d~=d and(ga.I[0x5ad]or ga:K(0x97ce8,0xe0a,0x5ad))or ga.I[0x6df]or ga:L(0x6071,0x5315,0x6df)end elseif k<0x79 then Da,_=0b10000011,0b110110 k=d<=Da and(ga.I[-0x379d]or ga:K(0x2ecb4a,0x2d87,-0x379d))or k+0x2b8 elseif k>0b1111001 then Ta,Da=0xb3,0b11010100 k=d>Da and 0x1b94c/k or 0x44b-k else Da=0x216 k=d<=Da and k+0x52 or ga.I[0xe83]or ga:K(0xbe826,0x2401,0xe83)end elseif k<0b10001000 then if k>=0x83 then if k>0x86 then z=0 k=db==z and(ga.I[-0x654d]or ga:L(0x21ff,0x2117,-0x654d))or k+0b1011 elseif k>=0b10000100 then if k>0b10000100 then Da=0b1011100 k=d>Da and 0x671e/k or 0x7758/k else k,l=k+0x26a,0xbf end else Da=0x308 k=d>Da and(ga.I[0xb20]or ga:L(0x619e,0x5eea,0xb20))or k+0x1ab end elseif k<0b10000000 then Da=0xdc k=d<=Da and 0x3c0c/k or 0x6ace/k elseif k<=0x80 then k,l=ga.I[-0x370d]or ga:L(0x5bbb,0x58cd,-0x370d),0xf2 else l=0x68 k=cb<=l and(ga.M[-0x5f7]or ga:N(0xa34b,0x288e,-0x5f7))or ga.M[0x4ef3]or ga:O(0x1726397,0x2b3a,0x4ef3)end elseif k>0x8c then if k>=0x8e then if k>0b10001110 then Da=0b101110110 k=d<=Da and(ga.I[-0x6835]or ga:K(0x1336615,0x7335,-0x6835))or k+0x8e else Da=0b10001110 k=d>=Da and k+0x48 or 0x1ba16/k end else Da=0xb8 k=d<Da and(ga.I[0x64d5]or ga:K(0xf36d90,0x75c2,0x64d5))or k+0x32f end elseif k>=0b10001010 then if k>0x8a then Da=0b1010011 k=d>=Da and 0b10101010-k or ga.I[0x4a5c]or ga:K(0xc9f51,0x687d,0x4a5c)else M,Na={},0 M[0xc4b3]=Na M[0xf19]=Na M[0x64de]=Na d={}Na=d M[0xf7d3]=Na d={}Na=d M[0x857c]=Na d={}Na=d M[0x2b5e]=Na M[0xa8e]=Qa M[0xfa1c]=db z=M return z end elseif k<=0x88 then Da=0x120 k=d>Da and(ga.I[0x48a2]or ga:L(0x5b93,0x59f2,0x48a2))or k+0x6c else Da=0b100001 k=d<Da and 0x5c0c/k or k+-0b1001111 end elseif k<=0b10100001 then if k<=0x9a then if k>=0x94 then if k>0x99 then xa,Y,Va,d,_b=0x30,0xe0,0x99,0,0xa1 Da,ab,l=0b100,1,d k=Da~=Da and(ga.I[0x357]or ga:K(0x1e5b25,0x20d3,0x357))or k+0xdbf elseif k<=0x97 then if k>0x94 then Da=0x65 k=d<=Da and k+0x1c8 or ga.I[-0x53eb]or ga:L(0x6945,0x6562,-0x53eb)else Da=0x73 k=d<Da and(ga.I[0x624d]or ga:K(0xb5d5da,0x3569,0x624d))or ga.I[-0x2bb9]or ga:K(0x14998e,0x1a26,-0x2bb9)end else Da=0xf4 k=d<Da and 0x32d-k or ga.I[0x758e]or ga:L(0x4632,0x4478,0x758e)end elseif k>0b10010010 then Da=0x9b k=d<=Da and 0x84a5/k or ga.I[0x3f7d]or ga:L(0x722,0x67f,0x3f7d)elseif k<=0b10010001 then k,l=k+0x25d,0b11001100 else k,M=0x56396/k,"c"z,M=M..db,O[0b1001][0b11][O[0b1001][0b10]]Na,l,d=z,O[0b1000][0b11][O[0b1000][0b10]],O[0b1011][0b11][O[0b1011][0b10]]end elseif k<=0b10011111 then if k<=0b10011110 then if k>=0b10011101 then if k<=0x9d then Da=0x255 k=d>Da and(ga.I[-0xe70]or ga:L(0x7efc,0x7b9f,-0xe70))or ga.M[0x403d]or ga:N(0x8bf1,0x13d,0x403d)else Da,Q=0b10010110,0xfc k=d>=Da and k+-0b1011 or k+0x5f end else Da=0b10010001 k=d>Da and 0x1b4ec/k or ga.I[-0xa09]or ga:L(0x53c2,0x50d7,-0xa09)end else k,l=0x1d1d2/k,0x68 end elseif k<=0b10100000 then k,l,d=ga.I[0x3b9d]or ga:L(0x81af,0x797c,0x3b9d),Na,O[0b110][0b11][O[0b110][0b10]]else Da=0b1001001 k=d<=Da and 0xa10/k or ga.I[0x142d]or ga:K(0x142f97,0x4873,0x142d)end elseif k<=0b10101011 then if k>0xa8 then if k>=0xaa then if k<=0xaa then z,m,fa,k,db=Qa,0xf7,0b10110011,ga.I[0x1de]or ga:L(0x264d,0x20e8,0b111011110),O[0b110][0b11][O[0b110][0b10]]else k,l=ga.Q[-0x3bc9]or ga:S(0x26b722,0xd37,-0x3bc9),0x68 end else k,z=0x18f-k,M end elseif k<=0b10100111 then if k>=0xa4 then if k>0xa4 then za=0 j,Ja,A=za,0b100,1 k=Ja~=Ja and(ga.I[0x2032]or ga:L(0x6aa3,0x68d9,0x2032))or ga.I[-0x1eea]or ga:L(0x87b6,0x7d4a,-0x1eea)else Da=0x87 k=d>=Da and(ga.I[0x7543]or ga:L(0x52d3,0x50ec,0x7543))or ga.I[-0x1d85]or ga:K(0xd055f,0xab1,-0x1d85)end else Da=0x9e k=d>=Da and(ga.I[0x2d7d]or ga:K(0xde46ee,0x4d2e,0x2d7d))or k+0b10100100 end else Da=0xec k=d<=Da and 0x345-k or 0x2b6-k end elseif k>=0xae then if k<=0b10110000 then if k<=0b10101110 then Da=0x15 k=d<=Da and k+0x43 or ga.I[-0x5190]or ga:L(0x742a,0x73fd,-0x5190)else Da,ma=0x26b,0xf3 k=d<=Da and(ga.I[-0x4bdb]or ga:L(0x5a3d,0x5a14,-0x4bdb))or 0xf2-k end else Da=0b11111010 k=d<=Da and 0x302-k or k+0x2ae end elseif k>0xac then Da=0x53 k=d>Da and 0b110001000-k or k+0x265 else Da=0b11100 k=d<Da and k+-0b1101 or 0x299d4/k end elseif k<0b101100 then if k<=0x15 then if k>=0b1111 then if k>=0x12 then if k<=0x14 then if k>0x13 then k,za,Da,G,e,ab,l=ga.I[-0xe92]or ga:K(0x18b9ff2,0x1fa7,-0xe92),0x7f,db,O[0b10][0b11][O[0b10][0b10]],d,O[0b11][0b11][O[0b11][0b10]],O[0b111][0b11][O[0b111][0b10]]elseif k<=0x12 then Da,f=0b1101111,0x62 k=d<=Da and k+0xae or ga.I[0x67b0]or ga:L(0x53c,0x53c,0x67b0)else G,k,j,Ja,ab,e,za=M,ga.I[-0x2b3e]or ga:L(0x4ed5,0x4513,-0x2b3e),Da,0b1111111,O[0b111][0b11][O[0b111][0b10]],O[0b11][0b11][O[0b11][0b10]],O[0b10][0b11][O[0b10][0b10]]end else Da=0x28 k=d<Da and k+0x1e1 or ga.I[0x21b8]or ga:L(0x16f8,0x13e2,0x21b8)end elseif k>=0b10000 then if k<=0x10 then Da=0x48 k=d>Da and(ga.I[-0x29d5]or ga:L(0x37d0,0x356e,-0x29d5))or ga.I[-0x3fad]or ga:L(0xb6b,0xa74,-0x3fad)else ab,G,k,l,Da=O[0b1011][0b11][O[0b1011][0b10]],O[0b1000][0b11][O[0b1000][0b10]],0x107d5/k,O[0b1001][0b11][O[0b1001][0b10]],"B"end else k,A,e,za,Ja,_a,j=k+0xfca,G,O[0b111][0b11][O[0b111][0b10]],d,O[0b10][0b11][O[0b10][0b10]],0b1111111,O[0b11][0b11][O[0b11][0b10]]end elseif k<=0b111 then if k<0b11 then if k>0 then Da=0b11111100 k=d>Da and(ga.I[0x62c6]or ga:K(0x3da9b8,0x17c6,0x62c6))or 0xb3-k else Da=0x9f k=d<=Da and(ga.I[0x3b]or ga:K(0x713092,0x7892,0b111011))or ga.I[0x2897]or ga:K(0x9270e,0x5369,0x2897)end elseif k>0b11 then Da,wa,Ea,b,ra,ca=0xce,0x5a,0b1111111,0b1111101,0b10001011,0xb5 k=d<Da and(ga.I[-0x2921]or ga:L(0x113b,0x1129,-0x2921))or 0x80-k else Da=0b10000 k=d<Da and(ga.I[0x4aaa]or ga:L(0x3813,0x3743,0x4aaa))or 0b1001011-k end elseif k<=0b1100 then if k>0b1010 then L,Qa,Fa,La,n,oa,ka=0b10101,0x36,0xc8,0b1000001,0xbc,0x12,0b11101100 k=t~=Qa and(ga.I[-0x6f1c]or ga:L(0x581e,0x57e1,-0x6f1c))or 0x4c8/k else Da,J,Ka=0x68,0x9c,0xac k=d>=Da and 0x7d-k or 0x5e6/k end else k,Xa,z,aa=k+0b11011000,0b10011101,M,0xf9 end elseif k>=0x1f then if k<0b100101 then if k<=0b100011 then if k<=0b11111 then Da=0x42 k=d<=Da and 0x101-k or k+0b10000010 else Da=0b10101000 k=d<=Da and(ga.I[-0x5549]or ga:L(0x2a0b,0x2922,-0x5549))or ga.I[0x8b4]or ga:L(0x1e7a,0x1b31,0x8b4)end else Da=0b10 k=d<=Da and 0x5004/k or 0x7764/k end elseif k<=0b101001 then if k<=0x25 then Da,bb=0b101,0b11001110 k=d>=Da and(ga.I[-0x69c0]or ga:K(0x20deab,0x5365,-0x69c0))or ga.I[-0x3502]or ga:K(0xc763a,0x5782,-0x3502)else eb,Da=0b11101011,0x255 k=d>=Da and(ga.I[0x7d5c]or ga:L(0x73c9,0x70d7,0x7d5c))or ga.I[0x6f49]or ga:L(0x6202,0x5ea9,0x6f49)end else Da=0x342 k=d<Da and(ga.I[0x270c]or ga:K(0xb089c,0xb6a,0x270c))or 0xa3c5/k end elseif k>=0b11011 then if k<0b11100 then Da=0x3ac k=d>=Da and 0x282f/k or ga.I[-0xc91]or ga:L(0x607d,0x5e4a,-0xc91)elseif k<=0b11100 then Da=0xbc k=d>Da and(ga.I[0x13ed]or ga:L(0x1047,0xf91,0x13ed))or 0b11111111-k else Da=0b1100011 k=d>=Da and 0x28-k or ga.I[-0x583c]or ga:L(0x456d,0x44e7,-0x583c)end elseif k<0x17 then R,Da=0b11101110,0b11000010 k=d<=Da and(ga.I[-0x12e8]or ga:L(0x378d,0x34a4,-0x12e8))or ga.I[0x2bf6]or ga:K(0x1598900,0x702a,0x2bf6)elseif k>0x17 then Da=0b110000101 k=d>=Da and 0xa50/k or 0xd3-k else Da,ta=0x77,0b10111110 k=d<Da and(ga.I[-0x57dd]or ga:K(0x78f06,0xd59,-0x57dd))or ga.I[0x1cb7]or ga:L(0x6cfd,0x6ac2,0x1cb7)end elseif k>=0x43 then if k<0x4e then if k<0x47 then if k>=0b1000100 then if k>0x44 then db=""k=ua<p and 0xcf-k or ga.I[0x1bb]or ga:L(0x4f7d,0x4e00,0x1bb)else z=z+Na k=Na>0 and k+0x75c or 0x4f7-k end else e,k,za,G,ab=O[0b1011][0b11][O[0b1011][0b10]],0x1b0e2/k,O[0b1000][0b11][O[0b1000][0b10]],"B",O[0b1001][0b11][O[0b1001][0b10]]end elseif k<0b1001001 then if k>0b1000111 then Da=0b10100 k=d<=Da and(ga.I[0x2a18]or ga:L(0x71e4,0x6f06,0x2a18))or ga.I[0x4411]or ga:K(0xd3330,0x401,0x4411)else Da=0x4f k=d>Da and k+0b111111101 or ga.I[-0x5949]or ga:L(0x4854,0x4509,-0x5949)end elseif k>0x49 then Da=0x1f4 k=d<Da and 0x4f1b/k or 0x521d/k else Da,k,ab,G,e=O[0b1001][0b11][O[0b1001][0b10]],ga.I[-0x6ccc]or ga:L(0x235c,0x1a13,-0x6ccc),"B",O[0b1011][0b11][O[0b1011][0b10]],O[0b1000][0b11][O[0b1000][0b10]]end elseif k>0b1010110 then if k>0b1011110 then Da=0b1111101 k=d>=Da and k+0x8b or 0x8a0/k elseif k>0b1011001 then E,k,Ba,Qa,la,X=0b11101111,ga.I[-0x5c48]or ga:K(0x8b904,0xccf,-0x5c48),0b11010001,db,0x82,0b1100100 else Ja,e,k,za,j=O[0b1000][0b11][O[0b1000][0b10]],O[0b1001][0b11][O[0b1001][0b10]],0x39308/k,"B",O[0b1011][0b11][O[0b1011][0b10]]end elseif k<=0b1010100 then if k<=0x50 then if k<=0b1001110 then Da=0x2e5 k=d<Da and(ga.I[0x5c6b]or ga:L(0x65ab,0x635d,0x5c6b))or ga.I[-0x137d]or ga:K(0x781b9,0xf19,-0x137d)else k,db=ga.I[-0x256d]or ga:L(0x7e0a,0x7d83,-0x256d),z end else jb,o,Da,Ra,Pa=0b111100,0xa4,0x321,0b100000,0b10100 k=d<=Da and(ga.I[0x5482]or ga:K(0xf9fca,0x4791,0x5482))or k+0b10000011 end else k,G,Da,e,ab=ga.I[-0x27b2]or ga:L(0x3662,0x2bdd,-0x27b2),O[0b1011][0b11][O[0b1011][0b10]],O[0b1001][0b11][O[0b1001][0b10]],O[0b1000][0b11][O[0b1000][0b10]],"B"end elseif k>0x38 then if k<=0b111110 then if k>=0b111101 then if k<=0x3d then ua,p,z=0b10110,0b1110111,0 M,d,Na=z,1,0b100 k=Na~=Na and 0b10001101-k or 0x1a50b/k else Da=0x2d0 k=d>=Da and 0b10001100-k or ga.I[0x53a9]or ga:K(0x727356,0x7d0a,0x53a9)end elseif k>0b111010 then Da=0x34 k=d>Da and(ga.I[0x2101]or ga:K(0x1bd0c32,0x77b8,0x2101))or ga.I[-0b11100101]or ga:K(0x58e596,0x1dc7,-0xe5)else Da=0x25 k=d<Da and 0xe04c/k or 0b110111010-k end elseif k<=0b111111 then ia,M,ha,k,Aa,z,fb,Ma,Sa,db,W,na,I,Qa,C,cb=0b1111,O[0b1000][0b11][O[0b1000][0b10]],0b110001,ga.I[-0x79b9]or ga:K(0x17d49a1,0x6fdb,-0x79b9),0b1011001,O[0b1011][0b11][O[0b1011][0b10]],0b11110000,0b11011101,0xc7,"B",0x5d,0b10011110,0b10010000,O[0b1001][0b11][O[0b1001][0b10]],0x43,0x70 else Da=0x274 k=d>=Da and(ga.I[0x72c8]or ga:K(0x797e82,0x5110,0x72c8))or ga.I[0xfc6]or ga:L(0x783c,0x757c,0xfc6)end elseif k<0x30 then if k>=0b101101 then if k>0x2d then Da,pa=0xf7,0xdb k=d>Da and 0x5e/k or ga.I[-0x7045]or ga:K(0x2e7984,0x4d66,-0x7045)else Da,ea=0x26,0x79 k=d<=Da and 0x1815/k or 0b100100110-k end else ab,G=nil,0b11 k=Da==G and 0x249c/k or ga.I[-0x7493]or ga:K(0x42cd6a,0x4dea,-0x7493)end elseif k<0x33 then if k<=0x30 then Da=0x3bf k=d>Da and 0xfd-k or ga.I[0x5ccc]or ga:K(0xa4dfb,0x632b,0x5ccc)else Da,Ua=0b11101001,0x6e k=d>=Da and 0b1100000-k or 0b10101111-k end elseif k<=0b110011 then Na=Na+l k=l>0 and 0xb91-k or 0x27159/k else Da=0x280 k=d<Da and(ga.I[0x2edb]or ga:K(0x9dc62,0xe63,0x2edb))or ga.I[-0x5756]or ga:K(0x12a0dc,0x4cc9,-0x5756)end elseif k<0b11111001 then if k<=0xdb then if k>0xc8 then if k>0b11010000 then if k>0b11011000 then if k>0b11011001 then l=0x97 k=Aa>=l and(ga.M[-0x7e36]or ga:N(0x807e,0x54c,-0x7e36))or ga.I[-0x370d]or ga:K(0x107b64,0x58d,-0x370d)else Da=0b11100011 k=d<Da and(ga.I[0x1175]or ga:L(0x5ad3,0x5773,0x1175))or ga.I[-0x61f0]or ga:L(0x6832,0x64b1,-0x61f0)end elseif k>=0xd7 then if k<=0xd7 then Da=0x390 k=d>Da and(ga.I[-0x3d93]or ga:L(0x2d2b,0x2cfb,-0x3d93))or ga.I[0x160c]or ga:K(0x43315e,0x5f57,0x160c)else k,l=k+0x216,0x2e end elseif k<=0b11010101 then k,ab=ga.I[-0x31d1]or ga:L(0x2b3,0x1f7,-0x31d1),0/0 else Da=0b10001110 k=d<=Da and(ga.I[0x5a35]or ga:K(0x11a10d2,0x6650,0x5a35))or k+0x1b4 end elseif k<=0xcc then if k<0xcb then if k<=0xc9 then Da=0x77 k=d<=Da and(ga.M[0x543c]or ga:O(0x175c357,0x29ac,0x543c))or 0x43f-k else Da=0x73 k=d<=Da and k+0x23b or 0x1c030/k end elseif k<=0xcb then gb,Da=0xef,0xfe k=d<=Da and(ga.I[-0x41e1]or ga:L(0x49f9,0x49c8,-0x41e1))or 0x1308/k else N,h,Da,k,qa,K,ab,G,y,Ha,l=0x77,0b111100,ga.I[0x145a]or ga:J(ga.l"=$+;",ga.l")B",0x145a),ga.I[0x2ef2]or ga:L(0x178f,0xdde,0x2ef2),0xa0,0b111111,O[0b1011][0b11][O[0b1011][0b10]],O[0b1000][0b11][O[0b1000][0b10]],0x8a,0b11110110,O[0b1001][0b11][O[0b1001][0b10]]end elseif k<=0xcf then if k>0xcd then k,l=ga.M[0x4ef3]or ga:O(0x164f209,0x2c33,0x4ef3),0xbf else Da=0x3da k=d>=Da and 0x469-k or 0x11b7a/k end else Da=0b1110 k=d>Da and(ga.I[0x512]or ga:K(0x26c732,0x1584,0x512))or 0x41c-k end elseif k>=0b10111100 then if k>=0b11000010 then if k<0xc7 then if k<=0b11000010 then M=M+d k=d>0 and(ga.I[-0x5d43]or ga:L(0x8276,0x733b,-0x5d43))or ga.I[0xff3]or ga:K(0x4aeec06,0x535a,0xff3)else Da=0x5d k=d<=Da and(ga.I[0x1eb9]or ga:L(0x7114,0x6e7f,0x1eb9))or k+0x1e5 end elseif k<=0xc7 then e,ab,k,G,za=O[0b1011][0b11][O[0b1011][0b10]],O[0b1001][0b11][O[0b1001][0b10]],ga.I[0x77e7]or ga:L(0x5aac,0x4c2a,0x77e7),"B",O[0b1000][0b11][O[0b1000][0b10]]else Da=0xc9 k=d<=Da and(ga.I[-0x74d0]or ga:L(0x1d35,0x1bb3,-0x74d0))or 0x1e5f0/k end elseif k>=0xc0 then if k>0b11000000 then k,l=0x3af-k,0b1010111 else Da=0b101101 k=d>Da and(ga.I[-0x28f1]or ga:K(0x35bd86,0x61df,-0x28f1))or 0b101101110-k end else M[Na]=ab k=Fa>ka and(ga.I[-0x137d]or ga:K(0x11ea0e,0x22d4,-0x137d))or ga.I[0x1dd1]or ga:K(0x52ff2,0x180,0x1dd1)end elseif k<0b10110110 then if k<=0b10110100 then if k>0xb2 then Da=0x357 k=d<=Da and(ga.I[-0xcd9]or ga:L(0x52e8,0x52bd,-0xcd9))or k+0b101011 else k,Ja,j,za,ab,e,G=ga.I[-0x417b]or ga:L(0x6ea3,0x6544,-0x417b),0x7f,Da,O[0b10][0b11][O[0b10][0b10]],O[0b111][0b11][O[0b111][0b10]],O[0b11][0b11][O[0b11][0b10]],M end else Da=0x2e k=d>Da and 0x117fc/k or ga.M[0x4707]or ga:N(0xbd8d,0x3244,0x4707)end elseif k<=0b10111001 then if k<0xb8 then Da=0b11000101 k=d>Da and(ga.I[-0x41ee]or ga:L(0x7b00,0x7a38,-0x41ee))or ga.I[-0x615c]or ga:L(0x334e,0x3338,-0x615c)elseif k>0b10111000 then Da=0b11001110 k=d>Da and 0x10e46/k or 0x351-k else k,l=ga.M[0x4ef3]or ga:O(0x30e703,0x45d0,0x4ef3),0b10010111 end else Da=0b100101110 k=d>Da and(ga.I[-0x381f]or ga:L(0x353b,0x34ab,-0x381f))or ga.I[0x4248]or ga:K(0x25c652,0x4784,0x4248)end elseif k>0b11101001 then if k>0xf1 then if k>0b11110100 then if k<=0b11110110 then M=0 Na,l,d=M,1,0b100 k=d~=d and(ga.I[0x7548]or ga:K(0x7b67,0x529,0x7548))or ga.I[0x6aed]or ga:K(0x26c6e12,0x7b4c,0x6aed)else Da=0b1000100 k=d>Da and 0x2d590/k or ga.M[0x7670]or ga:O(0x6895ec,0x353a,0x7670)end elseif k>0b11110011 then Da=0b100011101 k=d>=Da and(ga.I[-0x7d89]or ga:K(0xde0a6c,0x6e06,-0x7d89))or 0x2a4b8/k elseif k>0b11110010 then k,l=0x2c7ea/k,0b10100100 else k,l=0x2c4fc/k,0xa4 end elseif k>0b11101101 then if k>=0b11110000 then if k>0xf0 then Da=0b1100 k=d<Da and k+-0b11001100 or k+-0b11101110 else Ya,Da=0x9b,0x8a k=d>=Da and(ga.I[-0x3d06]or ga:L(0xe2a,0xd8c,-0x3d06))or 0x5a00/k end else k,l=0x2bc32/k,0xa4 end elseif k<0b11101100 then if k<=0xea then Da=0x29c k=d>Da and(ga.I[0x59a6]or ga:K(0x404244,0x38eb,0x59a6))or 0x2ce-k else Da=0x84 k=d>Da and(ga.I[0x4f60]or ga:K(0x74fd2,0xba8,0x4f60))or ga.I[0x1f16]or ga:K(0x362f2a,0x7365,0x1f16)end elseif k>0b11101100 then Na,u=d,0b1111110 k=ha<=C and 0x18d-k or 0xfbd-k else G,k,za,ab,e="B",k+0x626,O[0b1000][0b11][O[0b1000][0b10]],O[0b1001][0b11][O[0b1001][0b10]],O[0b1011][0b11][O[0b1011][0b10]]end elseif k<=0b11100011 then if k<=0b11100000 then if k>0b11011110 then if k>0b11011111 then k,l=0x29040/k,0b101110 else Da=0x389 k=d<Da and(ga.I[-0x59b0]or ga:L(0x5454,0x530b,-0x59b0))or ga.I[-0x7933]or ga:K(0x42a9d8,0x39f7,-0x7933)end elseif k>0b11011101 then k,l=ga.I[-0x370d]or ga:K(0xeefbc,0x511,-0x370d),0b10100100 elseif k<=0b11011100 then G=1 k=Da==G and(ga.I[0x14bc]or ga:L(0x4a4c,0x4896,0x14bc))or ga.I[0x6ce3]or ga:K(0x3363ca,0x2ffc,0x6ce3)else Da=0x1ab k=d>Da and k+0x2b1 or k+0xcc end elseif k<0xe2 then k,l=0x2932e/k,0b1010111 elseif k<=0b11100010 then Da=0b110101 k=d<=Da and(ga.I[0x4f04]or ga:K(0xe0fee,0x3ca9,0x4f04))or ga.I[0x4256]or ga:L(0x6c90,0x6c1b,0x4256)else Da=0b10110000 k=d>Da and 0x7d07/k or 0x106-k end elseif k>=0b11100111 then if k<=0xe8 then if k>0b11100111 then k,Qa=ga.I[-0x54ab]or ga:L(0x2a19,0x29a2,-0x54ab),""else Da=0x98 k=d>Da and k+0x237 or ga.I[-0x4245]or ga:K(0x46bc14,0x1cfa,-0x4245)end else Da=0xa7 k=d>Da and(ga.I[0x52b2]or ga:L(0x6046,0x5e12,0x52b2))or 0x489-k end elseif k<0b11100101 then Da=0x57 k=d<Da and 0x9a14/k or ga.I[-0x26fa]or ga:K(0xd915c2,0x4bf4,-0x26fa)elseif k>0b11100101 then M=0 k=z==M and(ga.I[0x4330]or ga:L(0x4f4c,0x4f07,0x4330))or 0x6108/k else k,M,Na=0x599-k,O[0b110][0b11][O[0b110][0b10]],z end elseif k>=0b100101010 then if k<0b101001010 then if k>0x13a then if k>=0x143 then if k<=0x147 then if k<=0x143 then Da=0xc4 k=d>Da and k+0x1a4 or 0x3b9-k else k,l=ga.M[0x4ef3]or ga:N(0xe31c,0x68a0,0x4ef3),0b1101000 end else Da=0x36c k=d>Da and k+0x16a or ga.I[0x2ffc]or ga:K(0xf7c04,0xa57,0x2ffc)end elseif k>0b101000000 then Da=0x2d7 k=d>Da and k+0x11b or ga.I[-0xa97]or ga:L(0x2e75,0x2dca,-0xa97)elseif k>0x13d then Da=0b1010 k=d<=Da and 0x4d5-k or 0x11800/k else l=0b1111000 k=X>l and k+-0b1000110 or k+0x1b1 end elseif k>=0b100110010 then if k<0b100110101 then if k>0x132 then l=0b101110 k=pa>l and(ga.Q[-0x3bc9]or ga:S(0xaa9eb6,0x3a3d,-0x3bc9))or 0x248-k else Da=0b10110001 k=d>Da and(ga.M[-0x17e3]or ga:O(0xeca061,0x2e44,-0x17e3))or ga.M[-0x3f01]or ga:O(0x4f76b9,0x3b13,-0x3f01)end elseif k>0x135 then Da=0x1f4 k=d>Da and k+0b1100011 or ga.M[0x7319]or ga:N(0xee0e,0x62f5,0x7319)else l=0b101110 k=Pa>=l and(ga.I[0x5b4a]or ga:T(0x4e1,0x56c8,0x5b4a))or ga.I[-0x370d]or ga:L(0x3705,0x3417,-0x370d)end elseif k>=0b100101101 then if k<=0x12d then k,l=ga.I[-0x370d]or ga:L(0x3737,0x3449,-0x370d),0b10100100 else k,l=ga.Q[-0x3bc9]or ga:S(0x6f8baa,0x2613,-0x3bc9),0xbf end else Da=0x185 k=d>Da and(ga.M[-0x2a7]or ga:N(0xbaa1,0x308e,-0x2a7))or ga.I[-0x6ad9]or ga:K(0x19192d1,0x7261,-0x6ad9)end elseif k>0b101011111 then if k>0x163 then if k>0x165 then k,l=ga.M[0x4ef3]or ga:O(0x7ca785,0x7fc9,0x4ef3),0x68 else k,l=0x415e6/k,0b1110000 end elseif k<0b101100010 then if k>0b101100000 then k,l=ga.I[-0x370d]or ga:L(0x34ff,0x3211,-0x370d),0b101110 else k,l=0x44e-k,0xa4 end elseif k>0x162 then Da=0xd8 k=d<=Da and(ga.M[0x349d]or ga:O(0x4c5488,0x7a4,0x349d))or ga.M[0x1c9c]or ga:N(0xc5bd,0x496d,0x1c9c)else Da=0x3c2 k=d<=Da and(ga.I[0x13ee]or ga:K(0x71835f,0x685b,0x13ee))or k+0x76 end elseif k>0x157 then if k>=0b101011100 then if k>0x15c then Da=0b10010110 k=d>Da and 0x3a5b7/k or 0x448e0/k else ab=0b1110110 k=l<=ab and 0x8d5-k or ga.Q[0x5ddf]or ga:S(0x4d1cf44,0x70a5,0x5ddf)end else k,l=0x3f2be/k,0x76 end elseif k>0x150 then if k>0b101010110 then k,l=ga.I[-0x370d]or ga:L(0x5ae3,0x57f5,-0x370d),0b10100100 else k,l=0x3e9f4/k,0b1010111 end elseif k<0x14e then l=0x68 k=Ra>=l and(ga.I[0x641c]or ga:L(0x6dda,0x6afd,0x641c))or ga.Q[-0x3bc9]or ga:S(0x3af2d2,0x141f,-0x3bc9)elseif k>0b101001110 then G=0b100 k=Da==G and(ga.Q[-0x7a75]or ga:R(0x409e,0x54e,-0x7a75))or 0xf6c0/k else k,l=k+0x1a0,0x2e end elseif k>0b100010010 then if k<=0b100011111 then if k>0x11b then if k>0x11e then l=0b10111111 k=Ua>l and 0x46b-k or ga.Q[-0x3bc9]or ga:R(0x4bcc,0xef,-0x3bc9)elseif k>0b100011100 then Da=0b101111111 k=d>Da and k+0x2d8 or ga.I[-0x54c8]or ga:K(0x78768e,0x273c,-0x54c8)else Da=0xdd k=d>Da and(ga.I[0x6fd3]or ga:L(0x1041,0xd7e,0x6fd3))or ga.I[0x35a3]or ga:L(0x1c67,0x1aec,0x35a3)end elseif k<=0x11a then if k<0b100010111 then Da=0x43 k=d>Da and(ga.M[-0x778]or ga:N(0xa246,0x26dc,-0x778))or 0x1a095/k elseif k<=0x117 then k,l=0x33162/k,0x68 else k,l=ga.Q[-0x3bc9]or ga:R(0xc17,0x4118,-0x3bc9),0b1110000 end else Da=0x3a1 k=d>Da and(ga.I[-0x4bff]or ga:K(0x17a4b08,0x682d,-0x4bff))or 0x3d2-k end elseif k>0x124 then if k>0x126 then l=0x2e k=m>=l and 0x415-k or ga.M[0x59a1]or ga:O(0x45e60,0x7e60,0x59a1)else Da=0x38d k=d<=Da and 0x4e3-k or 0x37572/k end elseif k<0x122 then g,r,ab=0b1100011,0b10000111,0x57 k=l<=ab and 0x35b19/k or 0x3ffeb/k elseif k>0b100100010 then Da=0b110011010 k=d<=Da and 0x307-k or 0x132d4/k else Da=0x2af k=d>=Da and(ga.I[0x6e99]or ga:L(0x22a7,0x207f,0x6e99))or 0x2cf56/k end elseif k>0x107 then if k<0x110 then if k>=0x10c then if k<=0x10c then k,ab=k+-0x50,1/0 else k,l=ga.M[0x4ef3]or ga:O(0x54c85,0x5449,0x4ef3),0b10100100 end else Da=0b1111111 k=d<Da and(ga.M[-0x55ef]or ga:N(0xc443,0x4ba2,-0x55ef))or ga.M[-0x122a]or ga:O(0xf34e09,0x196f,-0x122a)end elseif k>=0x111 then if k<=0b100010001 then Da=0x213 k=d<=Da and 0x14eda/k or k+0x13b else G=0b10 k=Da==G and 0x34e9e/k or k+0b110100110 end else za,G,k,j,e=O[0b1011][0b11][O[0b1011][0b10]],O[0b1001][0b11][O[0b1001][0b10]],0xd4a-k,O[0b1000][0b11][O[0b1000][0b10]],"B"end elseif k<=0b11111110 then if k>=0b11111011 then if k<=0b11111101 then if k>0xfb then Da=0x8f k=d>Da and 0b110011001-k or k+-0x6f else Da=0x339 k=d>Da and 0x4a6-k or k+0xc9 end else k,l=0x2e824/k,0b1100 end elseif k<=0b11111001 then Da=0x2b k=d<Da and(ga.I[0x4004]or ga:K(0x5497c,0x4256,0x4004))or ga.I[0x3463]or ga:L(0x626b,0x61fa,0x3463)else k,l=0x2dc6c/k,0b101110 end elseif k>=0x106 then if k>0b100000110 then Da=0x1ee k=d>=Da and(ga.I[0x3eec]or ga:L(0x4ec0,0x4ca7,0x3eec))or k+0x66 else Da=0b1101 k=d<=Da and 0x206e2/k or ga.M[-0xdae]or ga:N(0x9472,0x1c5e,-0xdae)end else Da=0x12 k=d>Da and(ga.M[-0x1f70]or ga:O(0x8825b1,0x7620,-0x1f70))or k+0x64 end end end end,function(g,h)return function(b)local i,_,f,d,c,l,k,a k=0x64 while true do if k<=0b1011111 then if k>=0b111011 then if k>0x3b then l=0b101 d=l-_ k,d,c=0x9a-k,1,-d c=c-d else k=c and 0x639/k or k+-0b10100 end elseif k>0x1b then k,c=0x42-k,-1 else i,f=f,f.sub f=g.c(f(i,a,c))return g.d(f)end elseif k>0x64 then k,a,f=0b100110100-k,0b101,"~"f,a,i=f.rep,a-_,f f=f(i,a)b=b..f elseif k>0b1100010 then f,i=#b,0b101 f,_=0,f%i k=_>f and 0xd2 or 0x62 else a,i,c,f=".....",b,g:n{h[0b11],h[0b10],h[0b100]},h[1][0b11][h[1][0b10]]f=f(i,a,c)a,c=1,0 c=_>c k=c and 0b1011111 or k+-0b100111 end end end end,function(a,b,c,d)a.I[d]=a.h(b,c)return a.I[d]end,function(g,h)return function(b,_)local a,l,o,d,e,k,m,f,c,n,q,p k=0b11101110 while true do if k<=0b10011001 then if k<=0b1011110 then if k>0x25 then if k<=0x54 then d=d(g.d(l))k,f=0b11000001,f..d else k,n=0x88,g.c(n(p,e))end elseif k<=0b1100 then if k>0b1000 then m=m(n,p)p,n,a=_,h[0b10][0b11][h[0b10][0b10]],#_ a,e=1,q%a k,e=0x6a-k,e+a else k=q<o and 0x6d8/k or 0x60 end else k=q>o and 0b100000000-k or 0x2060/k end elseif k<0x88 then if k<=0x60 then k=c~=c and k+0b1111011 or 0b100110000-k else k=c>0 and 0x25 or 0b11100000 end elseif k<=0b10001000 then k,l=0b1010100,g.c(l(m,g.d(n)))else k=q>o and k+0x42 or 0xc4 end elseif k<0xdb then if k>0b11000100 then p,d,l,m,n=1,h[1][0b11][h[1][0b10]],h[0b11][0b11][h[0b11][0b10]],h[0b10][0b11][h[0b10][0b10]],b k,p=0b1100,q+p elseif k>0b11000001 then k=c<=0 and 0b1000 or 0x60 elseif k<=0b10011010 then k=c<=0 and 0x84f2/k or 0xd0 else q=q+c k=c>0 and 0b101011010-k or 0xc4 end elseif k>=0b11100000 then if k>0xe0 then d,l,f,q=#b,1,"",0 o,c=d-l,l k=o~=o and 0xdb or 0x72 else k=c~=c and k+-0b11 or 0b10011010 end elseif k>0b11011011 then k=q<o and 0b110111000-k or 0xd0 else return f end end end end,function(a,b,c,d)a.I[d]=a.a(b,0x3872)/c return a.I[d]end,function(a,b,c,d)a.Q[d]=a.a(b,0xc8fd)+c return a.Q[d]end,function(a,b,c,d)a.M[d]=a.a(b,0xfe79)/a.a(c,0x55bb)return a.M[d]end,function(g,r)return function(t)local o,m,u,e,s,c,l,k,j,_,p,i,f,d,v,h,q,b k=0x9a while true do if k<=0b1101110 then if k<=0b101000 then if k<=0x18 then if k<=0b1001 then if k<=0b1000 then p,u,v,e=r[0b110][0b11][r[0b110][0b10]],nil,1,c p=p(e,v)e=0 k=p~=e and 0xba or k+0x66 else return _ end else e,v=#q,1 p=e+v k,q[p]=0x51,u e,p,v=o..u,r[0b111][0b11][r[0b111][0b10]],-0x800 p=p(e,v)o=p end elseif k>0b11111 then o,f={},1 q,k,o=o,0b11111,""else c=#t k=f<=c and 0xfc or 0xf0 end elseif k>0b1010001 then e=1 p,e=f+e,#t k=p<=e and 0x5f64/k or 0xc4 elseif k<=0x3a then e,v,j,p=t,f,f,r[0b111][0b11][r[0b111][0b10]]p=p(e,v,j)p,u=1,p k,f=0xc4,f+p else d=d+m k=(m>0 and d>l or m<=0 and d<l or m~=m)and 0x1f or 0b1000 end elseif k<0xde then if k<0b10111010 then f=r[1][0b11][r[1][0b10]]_=f[t]k=_ and 0b1001 or 0b101000 elseif k<=0b10111010 then p=#t k=f<=p and 0b11110100-k or 0b11000100 else e,v,p=c,1,r[0b10][0b11][r[0b10][0b10]]p=p(e,v)c=p k=u and 0x1260/k or 0b100010101-k end elseif k<0b11110000 then j,e,p,v=f,">I2",r[0b11][0b11][r[0b11][0b10]],t p=p(e,v,j)e=0b10 v,h,i,j,f=#o,0b101,p,r[0b10][0b11][r[0b10][0b10]],f+e j=j(i,h)i,e,j,h=p,v-j,r[0b110][0b11][r[0b110][0b10]],0b11111 j=j(i,h)i=0b11 h,i,k,j,v=e,o,0x1a2-k,r[0b111][0b11][r[0b111][0b10]],j+i b,s=e+v,1 b=b-s j=j(i,h,b)u=j elseif k>0xf0 then d,l,c=t,f,r[0b101][0b11][r[0b101][0b10]]c=c(d,l)d=1 l,m,f=0b1000,d,f+d k=(l~=l or m>0 and d>l or(m<=0 or m~=m)and d<l)and 0x1e84/k or 0b1000 else c,d=r[0b100][0b11][r[0b100][0b10]],q c=c(d)d=r[1][0b11][r[1][0b10]]d[t]=c return c end end end end,function(g,h)return function(b,_)local d,a,k,c,f,i k=0b1110 while true do if k>0b10000111 then if k<=0b10111001 then k,d=0x140-k,d()b=d else f=f()f={[0b10]=1,[1]=f}f[0b11]=f i[0b11][i[0b10]]={[0b10]=1,[1]=i[0b11][i[0b10]]}i[0b11][i[0b10]][0b11]=i[0b11][i[0b10]]k,i[0b11][i[0b10]]=0b100011,g:D{h[0x15],h[0b101],h[0b1100],h[1],h[0b1010],h[0b1001],h[0x12],f,h[0b11],h[0x16],h[0b1011],h[0x14],h[0x10],h[0b1110],h[0b100],i,h[0x11]}a[0b11][a[0b10]],d,c[0b11][c[0b10]]=i[0b11][i[0b10]],_,b end elseif k>=0b100011 then if k<=0x23 then a[0b11][a[0b10]]=a[0b11][a[0b10]](c[0b11][c[0b10]],d)return a[0b11][a[0b10]]else k,f=0xdc,h[0b1101][0b11][h[0b1101][0b10]]end else f=b i=f i={[0b10]=1,[1]=i}i[0b11]=i a=1 k,a=0b10111001,{[0b10]=1,[1]=a}a[0b11]=a c=nil c={[0b10]=1,[1]=c}c[0b11]=c c[0b11][c[0b10]]=g:C{h[0b1111],h[0b1011],h[0b1000],h[0b111],c,h[0x16],h[0b10],a,h[0x13],h[0b110],i}d=c[0b11][c[0b10]]end end end end,function(g)local d,_,b,f d=string b,d,_=d.char,bit32,d.byte f=d.bxor b={[0b10]=1,[1]=b}b[0b11]=b _={[0b10]=1,[1]=_}_[0b11]=_ f={[0b10]=1,[1]=f}f[0b11]=f d=g:k{b,_,f}return d end,function(a,b)return a.A(a.o(a.l"|2F9r4FCcF6#oGLD#HLgJp=y$UjQHvFbx3z1OOEQ04u`)>peaKK_LP`1ppR*0RSw+06sqiq5mQeFfITlF9!brbpQbXC<g%l53c|S06N0}_d!Al2w)`-E?=(zBn&VBfDHuTDE~7G04@M2GYjqjpe!&90bnaQ4gLV2DmM-QYyb~`02VF)EH)4iVD~5vFahBgE&wg-HW3kEDFNdcE&z8fFcJm;E;<twAiXLAqZuv$Fan}4yF3&LfG;~07oaQN1|u3S05Jw4Fg>mVVK6)v17Iu(qZ_v_05b`qGCv04F}pq&5kN6L7zdy&ehuRsE&wtx83EwEE&<~mE&w(SA~oGY4Iwl^8W(^wK&=}9p+6i3;4cQ_9=ZhW9R%PsKpqPqFy09xA1(kl2_iN_b{1hZLJwgzK_3rbbukTNAOtHmLLd_0y)qEvAua$o5aKsoL>?hGLm?JmGXrC9A}#<q6k<3<A)(heL?RjBGzQ}%F53V+A)-4-B_TRTb{F9}Mi=2ZMI#7cy)_HtBrX6wCZarTNeE#(NCe?JM;zhTIz}W7U^WorB`(_lJ}aU<N)2H=N%jQcJ4hknJ4Yn|{{R7469^g~0RJZdP9^|C9{~R;08l6ZM6Uq<DgaTD05c>#|4n}ZDkvNu0RJoiPb&aJuK@Qg08j$pB0f%%>i{DVKvNK)N-qHYdQgB-3jkCK0PQLdK{^maKrR3(`VT-$1A|fv09D=p03k3%2SN=1{V_pc07k<ASXuotB49iZFs}d^`v6e^>N5aR!vL#UJ_F%BS^+dXfB;`e!vI=a20=btVgEG%GXVfe!vO1BTwGy4Ucoj1G=BjAO2YtLU0%WeKo2nN11m{4{{S&o0$XD^0RLP7JUlr7^Z@&169FMQ015yy)gS_bI|7D00*5^Sf4BiVJw5;@2EqS70Dl2BGbexF0X8%!l3U<F0N-CO07^MF!A1`MGR*)*09Gd@?o8lLSwR4xPgz3$0Kx!NVp}my{|W#)AplbVLf>FgE&xvhfT{q$Vn<Qw05EAlL;nCYrT{Yl8UXu5gK@w(2p9mS{{S=q8vsOX0KY^4H0b~<0pdaR0s-Jf0pmjeWi|hA{r~|dLjY#$Hl6_hC;@;4Ljc!jHtPWZ3;}=yL+=1+HA(`YDnkJGX*Ht*zzahFYCAQ$0Rw9`c>_TKfIkgG0Bkp=1_1zI{UZS23PS*GIFzaa051Z7BmiIu0N^a&LjZ0z)B%JkmtO+14ogD;pfU{ucX2hX4kL0munNTe4h3KtLjZF%aefAXHA4V&HHZNN_jNUD5`mWjyAV}U6TvnLfGG<AIS3=GcsL5-1PvfM0)z(NLjZX-<qtp|L;nDJG=f6_do}%O5da=T0DLuzei9%)LjZj?Mj5346GH%gG|58%*MBxb6@WnoqkuHOb3*`uH)b9r5PlfILqh<9HuM?b{X`mILPG$9H0&Qk0E9Q1B7_OS2|%ZXH`yLQ1>r{<;i&%rT5))&09$hZc?tkmAOJ%E`-wCUfQmHTLjc!{HajDLO(XyjL+=2LHH|LgjXskqCO}Lkz(^-RPBg?E0ntw>Kr?|0VMzxeLjVVkJd7*g0f7bu1c48M{0hM$p-Mvlk2t65Fn|UH1W^kir~qW$dm^BbHMtDnQ&Rr`dvZnqk8%M2Su8wlLjaRC{pJs#RYL%jIcKU6z*Z4J0};R*5<oPr0|S*pdIJPg6yQ`6K!jHW1WLgYAY?LuAmRNA2m}v90G2f2|3d(mG=@U}m_IaMLjajK7C{RE-C8drnl+gpfDiWn0+^@)YyAL)|8gP#d1?3nmH&~U{Q!!0i2(O_n@4HDd3S2B{{Tn;oLm5afc;5;z=jVni2!-soC866cxwYeom~F_fq_W?asX}rEj@rk0H-u$-$MYXHHs?$YD4b;sW#^oq#r{7m#R2pEx-pZKpo+1elI|4LjbEa+DoJVtTc8*0IfJ)sxlxTGN5iVAZRn7Z?8iDt~fkFWi>z?`~m?z!N&larUg#oX<>3Aqy=GF;c!C$SFt*44CF;Sz->_BJ~IS8LjbZiEddb$zcfPtvo*~?0ApW60JJ?>K_Fm3pb1|>AW@-Y0|7&z5#bL(9BrWnAhkZ|G~{A|0)drx1b|`%0AUCSH{o@kLjblteFKO*0e0{VBs>8Pp$wrULjbo6Jdq7RHxEP&K{)|!A^JRlI4D6w0Ju81#43RjU~_+@M!^W799HiFw7g2EAeEI%{{XK5OaQT50JoKuO{L(z6agVl$^$}A1OiY3p{qcZmGw~tKvD%mQvkyN_qRb*%)q=834Z?{09F9BRRE~}uK-s7wZj0qySP}t;GPjM3V~IB03QHa0JK>Hq4iq>u2}=1TmZBj>I0!&1FjqgU|s;U)ieiTUk7e91E665tF&MTVPX#MU=HA9R{*qQ3n66^u459QuV(<XW)9(K1FmLX1E6XEv}psOYX@$<X$N3!0JLleVQ%^sZfwdxj*Ni(0ROOnRRE2z0B?T)wOjz1nQ$z?RZ0OvaRESb0Yh^rz_+`+bmgF*4<(?MSC(}E2L@6H2X+SsRd)vzb_Wu84kvjIH2-)2j{v5IE&%tTtaaCbdH|0u?*OB)dljI30JPsO0Hrd0-@v9)|2Y6@0Js_qEbXE@pu2uMp%5?p{{XLlbpVd90RMjgv|Ip~n1D{GfWI}%z(E1Qfg4~qy1Rk}VGl10;|GBig9m{Q2ZClJ;|GEx;mL#u<0IjP0Yf9<y1V`(;hqmLsRN0Wb%s<x!&E?;nuioX|A+v#TmYJyfUa2pnmmaXV2T0*i`)dERzRAXj4T1WjaDoH5HAP;jvFA42E});0FVX+uK<w(qrZ{>3ILEJ3L%<RlL0{?0Ya2tK$QdoRh9}umkLLiV!)XSMOX9y!w&+BWnh{LBlVjQVw`1Qz!D0AXRiRAK*J@$z&OM~l`e*$Fy|yKMS&+lyLKl+pARg+uz+|h!L6PK=rw+gATb4Iy!<S|1z;`!qO5oT|Goe}oSy)R!`A@2yfs0eH9@d|)mc%jpi!rxQLy{~OR<3lLQ*2*SOKCWL$Wjhqa~wQ0ld9f0ib^mFfIV3t679#|D*u6!vMX$rMf*Jp<2O}n50O6r2DL-fk2@Ex26Eus{_G=VWAK@pp2Kbr;h-}j{u#WI-#cj0J&TMot=OH|J?wIn`8$+oBsfi!-)Wuj{u{uj{@O4fdzw%k>IGT1%oVMzPvo)qCDY@YnQ2&V5$iP^Z*N^N-}|~1__)|fCdDtn}AiV1`)0X6t7SKunZ_xq(GgWKEbgJG_oA3akCty8errguK+6^!&n=_31U}azP=i0v|d0xwIhWJ0Fx!S01iQH0YFv(ot;-<lPUtDT32C{S7Du<S7EjbgXULZzP?vs9-wRhdcOdZE&!*reWADO0JsRiCVarW8Vmm{ro#ZfzJ37zgaDo{6GgCJcL1UdZ=j8sxWoYM$HV}ho^PR|0J`s70G^(2p`MwE{)E7)vAF=I05tyqm;j}00J;F5H0b~Z{sbX$!N-<jpq`#KA-e{{VxhnLy^Y8q#1aaIuloSJKBYqd#5bhM=-@hHBnCc#iGjbp)q(}02?e0N1*kZXs_vjR?;t$(gee9oU+(~;4=-XMpuPZKjl%%Hy<#DwVj&~6gkmI3qO;+@Fe8uQS->%av*EwMv*Dv#!TqOLLcjpJ!2quB!vMg+SV5!^Fz@^TwuT90yIcSppP#*9!T<q6WkGP@tOB9EVZp+^VWpX2kZYU7?ZC?Iz@ed;VSm8@y<7mHp<bc)jh|;;p_Ipo03Vr;0JD<<;a;HygR&@L#RY>XVZy+hp{A~zp^%%#qJYN<1@wsk3!{-i$OZ{sp#}uWvZ$cS1_(5up`n*y%l-xn00GAm3W=}(0L%cqTmYb;uDwCWH@24GKQyPHZJ;!v!oZPXrVp*47m%CH97?kd1swohLSZZqBO785BDKN7!5Rp8&R#+zBnkkRC$XSd6afK1v|*v4wZWHOL2IF*wZWHOL7|~uLyQK(UO~daUO^;aK;Waj&xybQ!ohw|AjbY0U|j&37yzQC{}ceW9001CqW=IS02%<LuK<5W0J`Y_uKz~>|EER(l*0hV!v3j2st_=$0K=nuujvrL!vMp=*@1hf4oktLMgWllA^uCjrw}kh0LC~~VIx33BfwcCK!*Tezli(*x{4g$W4~`)0HdR-LC^pJLb9qsS^-1eVa3MYVX5s8OF+Ae21LMI0Gp(w20^3%0Yb2$(X0VO20_Nh<iV;2LA?Ep45Cs1!CU~PC8Z3Z(g8!a0n-6P459bO$aH)_r!Nv;@48<Atb9S2qSV^4K+$|asHl8F)d1hbTmY!3>;b5wu6#kXyViU_Glame-}eCb{{un6sHj>~fzf;bsHl7a*9L>ud;!VE??J8aL6@R6*!CdV3I+541_MoDQQ8IxQ-KBq+x$S>1`++;1`7ZI&Jqfc|E~bv0K;4Wr(LJ(0nR*<E}$qcAXQ8+ph{GP5QGF+0pQtE1wmE;$;OJo&Jwi=2q51GC^^0cpipuLAW;XY2B}{Ftz5wum!jY%inAt&yCf*0UL>i*0LjNANa0+<4lQH~0G_)cD!~CjT)}Ios9eFGT*0WQyCIF9yCJBkT*EX%yCKQz$Cs(V%^_f20HOaF0I97M0KFR50I{K3gREMC#OeD0+**OIMgW_`*8t7PRl%`Zfy%0Tw&}g#!vM<2T7f;TT7s)a0GI+HT7g}zT7k_upD92@DZtf^DnLalz>h0HLj3Ol!I3mu1IAnco2sf?0pb7wLaBjXtN}w#LCnot0kB&E!hMnkM8{kJtE*vQlj8sZLa*WE0Yg-w&9%-3L9t<B!;=O=QojJmTmY=BXTjxU0YkPy<^rQz0nX11q202q!JVk*oIvORzsg(yuC9PvfY+8(;I6Jt!RZ2n(E-nO&7xtmsDYiR>Y`xf>jn|*1`vuMu<Zb!ox=dn&3{1%MDD7p!0!%m@D6Cs4ruY3u;B6(g$e+C;1%JE*#H4Rn}M#boZ+Mt*#a1$`$422p#ZL~*qq}VV*5eQ&Oiav68{R8T>z&T0I&bE6ad2*0Jo?Aq5vZR833~PzW~qw+yBEBK(v2G0HMPG)6bQm{kK2C(6GGe099WA!vN6Fnqjn>Vo$L~0G<LN1fjH=VOP^RTxlR|X`pLrAoV0_pp|PNl!^eKyTuRx;Jz^P0HD3Q%JcxByvg+eV7vRs_5h*B_W)l2`?n66pvjpd0I2^~0@K_00Gj~+r`q`dtRDdO{{Yka0LQNY`~LvckpMFy!qWeb0LG?V0JOCK`~ZIet*f7}{{Z~}(VGCM+xPhZtp%af{s73mAGe^^{{YGc03-jy(~khhr(6L4wYB^Jj{wD`{s@2}zRr>WqNM*o0Mp$7p0C3H2|&#NL;%Vs|0V$U0RI090Po2z0K*kx!q4>o0Bit20In_o_r%To6o9}EGR^-0Q~=N?Iso1O0G+Q;20udp|JXEvLjc({SN}r*+B8c;0NblLK^}me9{>&?fE0cp0GvYr+%|s#1fLZ{0NpqwK?ET<`Xj)eBtW020J6#b&<!E4E&#>H0sjG}05||30Kk8b0M4hT06NZq|HE|v4*<jh0spJr0Hw9a2togk0L!SR06YM{Cjh`-0KpQWPyYbXCo=%30JY!C)9C;z9U#!G|HA;`+yen$0Pn>QFzGDdj{wO3t?2+G0V@Eu|D*%~vR?qh4*xK(00jZpmjLVEuGU~Kw?HBR3jYDX)BwiM(B1!O0Nxr3EXb<=0NujO=>Q!8Uqb-jH)T2CnHGe<okIZNHnBVa7JdSOmjd1my|q2SU!+3-<2b6Jr3GYu1HqU>0OUHsL4c(+uEYaF0N?>~L;z)<LjdJF&n1K+K?LeXpb97iDkuT`0NMMgV~7LZTmZttX5%6E00BbW!3F^WqSkvs<mHF~$m1c}s=fw9-&_F0!|8zs$pHaE;~@wELxG{?=Gu;7$?1XHs|=!20N>zT0K~-a;Ryj`0Yd443IRii0p{nF!R^ZL;oPhSMB!Wjo5jWUK??x^Lhs=WtN}xgVdv<ZA<Onb-F>YLq~crv#>V`iGYtU&LIy#@00Baj!Mo_`p@GZ~Fo=N4e?|be!vN{!twH<E5CS2~MgX|O`vB?!AaVe-Ek6IpRs!kq4gp*@0LseT0r5I7!7ZW1u-k;DH6;W=+X3w5{@VfZ5(%@f01sOM<_9J=voz$e1u6Gm0MOZiy2TIy|E~ZM0q0x*%dN|$;q(*%A&Y}R?DggIVbJ-3y2TO!tMmW^Lx-0@69whn{{Xki$_GE20RO)6i2%co0Np9Q2crdrjGW*U3xlrVQ|#v8feJ(w4*(Vq2o|*f%geO^7X}FsWUk=<%|-ya!vO5&`qQD%CPL0e0K3E20PW`jA<-y;&qluhyu$$Q=mcTX{sJP<MgYCT0Pl6_2BFiMfz(XDn1EG1nE;!afESto7@B}ZubTk0S>!7rVBrQ{1fjBj<X1sofhplYp#Ykyp@5@)Bq*Z*uA_jV9;5)ELjdv&pQ#`WpZfp-43?4ry`dO?0qrgT*W?*_U?=lMTeM^wL8wH896=QacIc-S#3Q)ibwQfJ_(=g5!5zV)K>*MJe;xAt0LYkW`~%<3TmZ4LZGjpAumM8vLjt1jLDSUy0k{7TFfIVQtabqY<G{8X0i(kJ)%(?cwm{kw3Y?F>0K=m$0Kc!|zWvLu<Ep~|+1MQZnIOFmE?)q=4F0fyMgYtwDgc9j00;lF2p#{Xpy$ve0GxrMfg}LH|APP<|FZ}$|9!8=z}CY6-QA$!|G^J1rT{wtmA?SL-2k7lw}7bs0ItQ%D*&&aza0UrUjV(R!AkD{%_c7AfVR0F{{iU$o&b&jvwW$+vth8q0N>saq4mQMp~4WMtN_v{|BnF50J#MK!T;4$0J+!6ssO*)zQySPn#SM-{{gHn0Km;30sq|qp|ZsWK&h_-r?Mbo;NfOKxc#_d;UNLkTmZPcxPbM5xU-4jK*Zb2B6vW!xM|_p)c=hDasZ+%KDPSD;b5l(2UY^u;O!#>fVsJR;ov#*@>3+AOC+oz23!ES?YVqm+thqv;1UTxqOSlX0o4M*2BOnAc+Vw21T+RIUjX;N4=;{@yd?pt@52Dw)Mz2U5HJ7y0MMXy0FJMl04512HpkcD{J;n14rbhf<sb+kE&#&+taSjX1F5tp{)S*E0oGgqy1H71VdEeGy1I8kDFTD0ePP?&hrtZQSxJFXNdOiCNr5U3BdTF54}<=_f!o}40E7U$|1T0o&R+n)4Zkp{1FN<ylfWv!0oYssyu1xT<(7n?yu1xTEdqlLLEX9yLcx_GtF|r%052W}1quMNQZaxAApt<GDgi>000N+Y0Ya0i0YM-FqLiAzFbYGKPM?6?+?O7J3PdrVfGy=bfV{jsfieq)5@6l8Jb}p1GyDKL0RQ>`!-D{D{;dB9g8pm(0s*!EE&$6tGyyIE_srFC8o<La61V@?rT`ED`vAxPg8+^Ht_Y$3|APRY|E~wK|6UuRivaWh8>5U5;{A<h;NlVrq^|&fH38RL0K2<A0hi)8)$RZ{d!$0ZyVbkDLESV$!90S#Hp>C4WB}Zx!583c0Dl+(ur2_^(S(5$;5&YSe}OIb;Fx89f&QCeD?tF#0Uh7}$O440U;w~YZvxTTZzDjmvVWm}Hv!IE0J5^+fwN%%0YdYk)YX5XxbEiR%9>z2W6xXwo3pcq0XP8xLgwK)tN}y%0oB%q0lDCUw|_bTq{9H#*1946y0xOXI{~G`0R7hjAOHc}6AGUHT>!8b0Jyx0{{jvGrPV_K-s3oMoP?GEn1P!^09W5RI<y21YGfH`K))(O0N^%`Y=x<>1Fg6`*g)rXK)(IHIH5fO+FSs>f4+bK-2ke**g)C=fr&xDv>`#jzP|Q$0pHayVdN4DrvI-1J^|TW0KHwkFk$33>2yG%!i2VSK)t>1!Qa(n!NacVfvvbdR-ix(CG^Pv4#Q*tK@P)Kq2JZI>*2#zp{=+=T);O-1_)fh5QUtn01$&i5QvjGs&rw6U=PlugyExj6k!pHexSfa0j-@N_Obw901co+0O2*=gd_vvHC2s(q%Q9O$}kd@fXUVr?f{_3)kSVVMgiL2!vNvpGL|5#E&n~f{Q%9nLjd#VHsnFeVW~p^==(Lsl^~`=0O>UUy+Z)%G}A)>|LZhFLjdeIboiJc%mL2<o<jibHGPNd0Yd=pHtOvpzXU@7?>M)e0I=$vfUKSXsThGn0PrJC%mIYyVesLl9Hc$rMAd;V!3rKE2Z7xI1g0P)^kE<&B=6y<Agvn#sUU@`si2&yAo*eZVXC3AA434uIfJGM;-LotzXUD-)-^)ufj|M^8)2$s{9!Gj2jK-l{9*B!x5N$M9O1LW0Pp|sM*%?q(*Yj;@ge}Qp!5LS?!v&bvPio?va(730HR6(_yEkv*j$5wC;-|v!@WcTU4Z`*2%didt*oDak^rTrKmgXQU~c9j!OrxNpxWEzfn~nb!M){y+JGl5mH_`o0NCjOQvWOe0KKbA0l8lQ@5&A^uQ>qTmjL(XwYKM@N&%??eaGgZ*TVqb-sYkI!VfSj0Jo$-{{XV4089Zj0pG&i0HCtxfG`99uFbdswYN+G|Dl@zsoYHguK$k!$f#TZwzl<7+<@OwAhxzo0e1=jtfm3BwotPGmpTE`1wl~-Lk6Kz{syO00gwaCu)X`B7eU2b0JXJL?xEnrF;y&J;5O}k+$F;R+}&0IzCeEuF2exYL017lSH27{<e|{o#3%=0omd8-+%?|<K?y-wx&gs7(15kIS_2|c{sn=X0I1tr0j;l(0LP~d;ameDHdS>9#GD4<T?XQ;2tk!z2tvvML0<?$MM0jb10i4r;!O|4I0oTiY63!u0!d;H;W<4H;7Jq@V2{O{gFy`;V-mqjH_-#cIFg|d0b~`TRooSz5E0>J2!c)l!KxSlntH^Z8Gu9;!DfaVVK~kaBx+%}Vf)~<tF>nf;_-n5DI*1FsucoV7i1|OVQCctg`f;%XaT4JX8|3eYA4}40hTR=DBx;g1i@}$7Xkbr7qzu(8RBRngag4N0;Oyt0)PU=EMaXWVp;+MNp2-#cwv?y8^MF&c3~Pjf^RrMIy@esyhH=RD7qmbAteHEDZ)?;<bk0T2RMOoBm#FQ=qF(lB874af_p;X2BAaZL|{s4f#gX*L32kzKg7l%3P-?9>m&@v1tugF!F@seIAJoPbOHPT&!7Dq-a&5w)La0#O}O4cbpZiF<e_!}L)P9w+S}xzzT~0Mp#BCzQUKLl0J*s)20?cL0YU~rcmYG?q5s?5bO3|^yD$F|U(R*`)3XkL9|WlbtG0RAAnoOfpuD`;A$kGW-&_E^ynxl<ytnO%w;|7ajKI9Si|+vR0OiO4yu6I^gkXFG!_Fby+l>HsUjV_*A*;51ci=<W00=||01D#NL4F1al+-~61b+qqfDUB_34w|R6oL#Og9Zo^LJT2<ss<E=5<rFq5r+l~0RI8v5(=cR0EoW<*IWR*yYhkJgE~Jvq+r3tp*BIjp;6ofLE>TE+k)vJ;u19p2Ox<DC_L`DWXIu&L|CL$VGwHt2q`Dv5B)FdpuRc*tHS{I-P?W&VG|0ZUH<^K7y!P)6afFy8vw?(q5v)b03!gwE&$EX{y~9?0pBhF(AEEO00jWO-^2y~0K477ssPu;|IO(DpaH`G;{V?q0fYd;FA@8;(zauv0f_;^-uEEGMgXt_z}$ZRHlW53FscCGzwgWG0GtLu-`s<CIUvIh5h1`v0Q=$o1fs(bFhc;=JQ3n(#MdDqVWfWq=b?-N`tqRS1fP!p!K^NC0LL|jYyjjqnxT9u<#!^(0N~+AwxIvS4=-#07y+|(1whmpabV*)<l}_=W~G(^BVPc-4ln-*1Fk2F0o81NRiLOY0KCaBQ~>{s0nK^<BmvR?Pyf_k0J#t_|7-w_0jn+mzyHiH0D1st_0#_)|JH;6xGxg>tjGf)sxAP&%l-o)ANJBu0M%bx0K018&7ErG($(Q6aY2p&0YY&>j{!q!;k($`aY4KfFgPH(e?|bO!vNXYE200r5HP6&sI!o&Pymr|qkw3D;%I=mWw~Nuk^+Nhf!f((VgJ4mFRuVP0ny(>0NpmV_{5w;uK?aR*oh=S(SR7ALjd15Q%Iz{0W_ah0^8%0bb?la<6|~_)<80Ww1B+4RDu8A*@6Ia0H-W}J-dnktkW3fpbf_=gF&yW<T_!eA-%y#pxz)mVWACySg0f6ApM^UK|ui00UhH1i2$q4M*x2T|E#K=uK-8@&)-}Cv$IKIVA>P^37lO3t``8dzq+Xdrm>VCpq0M?(_8?zw;!S4mWV*Nw}K&-0)vP_*zLR@p}Y|DpxQWC>K_DO?*JXwVJ-l|4*O!?JjfoTYGFqq>jC*>;^EvxB*OsP+{*r8zy4v_{$LeB8{6NC0HVn*nP9!j|1SU^0GI*Km;V97uK<|=&|ljCx<f%O07FIu0RPhq0M-fstSJ6rK)etzI|HB9f26Xn0Ga{O`(a(1EWow3oB*Po0HVL10SW-CBBj8!|Fxe1k^rTr4}SpGE&#(Y45wgs!p{w;Ai>U{E+F^8&7pDNxi1knzsz3%z6~$EAz8}3ETX+9qrEUoz`RCt0I3{+gaBUvze~Z_s<os`z@?8R^Z+g7v|zitECHsG!?a=R+}kVxz_ekiwWp#60H_8CzhDLfsRk6Psth2j1`(_bG_4Xqt{xIa3IMT9$)FNp0YI%Z0YZ`h0-$gLqLZotK_CPIly=~+3PYAZ0K)*>+n15R7JwdVz`d{mssbTu!5F~mWTDew;5AiY9YX+v<T+y@_kmvF>S3<I2dasH+Cjm@LBZZZz+d+O!VHSyu`U3`9ny;7;XJGKpj$y^A)vcKl0mkCU%~UC2L^x+Z7-HUGO?CHH>tP<?E9cj0N~*aFGB#=D?noZfM8ifa9F@qVFG9&b6P-bq5gsYfegWKAqk?L!4k-q62x(#q#*?5{s!fuK>*VM9pL}S0)(?{0K-;K0@U1ZP=f!#vQ>jJl)<wBL;u0o*p$JWAZl{KwEm#r{-C$F{-OW10n?iRs@;J90IweaQUKO({{YI705c)Q)o+gg$*FfCi2wm0ZL4@;ivW?}HBxfmbp?7sw#^{e*o|dk)h~U)w+iaG3h254|JJzy${zr{0sq*$0n8r&z5)N*y#daz0KWlM+YNvw4UDV}hm{SIZ^HoC*ww+j4yIs-zyZ+#;jV$Oz!2fVN@AeGj>C(tfE`1_Wk8w4k!1z|*~QHuj=-;*0LHF@HM|W$2_b^)8Y9L4G{Jp<9J9y&0c-#Q0jfg)|JyXuUjV!gG5P_)thE3%MT7vl|1c3Z&V&HGF8>g&&ZYo303iPWzJmaj{Im%FsQh05!wxdd{{UhD(<dtcsQ&=B&DH4uDgb}?0Jr|b{@5$P{ipMTHUKODzOVlP$N}BM0OaKT$r8ZG4=|<xN&f&m0LIh+CCc5?8{pj6$^ziP5B)D;0N2X_00H6u5(uNO0Koy)t|#Ci#?}JC%mgE^F96K})da!L0pneuy{kl^0NmHl1Ow^&06IMY$G%DcWdAS#(E+#60lWX*0I0dh2S5e?0JPS-3IMPs{%>RH05bq}01y8F%mM+k-2kosz0e3jj{wuK_oe_f9H7X909N1quLx=VMBt>R{{T4vAppKB0RO(M1Od8V0L%XlFs}dw0pFKz0Oz*19Hk-v24KGd0JRAE|4JaG`X7Ti2Oz#|00aR)xh??D*l{mF2V(nr00(JP01W`hua5xB3?HD{Aq20i(EuF5+Rh=O2_c}<e*xB90J^%=qJUM^0YlcK;MW49*rh;K*#raHrl8veW8A0!b=?NT-dVuh+TSLO+uGnR=Gx&b0S+<$rT{<yDFDAxRRAbQ;wVGLC{R7Xpnc670IC4k#?Bo9zql>{&e$PLV9Nd^gWj<K@c+ER-4$t|-rC~~K*A2$FE1gKpfuzYz>5IC*TVqb-{k`#5B>unE&$yCqqR`~20v^7<^iby-vQhc2cFZw8|Svu0UQd^p&bj-VLJWj)j_f80gnL1b*1zn>X=~JHkg=Yc3c28n0i3mHf@=~{F^~y;YR^!0Mr?`3oE@{;61?bfO(?v088<J?V**SMDC<`z6PXpj{wJ|+CZTHuK*V=0K_%P?%v?VHQV2y#x<nf0aM^2#METqE)uJ)%mksy1f#D6yW2<vsR|(pa_SBv45A<ms>7rK5n>FZ2jdbU$2Gg^0FEFd#MJQs4{p04!7}T+Al^2|VZO0JA;SRL+s5I(+Yc}qfK2SZ;Ndp;*S+Aw;XlIw-QH@-p~1?b+sdN948#DJ#7yl40#pSXyy32IE&#&M&%xe2y5UN@;g-q3kjg;5<(bRC$%)KC{QwTuVg`pp@1oCOSjhx3!PenW(clb-(qJ<|7@<r$1kQoA;SkEz;40Q&C<+1)05rI+xnSQo^4Q=x*<d<;Km-QE0NdP0T)=g|BVokeqTx5=-Jr!^-XL|}qaZQy;69I1;(%r31o6RU>x7?6q%=<f9ie#)fI;pIgCYptTA;L920$cBKyIq-ATI5oD=;K5?;tHw>O>{+qzZv7`6MJJP)kR}^}t*hgzw>d_rO(J_&{q~q;vq_X8~YUnh1nj0^n%_U^^y3$^>9DW8_`>;S3Nwt`r3XF<~?cfO-i84T1du4F?jiLhvQzD?tQ-IRU9*5+DcxavMl<5~Ks_6`*hyAX^E7rT{ko03ramYycer{E8^ez$gFOCM*E{)IqH-0K>`e0e{^9q_o2bK>)zLwuYc@0IsRHAsF8Pzoq~?(cnKJ_W<C!0boM_D*)fkQUJ)m!sNK{e*wJR0I9mk!r{NQ*Srb<vBKfObr6tXBzu6uQ1NFWQ#sotgcv~ug~THr;{Mygd;l>DIH~}@*~!%D05F0;()^)7;Gu&6*8aQ){|f-|0|W$TVgGGq1P4%TVR`>$a&rU<M`d*XQ)O~?X=7ys{}EDUaBOK~VgGbxWK(o+a$$dGWdsURb#4R2zY9!nV_|Fu0|fsHY;R#?b98e5X>Ml(O=xs<|8R3UFE4UocmFPDX>@3HVs-y>WpZP0Zgge;ZgehVZ*4DB|8jM6ba_K>Wc~%<FLP{faA|n`Ed;<XZDDC{FaLFEFHC7-a$)~+c`j^qVFU;HND06azyt?RaCHA^Z*Fr02UKtWXJ>3>a|8`TpKon#b#4@40{{g54--LUazSonL;GxL4L}43Q)y@SZeeT&AaZ4Kb>C@nWdsfaBSv-GZes~y1PcM<MRxuL!2?4<O#}r)`)pwhU<OBQZ({#pYy<~YbZKn&X>@r7AaH4JLiu3>fFnQ*LvL(s^<@Y^Vi3UvNpxl1Z4$szWoHxPQ+5Ahb7gdM1PDj^D}Zn-Km-O+b!EMC0w4xZZ+9%>Lf>*_VRUF8z;guE5C_3h6a#G}Aaex03^IXJWps1{;spOwXm4-?2vTA1a%psF9-s?UY5#3yWL9NvWN&|R1PoGdbYTSH_ymFjLm8rT1OrcQ|78RNRCjL#1^-lNa%E)%1V;C7b#efpX?A4<_Xa{`51?cO1ws2_ZvnssLS<}k?{@?TRvLhBax?z~18!w^1POP)Z*psMaA84U3I9lSZDDS2X=MHrfLCE@bVhG-|3heLY-9upLcecwb4Yb=8(~A$XdGe@BZY58XI5#ya&&cJY*j$u1pft7R6$fl1P0zd;{*j_bqN6nayNBuZb!idb1eWofbV8ua%}<PYiVruI6wwuCINE<26X>na%W|91O{ohaA9dyAOvn$0S44Xz%-!|F5q+>fMH})X=Fek0znf3Kwko5<zE7Z3k2W<CIAEs)&{_BWhnq*IsgO#|7!#WUteu+WO`lzQ&WN<NOfW;pnqv}Y-I!qQ)OfSATk67MsII)|7CIn2tjppZ=N)ucLWAQPT&F{313oWb7^`Bq7VZC{X<>gZ*4<$a&!JRU<FcXXJ~W;{|ZiTbZKUJQ|=Jp1Pnt#;bm88zB+(+1O!NLa)1T<Xm4iV1Ql0hY`$h-Wgv8KAQ7krKS5+<RAFK{z$D=KDS$O#Gk_jVZ(?(|EFfYsfFNixp&;L3Ze$=~6Tl#7y=7Uz3v**~S3oWQbY*yS1R+6V|6^rvbSxlaX!vg61tJXqaBO9CWvd`@RpSRgplg329Q{)Vz-440V_{?TJfI4qY#)FiWO8raaBJX3X>(bD1OzQ+0RRLZA>kkaK{^2YAa{U3AZc!MbnjtqbRbaRYy<{xO<{6tIA8^His1ic1SUdkVPk83AOeGBax5ToUI4Xo7b0|BK_F#w!E-wV1am<I1!R+el_2^7fgnX=22^rkcK>B;1Oshha0LGvRAp>saBp&*bS42#P(uj=3PJ?s2x^81MFDHV7)@pWZgngmbZBL5xn&N6l^|wmXAR&?-(_ZW1Ozk!1Wwwd;Rs=%a%+!42ubvr-~wU`F#tz$Z*{+LVsCf^14RJ|ze8wYa$#dbAq23WA&Ov0U>D$LX$jy4{-nePW^ZzBVRZWhF+1ceASH7y#R@zpAOqk&0J7pBGV>rPWWoesDJ}#H$3$s!iop_NK>$o){bC=$6GLxsc_7{cU}JA`WG*0fY1MRofK)v}1fC%T3H}8@LUnX>Z*BzL3KpP5X?9`&as=@XDMCboZ(#%qa%KN!a%FR9En|191PZ@EaF0TH0bpg*VRA)aWMK{h;UHoBIslTvc?1SlVQloAKs!Krn!sZO2Sop6W?^+~bOZ&hO#q;21SFwEMPOuSZ+C8JK&fCvWupPx3R9}UAY=hy0h)iAnVFfH**^gUf4M&d15Ige0D!w;c%Q&;b#BGM1pNVkU{iHwW@&f^8RAoH7-Dckv_JxYU7^+)0$WnFz;io6AY-(*08fBzb>JXm!60M*bZmJbC~j{cA5}>yE+8C%P5?$g&uC>Jb4TDefMg*4ien&eav*nTW%X`NV<42kAa8YaeJ;?UZ)|jFa1f&0(jyxKAa8ExpcYd9Wn^V#Z6IN6Z)_lIZXTc@V?cu0EZ(3@;c{hRU}0pRAZBuJZ4@HDVJGKvAZ)XsY@l>uY+r9@E(8d9;2@zP+XM-B0CRJ70CEK123KWaa5!KEbH09o1Pf4abHgBSLZ_k*I^c`KgJ4nt1cCwQ1PDf{fB_;mP-*6EKyGi(Vq_s<baeJ_fp=*9;C5wlAopl*bKW3jAZ>3yVjyXAAZ|WD*C6^%U`PW4Pi|~^1Q84YgdIQupi}~3L0}02`Eq9<8Rj5nY++}zc_4EM!II!}Z;JyU+H&S&P+)9n?jRsx@**H?ZU81AZ*FBS`veVogH&%*aACqmU=Ms_dV$hF0svT7_%eYRB^5wyZ((F*3uG(~V0nK*dH^{`8K68XU<U#qaBpdm0HWdPciA9p!fAzqVQ_H39iT3Nm%%0>Nn|hLK}Zj8Y-Do>fGuMmARM9$(W9qgb9ag1ox=}-`XTNLAY>qSHNq|g3=j%oHHF~7q5xz9gL&Yipx#EH22W;Y*gymZZy<AYb?tzy0rcbYF+pP!;kkfxASGl*1H&LKM=1~Dzd(34;Zj8)Z2BM*19Y@tAYcIAXW<}lVRKyJVRXYTApc?nLjS^20b^+IAZB%P7r=5ZAkG4VZe?X2;2HsLZ=YjqX>cIBgY%#upLBI{ZgU|al|gx*Z*?vN3LHUG!vXgI0000$@IM3)c=Cp;AkQKuPj_y~fN&!NbODI~KjCj~APB(zP=Rz}VR9}64(CO2bq*kMB?Jvp{F5VOpmTI{1SwSEXg=Twqg8?Bz+@m|;6I>vpx{C`A;7?IE(G%lLgGO=A_a46b@^=2fC3?9a|8@Qvtx8_VdcUE1<oOI`veOEfmC5~XJx_+z-wFL3IW6b*`i@?@gTe42BlX+X>)XChh#1wYwGWTK|v7XVF7Cg;3)!XgGgZdpl<*>p^#UjC?F3a+2amgXBoi+8#YFkfOKz90vqC5AIw?@3gH9}^CBZ=1U>yz+Q1-XZf9w3$7LX4r9*!qB>^lT1!3=^Z+;-XAs!?v0wsb7bYL;%CxZ+ZVO$0QqFW|?N=<`nWo2-4Jb}L;Z)Rp7VO79$WpkdOZT4Ug0CHnap;u^WZr8wbU_fc7fbw3)He!Qm07GwWV){lvan2xg1P5(z|8`|9Gh_q^Q1^0gXV(C81Pg5bF`zADXk}w-b7uqzQ3Sy<;RFQ%LQ+#FY6C(M<6}C2bTmNzwBT)JAZBTDbDm@%OmAarRREFzbMW!tY9c@ad*O0rVRK$q0BLR@V*Q|NMIiqyAZ0FRE+AX|Q`;bAaxX}EVwZAhWTawUV?YqXL+-dBZUhi$Vqs%r_hoQ&tU!2l1WJ6FqK3g^b#iiLlmL7if)L<tX>(|0r(paOVn?HRbRcDHX#;0z@c>9-$YvhFU0`$}@C~B;z~O-;<1<ESX9s9>bJ>8sL~TMkqz$4T&%ktHb8DQTq(a=F6AwWYgK$O?K1CDbEdj#>4J;$j!~w)VCJj@^WnpZ6pfSL9feK8&Z*O!UWO9;V1b+i(Wo-lxLmS}O65uHS+2CwsIsjpCbuIZp5d$JsZfr23TF)XG&0=qG@!)j=<Q*Uj1Uyq~lb`{Evtay+K-nQ|AZTHBW#1rYbzyS1z-ev_bfE5_Z)Q9oA)vM(xWSoiCWH;*1Ph!Z3Z%p10ZUMzV<QNJVRCP2byOgEDRUf1EFcrX({muofXsn#?f`Qj>veF&!fYR4E+A5Ub*8{#Wpim{f8jdqVk}`IAa8Qy1aJYtItW2hL9Af&L2&|iXd`KCWgs4do`P_701?1(VWNN?0CUD5XK#(b7Fgp1XfS1ABjJ_;A|foXfTiGaVG$s5^xztx=o3ISz}vuM6JmKFWWQ-;E+AENmqblRZ(<<W!P<n&;&49%7%70~ggik65yb)@!5^XiA0Y%zM{;3eb0Hugp+F;nBL5*_Yhi65R-2$>Y>wb8>!EJaAo$E<RY3nCcW7mDW#R^6cL4y+zzqRXVPv0ab#nv_uOTeJa^3;M2Tyf(-a!Nh??Z2HbZP(u1Wo^Gb7KSqPH<!Ya|8}TY+++-?;uTKa(3Wlas>YuMQmYmVIU~>1VD6V5nv!lVRHXsZ*nOF1#Ds8Vr6Uu4+9JY1^xyC1O#wlbZ7+s8%%j_cpxZA|6^r#Woc|6clKw1WpbCmZ*pZR>jVx0#a0U7WqAbs5(LFlWps3GWo>N}K^0d9LsN7HK;IxzWpE%0Ap{2hL2P$nd2<8>yKrL?U<3|EqX0(wlL13OfMf&&bb0G=W!4~JfZzlTcK>B=Wprs_ZY}L?ct8XQy#sZ51m6vFXm4<7pl2=rV_|Z11P@hk_hWBuUg36Wb7}hMfDQ{_Wo~3)a{Db~Y~chBQg3vlVRQrm2LY*Ia_(a-KVxHe1PoNdLLA`jZU;abRJOoyZ*sYGGhr$$22y1=K?MB_EMrb@bZKUJ!vq!p<B(u@0Q8_?a*=ZHU@_n^BUhbZiXsTM0VYpHUqE?u!eD2aAO--mp>uSyps~Pm?;uxYZfT%zVs*cGEpT#aV@Kd=r*vg)SpY<!ZZUvzIAUP(!D``RZ*_hE)?nm5gQQ_XBfwOnVs&|zHo$Xe4}xQ{ViTZg+IWC&8(?>C1AugBGS$F$6a;f1Wo=YoALJf`z;7UEX#yY#0DmHjZ*FJca6q6eqI4s2q#`2UqAoXpG{FV<A_UJ4PEbQ{!!BbKOwDgtpl)Y;pi;nNbpK^?E-o$v3rC}6bUz});6h+wK_CSG24in-W@%>x`vh|^zyuIiZ*s3}WJG130B$&7Z|80V3jv7U=N43Q(xQNDHo?0EAP_(V8~iqd0^x9SWp-(A)pd1&V+lh|283{7QFVc#NTBdxVaxz+4Pr+wAX7~sh@;noXFFiRiok3cfIcI5!9GJS1kDp&fN&sfVF*VA2Y*3sbZJ3mYggcY0RSLDMoR=V1mXX4AX0B)Y;Sl)Al*W1sz6vF3BqP0pg$loFd%7UqTpKq&vkTVbGgJu0AXzJ1Pf?oUjQv|b=PcjWn$w<(f|Zy??iHGZrxyEAaL+gVEF*(qT*s`Z**dtVRBT3VQfD@)#4!bfk1C}xdL=(a%KKw;A~_rAVY6$NFf0t#IxgM3t^$+4Gn?KR0X933J+lj;{*XUB>}@w58?z60OR@~;UEwLHRnGemf%xxVb6DN1P|~f7UOdS4?|FObW>m&p%owqrT=muMQmw!X>wc%;ToteAW%2qWN<)|$pL0s0Jh=`-hu(d1V0HwVRU0?wE#;Xc4A@#Nh`nv97$`!!((A-LFWKu06{==Y5#9-Iv_9v3PwH&gHmr~1PuUy87I303>IZ_Z)A!<NxtyFVQzF%Wvf68hyjGXU;&^>pMY5)(O@9ecQRmd1Rx+ffN5t3VQpoqAk`rDpjP4Uq33gDa^m6oh;VFSO?jJPX>`#f5<vuA$Tl71AY_O@1bN!RK0?1`adl~MaN)sWziD(VAZcdXAbGM{AawXa^+b1JO+j~oX@Mdc04pvgg6@FY0b_4(Y;0wBAY>rHpv7<2VR8W=w1B)oc`kPZ5>ppqLu_f&K<Q9-U{wGGoj`7M1pf(7ZbN8cZf8GbWCRC9W$S_g0c~t)fdmHJqXY)OVSjIC1O#YrY{4M^Xm4$01O{Pa?R0J+1P3^!2xe)SZZbd#00wiqVB~-Y_Go}(YXSfTbaH9x0^kCKKnX_xa&%(XWnpyXVr~|o1PZ-JcR*8VXKrWU1nqYsKm-Q>p+;|V{{#qbaAQqxWd1c^1ZQtlZv+VcY+-YBQ)Ojta|8zg;p@Nz3Ur%b=|&R(>mUaKVRKJre*^_`WnpA_2f*)Tcyv^sVFzt#`*U;A00aheZ*~82V`T&iVP<AmZ*pYW!U>2XPClTs1PU0V+@c3^&LCkrc;E!UfN%r_8Nwd{zhh-^bOZyqzyzZQWF}=4U?yX5h2V9!a0Cn>fO2$HgaqvjIlyCR0i_3FWBx!Oa%BVrcW-j>Yx>{@K&pUrWpD()3sY%iWgrpabN>VlaA9L>VP}73En{e9V{4dzz5`|;aB^>Ff`D`T1PNv#Ep%^WZ<_=S2VqflvH&*W1o;XHN3n;80YqtG-)wJZb!ARqWFTBrB@P2FAVLR#AQ&OM%z)+~XlZ9?3BWDaWq5FVAZ3w)a&^OQZp}dBVLl_(!*^)gVRTOcAZWdSE+Cmq=Ah&tZ*Ei|`#^WP@PK(!fFNRW8bD>`bf$m~6{b)CX>J7TK0&L3VF&<jWG!21Zr%W4YYszhIG`gSb03FrXfq*jpJNH;!f?VBae?;YKO`Mu1Zo>cZ)RY0Zy7>z;UK~`8enrEl4&4y!XVZ_tn%PPVkdJYLLhB{Y5i_&17cxkE+9^4Wo2ZC;dC$r3>+rl|6%}ui=a@V`XX}#r2zp004*R`00JY<BaNZt0LT<TDnRByY%zlU;BRhYY<b&fFd<ljAZ3#v`FS)Ut^s*-AXjDIZXj=RAmu=1a;`nVb08=RVQKe(a=&e1a(N(SwSsg1AY*THbRaSy_e5oF(m+UWa&CWfAZ1}=Xek=ue4T;d;B|N|1PvoW<~7Cy5G5ip=W_&P3qfOIVRJTM{bB(CGXT?LYXSgCgLUtKZe-FsLUTaEL4b4{KxQt-AXIe@!5(4!gl1uXa&2=UZ)Rr3q?c)QAT!}Ey641#7yU;#fNvmUb#ii^nxG(WVrrluk|6`<ATJ<kplIL$Gc*4)Gc$vvzyt^VRs(=<axw%DMvZBVz#vn5AeZ2h00u8+Y;SjmKoT5b1A^KEX9+?=YHw4ZwE-tIHFN1ehG1nRViIA4EFkdYx}p~2xIv%bZoopIy<i<-Il;w1#{eL6-(hBDAbMheAam?cBg%wxWd-LhAVJ}51E7*Xc_8f|b7OBp?jUq)!FJ$s<Eh|bQ=tEEAaiVQaA|nWEw4afY(*d-A#ZM7Ee1j^ba>L>6eOe05NK|1cjtiJV0vZOO>bi3;6?#rAZ;E2fvo{oX!Rm6U}~W2EFiuib6w+fVR8d!W&dC};7#KOAb(<F0E;p;<=}N;AQa-<f@56GqISS-b!^#Sb5{X_a%Ep21t27VL_r{8dHo<+0B&z|Aa`N&Y->KkS0G|#AZy)jh(lp_VdG#_X!&IY0t~=uY-}K5`*d`pKrR8AnVJ8YnU|Ho0cK|HW&l7yzyc#_e?Y#TL<B$t2~@biXTNe`aA*V%&!BYwUsh>zX>V>{|5ip=1PWPYbiZjJLvmqr1AtThBS2zdY-~nYU;kxhW^)7%Nn?9uR{`h;MP_C!Ag6N#3;_h_Lj(w61ltL7D*$F}mOumu@JT@egNkASLVy8Nb-`_Hz^ele!ux_HVn%W!Z+dn><6>xlYaBpiz<+csAY^Z3XZ&FQX>@ZSb8uy2z_&mjM2=uE;A@74L1c12Z*VRkRdbu+mf#;kZ*y}X`T`w*q#`v55@AFNAp{iw!U}EY1W;4ZV1mGGWnr~)Z=`7TKp=J|A}oy{C8sPP9pNRRbwF~DAZcS|H{q2aq#<XzW*}!dK`sOl4q;RObZ>A^ZcJfrKXhesZUh?v!O6fr20%$5Z+C97LIZ{UPCWo1MQvhba_$cRa&#a9<REEtPasupY4qR^0B==bOi3Ulqi12U;77n{z<_WHgKojlflWXz1PeR??^0!Sau~n_4npkd;7medWqzOp1SQ`fNKgcMF2gz?`$B93!A)UuYi0fw03awNF)%DJ?=UbaEU95JFeQ?+qjJDu@&I!(V10sR>tSr&AY-QBWpgg~AVhf)0c2%!aKmADsld5mOkxE=Y;PPhg&Tq{1P<Ro;s6bx|3PGAWn=^dO@C!>bp#S~Y~5gga&s+cZ*pmcp#OAXYy=QaZ*)ItW@%$#bXP#<A#(%~0x9F71PDV{p#5SPfCLCcP)Sp5V-o-b2>~D=a{)sC12r%u1OqoU-z5YDF)#r@1Tk4M0b&Bd1Tg~QG6LcK2@s(mVrgz<1l<b~0ZV0h0fGur|7mAvbW><)X8&{q1Ws>NNd%P)1tMz$<O~>q1z=G3X=7`u00vcVZ2xazWCRUVZ)f*sY-I?A3{7uj|8;C-Q)6;zaQ}1!14(m11PZ@XWpqqwVk-c7{{$0BXKrtDW!8PbZDj($bo)Sa1o;pFAOhn_Ze(S6-(_<I5>uZ7NOk{WFH>w`d1Z3%b20=81fWK5Z2e@pfkJg@Y-B_2Z{7fBQ=)?eBSRl=b!=oHjUf`@PNMl^1R~_%ZeeF-a$h<i1PFBEAaV|X{0X28B?JaAWH4j-F~?v>!Dn)Bb#DF(Kx}Vv1O_o>e=%Y*I0OkzP=NbGZvsMPVl*%|w=e_?;vsHy0)#XFFfw8@WdsaQzjbtMX>Mf&L}vdmWo2eI1PMm<Zv_Pl7UE@cQ(^CJa|8$i;YML&_hkeRAK*k~W?}brY;+?61PVcL|8Q)1RBu#aVqXLgM`d&aiXt5lHc-HAWgO@WOfx_VL|X(FEuu|fAc9{nLcdIDb94j<F2Gj5VQh6}1P8wWXWwORb_54B<popybh>~93sYfsWu6Bl1PxzbF@-Y#1a}2VWMcpX3PZ{u^<-P)3;|+NWo>U=c3q$dPi{nH5)r}J@Bv04Hp2uF0p%cO^<mOLWHX=%Z*D{WlR$2DZ~y=RxBmgV0X9o)00I914=w;BFaiMoPXGcj2PQC2{{R6o3nwp+0RJiorT{Vk9030xuK)u8Hp2k_Jv{^fUjQKw|1jwQE&z`JEA<Hj!yp5}H^Trv)jk8kA_K)N1H>V(e*gslIKu!x1H%0y2cxI}7A-W7cK|L53?Ui-BLP793ksnQ0UZD%YykfT029LiLO%!o4ge+&E?)p84F59C06hRTCo25_79kWa04OyG{{Y<p2^uX1K>tqw1~v&MFZTZcJp{M_B?~V9053QR03iT7|0y1?015y=!~XzBMg#za04MJ+5*j)hLn<x+|1dcV0IvWH0KY+(07)1b4}}`P04k3FH4_2FAO8R<zW^*N1_0kJUjQr)5I{iy_dF*hAAmd<!vOnDKnkHPFA^a@|E2&l0384@gTDap{}%`hBfvKMKn)~-H#!Xfm+t^i9v=(EAOJ9bxBx5)E&w(ZApgPuLPbLmGz$L!At3-$04YcPIRe9~06{J|>Hh#A0D}Ph{~rGc5C9DX1$1G*Vr*pu1!KzL1pf(1ZgypEbZ_5sc?1qdjDSXI_i}S|LjnW`RB!KZY+_++AZc)6<^sS33tNCjVsd3}-vk76Z*q?zVQqh91OiE91PTSAc8LTKQqKWKX>-8h-%@X61O-<@00935763K~C;%h>G#m(W00=ESzZ%W}77iFgK^y-7APxWtIt3PgCMN(p5g{okf&caZI|Kj#0RsO905+ciiU0}!F984x02l`X{{T3I03a_B6zMQXASnYeDF7}2DgQJB0Js1m4le%yDmMfGu>dg702m%POQ27IGywk}03VM4DGllC05=4H9aP{YG6n8WfF>^kJK!=P75+BCL;x`WG9!{d01OTW06j`zQo#Q+03HA%g8=>S{}Tui3#JDE)c*h>F*QGg03+`&5*IT*CnH|~{Uj1WMF2D>CjkGb02nSd=>RJI06zdJ2mmV~0RKEG8D9V@4lw_(00{s-mjFiZ6&9ud6G0~m0Q(Uj7C<im6dOGM01f~VLI)f!UoHSGItohw3k5{}Nh3V~J^&~B0RIU+BPLt`930II5`Z8KSYbq=Cp7;K0Hy#y04xA+BDeq{0>CLYM}hw+H4Xr801*%WrT|0$F90G}{{S8|C@Dw^0R0$6p&&jmYyc1Y02vLz5C8%IH2**m05jbH5Fh_A2STa<KqW8T=?Vb203Qs1Cp6y;0Q3MxY2ZLXtrBVABo70CE;6DM`v5!<!4v@Y06AR)6UmPNFc9Ju697Lq03-k;xII7>;r$j8L_7c^03w6`0Nno;2=4z1y8sjtVH`Rv8-W$NH9#LZ;3qT{Z=e$YBLKVrCjb^R{Sa|L6CeQT0435LfJJ5C9e^M{z$i8S79SurHV^3lDWVdB7ZQbo;1|LeeBcN#87T!od;kI(U<+dP8IWKoK)^5n8vxH58UP+hV1EEBH~k!jASVtm1ppZTIUZvGG!_gg|2^ga9X<db9sUzzk^m179RNMHPXIO^i-8R=G5{HW764oT9UUJNpsh8F;2i*q;vR#b5bqo}7BU5a9{}<H02~x33IGxS{{mG2KL8OyJ^lqC2>=r=04Fs4AQU1j20#k{8Px|y0Bl7d7Fr=90RK_|FD4@ZKVNqMCl3;U7daj-6aF<(3;+)sITkRe3;`XbK4BFXVGv~i3I6~aBmf{T04wb{48brb48kZ6FmDO~7APA*5H27AzX>TlBm@S5#039yX=G&t18ZgPc?1b&ePB^_W!BW-21x#+1%_h>ZTD$&bNE37ba`;Bj-Zc&2t(E2XO4jfCWNE}2M9s^VF=Gbhhe^kgaih2baDd$2LEPna&2LB1O?9}WFRH-AmRojN7rw3AnJf12th0$`)6+mz#w#QAan0@Z)0l%0c|cW{VoW>VRUtK1Phi80a9fOU}gHi4xvn+WoC2)ES1Fupm4u%Wn?TMav8v3dvbIMfo5`VZ44qgWC|b&fedqW13(vLHw9vB4Il&-=7A7`xDWvd<mDg;bZ;0$4LBTx_2Cgf0&jD$;Rj*9C?Zp7ZewMuBn<qg#U7v_1O{VoZvA5)U;->41TRj#Zy(?wX>K4P0B!$iZgq5Jb097MAbD?fav*YVe`FwSVR;~KA|U^AWnp7zAZc{}000IK05(Oq`v4uqU?nmE0MS1H1PUPr8Rf%1U~wh&;Gco7;RqEb=Hve%D*zV-0{|2Jnc<b71OPaf06@DB5ZQ$r03lU?F|7rPpb!oMj0OUV9{&I#FaQVu7YF+Q99zK&0GI#?|0W6mKOq1&B>xgY06732LiYCnJOaOh6(%bHpBM%U02K6qq+tYq06CWcK@bt`11%z)fHDm201X1fuE+Z#AD93*4gf5C{{S!!I&1(C0RIw007Eu9{s6xK1pWX40bjr!|2Pyega9Hg5c?D~93vzv02&DA3jh{rzzt(NmjJs%67|L!03^yG5z2VrE~-E>gJ1#xDm2{^#$YKn69U4p0Ov3t3fH3-AR7r3e*hO>04NSH69xAf045Ru5jw8`{}li`=>RJL6@LT_X>?_6b2@;#b7AnIP;zNLKnAvBfp2E>Wd~3=;C0_)bOZ=T>%eefe{*vL17dY~VJ<rgb8TQCVtHY~Yvb~35CmL7bR%VCAa(z61O;$oVQg$~0RR9106_3R0S5mB1y^Wga%BYmRmTr*Zy;-KZ|`?*AahHAV`TvU0R;*HHV3!>)fygx9Hk)}N`NCU{{a9`00J=xC;T5GzyJgR1OrE9{!c&x0{}J&E&zEX_dxukA1(kT0f6=bKrsR<Mi~Gf_P+o+1PTBSx`8YI00IODQe}5x`*LI-07ZCk00I911OPT0`Tz?5IUgbn01F*B`4;0~SwW8gEeON!06sqgtH2E#IsX?e#{eui20;A?KH&@i4IDWX|1Jyw4jVTUF1;`aKo|o69nS#;{@j2qI|cwQ$^icz1pp{K@c<$J87-#(A{|IA{U=RBC%6D44KD8hEI9|o;0+!ts|P?_XD3sD5u*ST|0V!q05ca2D(g9~Ti`s-K?np5`BS2Rp(0ReV`~Ia36zD7-~%Bb1446}Zv8NtU}1J)X>4K7Vr*qBdjX0eWn||rAVR8udto4BVbyMnU~a7dIz8bDar&*nPD9`X1a5C`{bhWh4FNU;xB%T8G5{no0o>pP7V9Yo+~7JffC^@5&<7z4p<$pYfM$Jx1Qp*VZvYVuegPQ(e<G#;H2@p{=_Y*v^}sd&AOIuz;rXv7Ab<ct3lOFN*Eawn1fe1A;3+n(0p~$A134r(13)AHD*zS;1OOFZ`v4|t!36+1mjLfV5fY|-AR_=HpQZpk03-*;Fkk@DC<nw5K=$AjYr!xFa(ti&2PAx>HUJ+HLw`>I1vLmKFZu!A5n&+!Bd_EjInGZ284nwR0SLnxguwp_06N0}K|u@l*We`&QzB0Q2RDBTCogXR6b~MQFD0e`H2#1k0w9|}^(!7gIUYbIE&we%Gz@&;E;S7GKtq6b;{go-;efUP`HJA*Md<)003zYI0IMPl^I;BzBqi#B7yjtM5CEP4Apjuj83P8O6k4Gv0J!S_Aq9Xe3m|L&5qkg`41hWk0D4m3|3NhXMBM-oAOAE5LQ?=AJukmp03RO{00~AEp8$^lGY?Ur48b*iFTf`#04h8lFaY-~ITbX(I{+sDuP1B(77Ak*_24Rh4KPyxAwDRPpeqkB3BeAP;3OCUYyn**5?~i001ajp6GFxgpcfb#q8#9G;U)n47zFX6S!Hx-1pf(CWo%_<a$$3DX!8b^qzFlF;lO&=K?wyRL~mqg*r57TLJ9%_AVg(tZ{KbN218*4U~B~c5J+`xVQz0}zhqKxZ*)-XAO!yoMrm$jMrm^Yb96&!X>4Q!e+W=-b7^#G24MdQO<`wlX>@hpWMu>jWD4O`ZvS*?Yy<>tVRYYU1O#Yx4FCsL|7BxzZ*nsP1D|eXcLWUtq6g*!KW$-n1PXZ<;1Z(ia|G^44g$eUVRQd<L3DIsV`~8W0|n&3Lnr_vG=CfjUjQKvFtx$I0RR$T03*ZU0>1z^mjFKwM*<pE0Or9jUd1wI;2`DT+XMs!sYw85z%(3J0FD64U?@MJA4Nd-Co~1`;06mL2)i4m1K=J2A_nj`ZvY@P9?ZZeGHV0Rj{qwSP9fxC7AE4JfC~qg4uJ=e5&$Us4F)^FJOwTQCc7~QRstCSAz%R<Zux;GF$mgVD*y!HRS5**Y_8xD{GkeHApRg?3jjB<04M-=6&p6-fF>~t`CuOiCJX>SU_b$Yej<N|04zWsEe|1~{|x{VasUc0Jii=l01f~Z>3}x(4*)P<AR7<>AAj8d3>_^8K>fh~3K0MpUjQi%|1M(yHWmpfKHCul*+T_%p<x6C+~h0g%K<+G<!}X3|8HV-cmxAiW&TcpZgp*9WpV_&0VJfrWq5S2E(P-?bE(1Jh5!Ks3qJrh9B%*)++x!p&oux(9Bu$Y#=ijnDj@*?Bf|hc+du*%0xn;Gpfb(B06_pUCnb*H1AhQK!vI4=1SX)rCl4^D05hflCGRx=KOJ;n0RR?{!vIA@2LT>HbHEI`2Ld<;0Js1r>0mK?I|VJEEe<fTj6mNX7&ice^xzZ-^%SDOFatpL07eA=g8&Br8VDNzzXb#aX>eg?zy#?F?O<m@avnemL1X`PX?A5!aAR|NYc2$Gp#T8_4=rH-3jh@Z0RT9|{{TEa0sw>n9Pcj@5HH`OAFluo_Q1mcJp%w?Ag5zcfFTL^L0@3ZfKlKso@8M_|0Xa50NemI688-YH00$O03gKw04g{$G8_OHw-hWAPGB<yMu9T@1m>VJ7z-;q1^)yLNpxjxb6>whZ*FF3XMnFoe{pqbaByX0jphFeMqzSoS7l-UaBpq^00agA+ct1iBqcH_;UW!dFl-j!6ILKJ1XJPu4gg#L8X5)w^#1@u6q^7IKnMQ-5|RK64hR6fJ-J~S2>>s{;6iT0<gWk>#o|H@#p3EZfFv_xG&+FF03iPb04O|D03bf~FvEa1z2QLsDF8Jn3;_?dKmh;_;t=8SBoO0X0ubRSH4p&*n*a|&1^^U~{{S!vkpMFwD*rl?01gll06+b&ZNNLj0763(@(zF|MS<=?B&q;FpCvEp064z^(%>rp0LlO&1pp>G|5E@SJT9sLLi-~t-632692^gR$N&rgJtzP`(}4dZ0HOdR02cuNC4&I({}u=X{>y?u7XU*F02y^517bSupa4W7#en}503I#?GCvjn0CNBwL_G=syBsLtAUHx!0)Q|57SCW803R*@Gwxg<YycF4!8Jk{{{Y<p7AH0bK>u?9A51k003ZEQ)IbyfA}#<n+d~-xU>7I@Vj)f6HD3TQ5YONxL(?^E5ugm>0uf?Ha{vEH-2fFNIS2njD*z)A5da|n)BqzqLrTK{w@ghMF2FDmu7D%|5)l9))Bq(te?v>d08LIBQ()gMFBBj^Pk|i(?k~VMKO6I4HbWf#{9qjbN0$Ik9%&y_BW-{<_uw%1W?)|m06Z=L1xX$SMBVA-pl<*lui!EO%NYO$Kss~a3c)}Y+6uxS{{T5Z0bw{r{U3S2AOJ~I04x7VJCFc193JWG03{D#H3Pu*089S__W<$#9soaoAOsCkVR>W8KyKN<VQq8KLj*;SVEY6S10+UiY;<M+a#VS6WdsLF=Wb(c+Cl<|5khkRb#!G$Z*pU0e?e?)Q*3W{d#3*cXJKt+1QA2$Z)|McK;pntWpc-MX=CC*e!u}`2~&4>X>IADa|8*2ps!S6XJ=<12J7Hu?{0Ji8V|!nWpn>yWo~3)Zgg|L_GNPf2Ss=h!wG+PZ*psMaA6A|e+EQlVsd3=hwsks0s?Sp^l0!0V{g76Kyzts1P39+1a$}u#RQKc1P4^GVE=V;WdsRSZ*}`)X#b)CSpk}v|CyPYnYljz0>1zl05%470N^Co0RRh-#XhM)ArJnn;2;bzV*oG~{|YHN1Oy6fZ~tLrb98cPZfE@jBtukabaZfY|2i)(a$$EaXa8w*Xmw(Bb7kLhV{dMBAb>7o|8H$CWMye~Y5imYAaieSZ!b^(VsmL^X<=?J|7~GuZZBbEWdCn&b1ze2c4hxfVQyh(WpXY*Y;|D-2S^H_tN{M7-~<3RB2NGT|1k$AFOL8!2#%$u0RT3otW|?(KqONy0m4EA0Y1gyA*sWsZvYSYfKVYI`C%Qu03f&k9t)(w1nmF=U=8Vupr!yf`v4vT2?_uaAOOFY06z{7>F~f0`v5csz$<J31pw~!z$G#U@_{f10N1zx9|-^_pnx<0|1LK}V*oN13;!uQ2LuB}cyRv0FGp`-Yy=Bs|9EgvWpYeqcJF0u1Oz;S1!ipbZ*Ow1WB>pH2j2iTNUs1LCIA4RJrWBb5yBz8L^A&}C;%fi9tsTq01g~D6EA20A0R0b4<@ofzoOy6_ahB37(gTdQvgR9Hz}Aw7hwaU2Ik;@2LLx;03!~c0QD{zA_&X^82}-s?*KIb9FT!0FA2UQfDjJp04f7uH`=x!A-+go0Ixvo0EY!aJR_kgKn0-IAt2uXA$0%?>!1J*f878G7%B!q5|I5O5`{7VmH;gpVLQm64TLbG4FClI6-NCG6-G4x_5eHt|E~ZI06D_|K>Ixo$e<4#ITbOrF0CLBHDEvwxBw@hGawgbCL<bPJ7FOQ2y*`b3N1Yy&Hxu{5gHfareQz=02}xJ4+IZTa&LHP?`>&xc>w@zaCH9!7Dj1qWJYQKa&vS;XlZO@|5s>fV`xcpLHh&(a^MAHY;R+~YXk&zVRHbWcjsYgbZ(}AAZ}q|{cMHE1#n|wY;1o76J}|0WpE6I_yGV6fCi@xL~?I%|3hqHX>Da>LbrJY433~dbaB99?wH^N232nWNn`;30R#vDHXXPC(;Ny#Bvyn20w6#H|9Suf05}N%JO2~_G9~~f7NYL402lxvNWeKD4gcK$3mYm2LCW_4BLv?dmjFZ)yA-C>KpOxh2Ve{TKLz#xI|QZxzb^n9040sh;5F|*=>RKVKp_n-ZvZPb0m*<T4!dA`G5`hu3IG%#PGMg*Ea?C;1YryWVgCXE(*Qs)H!S@T>0$Q(6#yXsXE*`@#~=Ve@IL_te*gjn3jj75e#E~D01hAkymFut{zIS(02BiO06Mv^mcZfQ5F`MTU>A1{DmevV2q-TeA)O+6fB+T+1fW$20{;LlIt2hNC;&esIv);S02KgNKy46XKoTV2fFcn8K>0IP00zRZ00saz>k0q^CoWC^IRgg&1PMWPbZ;P2{cx?o5>9U*V{GqXZXk03pmQK>-(_ZW1O}rd24=f&a<+g34pPU#Wd9%~b08=sb18cS7XjfQa%F1DK)+>VAYyqSr66|yWpV%j1PK5(c@LbwCZUf2D+%u-e;_UZB`^a3DM8dd1T*2UJK!}k;RFQr1VtcjkFEt)VQhPKWy64PZe;*PfWH7X3@ZQ?Du5B+UjQNwFe@Q8myZBG4G#O`sp1T&AMf@6Is^tF0t5g*5MKZx4lsiu4S>yb?BNA;TA|M*2z2>xA|seU1pqc9Pv-yvGPuA}p(X$y@52B=K1N|B4lw;}IiM9T04X*D{{R#KH4*?R8t)1K792_7CJ->6a{v-QG_+%vArtO|fHVUDSfM)#0RKMS016o{2SUH%01Y`q7`eb5_)NgEp`yVZ3b+6u{!>6GH3tAY01N*vEENoo04@&x2muEG(EtVvBkKqom181@ATk61c%vZ@#AKm83;;k7;C&_#<5K_|IV)DdfA#=91P25N{s8Y#X?AZuphHG-|6y%q1Oskmcl`8Gbb(WFZ*)m+|72x&1O`)ZVfS}#b1vWt05&-II3U$v*8?E^04WyqAt4+<DLUX^03{CpGR*)(05vBk{{W}}6e}|60PdQBE;t0vfG;=&{{SoiJ3kht0N*nJ9{?z#A-DkdB?>NF;06HH0RJL1G(s)_FgUFTD4;43G+-{fA|dktD7^pzpwR#g71tpTB1t1D0$@1^-bo?~02v|YfC&J<L6-nZ78whn8vg(*g8=#e7YO|g2tYLe9RMq@s{jfE<~BA!D+Zt=`Uk)^2OtXoKuG{!HUKC+B7-0(;()g@ISe@<E)H#A9RDBy`2a~gOX({BAj)7GOdvFcU<aY8A`gJe;WSsED+FLV{XkejCIB)H4FJC$TmU5@4jN!B?<_$&=|mt71PT3Asz6h4Wn*&$uLfywVXwdhPat#OYjXqzc3YwYZU13-1O;+sVPtQ41O#p~!30!O;r|9uX=7`3a0LGcL}hSqb7^$;0Re1ja9{)sQf2#bb+2G#Npxjx`nF|r3_t(^0ucb;HgC899V>t(GXDVpvj8z0Cmm5KtAwNjabf}(fGaG(`84MsbA~Gb<Nz)2F9ZNSr+@{&0N*Vk1pp<C0Xc*}03k0C6)|psJiuQ<05T^fCLkj?AlEB60oQ;mR>08!{|XZ)3?HTdId=df0Q%qs01#Ke`!ERgVKWH;!vLv2R3P{PE_YxI2*5<z2*4@_fi?>WKrJv`3*o>;6cvPHI<X+XCN2OfFbqLpKK}qH042WwEFt#|03>U{4gmN7S2r(134jj?g-!{8|1kjH03baN0RIRs04zBW05HD*5&#|%0A>I${tIAV04okIV*npH76~aqz(5M%1fbhB6S|=$8@xep0Q(gY7l9xECb$5-BE-NdHxvNOpd4>52tcpDz&x?Zp#K>lJpjZ2Dmec$GJ^o*{}c#+_y48<JpeZbLER)r;4U^6E<iaZt1l(AU@1y~Cdoi9TRRsU;W`*d;1<+?|2Y6S04J{i8GQf>ATj_MAV3z&#jn;tJzoG5U=_g(Dc?cg03kjaqAfc85XoRNKpOxv-Twd(A1(z#_5iO!0=NJSqZ|yXIC?OkCkHMa05jB=VE;KpV*ol94k>R!g8<POpy&S#PTd{_47dO!=O8RO{U0Jg4IVBBK%V|9pduFn0D}PD`UoKL2rnQ2GY|m(1x+dsE&wq;z6QY(BQ6C%4&e#^DMBCw21svgUu0!+1Q1wZL$84UPi{eDV`Xr3-vkd=Wo`lr8DsvlU~?dIZ*66CUubD=XCT`EVFhE}Y9$17X=IwfYh{0V1PxJjWpkJy|8sO<ZewKx1@3Rba|8>ZU_)qW|7>J(Wo`rrLw{j(WoK`4d2@+<1#@EuZE16J41oURE*p7obs%AE{&eCXXkm6`AYsbop>YkN1jok7#0GQsZ*_7Hpaf=VbDL-cdE*UJ6krpAM*ISS+hhY`b$J9EuO}sQCklXb8$n{{WgukT;O=2)VQ&9q1S@W3Wn^>vASLsIbairWAXjg0AP8X~_kbW3<Xs>QAt?k542D7q;PDU#O8VgmizRbAAm|DO1>gy0X^P-;DFjyvVP*^<WaPpg5U6`BAR%F6VQwG<1MU-G009M$ATmz?dj>Y<z;6H(5B%f*BsBm-At(I+|125504pZ}0KX~207XUu<-jR*4tGE(fZ;&^IEldjuK)u8Lc;(_yGaD;U@Z?Y#bG6X04w$YKLl*@U|$@=082^+;V%Z^^)83wK9ImJ060PY1&g3hPXquA0KXm_ITJtBW#C8uOw<4)Ks8QZw*WK|31S-nc0m1a{~8DpxxgU}q9gk<rg2~>05UEB_d7xcnBY1`2LRvk04^pa3ZO*@zW|T`Hy#ezBRZ}F;yFeK1fetpp)G$UIW7P<L<qy6`67n^c_08YrT{g5cc3#Y07gg=!hwH-0QUbN2nWI7FEuYmJ;cEXz=l#PZwf(Ubh|)KaKxa$4n}EiWJbi`bo^EVN+b|Sb!}m8|8HqzQg3f`Q1@YSbob~9O<`yMZfSINWMu#a{{tETHf!Gi8Gknc00_7MAGARCCo}@=fi5&WU+VxQrU4_bp+f*OI=F}fogfSyFP$O3!0(p;M-%me9RMg@rkkK403eKo1&o6E2JhknK_UPsxB%TA44@`62c@6~822g#K>OeV_5eA#1Csy`z%DxosK5{ZATI|%>;Mc&{Xx6qG5{q2D8|14BsmEHC;Xs0{R*1^GeHXgG!Xv)15GOsApk)8Ef}^y5inc;BL5-`0FMAP5-#rmEjk1lASg6C|3Y5?Di1I$0Q)>Xwm>xi9{?#|uK*1IJ{IIRx`65upe7H34*CEq4KS<@qqP74DW&BP8A?3U03;bf27?gVU@tKL5ddre2>=`}_W&?G6Tvn^5&-`;)Bq<rJ4atv04)*8fIG>6L>(dj^Z-H>=>S9k|55-kC=CEbvHlx?8X`6TuK*LJ06w5F0RZZNvEtww<03-Bp(4TzkeC1k|1T5(NiF~~KlK&rz%vj)ga9iq{}C5H)Br0wI(0}6;1UkyxBw^1fV(d|G9fNI2IRmq{@H*jg8;q%6$tCk{}(|TD<w5S7T*9gxBw|ZpfNtaF~JfeF9kp=;0*dB1TxNmDUSd%6S?W;fCo$$05mZm4;}>|Cjb`&q|cornBp{#tDGbZu^@7EmEo$vo{DJ(b98d8LYUxfk70BK7nWeV;hjTfcXDrStROBfF0o<XVRUtK1gXOUZ~JZpsf}W6Z)0ow1OvbUE<$g0XWM9WrU7qero=5E|8!_&AaiJMaQ`53WoC7AWn|g{0&>M51Rbhc1Q_=vb0D8)ZEtdA>b{{UsbLAfVoqUg-(>_9C3B*X1Rn4QU=KjHM650V0s|BG05%Yt;SeqWB>OP}P5=V{5iS7#B{Bj4dH@6f|2Yc)Jly~Y7ym2=LQ?=4G$;QI01O;B5-mgj06{f6{r~|2Ut9nh8U$m2EPTMfB{Bs73IJyyLGJ)M03C3EI|2pY1O`J!aueYLZvSO>1P4}SV|2f7ax(-3XzySI{{(koX><Sq0sjU8HUS6#D+uo<JOBU+U;s7)|0n<>H5>@T0RKHc0RUqFF&FO)DmeizAZ2t;pKo+&W_j4*2H*t$05%_q01`F<{%_y|05}2wEFbp(1pstFE*}5~KL9)i05BhCz)isWGLem7CpX;y1pgH*2|&#NKLGtOw*U?R3p@lF{)^x=0384$PXPY`F$pIxrT{knaNr&e01Q0@8NVqm04OyIjYK>D044w<Yyb-Y{v{#|08an|G6-EKgTNRV3nst~0^@%U09*hV7!Q-e^m73Wg!GyK!vH}-oe<9eB@Zu<L9;;;?+6S45V8gcL3Mw0Z$@EqZ3F=#KSFPFa|8(jVfJE10YgJ*Mj-_w`ymYmVdVPe2LnvB00=`_Wpwjt1pMSNG<s!nZ~p`qL349uZDRjyc}!_;WnpsrR%Ka$X>@r62>(-MbXH+(b!Gnm00RvGHU+r502{gBBQOCUp)>yoCojVQJUs%sG(a#kK>`E|7GYGMVRC0>bQeGeg>&}+00K2&8>j#j|0*&H01qGlzyAO!A^`v<gaH2{FAx?oUjQTX4l**K!T})wIvzb3Frgm+Cv37{uAtK<GsB^~AO^c2ItBmn03a4C3IG=WAOKYWN&po_`7}<T0f6ZMDF9dh03I|bCrAna{}>?vQve`7Fx6~WU>UaI1qnbhK>r2+Gu;3XA2GiNLaG2hB{0PJ?v=m}00xT%1$1G5Vr*pu1aoiPK)Qqt2613`C1g*44)*{y8fM`SE&wC@Fajaq0x<_BF#brP2q-Ua01pfL`~x6BfouQ+01)5906#tiKfogn?=D{eBH$rG05bYez^_(dJi`D(L;VIrU?&eSrT{bV02=@$M}aN?D(f`|-6S$pfF&pZ|0+Bj4$1&01^)miJ5vB3July?07N7!Ny7mEzZ3`+00#sZ1O@YBY&k&vrVdACbpJ$Ub7N(0WMO@7GoT1UVRL2p!v6zFb3p_OLt(#eLvL(sY4|_@zXA*ZHVkzyfF<Vv01bhGFX09kDf+e{A+{qD04ELv?#jRg067~01^|Tr03R?D6E9r=zZVw(9wM<7pcL;KHURc<zy<^e>vV6e1O%+0XaoiSW^8Y7as&`w|0pd#C1fipDE}p7C1fRJDFpuoB{3`|G6V#_XLEI800DS_Ht|rCXl@}aV5k5SD*rLR04pH_03+%ufIupXLMoCg0381b0{|DM05t&r9sno504yN~^8h0-z)s;q05T?jDFDL&M??e|pkF615gRx4gEcNd|0lBmI3Ok@F6X8IH-g|YqF(?g{szHK05~Tq0I2@}95OoT04f0A!2lx`3^AY~EqCbvGW!5BI|vG3`$<V7At^5s9X$Rz;T-@hg8=^j_Y?;d@*oKSL&H}9N=iP#F57`FsNnlJ6$HaAg8=UT_Y?>L_W%k2M8mHDOG*oeATI>PIsFz(p&9@#j{rIS7Zrmt02}}=F7E&|J`AvcA0Pmq`2b8mP6I^+AlyFyLLdwnK2oC@#Q!d@01W^}!vOzHN)7;N07)AE3oJ9208Jbncj*8q|A00<4;bM8H!lwW@c=3!?KTTwK@baJIRKFF05cjK3uPVvF8?S1GesO1$^ic`1pqKaQvfLcMmQ<}FHT4i?MZB)Dm7E1<^LM52=f0BQ?v_HphN#?X>4S2Wo`uj3PEFZX?A5!|8Qe-1P(@NZa-v3X>xOP1H%8M{RG~E5J+`xVQx=vX=GBKAX#Dv0wwzd6$cAXW<zXYeyQLFNM&JcbWlKlNpnqaVgw9gp#MR1baH88b#(t_1PD-Xb7^$_Y5SlFO<`wlY5R0_VW0s7763MFPs70vCwl-63VQ?nAG@Ky04*Q^0Iwon03nzIG0MO$-vB8z0su`RB>?XvxBwjKpd>K^{sICa03Y-KMiXCL0396!#2_{8p#25yqXqyB01X`9HyJN30G**M0M{}$4N!wKI^Z9Je*pde69^Lk3B`1RgA0HVjHIRjG=_jZAPv9_=>RJapaH_~j{qwP0mUK!Aoq>{69a*400;p7s-g)1-2ev|D_aLZ)<7Bv|3C@?<LwLBVHyl~fH?!W`v4u8A{zi9xB#mj3lqTtk|r7gfgSu61W*AX3ji1f4d#MEKn|T@nZYyw81w|<CjdNU03j#<Ccif!3%CFwi$E!DHcVkEHsawV5b1$^8xaE&E&wMq5d!%e5d#*ePXGlp2cYjF7O{6>?;+~v2AsfU|88^y3S@6&XTN1tZggpEo#_Pc0&jB!rJ!$PYXbxg1VTW@=6~jIQjb_|`v`DM#Rz0+b9DD%Ze#1<2?+o;^M?T}VC(=UGXVg<)BqwaG&|!!5A84^KrsS3pcw}P{{R(V045GFuYTIVI+p-K5fXso-y<aeL=SQW836qwLBSmWBQ5|a`!NMg04o4O01@9T046fj0suKbU80#F82}|cpdnD8^(jiACi<W*I|cxM002i42`U*$qt7UB02E8$rXeM!UjR4&9{>U%7gE6gD*$EyJRb)DzY)#=8x<a<V>b5yAOHlQIshR6|0pg1E;0xJZ|49P6{7+DU?vFwKPoN&D>(|>A+ACHPyjb3EdYD~uQL!irV8LI24OGTG7F}_E;|6BFf#oNs6a0~3jpi@zYIx6=>R8XKn;HY8!iAZJPxG5^)^@FGLrzW01yEGL<ImML>L7C{~$sqg#a}?0RJ^QUjQr-FbdxQ8X*9&wxAv)|3d(M075Go_U`~d1Z<uF87=^KEjkg`U=jd63IO~Fz#_mlHAG(kD*q8MD*zb{0|5CO2tX{OK$ieW7w;IR05-<pDYyXtCkkc&KqCqO{~W3SNhUJs0NpVi;5;H3bwwQjpDBX?_Wv~j2@4bd06?(-DF7ZMuQ&jX0H;7GIl&G86aX9D01+WDzX(B(05=rOK_CABEGqyY4iy0J9A5w}JmD4qL9dqpNf<IfH6;Kl)CAxvfG&IhHzwdLxcdMpHy|-S3IMae06ir$DKjyJHQfLOKr|NVD}asw@gFe37hxyC3INjpUqm%GFcSg=7l5Gu5Fs=MKrR3<+%Q5e!MFe@ePA#>eHbLb82~{p04<^ZB)~Z}M+^WM8}~aBIR&6S8URE808BPI{r~|4mH=Q4uaH1O7T|t?GOqv{04tq<6eB@*`v6QNA@=~e|HS|QJR1ZGbYXM<YesKuWMy&${RysRa|8r*d2sz@#03gdaA9|D*F$f0cK`yiAPZ9aWpe@{RB3Hx1kQRT1#n@*K+0fpY5!$p1O--MY<2%-1OrWBcmxK0bGm?TX9NUh$Kd}218Ze@1OYGq1O{era&2LB-vkIHb1wiuC1jrj2xfI|&7ceb1%Gg3VQg#!1`vV&Z)OAsR%K&!|8H_L1O#VqRR3=T2vl!VWpe#?761)Vb!BsOzff{-XL4oA00;kfVQF+mZ*l?rXMktm_&)#x0u$!}HVU(VYJem$0lHxT4X8pH03MRy1YD{hZJ;GG0$d;@df>kr01hk*4z|E3^8f-H2N^;D00IT?05*#O&w&*tFaII{7zmF5DhlXLp}$~805Wc%AWs0h12Y4lYybhtV*>W{fDj_e0UJ0VE&j^j8#f#-ZvYSd4aH=905J+UzrO%5Ap-y;&A|ly0IC2p4Ja{h0NW7^$>SoXc;FiVts;m3G6i`c5sQE-=FgxW8Ui8Jfe#!w-xDyn03d0ADK+f}y+9=nl;9~c2LAv_05t#|HX6SG`~Wop28bX4{|81Z11<n6H(dyNKq)o}S7I3BLE9q_f`B**eIP0~?Foh86A^6T9RMWXr~nu*HgO;b3*P`1UjQeDAw&RoHzz3C;6VT=>Y@1{V4#Me04_i%6#iu*ApkuiAEp5PKM#N^3jiAm4Eq2(ePI|b04zEG4gi<{2`di({X~brG7tdm06Xt314c}Q03ZPQe*j22Nu~fhi~!dvrT`0sA)%ltHvJLwASwXL03!we04qP706!`f`x!oUpdvH}K&tluLnwcMIRG#KzY_o;5&$J(ffRoLQUEn96#!r(Uj+ajKO};~Hz{CF3xMbUA{QYGgBA;de}e$+{}~7Y<pA3$5S9QJD5K#JFaPNP{Qs{27XVW~=^cO}a6%zqB?Cb3E<Y#}l>#9EK7St`Apk!k9=`*<EEb>y03|t&K^fa0It4*NCC4Bx4*f8dBR&8o04#U?0ILAV{~Q1!81pk1B;Yq-UjQf$-!MY}M>u+62maRp00Vm90s!CyLH__h0Ukx^0KWhKj{rCorT{a#ePAs$!6g7JgP=Tl7&^ejK`n0p8==7cDJKIhK~n%FLtQl`;3_fc24JSxp#L2JEiM2vJQ?;>pdKT;;1Nzs>F%RIg8=9uVEg}U+J^ui1OPxA#egsk{z`x}JRATl06>348|eTX033v%)`x%u1a83uc4P=gzh!h&bYXOZ073eBfOd$0LwRFtW&Z>YO<{6tWpv+HX>(|7?H~jUegWf7Z**y9d4=Wu4FZEfb#!k+b?<ou25E|e3_@&=VPk6`1|x~)h$ScQRA^-&1Sw^5ApdD|AZczObZ_@}ZXk@{ASH7y|0Qz-3QlEsbpJ(UXJtul1P3){5ddkDpcD!cMFt^%b98TGYdRpGCEo^PZ*F6hfC4OkAOr_!WnpXvA-@0w1Y~b+8vtXzq9k(!1!HUm-~{^yZVUiHbN~Pma*n_@fT3!@BQOHo0Ivf8G+)V}FYrJgw*&wo0bw%DWMDA=CnW$501G?@yBR1sAt?YOlK=z1EdUiP8612dDf=`9h(Ht}08;?}9Xc#r0396#&hNkm02X+mePJgJwpE}NGy~x~Ed${Q{!ySOIUNmO048e=F$Mt%^nfuA+9CfQ04C!A7yuN14O{>o9t8jZp?wJWATAE+02zTmpEdv^047g>4ni01LE#EVL_y&T033e{3IIEg05b@{{W49UD6aqu06tFz031F+0N^1rLBRbeM!^yY{{IR9s~9Fm04QgnDixp%{Q&&J4FCcFFhKtf05dB991aia>Z30G01ROOBmfVHNr|`yKqdt(bunZ_D+hl<Z*^yAbRb1e{S?@MY-AvAZ*;F9Vs&{!z&Ze61osGZZ`4Bo00a;B05&_kVFxEKdj9|g05=W*I*<PVED53jA^;Zu03T%l7ZL|TzZD?>HY5{!;U510BFX?A1OOlZGqC_K023KL+Oq&4^`I&<i6JHq?=YqSK%}Ac07$<R!vI1;0%-sy^$&`mQ78Zw1OouSJHr4yJ_KvPA^rlPHvq-}954m@04l*@1^^WRApZ*o01&tUAq?Lx04X*IG-4kBza*~!2>>~o12}SVz$8W?1cNFz3c6r@MG;^n3IG!zrogQ!MZg6BuVMyJzzhEXJuUz)GYkNKk^mML4FEr-q1_I_fH5-<d|)jO{xSe53@*a}Lqh)q0BHa}83-(?Dgl8O;U^a1FvkHi{SdL>9su_M`u~3f05)F$BM}B5${5598-Np5K@Wi_0QC@KKxp(}1PW7SzjRh<b7^9MKpp>1Zy<GUZ*XPbZe?U3V*|l+Ap3G@HUVyLcP<3w2L(V>bs&8XKP6=T2J9$vDJ&pvW&L6Qz;qyHX>xPVbS@xI3gSBeWGwd}Y;QdvbYW{{&29nV1Pl#>1S13m&vIp9WQ>3Wfn{X>1QI24ARt>M?{i%sAPnGhbanq^a|8r#VQppq1O#nibZ7(xy=DoZas&uum!M(mZexGobDZG-00n;#05%7>03Fpp|0Oa307w8C2>%=fDO>;=7y|x0p#=i~Ib8r0{~rJ#Bx3+F7k>>ZIRgX-Vuj)Q4uA#-VRdr^3sb*oWMv>xbtOP^{{R941^_lFsBZuiD>8+^A^|=j{{jFx!vH`*1GcdsBoAi5BMgVYLHhtRhrq7@1OPo>!vI7?1#Y1aPGG*mAtv?!I|TZGHt_~EfOKJZ0VWOr5C1?094v1D6%+j8BLbo*04h5j5B$y|0;L=PCa(Yo!V2RE3gZR^h`<H_J|F)QUjQo(F!2EQA{rw5K?wkm0QV~r3kV3x03QYa04F<B03SUs->LvVBrFa=g8+Z-{}l)V0110$`v^=lphR+Sa0I;x$ADB}XJ;b-2>(K1b7fFra&&(L14(m11O@>>|7C7;1P@ShZ@+kHZE19Q0RV0PaC8I~Mrm$j{YF0_LuhGiWLNKKX=7*x0SQfE_h)WtIDlmU0tEjJ05%bC01gWGrT{XXARoj4D*rb!F)jclF9CG`0>BIc$TKmol)(Kqa-cl}0CE5be=R*4mjFKup5k{I03a%3CNKnCAX^b29snf_r+_KKApR5u2uO8pVQz2lX=DTy6Dv<<Lw{^xb8`d+NXWonbZ7tp06c&(jY8ihFSr03hM*%beF1l%G5{U`9s&oq^Z-JKKs-H%K_Jp_K`xA71)~E6tpfo11-JwQhztM=8#x~nEG_^eji3xC0?0)M1+xbTlaoOf>Ie}z{Rs$&V*oH03@WcV2?PlKfkyIx1pNqwL1AolWdsdy0%2nzV*&(3VRCH+gNs6MDZmK^!2`nqLPI=_q6vaoWprr@!%P8x0006505&(fWWMuZ5H0{DF|r{c+YK<iVK@@pVJ!;&y<;F{02mVoK))6t05>HRy<sZ*03*F(AT+T6JFfr~8cOj11FIth+WY_ot0FW8qyR58T?YW5Ff<6kpeVth|1vZQ0Pz4P9&aOG04}U2Lkg@YQ$q{GAgm%tEFek6fOSIxM?{Fg7X=K(ftNl%3dleru|v;54(|XUG*ym34?i<~0Kmb<039&{$Km%UGz7=t3=IGgFA4w@Du%%jy5I-o^0c8P&42}r4ge8f%>awQ!vF;6y#f3GZs9=$0&k)~bZMeM{+8f!X>Ml(24>rDa-*OG5vPP8FZk+!s3E6jbZKRB1p5SYo4^DIWq5GWX|+JSC&H;8!k}SezjSGKWgucZARsSjb#8RR>M^pw0)u`8!z>_kXm58AppPJQXl1rx3&H{6b9ZlVZq9%%1R=Q~zzSpu!NtM@gvG@EKoJ1{Hj@GR00}uKzam@!7#IOIpd9fOLt|tCY@;0j9t-~f6$AtTKVJa<Ar3GK01qGlU-<w$FFvTnAa;W62H<K*1^{g$7%LzD00;mz2LLGw&j1i60A69hz#IVg77{Hppb)kI?f(EVEd)V83IP8OAOKYWLjVo`Ju(1)04ER${{TQJ03$Ud2l|zOGW$U`03rY&Ukd;f0}BxWAQ1un20*+3C;$>K5&ZxPAQUhY3IG!QwnTs<4=_^z7|S*&8es}Uf);}50R1KlLJR;vmH;Y$7dvbK4FC^;0qqX<pbjDvf(t4+{tuxK06@h6B|5(iC~N=_0A->P_)makpdX+p0JZ=Ip9>o$jsVF52%!?+E&wJo4q-qN0RJ~%03!}B4FLZX02dPgEyDo+KR^`#ga98e_YxB_uwfhkBCpT`VA>%A08T+LD8(HBuE~HWG8Aec7T!Y@{N6$Y0@MH_EI2v-2qeA$KOq+Y4(8&ZKNwrW2x5-_D!mLcL5~0}3BAK2m!<$Wsz4$bfjYn_{WTbYB@Hm_00!qnI_W1Mdx7=;BL9s5Ee$w4=>Y93!e9^!2VoijA-|3Q6tMs^eV{-7CV>+f07G>E8~*?&8UPO600@s5Dh5Fcp&tSxK_mSQLjVyd08;=L=Qk<o4!|g&6C41aLzVz78Z81OL<(~N5pp3UK<NNA3j$9a07K~v;3&!-D8%>a055xDPXGioR}v>L8lxc^qahlhUlT3>Co~V?BpRXn1wtC82>>CD0M9H8I6E4l2gn-${~;&<CO9MtF7E&+H6O^JGyor~03#KFAQ0g-+n^KuAsC<=IV)TM8><^1A7UW`K`;YA65k*I=>R8<!XX6v40)`eMrmhgbozn85w2lVbZ>A^|87iSZggdGZubNQR=GkFMQvg)WpZd``XC?!MYO2&zDBv?Ah$v)S#NdEAa8eWd%_3LAT8@4a}6MH4&W{X7H?2#V{3syb#Q^A|73D+a4s$`1pfwXZ*O#EWCZ^VMsja@Wo{sz?|^c21UrpD0tqhrAXJDTLTq7UYrh~(VRCC_7a$<tb7gF7a|wZMApV?yAS5v`EHE(tFfIfHbYXLA{{#egVQF*(6iY{MkK%6*f*b&64uSrp!3AS%Z)0l#_cJpy06^0}1PT9lZ*psMaA9NrWds9FVQ>Tv|3+zUWJYOnbN_ThXlZO@1Pc5S;~xSKP;zg0Y42@mba?>)ZE$q^1QrF0S7>QtX#YubK?D|3Wpu}Na&DkSE218u1#o|3VQg#!6K1WTk#GrR0RRbMRUJVUAs}yQb0BA=;2>!%A^rh?b7gXNWpW_@C~0&ccVTlN_jhk=CIE6}V`cwtbZmJkE+9%?9bh0~Zf~uiawDMj1%hvK1z>4(E(C)gS0UgL0VQFv;S54_KW`vxZ((E-U?C^{3q~PRb!}~LZu4^lF9H#wWNBm|><eHCz-whYKyqbtYjSx?K^RIwAae!c>t$pEAZAU3000bs2mm%7xBwhjz}F-(0a(B?pdcT(I{+P8;3YBv@gV!*{<H!002vqq03`oU00lJ(CokRq00kB;2|&#NUqApcCnW^HDdm9w4gd~61sf}-{&1ik046m6J{+$nYybuO;|7pGDSr(xEC4t>6NRC_8~`N>02N@vk2e4?2#o_Jrg?w^K>sKJDLNkxUjXYT4w4`$^1wd?gZ}{g{}Tuh00wUa5kqLxAXRQdp}%EhPi|~^WF-c7X>egd-~<I@1R;3sVn~D3Knwsj1D)Xi9svLg!vH-!{Q}59F%}IeIs#(^3kl*x<VuVH0T=-PHYTV55-Bi=R{#??+aVx+Vge<CzZ(D}xBwv~fGPbp+<`Oz9RMV#{{R;*HR%8;0Kbs{Ga)EAB}PL2B|s+tr~nu*HvR*lD*ze?0RR>MUjQZ!GR*)>{{S{8DFAE$1op(E1pq7|DF#6H{{T4zC;%-!9{&;y02UlL6E}a|01zQF2SBp{_Z<K#1_2x{05JbO1_0CmEH^a&MF0Rv5(_LFdg?<n5x^>g0Q@Ha{}BMn038JYEB`-J03$&&ssL*}D7|8XGvNpmDxmx)WwGFQVR>@|1^$p=V`~HjbYWt@Y-I!lb8mit1pQ`iAOHXZ5CAs+Y)=3JG6yFw_m2Q8#DW|EAg_KUfH%VcK0X4?z}q4Z$z&`F)x#mLF8~7oIN0Dn1HtPc-u|I)01*wu!y>5v02VDY_5eKu`~d<X0TaUjLO=!n*FYu?E?)p84DKYLL;y8SpsxT1zW_hO07ga$Au9h5Fs}dy06@e007n7fga9Wm61y5YP(d32Dha_ZuK+JO2(6$lTY?_@04n?-A1xg&0RJ&Q0{|faKP>+qasU)9JSLa#080xR*x?%hEY=2KI0>{MCI(<O0PiCJEU&r1Lze)zObZ(Xz#14g!KnWLAU8fM03Z<e1OOi7p&I}$!|wo2NCotOE-w-DB0exB0^oxH^8eQt2m|ndFFip{0Q)~DK;a`fLFoYfD*b>607=6DQ1wtE;WQbc3jj*P>i|&!;x!wg3;;{_!vInN;OziLE&l{gSPB3pAprk70~=BzE-nE7JwgcpTmUgK{|x|-07D$60R1}^;5f<vAq4>cE<!s46G|E;_bvc68K7JMDJk6!1t2LS4*;Pc5dHySB@qBd0wfc^Loq1n01<tFJzYa3M;ib*3gHq8;k_MpLpTZmCw4(8N(Dhg1x^zMK_P%Nh+t9$K_MtW1wus%t`rX7?<^flIYfXk0FL_rD`EkI0O|iB{|NH`6a)rQb^3fDbG$AFNN;RpcV%(}Rb>lDWxr$Ja%FA=3kHHybd7T8p#@aTAXtFsBLufjVQpApX=KMjcy9y*LvH~<1a1Pse+X%Ab97;D%Ar4NWqAY!W(;Fr0PAyWV8C|oVgqeq`Uaq52A}`|0~`SRHVj|FCNC}kB>gXfVI2!D03|a20sun*LN_}8e2u^WU<3XD0Rmy*|33o&?g1(-68|6tCIUDpA@=_OI|Ks+22f${7JzgF3F*ROWnuqx1P4QJZf<4&V{`xk1qA^%UlvaQ0WoX>Dx-qi8UV7u8w^UrG60Pm0l^#$58$@I0)->r03U1s0*E660Q|V11K=ex1OOcY{|^lU5hPy#A%6}qTmTpt0*wH51q8zeK)@In2V?^FjbH-@6D9^jMsofp!2@n(cLWGf|8H|?bZKvH1p5b86hLosGXw<xdS!BN1QtPa|8r$+Vr+R#X+LgdVRBYwvY_su{)B)905)j203Wu=04Frb0VpvJ!2|yQ6)pfNHUt3w6aY0604W*@_W%|nd_fQ}Qvm-QIV%7FKoSc3BND-*A;bVGIr}p+$YBvK04FfI$YCR;fkgl_&VnraF9*~hEj9=MW&Z#h8xTGjE&%r|ISEjpGYKvL{VoE)ga9Qk5*VF0(jgrHC<(&@AUFLAZlDVQKbHVU`xX}}B^m%Ij{v(f5iA8C04S>9H}wMGKrt5}@c<+o?Jx&GI}Cw986g1QEC4${7BPh$0Q)Go+2Ae!EjkUJu;3yzG(xgq62M>Q04flm;+%sh3IP2V-a#+`cK}K0>i{w|Kql<~E;|nHgJ3HSFqXq9g8;wk{}l-O{|&%6wGWp_DZKzV5b|Iz?K}XXF*tTXFg+0V5r8~E80H=TDY&};CPN@FHxiCOEdLHL3IG})0QqMCM>-B*pu+$F31D3>31Tig5D>s8SKxOqJQE_o6aYY@VCygy|3ES;01N;ZuNyiNIm|&8TcAwsHd~+p3R@ryuK?#407A{gyhADq0KOw2Qve}8F##YW{{XB5IRHLG8QcrO<RC9R7%re00RKQi07L;DO6mUq007?rBtaVM00;|#8!{jq072I-05TS!K??vLOaJx&MFJcI1ZPKYRBuo5QsVw5bbaFe34Xy-aAjk21nPT(3IgFqhNA>jd4F(a1P4TAa9Lsh1PM)HXKrb9{dIu=1#)F!WO>sB0$adx<pqZ$15N&Z;0#h_adl~O|7B!JbY*P>2)|TsQ)O~?kiZT8l)_MQZ)b94bN6!u1Bbx}cVTItbVhG-0UN*^Ao%w`1Ox&h0h*ba|CyPY$v*@JbL^BOjNo!@exM#yX!m6xa|!|=a%E=!b#rB8Aarja|8sP2V{0HKbN>JX0}uf=3b^Y497O;mePC|@4HXMx!ya|u1bl!40FOcbfk6TQ8UPL~3!M&xz$gF$jD{J50Q&#}a$qT_01_$xFuwpPAOQd(sFR`fqU<3d>?1MkA_JQMJMX|k1ao2RAqC$6Ji`D(0pNrH|06FF7B;2;HeUc9048klKoF3D{|5k&12GjJGXE8005KN~D>?6v05K0^#U}tJ|H=Rz1pp^IJO2X=LlYld03y2`2+zPG9tm*Z3heh{4I(QKU_dee9a{h?1VADSbbt&4jD0l@fGMv44FK!l|0e*00QCP82<-(4K_U*yARP}pb1EU~V+0~801m}-*91auHUJFAz(I8W#sFe<bY%nyMSFN~Jb-gSbOgU(yJBp{0dI12NdyPIWdoxG1XO81Km=8E0HRaMAptyKa{&PV0003F0X73J^8hBoK$YPE0Kx-*J~#yk6afSW#on`^1^_l7$D$`M?~ed031>qfuK-s805`>eJ~6@%hJvq;04xdv!yyB~IIqJ1KR-30BLl@P{y`!f03we7F9@&006;)FVI&8GZ|49K4n*Vr05=@~|064}00RIz!~Xz5K>`4T03ok05*0L(qa?BbH2nmO<{1Da_5eTc1PTBX_u(r51pfpHNp5y!Zglr=a(VJEL2Yk!`EDj4Wx@af0SExUHq`;R02@`HBiAqi02`woSH~^@_aiU@nr1No9#-!HI6wnIfEgJC{ypFY05zKc3_t${01@;6L=;^5x}XQSz$*(}02!MZ2(KUyAq7IbVJo!^0)YybfF2GmU^CGRwIE>O0-+4Hpe8f@4FV_*0Q3Mt6Ve7D590x5VgU(a5CH!Z0v{70J8c4&4g&(|;Sm<3?cg2c1mdj0B*0+3#WesQ-y8rL6EM<%B{KaIKEOg02n4SHCldfS76BN+6aho)fx8<RT|pZe2@n88)(`+28x}zz7C<O9ZWci&Gy-8j8ygluQz$hSK>{TX8$cj_pi?L{v4I5T58J>l2cY*SG!X{k5CD<@{|gHi06b3s2mdz;CokOq2N=IE2|&#NJ>-BW#3P`G0~aws7U1#V02cos0G9wo4HTx605^C+h$R;#pd6<*{{SBVAEp310QV~ZChDLz7yu#9068BUYk^mR2`7IqCjdGQAt-?1R~-N#JOvpHz&8azi64_;2f-r)VJO1`VLjmf;01sJ1(svz!#n^uUjQG20PEjC2KYc#EMp*06d)m-B^nqY=};_y2f!X8pe8dJ-aEwU02=^m0SG9+FIECOLmP`A9Q_<Hp&S4>TmT$Z95A6AFrpkVqD3&E>l_>~p&>A!DK;IpM8GIDFrgeAM*%6*HXZ^fM*&4qARHXzM*%V884N;40v04b|E2&r03ZM!rvCsu0O|iBZvdqbub?YZ!4#qz6s8C90JZ}%0~x_T04V^~9~NOB7G@w8Wt#y14?-UR5RU*Z84ehMUx5-J4&q565+jicL1Bm>E+Hc%=PId2ZvaUEAGshtA-N%c4lphNC^aH);#wm?BWgerO&Ovj^uQ`1<0T>PCL#P6A?jmil_z6hLt|nnF+(z;Def|{xBwwtASpH~tTAXCp)d=RfHo2<kC6ZZqY|qKB`Z0oWnnM%4<11pHYzm$J{<oiD+CBZb#!mvS!Hx-1pTB0dHw-`1Z!z-WCRKN1A!m|qikVfWo-Kd3I#zRL}hJn|84{ZcVTXHW$$DJ1!JGW3utfub98BJWlwHw_jv>i%YjgDb7`A&X$2q%Z~-L(;za*xb97;DV`T*U2xI{z26S>^c0LQ>26S&{XU@P9!ur$#3ke}qVRC0>UvzT>1Y*`<2@8RLAVy(wZ3GGfqJ9TtX>eg_a&s1=&qHWsbJpb;!clct0s$Su2O<S=0s;ygLc#-s4FqBqrUAnhh6Q8j3PJ`03&RNKfKX|6?{9Pj2pwhwZe{;ras&o)VPt6!b#nv^6rmvI0iqwL{um)mZ(?%<18uW!Vl9Lkq6<hVNDci|8^Tm?Q*dE-|84*P1`7Z-6#pmyBQzWc3;_QO95@s$-2evv7byrpC;%ile;o{803{AE*8qPY0QmqwGeX<Lc_QmVw`CsyB5d%0^%O#Z1M#3OI|KmzE(f4H9}k28B>yiF6F1!e4I2L~1w{4$J_4`*00jUy=>R1F{{;jIARs7jcmHl>WGMs&b9Dc5X>Ml(24-*na&2LB1P&#0{~#b+C39UMAYUbOC36H`fCLoa{{<WX785HFF7E&(G6AbZTmTr`7z2Qz0|QTkQ*irfZcl{=a&>NQ{tDm#00IR7HcWp{00A)%CNIumSGWKgwSY3UfF1&*_<dl{f(r$201XSKGXOILA&g)HZ2cf!!22UG>O(YN03Z(j2_PT<8~_&-G42N-CNl=(WFY`C?H>z*8~_V|0x}5uCodtOH6;mO0RJKmFsuVb05;n<7KES;CWe400Dr~+95Dv~EbZaF2q&RA2>>i_APn?$p$b7MsNi1!BM`PQpb;jHAR-SKAPfGpzymV}Coc*B?+_pWycD1mF$w<w3jh`c3IIK?3IGu$1qB2J0t&w=FK+-63^$=0zW^go00uS(LKFT6K_37YGztK$zXMAEI5!*!KpE8t2tpJHK_v}g`Tt)F02v4i3gHwG0e%94_5a2IA2b%?dnq;+;V(Q4036`|COjYz3;+}y|2Q2rE&we#4Z@^B5f?yAKuJIsLF@k{DPcvT1f&5S0uIIi9RuAZD#7Ic4mqy`bpK&<YXk&$VQK$#0h*banVFgY$v*@NQ*>`|zfxgxX>@r=t|$HjVQ^(+Iv`<ee{yAEWO*QHf}r+FARs79;BRsuV*h1ybY*fW1QP#FZy;lAVQwJ(b4P%4AZ%r3bpHf0Qg3W*Aad_zYGq@Rpdc+E|8H<*ZXk4MWxfR`Aai4KWdeXNdIZ65PQV&RZ*&X9?<pW*W(!~-C1kb=g9HT&Vgw0O;Y9ysY+-o-01OP505%6vAPO?!MS#EW04W~<wx9qHDC#`mASHn=TS5T@1>bOEVQg%_U;_aEHVU`^8wy+i*BKW9%itS2f*k<$AN9f}O&}vR9|&K=06jheMPMNaXMX|&4Q6R`Xl$VGQ*>c;iC_m)W&d<kWq5P|0R;a905$^j0WK^5A3i!`05BE{_bE95%)kNxHU;i&KrjISM&TI%Ag}fSI|Kp&0#@KF{{R962}ogcL)UL@Vs-!w0OL?{Pi1pubbw$AAS!I+`WvDhVL<^g3nnkNZNUsD0Kft=0icav04fSJISb<-Y~lC;L2iH<p$#W5YykTK0CJ)N0GI#=|0DwdJzoGM4d(73DKCs*?%)Lg5dQ!JMJ5Q{01N*dDhEJp00scR7A^oRF9+U$EW0=bWxyy7Fan_$wo#xj2m+ujIRc?6egdNyE&whs2?b#LE;<EaDh@6T0PhVPHWmQD4jVWB6)ukeE(*f{S3f`sZr~#+V{BwVZjc}(F${P>4<Rgp?p7fM01TL}MNDOE(11WeAbgnt3PVg_y*fk%3Rh)r0f7pSQe|*;GC<oP0m4&jYiUmaa7o~Fa{>X+1O!rH+kolh2z1oqz@=gX2jBz;hy)9&2O>}h0t7py1ZJoJ{{ROK05%Sf09z^uxZ@u#v)}=cpuH|ULK^@dueabf|IPpw4j85YH17Z%03ZSZH0b~bDFCma00SeZ;Xy&J0DnVabY*96a&JI7K;#JZ0Z4UjN}#;}^EM7uK@DWw05cKi4F@yEr44|%033A-5FjxSCmaADu;91?fV>9{qdEivyTe9YSYW%v009HKpmGSH{R#-9-2ep^DF^>R4gd%_1r;U#r~nl#Gb;cWuLS}C6A(iq)F3h410BX103%7D4l@7E07L*ZCno^^r~nu)Ht7H={{Slh9SZ~i8Q)(3Dh@E!;Xapt07exSrT{jq!0#ux03Z#(C^ZKE03iT1BNC<nwKds*B2Hj82MZ)V<|UvfY~0}DA_xGG{{uA{A~P2L0P_I_ph5#i2>@LH-xe4EA|_X$8ZCPULel{X01_a=!2dM>k^mAD3IP8?-2e_BF$X~Tud@IU%8vjt5b3`FCjf5%6V$*p>NP+l5Mc}(q%{B^{{Sbi0u(Y29`!#iBRJ*(D*zq~{R$f<4FEo|08C#193n~p3BxGTp#Kvg0Gt3gA`R;eIM4wO9H2NM7w>EU4FG5$D>x5-0D1rf06z&60{<N{2SQT-9y?zxUjQZ!bzl&0VYezb5!8Su4b{LE{~`cW03ACm>HJAR6yrMpBLF1I{{SEb04Y6F0RJIBF{%JSCN9_M06)P1BRHTdIQ<e$022T_002bS5(+0SU_TsSCEEW33?udcKLqr@0W>imK0PTQ0`>r40sfSLTmT*(%@h~FFb);L2cZ=J|2jbcIRPC+_WuAn1cLy({}#Up&i~p24G17W?*zC2B1M2IHv!QAh9O0OVSo=zL5~3YFbR;uC8hxK|Bw9tC2Wg89%32cDE|#G>;MTyK<WPgC;$}%2ySryV@+>lWo!fn|7mbxX>xM}2ES8qVRvqGZJ>GoaAgDqbYWs_|78RSY+-YBQ}V<h0ja>MAn-o~1n+Zia&!iuZgXY&0O526pl@ab21D;ga$#)-08nppyJ>WR00akC&cJW~ax(-3XKz$*{{#bWWp@MuZ+~+H1!HV)W8jY81ZZz;Wa4D$KYsuL0uBN;7h>o4ZvYKMU@`z10AC(806iO6KpL8$-#k4601T$UI25HVXTbyUU~$1Ft01aR06rclSRtJP21B6rE^I(2{lF9eGZN1LCm0I+AUvQX5Wg^U01-Me#Go?#vEc_{V*oK03@QIQ2LuLCVRB{vZgd0)M`d(SXK8kC0U#me1PC1l{vSmKY;SLCL3I8dA^-pb2mm$(|DgjfIVm(gF8=@~GXVg<11|R!E*sClCo};7|H1=4I0Xn40sjOEO<`wlX>`AJWMu#X0R~_W<*&v7Hs7EdU|#?s{|_)L02TxT0PhlC03&%p1OPYRmjFKw50WDwk7ocY36aIy$1erj!v6&X3Pf^ma8!R`a%W|91PmB}|3P$ga%p09bcbaG1~%k0rWxkd;0BKXHj4q6pe7)gqbC0^0sylBF&-zo9Vy$PAOIkoU<}eGVFT2l1EDa5fEWbh032>01z?1L4lo6O02VhKV*oNKVEsD<#RdS>03j^@H97zQJ`xKdx{p9IkYFLk0C3;{zbP&NCo~ARpf9O9+2D6U3gAF03Bo4(4ld@v3@}^(8;2VU0PLYEVAtRVKryuqJAn+N=Q9qY;tsz64L$`LDt4d|eimUN03^5oAr@eBDK-{i3c+ju2ZBT02*W@R06gp9G7$dl;SVlj05%p0|0zGO01*H=vHt)t02duL0LE_sAT<XRp(-~90cR2bJC(o&0w)g>0M{NK3y@$jcz`N5)e`|B2m{02@xUzy<w6kSG_T;CpeZvH($&B>i9r&D6^=kA4dpO7gE`fp6~PTI0NpDEKwkhSxWN_x|2&rfMGzFG0RKJ!CIBX;06=8DAR4<D8mgRt3@_26D>(xTK^W$OAPHfb;dLevg&8!#Ff~3P!T$^?Km7nK8L!^}763c3$N(1~?L4et6(PJpBmgXb05>}l=>QZ0C1olkpd!e?IbbX~B%%Kr06i`ME;AcissJe@p&%e6p)zuyCo4D{wqYcoEiRzMfd3sW2tw2VDlcC=J?Q{C2<;sR<8>4W@g5bSGBrR5Y;7*fAQcc*;T!-PAdMqGU@JH*!J!~#WgX-LCqkhtO@KAv9WVyHK_tZ<1O`ZxKxO}O1Osbjc?1RhVwa*0Rc>o;Z~u30AaQkNb9BET1PF9*b8A3u{b#EHWq5Q{VRQFu1O@^m24-(^|7~G(1Q1kpa{q2=Zf78AZXkapb1p6}1PKSCIZmeG1%P36b+4fZLH`7EaAjiz1XTX9Avq@{b0;8Z|6y|=bZ;PHW&a>#Z*FBEVtM`oAZ}zJEg*Gs?`0rIZv$atb#mU7p&)N!YOf$^cJE~b1a1pLP-$bIYjto05CGv1;dSkB599`L10xJlW&d$?X>w&`Np$;VZM1-H1P4TA{cH#zas(DbZ*_lcWFT&DbRY$RnIH#X5#a;{0^p+{2m4`T2O<O$NMUZ_WE+GO;2Y$RLr!pGa|8#?Knem5Q*^(;=pexaV*>zi#z6o91pf>GHW7^gDGBp5I5vZ702BiO0Q)+xf?zcY01zYp0Am0!7Y!;oe@_4bF$g9v0KxYPCoeo99snM={{R~bTmTpt1G4~Z`{2I91pop82EKv9mH;alJBI-VzXS$Ua$$DgAQt`r;~;ZyZDn_8A7yf7AZFnJ+hEyb{@5paWpZx>7D4}Wb7gH}Y<Wz7X>Mg<a#m&7;QwiKc>n+e1OWRs4-tU}CogXR`wj~5gC7q7Gadf`A1l8ADj)&-03)S=0swOX9RD&cHiQ5jFcbR`F_uFij{qzRzPM*0_5eHt9e^PIxIzL11#n|wZ2xQo1ypZzVQhZ@00IR7HjuMn)e^6v0kWYRvZNXS?;zv=Em$Bv_5f=;1+)MZssJzp_Mp!{5(*-qg0}#_0Pip%1OSj=CNl;4tH37&0BHa^8w<ZHC2Rl&00uxP{+xgU04_TS04|rN064S2CB0w`q6z;1-2es`DG5NoPXGos4JI9668f&dHkv>qD*zY>rwRZTl>*V@ItL;2?*K&<vABR096xR{pb7vJx}Y!%_F(@I95@s)-2e)I8!iVxZvYf@p#M1lA^;_005$f-pgpeyAUf#)EB^rG05CEQ06zc304zH*Hwpmn5+VSxqaYO=I{yF;01iI|8Y}b%V2{8qsem~EBmnIt1>p_=AK*R(-`@ZoItBoXpeZ)}2e<$V02>bgAAj8d3>_^6K)a*AKED7qCIrsGEBiPQ8$b*kE(k&Qj{q|3U^D<90R1Nt<2V2y03|E`038bv02yBZ{VK5G5&%Az07g3%7ViT!01&gl&4d2&Lo@&!03|H|zZfqV9~<c?08j4#2sjK>;WPjkO8_Mu!#=zqE+7-o1N{^k;156r8Y~_E0TvVu7%N`@yC@FIKp!6yS%4MW02s{xITolv4KV)-02e9%Qve_RJ-Gl)0N(&1JnkH#EjkD1ATdA}{{S<D046UI8vQmVfITxgC;%z9Iv@_n0WWM1pcdaQ04g^b-M|_E{W}7JbpRUxD+GH05+fiSF9tybYX2MnI}8948#wD7GX|j@3*an09;*N_34jj?iys9960I@?;Wron!x{#{Ab$WT03$mk4+f$8Ft16#J4paL0GA{<A#}hP8zT|nBL4tA3;+}xI283X<=`GdppO7A5!dMeGaMiv93v|@{v0AcBLFdD066|cz(B+RDm^nddNv>qZX+kA05loEzbB0VG7>kq04x6NVg>*wYycGi^%?u1Iw)Z(4KVEA01HS$=@S4?0Q(9$Spew(=>H?uyygvcyJ-ZYg>7Z`Zgg{T#Rx=YbKhffX<}u(t_yPdsbh1jU<3<8VQ$YsWMomqfy8M~X4htAa-zW)k70CZZo;8?Z*{w2Cv?4Fnzvvc%OhiN&w$MVY5#K|b98BJY#{exV|2S=5n*g{|7Brhc_3qNZU1m=Wprg^1Q7NDMPzTQ;{*#wW&L!opi^*RcWwl`26V~5Z)OCV#s;38<O6PHcfOz-fMY(}f);mSX>`>A*8u#*AkN`zZ((Ev1j%&MVgsQ8ilB=C1VH-)6Q*EgaB^>W^J#6NfB^t)aC8CxnwgoInVH!?{{#qBZ&PJ*cH-xt2q5JLNE4t?Y+?6#WpX3}Q*>c;&t(J!L>GYz<j_CA1Q{iBAa~GaXuiy#AZc_UZwf#F{{apS05&`N0RIX(A0i9@3mpGA7A-CSBryT~0IDDe!vH-#0zQo(3>!HXE~R4wf%yYpV70)`02U4y{;%U84gd%_2^RGwuty+B;T!-Uj{5);kbw>W2|5S=7AB?uIRGXA{UHs&JRl`Q07L&ZI{p9v1B3woA1@LUF!%sAzc53W06`6zAU%HoB>*Cd01T_+|1<^wm;eVR2ipKZpI|l!s6YxE|0@ST4gd^32mcl+V*oT34JqF|xBwpvwSY7UeyzYXA{3?oHL8HWA+G=m05_?pBL8gy5eEb=04V=82>>JkI2l3TG6}c<9tPkhGrbG5AO{#L2&rHa-3<q!A^;=E;02C*02QdgiU1BZy@C5FHW7j-3;;qdHvlU*5rGUH5rBVy{~Ij@LiPYY0{+K91PlZXQ)y)VWio<LX=7^y3BOZibXH+(SfB*`1pwj%6DlA=W%qM*AVeW;c_3`PW$EDtb98e100eyo0-$YSbOaDLKwMV9N?~PWI$_}nT7rL0VQpmu2Vw%_?*uwdZ(sv#WoF-WAarP90D)y7|8jM1Ze?;HWBXxl@}O>Mb7&w(cWHD0fCJ%WL1_3u?*s~FX#+uFVr=|J01coea{vGa3;O{!BLNC7046iO<N-1pC>|(;AspWTAGiP<0^lSueFE7)1r{j>K-Gbt_5eBr0ul!bhycF<0R{jz1^Z$q|1S#w6axVOIrXot05$X=BmiRo|1cK~DmelK5C2AKZeeU7Q)PQ>Wpki!ZUib>fZJ|ldckRK8enB0{saslb75v>AbQVlZe=d|U{U}Y`u_k4IVU2x0T%xm0RRIG0Vg~E7YCpMFb)C$zXg^6Di=ZkfkFNd;Rz-$xBwap?w%nX03HEB!vH-0Jp%x800k^O&l!mUI~qb3AqpmWFBbvNAddhl2wj8LAOIT*T_qbK;TsCSTmTpt1OWD-mj3`N7(4a=IRk$L1P5kea&0++|8!w;XJvE*3g1L&b7OBZU}JRs1cw9w00{#CHva@{0096GE&%@{FaiKi00J@B2PQBGK>~%u1#|9?fdBvj1wafA0RIO#1QjHY04o&<7y}?!APY4EU*HHJ?;!v)A?pM(02%uLAW`A300RIuepulH1O-oWWQl<922x>iji3YpKNkQ20yH2oVE{ek2*Cb3pa1|r5(**{{tSa6-vAsr0|0dhXF&wtU<Cj<;J_{fpkn|v$lyJ1phAHCCv_my03t3lJpW$+Bo8op00sX5I|=|kj{q?L4Wa-d03QG&=ePhP6=2ZeuK)<!06fY7F9~_z4jtzz20{a1O8_f43hw|z07rvC0R^w`01E&;`5+H4rvCsq03ZM+-vHYkIuODsHW0xK0Qov_pcQ~Y06hR6{X}n}eE>r%8}|PIK?J@4KP3&H020FhM1>#-U=aEUU@{P3CUpQ10RJry02JK-4j#WT20^$0Bw64r>p2nnKoSk1DGo3CIU)BCU>*QE5(M7|XKz$*%^?X?m^k9jfpqN=L#yU#;ADz*0SdiAM$bUEA-HA@{(?htZ)b94b8~+L18Ze@1P8&v*G6x0!Y3Pkz+`FfWFT&Dc_3kHW&B^_w*f6_ZUhfd*u_Nw0L4HA7H2?YM*nGYb96&!X>9*wS7>QtXi0O~LG1<0(F6q0NZ>#J00ROH0X7hg-vB8IG&oAZ833OirT{hoW5RvI0sjDR01XT204coyQ$Pf`03CpUC08;60Ky>x#lS64V)+9B-~yrS00KWe{pq-%0|W+8VRAhF;GV?;O<{OhK!RZP8eX9g2jdC=4<OY50pSvkK?AX3DFy#Pga92c4-qc@g&;5vp8y^r5&t?Y;sZSoBMScj5nKR;0R|ZTK?6V_0961*0Jjc5G6(<!00;sF{)^x(IR*eMT>$?TQvf0+;sZhd4<=&(GZqdh_dIL>1c)v<2LS&p3IG#a0OAAZKo2DZLCIhT1O)!CfM^5*ZDDu>e+6c2Z*Ou0vn_uNC1g4!Ffssw=VSy20i<}~2>>?PAcd&rATI%fLZ|@u6)Q6p;wu0a1-AkK6J&r6FmoX|y|LoJ792JJ0|5m70|PS6080QgC;ch{VFm&K6kh=GB?W<R0OVj05vBm&GXNX_A~b;{0RJYh00sa!&H&dK4jS-7Hv?hQ0RKQMH!Khe02cot08;=OH!kV>05Ug#I|b7KJFhD@Ckn6NA(mh&`v8LnpcV)f00v$(WdwA2aKWH-!h^$bVM{<C<~Lwt05&E6<^UN#02>)-{{S8)4-X^@0QD8R;5?||0sw>npByg|5HH2#k3ly7!vH-!0svnCXCV(Tq@kCk8UUA|?Ho#=E&!Q<8vr2wKfo{q0NemI5?2fhG*KfU9DyGLMgBiPAOM#DKMoJPQDH{nTmTsvuca*e89cziJ0c`p0IwPv1pw8645Y>!zYN0wK0gM$;0J#!JR6AtJwew)|2YE&1Pn=ZW&dq+Uqf$hW@-0l1P*E|1PDcOzjbMFaAjmzr3Z0l>A<^Tx@Z6Z1>GP`Bi$k=FUAGtAg{Zit{^oW03ZXwHxnQ}vLpc_Bm+fYEHk_0Y}~hCn7~0l1SkL{4plCzU<^Z`Jwu=-ae((c1h1^%KEnV--9;=RDGxBJpf?8kazHdhpfUg&04bj?04_KO)56$8DetNPKqfH&FaQeM02n}J{Qp2<2L$g4Np5y^;BRtyb|B6MX+dKPM`eve{(Arf20?9ab#A|O1O!fDZAO4r?_q3pWki4t05<(TgrxxhWdIZrPYFU1Z2sVUBrq0$e&%2tE&wSo21Y>NAukaUH35J&2ljt}3LAfbUjQQvRWLZg2#dfhjlv0hK-UET5!~ShNuVPRzW+cz5(ps@MIj%503qK18#n^gq3<U&0{{#m843XT9n}B~AYT9`4le&e0672~LiParJOaa@APWEu!_NReKMV;W!=oDj{~>h%4ge?(0DlkN00|i^21Fv<+kg!KCo~V=01yCwI1B&}8#ogzp!X*<5gFhtIuZb_EdpUV76M`u*T6&fH#+`h0R8|00onlI1dIS900cr5FZKtaHxdV;6aXjy?;|)L4CR8a02TiLI7t9E03kKA8UXE~7~&{37~>kJ762aIAQ<8&8016$_5eKseE>fzeHQ@$1QrAaNX>)pl`R!VZ&e^5bZ_3$pde;%a?^k=F8?kB2y}0AbaH-JVF*uVW@U2RBA;<}Wpi{n0tldCH*|G#-=`5{+)mLy?9o5bECdMUMhHP<*<|IS<OT#2PXJJC?_qgmasvWWbYZo0PC!H(;RG4xV0Zi!M&*GZX>=fOcK>B^009LF0XDe?fnZ30BryS}02bF1EfSHUuQ(tzE`I?VFE0@e0t@;70009705&OarvMQOlEbfHHLyW0;{YhU00Q8W04e~)-vBB)GBgUIIm2%NKs^IXU?dN`fd2#lI>P`#Jq7;&002P}3nLZ&n?od~05kv_052qO022qGE1-bxVeKSVATtJYU=<($pO6445EAa83jjR7GB%F@FAJIDB=4^P2LP@BLp=!p0BHa}8Vf8b-_8IU6dk|=G644(03-%O3IG%!KLGgvLNG(DLkpn)D=!HEvj8_E=O!a91<nS6Gd2nS_QnWEb!}m8Z|`Yj1Qnu-Pi8~EY+-YA1P}xTQrB;9bp2p-hR;Z4|6y!&XaogGbKgyGVgw9_ph0xTPe5XIH=u^X@<0jz$2Jmdr2vD%nE@jWKQL1O88;=gVW2|x!$30xa6knBHw^y(4jVWUFWmtD2pK8|KyLsLbq>WtAuqr=GBXJ6f2;#705>@lGlBm(GcyGQ0&jEw1O;PkZ)0l&?*w#Va{!=sVQK$#0h*banVFg2sXqV$0l5GI^#1`aD<3{OV*uYU77HmkHvj<w*8w&R)Byp300IE%H_)PwBOnwgQUELeA_V|Eg#au({{SpHasUY}KffH#02UA#&7(VC1O)^LLstN2tU><=P;Yc;Z*Frw>*fSzX>MeBU?xKTQ-BBnHe#p%6oV@=;~-4nodl9Vq5voVGy(wB03t3l|2$~`JQ@otCVwjc83zLZ6`f&z#2`TcHYX<l$wGJO042f!4W<BAVbv)F>qG?LDewS10R1GzVJ|rZ03iVXJRu&Y06hQ{{sJY@01g%+5F_`d06><YDyRS$|1UNx02c@a0N)m004EL&piThyHzzX;fG!j10N*|U^Z-i$;3@#OE&wqJ!agDUKrj0|2B<&>06>=j??@LI=~Q4Y05AJG2-6~u05%k+{-41BD<}XhKOO%QUjQr)FrEP49{?pB2;9Iw1b>47>i-xB0186=2@3!+ISK$Q0P{XVD&iXfB>*e&{{ST#E~)@SCT}w705Jq$Fggw){|f*?u>d9jAO9sc0D}Pi{~6l|5*z?OARGWU0OunBEEHe_!VCaH|Cazt85*VlJKh4oD}w;x4dC|w_bvc44InN6G&%nX0Pz4PA2U<`03<>*ssKMI+6;gv=s+7F>tH4T|JVRZDMw4D0QED1pez|d9{?*Z{{S*C4FHz_OS=~uSmAE~8XmwXsQ>`rg`h4jU@~7oD>-b=VBr8TJqi-#_QCEF;4(T7GT<}-9j^c_3IGhkD%F53s}C>_qz@0E9QXk#-vAE;2~=4?Q*iTTW43@=p>t1W1m^Z71a9+!_rnBKdHZl>d;n=<Yjtq{1PoGTadl~O|7B!JbY*P>1^ssS;RFM1VR!`p2SjCXZ*ysM_5lHGX{i7N5l3?OVQzE<0Z(p0W4B{vaQ?t;VS7PC|8I3}bN~VZ6ZZf%4ceeI90+pX00=ES8eaeo7<Q%s8UR25B`^U!g36dfAf&-K@Ia)%X#n**m_Q|D>H`D^Mc-~=Vr*q$;7N0jPjF>!himJgbl?)-r~nfwF#v!nG5@~+DIoy>C4~O~AukXWF<$_EB2wW%05T^fMZotgH3FW1I3y(`{Vp_NAOI!y06O^utv~|c(*QpyH~%XT$^ae(046^=Qve=3F72QL0N1JjKBQxVaX=IZ=NAA1Dogx;3jj9%JaqyF5*9cm|NQ_c75xAz7v2!yB>?~@aL6S9xwvGYU7$Py0BIl;`73E5MFA@I06PW$4geEG3m!0U_W&6ex5XR)Dk%Q|E<hp_UjQwC4ltJhNf-;eC7l}sK`lQXWFx)h8vg()*Z@c=MM?V8qbgznBLFJY0Pia`HA87)=>RJFcR(&{MJ@m^Is?j3A{$iUF#&)AKs^LrGz2pM9spoK?qERu0^GnFA1)r<0RIytGzUOw07kbO3M&<$9SqmO9A5w~3IG~lK_`Boe@_(Y051SZV1V~2GaHIvH2@3%|1J3dOFBR40DUV0;57g%G#!?J|1B#%In)3yE%!n@=?kEb05}%hltBdmJ3;AhfCL2n1yy4PNN;RpWxaA#rfp?zbhm&^zh!o1Yybjz05-23ZvYPRL?7><H~%v+PXGck2PfYzj{qwPA%PqK{!IV@05`(`K0YqX0U{4Dabpk{;N<~s#-;-R5%z#T1onZy4lZ8+BMhjbGyX^5uK)!AJ;MNZL_`K~04NVIe8YVv&EqZrEH(#xpxZ?hG=>=f17SWh`#6Jq02K%r00+Kq0B?6?a&zO)Y5H=*3*z8IXlZO@?Q&fJ30837LSb|NWds9Bb3p_J_yOWxAWgs<PXGZi{|6>7xBwdqF8cr@YGCvLLKDO906aYcEuae<Ih_-lKqD{%F~9=Q1nL6Q1qHJPL?Rvl9{LT11`4QO03Z)9{@SBC0|o>LL3RIhZ$@EqZ3GDCQ)P4(0s><~Z*%u^1PKG7QFUc=&2#}nLudg(24Y!dKXhpT00INh;2S~z4<;`I03ZlIUjn!Q8WD$M9s=R}4kitP`Tz+zCI2E^02mkn00U0|9tc1L;2{G79wq?;AqgHQ0?HmI0?Hf*1*-iA3utKoI2j8o{~-(kC_5Dg48H&i8#fm#FTn`^0CE5YEIb(@{{sR)B{>5x68{MRD{=q^Ej#rY6`=~)pg98y1pfzeb#88HZfEu-|8#F9_XG+=X@7HLZ*Fd7W3&MOXJvF}Wo~u^e+^$>Q*2>*Ou&CKNOfWW017H#^$<nECq=*<3@!loBryT>fGh~Z0R25-pbP*E8#xsHEds#<08an}G<OImF9RqQEHGZ+{}u!Q8!iAQGyetv6#yU$2LSyLV;~PO3IGu!{{UkEF&7OgIrj$y3O?aiWnpmdZ*Bw$Kc#a72(ALbO>bg9#2`bW2KRGxav$LaW^ZzS$DjlnC1fCX2SWcSb15KiZXk63Xk{R1Z**c|uW|qY1iV0hdLk(QFS7tM8z&zt{>P&t-vAsr0RXQEE&wRFATa3Q8va3`-2e+5DFs0PV*oW42`N1bzW^Br1pqvHfI<HT0E7S_FA@~}GlD}SuK))CI(NeWK?49^040J$|4#r1Hx4H+Z&v^m52&LhoC75SApH=R;p6}^Gzb9SKK1}W1>Ar-BI^!cx}Y${Kr{&e|M~z5LLn<$0Jk9_3M>FK5rTj@{R^w&9{?vV04@JD3;=8Z4FDQ{E&wh&4gh-o;QvA<07cyZ5g`9H2SR87Combq5G|77iGT^9s39gZc^cN?0iX&17a*sAH9FIP9jt&!6A9o1fd8=oLjW8aLjeB@02UwsTmT)rAPEdW4*(bsK@k4{uK*DMJzoG*DGqc(1Hc*s%n}2}?H<#>B@GmSIuigrA3UHx6aX{9fEGaiUjQl)FKhr0^8gtGp$dT(06q-A02LcJ6*dLs7u5g-?id{78L1#E4gN(y86f~u03kn*G3fv|6`&b_6`&#96{8CV8UQ{Gpbjtp3IG@&0L}m&cNHL}1)v`QC=bE>Cc+wF8vs9F04wSmVKD@P7~;b=03zD}C^BF_BI3g=0Q)>ZhhRPcB>*YPBOo6QY#a?_E&-MR_cS3qihx5QEL`sZA|eW4;0rqpeI`J_7ZaucI12&)rT{zu|Nkj$+W;70Aul`{;Vcb*Fzf&gN<``EfbZV`B0o_=E;|DM00ICkK^*`ze`5eU77Qsv#2|M-Gde|}J|Yqq0sk;806ISr=>YHk{~ZKj4HzYJe;{ddAZ~ATV4?4MZ*_8D!~_U*{cmQ33`ullZF7HLLvL<oX=ll9{|H5Kb!l*LW&dOZ7DH%Za$)adbY*f1MRH|f`($~^1Ox|YWns;1kbwtgwg8c$P;YN@X>@6K;0IQUVE=D&GXw)}Wq1Ds1ax6@YXk)UcVTIC0RR91@&G{K9bf?j1PD}b?^9)RcJv?$RByj;Y+p@pb=E)x|3q(hZUN2A%>T^H%m6?H0#)yD1OjjNz+-H0`(tYer<$3WnVH*}xe3S@RDVEcVZUu<AaZ492_R(tfnp_d009UO0Dm?NYybfO58grj0$(6MJUadW09641U<Cl+2mxRR0btbw0pJ1xU<3l-24jB!Fc%9dIRY4j{{?e!VRvo-0N)4$0X946gd6~O9275gfF?5mZGitJG6Dc005Ko^6wbjP03Hhf6<-7c06uJspc0@#y#+g=IR*eMphYFLphc8H35Q`13ydQm&kFz+1qWb_0XGU)01_kxATp(axC+4jslf;U(EtStBKrp#k|QB(00{u@hM*@g3TB`q4lw##12R}3AqxN)2mTPm6)pfNHU$8^Fa>}c3jiO5pfUXn1>h(SE?)p9?F?-|6eHhY4;woF6))WY2pK8}-#`lh8VML+j{y5I44J_p049$Brz{ESeE=H47nh(o{u;qAJ`DgdC;;~*J|R@&UjQf&P7r1q049up9f39&LH-8}4gfLT01h4hE(b#C04D$rdjtvA!cb{rYfZ)F3jcv1*`r>rRA^y;bRcncWpi{@LH<NRWn?-aC36H{Ax>{}XyqUvVL;pj09F8Ic_7AsAad_%XJ~X};CBQDPe^ZUWKW=E2My+8|4D9hbYX5|Wp4xyM{furbZ-g(|1K^r1PD)NX8&b!PH<xc6hVJuV`Xr3Wn>LN`yeRLU}bo4DFnY4LvM9#WN>0(@B`uz01<&kpbY>vi2ng~0tFHlHzohS05Ko|03u)i03i-C%>Y6G?=dGO07*a?FBb1E04g^~fjA`>?lK?_FtM0`7#BRh0H^>IDl!0oEB`XT05Bo}04B#S04LV~NdO2TLjeCXCn*5I03sXz3v>bqLkd6$e|iEjCNLH0kO2R002K<R06PHxBLF5=0y{$k{{WEyGax89lK%h<4g>%_r~rQ$F))t+G718q_aQ4gK7lX^K+XREN&qw`D*%JP0QUbA2nqf`GXD^!06zdJ04M)u06icD02a>w02~${rT{?zzY_o^YybwvqX+*0kOMg#Co&cO#^4VxD*zn|1oHqG$YC6SQUEz8{V=0|1vLsLFGBwVBOMwC_5eNJ;Q%T<AQ87AFqba?MimRO<2n_f-k|*~RX|4r6BIKHe;Vlk7XZot4<P?7K~n%FLp3h{05UuX0IC2$-zqfe05Yh6Dn0)m5dZ*25(+8$x@0u3KqrF$3jp^U2pJgw_5T(K{RXXoDLfqzgaBV9FcBF!^rI=n;r|=}DJ}pnHVOXTzzP6B&Hx`7`y%Nbpo0L{{}opV?f>qeHu0ky1p_?`>p(6$3;=AU2jJf*04hHv$HM{u-#9`I05xUd9RT?((jvU!C;%@)A^#Qt080`IE*<=H<pcn101f~hF7E&_J`aQ7I7ATt05^mHDlZZqT|4>#ZvY#};4<p~{VW9PIYbcvH!J@D9}*G(AYTBNF%B*UVGjml1qwHRL=ylvYyc8{q3<;|6aXHf9sn@^3;-M)I1)YGzW^2|Fb6;Yz$5=Q2ShCZ9yK5T9VCqaF&R2W{uje8j{rLk=>Y2{01aRf2!LMzF#d~&8UQXx045jrDhoD)VH^N0j$Z&F=>RH4;5dXp{Vok;Ey@5a1pxmqLpuW$OB*M@TmUL12mk<}BL5WtMgk=sL^A&==>YKmj{rFR3Jk#&1O;$mX?t>Wb7m7NAVPbA{&yj5c_3_Mc4g0O1O{mYgK_5tbpK&uY-I!lb8mlgbOZ%#VPXWJ{|G~2bY*96a{qY*2tsdjb4Y)6Zgd0;Qf1tLzj9@5Wo~rJU`+Z6!T{-x4<H~YbKiGiaC0DkVkrcD2<xCATP1T{>8R%wOm=?&fB_&aAkiRzV~+rcYy}oV00I9B6ah8~E&wI{FU3J7FaZEb0B<t@A2TRm044%r{U-uo!UH}y1qkgFydW<E${;5&0)+qqL;@P1A7UGWML-7s05%-v02x65{~Q_s06h{4ApH+JVHyA)<Nz!GEdc;N_5e8r|Gxk$9|8a(F7E&&F#}tG1OPRE002A_3m*|*gZ&_1fgb=MD*zU!1O))MK*u1jdB8W{&Hxq=8CHSh0QW5~2MJ+21-JnF91G7tF$e$(0RIso08;=OHz~hd02&$y01%=b{~KulIvENqBfk&;1wtkT$KnV7K=uGT1_%TP&v0dKWU*j7fMa3%Y;6As2t#aPZtqiYX>RPGd2nTZF$M^7Wol((tKhu^?%-)|a{x480N*wT#sC{9ASWO100RIzBmlzzK)XEz-T)*JFrh&%-@^bsJ_YK62`YOz1vNo#b!}q2ApZg-B?JHj1ZV$qbz%eyQ)P7TL{Ldn5g=s%0bc<K05(YKpbF}t{Q+@62|EZCCIH_6KN1QeB%&Gse;|ni8UPkF89@I8C;%fhAqijq03r@BzW^^Hw*mkqu>dp!kN_k9I35hJ05Bf~{S4WFJQFa403q)#5EC;pLnChhxe{ogVj~&=BMJc-{t5s-1h@bo4KD8hC^ZCsU@SWY{{SxC01Fx_2Khn);1VDxH3k4f{{TcdI{p9v2Cx1A0RsSF0RZ3v`w9T{AYT9_4=;560R@Ez|6nBzFnmFG9RMR0U^yWT$in|q03J3bEC4q1IuVv91L^qyK{WL~14SkWLO3A|4F3QS95@v+E&$6ZHWR`;c%b<JApn0201+EH5;N6-P7~oqH#-yL6k!4VVE-ck002W03nu>+rT{ho9snf%5lG?zFd;EJ_CEkV1a|;MOd$Zm{|NvG1P5ntRPAr;VFhqRf(Aoj_ijRUcYsuHQ)T;db~vCAP<3)+|7c-zWkzyuZU0kfZ*T+$cVYi&bVhG-1OjjWZU6!Y3Ia9+{~Q1p5-Sl50RIdeI1?@%0TBNU1QI3J0zWlZ7YjEMpaf>10|ZI`Eg%6M7b6uhz7`+@1OPT*DdQUY=3p`xARcT00RZn0E&wBO015yO{vSaL8#odyZve*)3#NDAZJ=zx1EwngF!%r-WFQW0Lj&Rd$RSSv0Wl6IFYk{4DhRIu8~`7)uK*07RNy@YR^TD~4=^$T8~_;=G3gRXBT&Hxry?5wA?i}#5CQ=Q%_bTEA)hAzI}akJfUDyiy8t0@gSY@41z;uXG6=4~G{xW`^Z@%q6L>+!030z1>i{ha0SaYcBMmV61_2A#f=>VgGYS7DFU9~JF$@6xC=ekH0GI#?Cf5!CK|7%XkYFh`&Jn{J03=m`NCh7N{UqyP3J(B13;_QU95@#=uK*DH06qPoFbV({Am0G_07N&)VjKYfCa(Yy06FOZ%_Zx=5&+u5V#6kn_W&{p$3Y_iC$GBz69Yji0BlRZ7~d`cEIAD-fE5659uxp0@8CNYp}==9Fc*D*D-JOAfSWKF0YE7bC*s;+8{YsYxBw*}AT2um86YAZ04T2j8gl?V`2hnXE;<_nBIh0eDHKBdL0<qQ-4uqvK0h1@z#<IRX~5C{_9h&XfMIj@YXk&Lp#%s)b^mm4S!Hx-1PK2~b!}m8Z)s$I1QkYUZe&K);Qw?(XlZO@PiFd=z;nvrR$**)WxoUmW?^z|p1}-#c?Q5nX=iA30ipW>Z_glOY;R+0`veLD0aImVZbAKY&~8B`a|%dh-(hleb2`g`AbkHIAWUIybY*f)ZUNwP3K1az0U!eb|8sS1ZEtR6WPZ?~EFffWWM=_Fdjt$+0D5I^APB;j1QJD|VQ30L2_*#o15ajV1O;z*eg|L#2X1e4AQAxU1Pa+;FWLb}Pz3)3ZDDk11O;ZRY;SC!1_=Oc0l*0tO<{NeL<<-q55o3<)(9bWa2mrz5W#Z<{RgeURAqQ{005r|4gfX?RKTr3CI2!30Q3Mv6T|NSK0gA9;0+r&{}U|&04z8I03|EOAQzw@YT*MegTvyf2)4i~!wE3~AOe8^`vL-a;1VkU6$1YO01#gQAr3PC%>Y6GF(xGd-@gDUB?4MODmVKB0IGl+EeJu6_W&^tcA*{sCN=*6J{%`202~VU1OOOTg0BDt0KYw#07VoPq(vJ404CG`B{4fc-}V4O1%rU#69<<R00r1UVLjm4B@6dQWptKcQ*dE-?`{MJbl5;|W(2zjR@Xppax=@I4F3Q&r~!@u60!dPBmfc^HUPx`04g^#F;4&je=-LrFK+-3h@izXRG=X2;r3$e;T;U0E&wGm0)V9RpcQij1M{OB!ZRl)@Ib2%T!Mfp`hq+b;1RhL8zc-MIWsdGK?U*~Mg|*9a$qO`Bs>2d53c|R06hTz07McCCm5yx*)^DeaR3Ma3I#U+{~`b;rT{zuIr{)7aDX=n05kx9H9tWt06IR&Ap0o*47oM{AOI%+-vA*#3IGT$?*J`23)~<xKn(u?Gh+Zc77QuvLJ$!&0C>Q!01f{DJFx&P02m)-J9!{KCm;`uI}~?8{jc?aJ;MM*J`eu@ga9Nj5*RnvrT{yPfF~P6-2m?m9WMtyU@{P<`v5@nASZ(W+W#*V2=D(Ajt~-t3SmD!!vIA^4~wC*qyLfs5)%agLfyXr4j(WFK$&4aUzY$z6&5Ao9U|eWEF$3Q<2A0}Cz^l{-t5CT03iTOfeQtH02yBZDh@CQg8#7qF#sGQKLF>B02<%n5uiU30RITx01qHC2|)kN07(ElCocg1r~n%@Hjw}`_aH7lq<|9X04MIF01*HgDIpU8)c*h~G&@3a01*EzJtMII{r?>MB0C1)2>>QHA+G?B06882Iw1fq_iq3gLZChX?f-u%<N!7|6aW_hKS&W5rT{^@;Q~wjMiQVYD*z-C1?K=DUu57FU<v?5UzY$)932~DMzO&EF600=I28as{cO4b9WDSdJ{JD~QUEqB7XU^7UjQx-Foys%uSh2?7XzUiv_L%m1EDl47yv_G0Q)Qt3IG`ZKm`Do9X})`gFQO{4j>$l4H^I&1OOwU1Pej_Hh?LQ06Q1M0Ch|<0x;#nrT|1kpuaBm07C_AVE`I@!@*0TGC>;vG!snz4}vZaE?)pE4CcjPBmf4pWxx*_0973rpbiB^CX@h5O#uJ%|APR}{~ZYb<^LN54`g9<`(YrY!EA3~WM%(k1Pf(&a8PAGa!h4*Wo&~c0i(SHfq?`DZgsAK1pf#{cyKO9Z(+x51PG^K1>~8-26KCKa>Bs|W^Zz>fd2#wZe?X;b0GUncD|ql1xa*e|7~*w2}y2tWq)pTZ*qAA4$ez|1Q2y_Aarj9!~Y;}Zfto31$6&mVr*pu25E5il_CUY)L;YzQepXH0$>Yc1O{VoZvSIpbOZz-Z*spN1OYDu1qVY2^K@?!q!6Sfb08)Ea{vJY6aY3oe@_4bF$X3uxFGtI;sHp2BryU2Z~FiZn4%s49=HI18w)M~BQOJUApaaL5D_k~00e&kG+Y1}7zHl?e>nq*01`F^WMF>?05}H#EFU+3-#Q5ZE+76NJPZ2(FkQeUCpX;y_XHIzVF5n?FeiN_d|(Sa1{o-mf%hH&BM?CfCod@f03$RV2&Mow{{S8UAPxWwJ^uz7DJ}pgH3IsgKra8FO#nCmBlf6ZFAV|$TmTsv{|*4=02)339JLw&fe+7sLK6WY5Z0+7AOHe^5o{n50RIp!03<OJ0JysV92p=bF%*E{A+HWEYybl;6$3UF{@MTx8#ogzuK;Hk05uKaAEOQc8A5mT07u^7K|&aeK=&mNFJXa$0OS9E5(xSK7z7R5VgFNUWMxrxWpnp*1O?tB2XbX>?`2_gW$A!)Z*VzqPXI=MVRUuwAUuS<2nOLsVRCKeBSOP(b4Gv(VF=^qLPKcW3PA-UX>(`=BUxqtbZG<zLq>98zinj%1ZZynpa_^o00ZD#zz1do;8S4>wgCZBWmN!Wb4%p~{bLefas&opV|4pzb`wBiY;R+0@?u~G1fgR<Q*>c+y>wduE-o$v_l5xf00avFHaIQ-_a-j^+vFiG04H7nfFS@hB5lAfm;l8s;-n%2AmG6A1swoiBDeq`3OxY>pg{j4FEu@c03k2$5*0M2(%>EdB%i1N7A-WTK~BLtU&8=GLIt?MCWfQej{q?LfHK@bB`)s(D>Vk^AO`?E-_8IV6(0U2Apn0RYyb!V7B2LF{|Nxy01F%~2me4q112CI2MYfH79jvr03JMjE(e3E06`-ynBng$02v4afL{P7oeuMWK>#;aV3MRT>o5z*pezF6MgTl}Cno=aJu^2h=s-UV0G9wx9mqft;dL(pAq}!XHa`xV0Q*8lt|T)68UQcXg8%^xAQcB;M>6|CgA>3W2p9kk{{#n3VRCC_a{e)(L1uJias&$hbYXLAMsI9nMgd?1PKY3d4oPGHH|X<kZiL5%pmS?;1p5STK>-DJVQh8(Wds9lVR!%o{{a;MHaounDf1u!YJxH#uK)u8zcvg23>`ToU;zI=5eXm?rT{Yk02u%wrT{kp{~`b(D*zV-1m6G?UjQV!!36-{IL-hU5#7SL0NoyI046gA&_E|I`3Eqdfq-KGGZqa0DLlad9~1~&{{R~s2>?$31i3VQ01BZd03j*?6Lv(vGz)ZK1ppL4LFWqqdW(RD;6Dlg`xPZ=VGuA=034GxDh`4Op$Y|p2I35Md>|VefupzpAA3OmCo~QKLjXfHdpiD7Kneg8C3b+{4;wiXF$-Z20Dk}gK@tfh6B?ucBK80|1Ns08|2-fkTmT##5c=n!C>KDu0UI3=D*y)qK@x{x6B6TwAy*|0Fan_!h`=AEVD~397Ri7{6vF`jKtUG(V*oT4?+hwA7scRXVQl|w1Pe!HbWU);V^eTpcW%3(bNgszz~F8mN@a8RZv+O&p>Jjc2X|IwW52*N1O;ru{{#bTWqAZ8RJUklAaq0^WN)A#`)PC2qG@g*bZBM)U~p`{fqI~9WPE1-18!w^1O$3z|8j2x7D01!W&dqrY<Wy+Ze{Oba#m${AZc`Y{{#njVQF+mZ@+Q`0&i{vfMyB!fq{v`gdlThOl4-NbOa!Q;A4Lw1Owtzb7^kOz>H{9Wpv!ae*ggm2>~_`$YQ@JFOL8#2}U6t_W&TTTmU!206yzJ0-@j{bz>(0JGT%bDFgu?0E59X{R6XL1OOE-04bw31uvm@z)B=8%K$w81O@~MNOf&tziw}7WCRuD3s3K6Lu_H8pbbWBUvF=6O<`q#Y4E_~1V!^8@qq#413_v3asU7U2>><+{7+%r;MV{uIW1i8038<rM}Qp|0{#G@83O>r06#$W1UP^*IDrHN1yuWKbnSo(L}hbh-*RbibZI6)1XTTLselGfZ**y9|9Jod0tWy#VBe?!5-BifgCwv200ICwga9BfzY!ELUjQM50ZRJ-G2MX5038JY|0Ov)0}4SA9p5ehEi?mT-~<5wJ_P_9JtABHw;&(|NZ?5n0U-we07e2E4>~9xIc$UgVgM>M2c2P!f!|I5HYX@!palT`HxK|ij{qzQ_o4tPp5PxY05AJF2v>kGISBw9{{kf)L_10@0RJ&L3IK8d6D|KdCY%BfGfGK)O6tQaApkWVU*O+3044w;65s>?cONsc>cA5jM|NQM3jjc-gGT^40RJn40QvtD2n25RVg(i`r@%7>B;eaYLWDp75Nd%I0{=QBKMW$n06~jF4c^681?A!e113>_01E&X1P%bWK&L%E4Dcc3!9Rk40{=1zDK82D5g`8nRRC204?scv0472$K|2EyN&OkOpbr2bE&w$9K@cn;IY$uyI$tgTH#rh@;5Z)wy*VEMUjQ)@bD${uC<Q1WBM(9_C-><9I?jML6s7=QJpd&DD}8~+9iZnA04h!42|+GA6Mq0NUjQZ#E_gxK5+NiE_W&jjpdbYQ03tS307w84|3NnZg8<$C7{3VT|E~ZPBn1}#03iS?_W<($|NH+o3ji4h6{Z@YKtTv%8lf8<U>U0i76PmnqTm-SVF&L37X$|UWCmkz|7~JnbOZ=#ZufI^VQk?6Is^p&bY*yS1O{kj@nOFqxP-UJ1O#JmePp>HTX<ar2XTP)R0Y8ba-nH+X=46YAS+I9AaQkN_j7b0`2#K>P-*vLYaqiwAYpD~{~&O3Wpi^NLH}c8WpH#Z1P1+c`+#m|1O{er{*+*J1P&k|C3Cz0KmfpGFC}Ehq(gT>b#w}aV_|NTK>ufGbRZ>UAaws>a%W|9D03-)E+AVWT_8P`g1=!PZEs>Mm*61(X>=fYZ*_8W|7C1uE(8NxAopDaNN8YaX>Mm_AfjMpo1q1QAT682susg;-GFnT#ViPbW#4UcAa8OPpde1qP(vVg9N-rqH$mfUY!BevK&2pVWiH<!RCRK04k2l7T`UEmWo}_1pdc3_&0!s)AZ{f<5aA(Re*gdl7XUUR;9!3r0RSPx06mq0e<2PoUjQHs{=(@n{=nj)I$S_O1OWep03k0D6*Q**05bp`03<a4zdai#uK)!<K|=FF1a#q?<BtF^4*H<OB?G}c!vI4=+5^ES1H~~91H&e-{{RL6J;MM*L|S~IC<mo75Cg*}g<$_T2mlHI7$5+j`2a;YM{|SnAt(R#06+wT0P+8y5(otV2uWtnfkXdjX>4S2Wo`t23PEFZX?A7Mfc<mO0d8bQX>xP@bOXW!3Rz`zY0n@;Wo^MgtbPVa-(_KJbZDsH4FIb)FTG+WWZ*8~;2QcJ1ResUC;%fgBYy`j03<O103^ZpCjcMpp_>2<K7RoK5V!yy5col@0tX--3;`hn0U-;j0$~IKVGRSJ1p}cE{sAEd0QdkiF+cx~029psM*uMYCno@?023-Px9I>LhJXe(xu7fm02u}c02FKh-3Z9RDmDrI;1C`6IT<sRpf>>kZ~FihEkHK_AOI%)Y$)IlE&wAi3$`i%4k0z5AP#+i3jY8r02>Jm02kk104NSHECm_>|0b#cL?12b0RJ!mjsO|y04n-`fc-6i4FC)T2>*3yMRIa)a&ut#z``H^;cX%T;A3cRApQd2ZDDe2Wpo7h1aoP0fChMQWB*}nYy<^lWn#Z|X9Nj!a`(VuH(_IIe4t@-0HE^W?*s^RZ*Zdk00{pI05%S|02>PQ6~QRsGQ7YZxBwj30st!k0>J_RL4_Rv{~l}r0{{*~0DnI<I{p9v0#~5?8zJaHIRgU(2SNXCbZJ3mYXk-6_96rY5uya(1OYbx2e<$l3c~<A`#k|B;0qf#5-UAy*nki&044Ka0^$1NK``P&5kp~cbpLg7WkYXnbaMZ1Y;0w61P50CWn*-2axw%2|9WL|Zv+fOZ2pX3LUnX>Z*DSrMW6&2z>feb2wj8y9~cMS00kB)2VTu$j{qwPVSyUFA^RmT8pjy`Aoc*iI|K><4<H>tD}Mk21P4cDbpC+<ZUhE$VRC77?|A?L0Sq7z8~`U55-S!!BO@dTKp+AAFl-?r03Hhf6#oMQ06A;`1OWXJ8o)9I0GI#=|0D(gJ}v+!G~EHnKqoT-cOW7UUoZ*)5F<jN5L-h2R-pz23PxdaZBJKaVQ^%?C&US$qWl8krp^mRadl~M_i$xor=S1;0|&PNHXvn!CodmB4*p_;PXGfl3@0$&Az%$I045#a007@U5(*y@f&m!-{~@LTGyod_As=r55De*4AZK9}0P8RVSs)OKVjTb>e+vK?1_S^)i$PyF3IG!%j{qYUgYUQi9Se&gAOInMIRi5l1^_7xVE;1*0Nnrw7%Tq=KwJPA8U_H`WnmHm;Ryf&0SW-_41*>w1}xwt01EpA2rS@JbYXO5Ujzk1d1J|728jc21PnrKR-hnFTZ8*FNVh|GVR;~Oy=lQgZf|!xxI=08b0BxSVrXR`VeTRzVRCb><OV}VcXDBE*C1|XcSq&@Ge_hWL349uZU16yc}!_;WnsT^R%L8&V?5yi{(L|-Bnto*1OfX1IJCoZ00%8S{~ECXBmff`Hh%!b04g^#F-zd}438lL?4SeyHD8|qAr3EWv%o`Q2FA0%Aq{*21mGm19RS}T3ji1f3SvJ%{{jGV00}KU9Iws*77%^_E|<VE;=G_B2q7iH2q7a4Fu$h&934U{H2^d302%-x4<I-*GJjP7LI4jxG_@f3NI*8>0>LseYyb!PPJ;*%APE3AUjY3ga{(6s2?P&N=VfkW;2>GyQ*ddwZUhWlfI)Qdz+(M%F8~NsZ&PJ*^>%DP5CkPdZ*6e<Y-KWl0&jB!1^HtmK!@r9nwgoI|CyPoKL7y(2Il}a9f#jvVAudX_b56(PeUK305$rIz#rYgHJ1QB3mFZbp#p&&00Mw200M^pPXGck2_-M~{{T7y4gd!@1$z}Fc%>TvASmMiV;>0}L8+#BLOKLrK>afY!aD*41PM{)b)`U1h2WCq00a}aDj-6q;2>uFz-|9|AZ%rJWo!V800fA@43y#KW1!&+|7HL+7y$qg&Tjw|4j1Bu8~_7Cc+X>`N6)|n0t5|qq2W`ppbo+gM4({+HYA`WUxdK+0j(s6;smAu4KExw6fbNc1>ItEK>wxyIsh#I9`Wx084)FyAT$6h*8nj!c_1lnpauZ_6OLgA0GR_3AphwACII>X2{~&aB5+_B{9z6tal!K#3FAP&1@r(y6MD0O3bTSa6DuDMfG;%*04bF~D3wdnps*Yv`k^W1MCb~6{h(9tWo2$b(qL_2bpL1s1ZZ_<Wd!960^vq?VNpN?3S{4JWM^en#h`2ij|fv`bj8D+;|l^zzgcf}AY^Hq;9=WtWPJc-APwOlWdCJzaA9|DWn|wjAX9X2pW<_Ge;{deAY^Z4e!$;vbRctZU7#Rgw{CBAf`A}sdth{>E~En~FNYna0v)3k{VUku4KKd{Dj(Ma03xS>1ZbcI0RJ@%01F*C6)k^+03I(85HT|2-ytgi76mK-UjXkU4lu87z&Mux_dpL2`NtuT04yB}0mUc)A)ttKp)(@)2>^P;pgRiyKJN+u6eYrdBoHwFQve$^DPI61e-1EQ02&$yIKb-%0D+<kHJ}<A3!MP5feZjT1VP5&F>(Ro4FTrxV+{ldPr=VdX>({R2=L<s3*OqGPH<yWC_w}c{sduVa&2L5AWHvbb8iF&ba`-xWp8Gs2dB#Jqo%Y3_dP*$G-70LV{3mdAVqFrVr;R1A9ZwZAZ8H&k6^Sx&u$=dbUA<lp>J;fIznf1Z*^{DE~5l05kUl@2jL*P0Cm4^VRm6@YzV?>)CFMzU~s|!WjR0v2!8-JRrCNr6D&dek3ouI9snO~00GqiufhVLAOkmH3>*JA7A%AS9WW485;tHotRNxJ;jb?suDd`#KLy#L547YT?rlIPGzPIk8~`GBxBwt;U??>P_Q6v$2i3r|qZ<Q3AH2Z#Co~8Gf{y?$46d4?8UP~!KnsK?Bi}9nDKZJP;1nRg0QmqxG(!VS3i=BmDg*%C0umM#|1v4205bp|0RJSW0675h{~rGe02PD)tpPCqKrSggE&wb!-3t)FD>w&yU^hGc5(xt~03ZM)U!MXdMJhA%AbKGk`yCAG!2JJT0wMoKD>DoL5ga$)7&4ClGWmcs0RJ8UCyxLx2&Vf0HwNLu07gR%u1>%z4loPB4jbe){{SZdC$9hx0KYoy00=`t79&6Z0N4K{Yyc1dzZot7EjkfbB0>K!07TsY5Fa%E2SQT-A3ZNz{{SB!5&*^kA^$cL04**6D>(fWR$w0=3;=%s|05R_07vNn;&1=B03*EMApjO&c}5mtBH&yA9v%c@{}vViM(F_C|GyRl1ax6@&7gOGVQF*$00000K)=vG1PDlVRN!y_X=DTyMrm$j|3+zYb96&!X>V*~PiESnb8}vUzLF^iW?^z|jUfqtO<{OQWnpZQ0QCj{<O_*GQe|{<=Vf7Zkt<{1P-%AmZ*&9*P;YZ-|8!|@ZUHkhGxh*L>px=W18!w^vjh#80tBT51f3`%|4eUpAV^RkE#DwwVPk7u!e(auAYou~WoKn>Wm|G#?tl?O13(~KLj7fAU}tD_000R84gfX^E&wGj{Q>wu0suF|06teg0|1X<5?A3e<{&<cKrRWx06zlYfS~?YL-qhX1Oo&HZ)R_7WcXkOR42f>b9;d#$p8WX^#BQu^#_jtDnURBLG9oI^#EbPJq=+WFA@{}i(oDQ69OO<ApboB1PMcEVRF}DV{{8Z5HN*OZ@+JJP+@X(46XqE0Sur~PXGZi2U8|5bVyJDGF6}-`GNccAayblEDQh)8^1ReEpGr0Y62O%03UUsxBwn;0494g1aSZ*G6etw$oHlIH6maixBwjLe&PmLfGXpl9RM5I00M@0Au0e50SPF1FS7yrBO$K<2p*z)KM8<`ZvYVu?_oa~03xOUHif{!K=&vz3V1*hAOMh804EN-fGG?B3o#(#140V}OnxDH!wUd3&j2twMsomo!7V<wE+{&Iz%~qtpeX+}1prk5KL8Q`LI3|802UW6^%Mgk4Fe<$01qAiI1({m045DD{1IV|;3xnoJ0cD0YJm<LpfrS_CT{@y6AFbPBLE}{0RI*t08;=SJTA6rfervJ!|VTuARzi804K(v8VL^oJ^x(*7#sj3C}}?cJ{b%wA(3IG0o4@}p#qeFBhY{*4i3uT;QtSBl>VV<LH?x`2kW40Y+(nyq;&sqMf!564RfJXXmVw9ZD?3P1PXP5P;YNxy95Oc0doWi+94o(c!6Yq3jj8n0Zc)A4<=OtxBwayHi73L03HIQ!2u600NW!l8sQEh{6aVy{VVxk8#f#*Zvd+e3p|4!OT!$z;3T^-12Z5aFa+*^1%Ch!!vH-#2J(RCAr3J1Ap`&=G6?=UATBjOUjQNw|1jbMJrEy#1OGh-As`7101&SoHxx9UVF|h+H~k98LK*-ij{q?Eo#4j90l<v_Fc3BSKc+(f8~`P_0R15lpf&&~03{0l02ECCyZ|Er?-n%=00QGX03`naCH(*`8rB2<G&&;*e*h^L^$VzBHp!qBApmIq03|IE5G&~b^+d~|dIx|m02MX8A6%daI1ndXpfUdsrT|9(F#sm-PXGuwB;dvXBI-{-C&>W~i(n1_J^u;-888l?04V<}6+<@S14k48EeZe|TmXdu_YfjW9w8hq05J1C2o0bDfZ_v46aOt=04)wM3IO{YdSKu&3>l^X^*a|pEEuCf0Qdj@C5Zt&K<NM~wio~-4#dDV54Rvi?-B|q7v7^i044VTCTuZ49WDSd|2_=>FaQStBmWQpC@ugqKnVW;-2fCNECoPuU+F;cqTqoc04x`w?iuDf03sRT2{{w~KI3l!8a*Q{9`~jIIwwFTj{rFOcR)NQ;4QBJ5dhlPAS&h|HWJ$cIRjHS8q(lqBPM1bdh#ImL@`C%<tqRtude_U07CR5M09{H|8)Qp04x;%6aTLO763h804U85qM}a#58{9T3m4x2JFfs3DIpjp_J}|z5T?N1|CRvvG9NrO;20SINd5$*<^Uu{03{>;ga9Ni6Bjn7{Qwk!CUXK9HyxiC7N!6_CSWwc5&t?8B{stVLqzQw31BA-31F`OF#f&(BpU!I-2fH;CNBp-1ppyKZz$;iCM-ZA4;3TiA3`dj7w$nSqa7Up?v}tUIvy&Z4j(PnDxoM0Dx^1uVYmRpA`kV$9l;g>Hvr84|A_%ZO6dT~|CO%<U^_V>AMr`b0%5;wQ)O&rV{=1A|8`|^c?1b}Z~t;@b8ul}Wdz+2=YUgXast3qY2R&SPH%VOgau|lY;SLJ1QLg#_kjKgidJE4b!7wu|4C$QWdsIubm?-5f!QE(>7WE4PJd;1bRcqdZsftgC1g4!FfsswWS1p#3IISQ{($es9RDC7C~RSKbRfTPZe<{IbkksE|70K~WOE>4Xa8?01ONmELq`8{VQpmu5pi|@Wp!m=Z*E_7_8A~>Z`fcAS#Nd!AaQkJY-whB|1JataARR?Y<~o*7inf7X9ghmE>LV6U`b>kJ^wu*F*7zaFgE`<I59OhHZ?KtHz03v1Wz_HF#k0-F*7$ZG$8+UXk~67a%FV?b#iVXWo~2&{dDsHE_Y#RbSPgnDGF?F4B#LOfWLWVa&sU(4PrXJC<JL^Whf#8L?UJdMQm^cpatYEOb4O71S1I~W@&6?1OOucb8K&LX?QJW-)U}PY;!e*Epz{4Z*_Doba-^_A_c{DZaBgqY;U_~D7ZjnDIgyLC}&}Ca1~$)p)4Q(qrY!+E@WYJ5+Ei2NIE4=IweyeKO!k0E-oMjp#b5>B3y0)02~1bBX@FFX>?@>2_im%AV)^sAQ7T0AaE-oAR_n(VJ#{PU?L!DZ(<GuNJ?*FFhBzV4S^?w?^bDYbT+_Mb7iq|C=mn5D1mS;Oo3$IIzw-6ZdgDlX5t_uC?6#P2nR?yLt*uBI3Q&Pz;tqNZ0Brcas~hc>TGFa|7${ZbaZcSGW#f23m|WDGA??LWpZyRK7jy&I7M^)WkLWwAbWiZX6{EoaA9*l0WmBf|2Z%qWN!)}Ao(CMphBT<Yb+pT0dg9FDkBv~1cC(tQ=kXqa8jU60s|%p$6<7IOF}>m-~xdI0RUkSVGICvYN0=HVQF%6D0oIt0sTP+plM=tbY*kbC@Cot;2;RXTO(cxqbndWT~Od_KLTw%H)3>ecH<~^9fD2~3}+}JgeD0?Iy&S3bYWs_WiDfH-)>`JbSM=<EFkS706-}z8Bla@aJ(g988BZgAY&OJY5o~dLuhGiWO8MhZW#m!fm<U9LKwtj11?U2fOCQ*DPmz3rxo#_2|*RkU_mU26F_7WRYZ4Xb7O4aVQzFR#JnDgJD_fFbRb3HTk~XHJMTawWI9Q6{XvBwa&LHPZE62>c~Ek1ZE$qpae$8@D5^i@3MD-tbjNaaWdu@_1C4=XE~`*sC!ll$*>6}uaDO0SZe$=Ra1q0gLSb`d2LKS^0>N<MF0_TE;RIw%fMH{3_ibfv1gBSTa%@3lx#d7>SEZF<O=B)-0Pe&<C?aqkLLen`D<FITfiD3eKmou>AiZQ+p+<FVY&>Bo|0ygWWG+u)Y7&1yRLZ~sp+TS`0i#%kPjGK@DNsyp;bp0Sd~RSaBu#H*Wo#_qwjRM`I-9^`Mrh!4?oHxPW<${cb0{MJNOf&tZf|L1pakSP0lH)p0k?xj7r;ZmXkl_;V|0rEWWgytQ+@$AKe<99%x-W!V<Tg2Z(=<pfFo7-cxEPofJP`HNpnrlZ(<@TC!hpNP-!1_Z*(XrJ7y+w-eB;L31jJHX-*?mbZKn-SYX_Ma%FLKX>xOADDT1IN>XKTt$_Z~U}RHtZ*pO0|79X6E<-_0E`LXCZ(?C=E(jz@M`u|>;vjVAKm(*M>|p;yVRT_AY;Y{_V1fn5vVn=fadl;LVRVW}2jW}-2>~uq1EK$OE=X@|WMy)g6QPWUTj6_sreT;caED=XbeLBS=?~&cj3_@MRAF;#b4f%LB4I89A`m}kgb(6dBM`&*pTucwXn-YiFC}xLu%L9K0we&tWpok_R%c;sbua*bLUb+xqPPH~MQH}lO<{Oq1a!eJ0bmA1zH6xo*~e^Y3vOln;36~Q&q5&sxMGVgF3P}s%TOL7%HTT#AR@~vtceR@tmCeO0pnn#qiW&=0o%)1FLH0TU>`joY;Z1mMxz1(34|!lgr!mkfTp9j2C*Y(V2H#YKnp*R+6xG0C_ij>ZDk;)!60aGr-J}}rW%5~!2tn%$3sXI2Ec*-vVdqVW^8Y7a{VX*<t|8NVQh54XsV!dBjmtzLoftyYy8{-EW#pXa&m8Ss5qogWddL+FK2XN051P`VQF+IF)%6Z3hrS953nF%Y#{ejWo)~kX>V=>{WlIkWNB_^Aawn23t=E|Y+-3`|8pQMAaitKd4C{qb#x$gZjHd7AbD?fAlyLh0B-(%Aua?_S7CD?^zTCgA|SaybRcqdy>16!V`yb#6+$5Flmyqob1d4SYHw-JZXjWF4Pp#Ha&-G3Zp>gHbZKp6-vkF!WpvIV1P=X9L%?NhX=iC-zieeXAOr}iB?R{$Np1&2VP<6@A9`<YWh@l|h2aXo|0QH|1O#JcY0qo~CQ=aK3&Le&*co6TVH{*)Wf(>-F8=@k4HE!1N>Bd)0x}0DFOLBKD+#6mG5{O^{~)gb0RT6{0RKKd0svnCA`kyC=>RSOj{q$73IoF-1Hm}M06*0~1HmH$#VrHGBCme{0{}V006+u6y(9y}ZvYYv3xOH`03)UVGyoj{{UZV(4(R|Z0I2T(7%nydfG;-o{{TJ(r~nr(HUDe?1OODn07Lsg1rNX{4lZ8+|0WDF%>Y3FHvcCj0IvWB06_1<07pj;fh!L%|E2&p044w_sP6z7FE;>yFgL&d04pa104ZMp`zQ_ufJFc}Cn@e1z%M!n0H82A2>$@80757-=>YXJ8X!0fph-aj0Dpu4DK8QoJQE}TEcO6D1%m+m@BbJG5C;G<JO{r3Apk!kAs~Y|{T3u)8UQU002S9p1tSRnE*O9$68{MRAYTA64lw_(015y_mjF%s933fP8vriU0RJyJG)LV46(#352SF(TEMXl0F8|5^BLx62LsS0%Cq*}^07ER_GpYbYDlH;|0RQv<8VCmf3Ix9iNp5y!ZrC7s>jVy0AY^uj1P4_AZ*Od3VR8fp|7mbxX>xM}3;fl<%q0W@Nn`{C_O9Xt1fGEe1ax`7aAgDqbYV&$0RI646aY30zX1O!AOQd)E&wI}G6Dc703$XX{|bZv9WWCSG4dQEAwD4%1sMP#_WuAp1gHQNEHnN#p#lU2aARR?=WGNB<e=<eV`~8a0Rjd9HYvCO{Te{x82}y#04x6pCOiuO6$1hGLE$_-Edd-a5)kz-Ov4{V0XD+`Jx&7vUjQLU<xr>uP_FN901ymF;~_Nw??4_WbwQvf1pxmJ-2ey}D+odFj{q(UE8`<80G}BL2LKgEU^0OSe*ij{074NG8Rh>T03&Pw2LKdbE&wVs30#0CHzVo<iyI@MC<EY$0YLdbU||{{4JJVf1pf_CY+-q2a#O!!a%pgMb2DxN|3g&-219RcV*6oqB*h13Wps1rWo~vc3MgQ8Zey=#1PEpTz;uzo0RI322>><@PXOBiF>(Sb2u*_@xaR;H3l~QL!dw6t{}=%PYybiP5Wg+}BryX30s#d500g0y04o?g_U`~W0|XGjMsi{Li(yut0B>?L1O)$jWpZx>7D01=b7gH}Y<W!OK<{C4R%OT_X>@ts58wm<HVl8kHc5W~F#sJi8UP64{jUt5Hn9LD0299&HUNnMJt2TFR&f9W00Mv`0)RIJqQ3(G9ScAOL!kq|1PVrJb7+oWQvYvc1O!59bY<HF3IL%^X%66I0KWqQ1pqb|ParS<0RXrF9tti1|0Xj50PFw*K-E2CqaOoi3j<@20H-7i4QHnV;sOU|1K0;+1Mvsq0{{o+_5lAn1Oo&CSOfvDS_A=ER)Y*K1h`iK91JO80iA&eQvm*-;0yo^8#xm!y)cqM76Skq5upYD02Kfr3kCoX`(FT`fC>N+BLM$n05KO0Dme!K1PelMb8}Q-&2l}#1PQtTaDsCL{Rsl$AVy(wZ3KM=>H`D@W^Z!ffd2#$C1fCBV|3qXc4Z)F&44I#?<oKP18G2w0sa2~DHe(V4mJVym*6Tlt$`;EFbe+w6(ays03AF1Ej>XC02~Vg0RK4M01X{02SKlI02C5qqb01N8@~W0xBwvxG9fi@07N1ue1JL~WkCN794ZMx)Bq`0EIT@801>;RFlPe$82|?$Hvk9#CE0AiU^GB0IJ|)<4Sz7~00~Aw>4gCF41l>rB?_Vq00jX58w3C{!vI7;{RYM0C=V_S021#UHWf2$As8+I{VcA40su2V2>{<RUjQi&xxgq4y)O&R3IG-+8o@k$E?6Nh04*~LsUZItApr3JAsH=S`2a*SMW+KM69N1RqR*iz4KOSKIr}{jV}%?5CJO+!9SjR1K@J`wLKXiLrT{qrAOI$R#sDHW2LLJ(2ki_J3k?9fU^W0G{{SYY06zdH0R1KxKr#*hZvYkl6X^gd0CfNj-vBHR023`?Ee2IV7!V;C1vt(CD+fUTrT{zuF90UV{{Srt0xR|aLA3=M;SSNDEIG?TE&DGJ8^9nKEG_`oC^r#zKmrElLIArh039F?02U|UGrJN14urS>B4vOr`!f@7pcDW;R|DTM9Uu}R-9Qg8r)&TZ=U^t_6$O9}-5wMmZvYlSpgREnBLF9606rlO{{Rwz0S_`hHF+r!At<;y0QUbDVcQD=;XpzKE$y!W_Z9#>PyjtI=>Y3804<>xEvz&E^f~`0g#CdZ04E?PO2O3`JHR?Op(;0_IzIk4ruqLTYycPlx;vs7i~t${Jw_l7{tW;h02%}WZ*%tq1!I*UYXO>>|CyPYnYlj%2>WzzX~YRbVRU1EXi0QsZ3GO`V1Ge$baH88b&mkPZS4?Hb!=>tKp_8VZXhLdE-o&=1QktTctLO>Vg9gzL}_z$VQyo6WekT9LvL(sr{Mesfd(TJW@&O|aG!E-cxi2>zySble{ggJ22f#g^`PG4CQxs4X$k=Z3I9!DXKrb9b!7i#1P)1VaCLP5NN;RpLS<)ZcWwj>0YOA{at|W!0W&i*06^0}1pN#I#zk&q0RRB)002PvKOV;fbYcH<YXk&$VQF;!A!Yyr1PuT-M(+6_G#m)&;0`du?*KkM0o#Bg4lv40ATdj!D#ZYZAS3|)a{v@UHk<%A{~`?%HfR7LD!UUCFF*tU5}X6C>gvEZo4^kBLK^@d?RA1cCkO1~Dh5IRZNY2+2>=r=09Pk83JgFblK~Qw0aqG0Dg&bg1EU4S0IqSsUjQUH;VuE74F3Q+!vH}&4FLaX06iKDEGL)m06`ED`hy~-0ADo#8~`E}z%OqhyAcm>A*KK~4PYXy4gvN6C^ZfNC6XZq`$IjFA;th6GY|fI0Vp*P0CWNde?bO329E$RxnS=pHW2^|At3-H_X+?MbKx91EL_h392^nnAQT4O0RIRXFa|&<04KXS9>w4(HWCJaG_3#zf)gO>KqJi{A=1epD=1)<08JhMClB{9QveBoxB(g+{}KQPYXTY_2lqP)00qJ&01^cK2vA^9X?AaP1bqlV<_b)2Z)@=b83Z^fKEvZbM<q+LU$H+1NpnwdWk{f23;Iyx1k0dk1O#Yx|7T?c3}a|zbNzG$qGe<R25fKtZ**m3009OH?*KL{4f~)K0RZ(Y-T?zm06h{5Ao?-nAjrcYZvYPp_Q=CO9Yo>~!vH_qJ_R7)BM!OXA`JgB%>Y3FGAAYeJ%9!PJi`D(LmdYsgQfs8DFDSF2LRtL04g;I>tHbtR6U`!K(9zZJ;vZf1%c-%4=~n&xFDtgHoCRpgU}!p2o<SeHuValpe{K;EdU+>?<TkaBcP!*3jmL*07fR@;>@4{z_C9782}p>I!s~;>-{rTfF||;KLjrC04p{Ptw0<A4gUlQcW-iQb8!D*V`T&eL}g<8a%FSiMrm$jM*nGYb96&!X>4vKAZc)60iXm9ia`HFWpiU?Ze(FUZgg`54^V%F0RUcqfdff%L4YO-kD%{iV`y!Gp$%7WcXDiGKxa>4YKcJiRAqQWAVOhtW&AaOL}&m30So{(?+ds992_7dF#-O$U<DQ_2SASi`zr}#K^g!cE&$ghFajaOG9CaR_WuAo1g`)C05$&o0RsdERB2^$|4(KF1a4t%W%mRDKMFtu05(6bZvYMoY=a+cgCG5`{2(=#06q&1{@cOC04g^!F;D*h0x}0EFV6t~2?8B25^n$z{{2EA03r(j7zghH06A<7;1w<a_bE06Mu03l1pvP<UjQZ#Fl&G&{&~PW84N2W_5lAq1PcHe2L=HDJHr4#K?eYYzW^XF5)?B&V<Yjei6DRB0{~wDB@f*&_aScp6GB2A03Rd^02&Dl;6ov4z^fJ{3ZOm;peHwDDSC~7vGgDq8a4nH0LMHtHW6Tu0DFKS0KG|sz#}&r0C1vQZvY(~3VeVI02RU=43MA=06G<bkfQ^@<r)Lb4g<srBS`=_j{qYx8r$Fz;vV4_dPiV59^yU^05R@@@PU9H;S?qkV-ExX1pf&^b#!kaMq&4IZ3NH_H6?Q(|7mj|Zf|rTZ~tx}d2e-cAZY(@bYfw0AT1#OVPs?=X>=?g|8!_&ZXj@SWxsQCAW~&!0N`l+!eHBAb6-PmZf5UkX9Nya3<yPWFLh~faC?9q;9&&i{tX3kWnpA_AbI~~bOZ%fVQh8TWsmC1<KREd1mHh^1Ts`;Wgurq;Qt_UWoC7AWn{%58GvOBA?837z;J2rV{0H`7$9h6a{nNAWnpk{ZUFrOKA<)OxBwao_rm}@&fsGJFc<#|DmeiJ232nVY;R#?00033_W(99jiD9+04)B~fIkBOasUV||2-T104f(N0N)n}1OOGl;Tr(ICBpzkKLtl1CFd^@8Cu|fK{5au^8h6{0gYldCno^kr~n!;IK%<70N*?%CMYtEVI2V9DfR$72G{{W!<PU@M~fjVOry*}ApZa<z5qWc2mtjJ1Az$)ASW*q8+|%!Ln<x+FFK7Q?~edB6bZvCg8<+B{}>1o*up}?uK-C&48OoF3P%!u04pv4GCK{F;Quo(4FK@~CLUihE&wn+*Wnvl!uJ^fESn(<04ywb06#(6Kq~;$0bqYVI*$M@73tmJNe+=;kw*)WK$C)UzaYN}Lt%7dXg(nX=?uV%lnxd~3s-1q#0KD&Xb6#pnL^g52~GcDXKrb9b!27!#NZMDHX=^|0lhJVV7LGs4v}Co?E$(VEeJWm0ssvE01X>C6D@=QuO2WE5;5R1`GL5%03Z$e05t>ZAT{$N6n+7N;0Oc&I^S#n1ppSppf?8o&_FFc2LLe20RJ5Y04hH503-h!FQ)(`9ZD~)DTd=IY=+<&GypTr2`|7a4u;}3!zqvV05uCN0UZD;uX=x=K0-lX04EZX!2cB`0Am0(7Y*MkISK$7`9UcFUkU^XQFY;fP*`B!1PN1RbYcQ?1pfv|Z){{`as=@TcOnErcTO`UWFY-<2Z1PaDIj5X|6yrtVPb4$Ed3w?z-(`0Yh`3tE+9he;5uZXC<1{0Wq5EY1PF9*|8sP5X>Ml(4So*-Np5p=VQ$WV{{(JtZe;)f1^*8KHtzzc01~??FuvdzE&#saPhS87G7%>N038AV|0Oa408an}Grj@<E&wJl1K|KN?*JVDAuvD@E&%r@Fa$3E4jecb^)IbK5UoKv03rbYBgOz7G6euU{sbU21^}1<1}3)$06*|xFbG%xCjR!}Bn&XB06iaXDd_+)IDjq-GePcEAszrD4COZfAM*eq_W&-y@c<qYxhXjT@r5-2CItfo{?Wug04e|>#sJG8H4dUGI=~K~DGT2KLM{L;4x%Xzb1-Z~fH>eSIt|-kpAH``1wb`G5aJ@cEa}<63IGx`;UWHepcXAOzW_TV{|*2s-2e<7EdK{U-2e$1F$w=b%>YFJH76<fZU7%a1^^)dQve#@I4bD?C24>m9sfZb-2f3HG6(-avj96NF()y8-QgnuD7XM0Rsi`bC&C)RCCUIH1^)mkJ)8hNC=<UVJly~fAO>Kn*8o8#OMo%P01p85IwB)8&OjxD0RM0Q7YGx|U=RQ_fd4Ex5dcyEF(~^I02lx%4=}F)e-i*b1ppd63Sj>jIv+a$8Z|8cE?oc_7yuz9{}cc<6#yw2qJ9X#Apj(=02B)W^&y4;EjK_@03bf!D{}xDLnA;H0KXc;07yv|j36xk4ltSlOEy70|B?U{77hSKDE|N~LM|4B04x755g$8W04xrEpukH2JSQ&zE&<yR0FGcPHxfZFCifQrK`LMmFmwX{0z(Ws2)F<u^%HD?7(T)=3IG*%AONxDU>P4rCBgqBK_lG&7%4gaCBZ^3I4(G*0RKh+IRG!p03!bd04qOJ03$)=Gj#zRnt@2-FBt&;NZkMvBr^v<|7-vd03R*@GyOmhAviA@07qYc05A_OUjQvjLBB#MGU)(1=wKZ03mX7HO+X|r>AvdVr~n%=IRJn%={Z8-S)n{5ASlWJ|0o3jFhraHME@@u8AIIw7AO7^V5$H}EjQ@^|26>k0Qdh20R20@U@<tq06HkY4ge}&04X4$LpuODL4XPX7e?X5A^kax04Re1>Hi-82>t&q05Loq{$>C=08s!eRRZq|FiaeQLiqqj_c=(WNgyx)D0=?@SO7r@07Rnb9^e7M2|yuQASwX3w*V;&2jD&eyI?Z@2%roA85}qiJLbK>KOMcn3jhECQU4PN5`O_AAr$|T02&+)086;L04@fAHbWl505{wZKr4VKI0Z5wG7LU8Kvw`lCp1W6V1oWO0Wv8U07PE^l`7PwPbNSp4!}cVB>O@yU|=l{05RR~02L-SU||v?I{si`jsQL<LjWs302>P*02v3sLIM9?06Hc_04M<eIZ7`c?EptEzXMQO3IHf$!7zDFHDFz!E&x4Bfr0-KJRks7-2fo_F+Xa-ATL1&LjS4&O*KF108Re@zW^&S4gfT}E&v#Z3IHMqp)8+6I$r=YJK-6ETK*Y;Jph9M(f=Fw2<QJzz(x;83x5m%6dX4dHakGwI$S|6IU<$7U;zI}04c8kBLF@3=>R7b05wJ^8vY3&4lp4AMI<G+rT|_}U^27wAT9qZH>Ln!08RkuE=xfqVkCtEG6q2Z#sDNa5CAVO_W&+CCgC$G5&*|VUjX}{OCWY()c^m30PFuG2>Ad1$^b3}05(dT{{TugAQ?&B0DBxQ9KfmoPBRa{|5yOZ03`(gF~3Dq04YZ~TOlIq9U%t%03{|s060ATCTc)1MHK)j!}kDGRdHcB4lv^X15qa}@c=I!?>S!pHkhFh04DD)06Iqz0Y5exzW_{M05=btfDpd`CoTXxNE6{ee>WNcO<w>wVZr?~tszA&IOzcT{r}a#5vBk{055+4DyRS*G&|M7KeGTuE-f(uKv&`aMF2klGWP(}|Nr3sKgs|m1^)mqLsI}JMK`{1p&%{*G(qLTIk!hA05O0u54b=^<198d;R8TMV3z<*-x?gI06Q&!E`w_T;344iV1YO&QQ-S9J*J^CIw$~_?*K^{8NK5-03g2rDyjfQFLi)G=vu+d00SdK!r(4X0PhYy7bh;DF*+*#IUrU5J^(Dn0G}s31pq8#Vap;gw<`ci6973Zqo5VP03pKwPf(a)Gv5v{E&w+IpyC7nOd>P!04X3e|AYW6FA*F+rv5x2HUKY!0OSAnAPC4d;I;o82Pw-o;2pLt9jhfcpd&W^GXRYPLmELN9RF+p6#yi|08;r=5y3X#@c=C(IG0}lG~b~yltCv#7ykh401it?=>T5{015yb&%r7|pw}+|L?FX5Rsb&??*JGjEJYwUL@@Sy05(G%LnFfgQTtLB@4z4&I2A+uLIDGzIYul1;sgIqBsK8>D<U?xUjQ=gfi4WP0ZRW9P7j0tDJ~Fy5Ig+<G$GAm;M+YX31I~QJ47%5KQaI&F#swjAT;3cWP$-fFJbY4GLHZ~zZt^-PE9k!fHMCNFX;d?0QLaCIRjq+F%Z_^5c(J(As8cr00jUa{|FfXGXw}nWxsS&bYXO50U|~Jc4cyT1O`E4|8!|~WdsF7dH-W<WdsIubaMY`Zf67rW^Z!;ZDDi-6hU`ke|aD+AYpQH1fc(OAZczOC36J-3QlEsbVX!m|7A&T1PD-XbN^{{X>V=>2~GcDXKrb9b!27#1Sm;vAarkc-)<moZ+8cvY-RUhc4Y^I3MFJ9-E#zhb0A?0Km-K-44`NP1!in-Z~t-x25E3%X>xya1PxPVY-|v~{s+N23IqjoVPf7BVPkJ@V-jEi3jYK(3M(K+a&P~7Wo{ryWnpsvbRZ}sF)%DJ|1dBqAYpD~ApcTtVs&^RX>{LZZF3-H9Kj%V&1n>X1QQnF0b?Ly`W)eN3!n*iZ*psYb8ul}Wdsl;0sCcgBLGxsZDmgXZ+8R&3JL@c|4m_XYh`p-Y5#L*Y-w|J1PSgNfF*M}Aprs`Aio4EP-$ap4TN<6Zy<AJWgvHGo)Z9QWgu=Ozybhl|7>$0bZBL5F8c%q7(ixeX9NxWF(57iNp56icmz!gGXPR=Gax9z1t4Sh1toJWK@LV~Zp&e8A>d^+;4FX)QvYRfb!l>CZDs#%baMn4PH!Onat8u#XCQNEZ~t&}AZBlMZe;&11O#($a&!d!BM5*kAaZ4MbO~=1VK;#a8o(D}IAR!r{{?JeVr6Uu75*AwZf|rTcWHF}XguIyAa`YDYxe{MQX?S+R$**)bwr>{DZp$5GZKRNAQGlR!yqUnb1DA{LT__(AZT@4Zgdj_Z*E3}1x^F~5DdXdP9RfMPya(pAWlzL1PS~CAxi@bd2e+fasPE;Y-whB1PJ;GK}ZQ81P^XyW&LC!!7Lz5b|59+WCRFwZ&d^bQ}<<bR8gP+02m(s05%Up075@H|NZ~~3H|^90;&Mu1p#0P0pJG!U;|VD-~wR;0pJD#U;zYR{{h1QK0N^dLEiv50UkhS;Q<8y2~TcAXkl(=|7BzV0tp2HHosiB02&geaiAId03K{1xBwdzF7E&%Fae;TG5{N^03HGW5dr}MqQE)+t-v1N02eg_0RIS90y{$l03ZJV1^_w*04^W?il96P05FjNGyfzgINbmR7A^kw!9)NtCn^BAI{+LAKqN5&ieL*N{;uOT03rY$4gmiQJqsEsrT{(v044w=ZvYMo-KN6eE&v}6$MgVyLKDLPJUt14Kvf`tK`sga8xmp)wLrZ%2*V9N3mS=_Dfc!30J_6D04o50Bu@YWG7u(*!1Xl{h6)ghH2@(1{~q)JKosc!IP8of4&@2}4)7cR9RCtE5H0{DF$Vttu>dIm5*RoC0D}PN{}TxQ|NjdB76l6cI{)neGA#o_K??r>4<G>f06Z`MKBfRR03HAy|7-(1HwqCs1OG4+0{}2j00VzA2q`el074_+%_y<J4Ivh!1!67$>nSuZ;W!LHBm)3{BndwQrT{u6!QY7iJ4NXhKneie4Y&jJ07xT%LPGxu0BHa|84E05A?W}$03N0;0Yd)=Coc>EB0d;@2rd96G7JDLfcp%lso?JaAA<nZ`4?ah1_BEt!2tmK3<P0>2tjppZ}CQgpqAzWBVlrF1Z)FhVL=251ffxNa6sk(Lqli*K?h=4Wpt-$1PE9FYl965;ZtX6WMu`Tg<x%But4(%W(okZU;qFM3)cWPB_kj+72t0G{SXvjG5{F>A*O2pG*G}H0w4<MIzWHK04g~$GcLz~{{a9403ZxN2L2mhKo|#a01*%VSiv9wBDeq_4F4_wCo}>8LjdzcHf7;qU;qZg0JlIv1IfT756B=c{zIS^1_S^UasdAfE<7G(0}VaDGCzp{LPKFe9De{J!vI4;1>PY45*s)YGG72Ew+%3+D*zY(6aWbSI0z;$j{q<Y{u3b_03}=i9~#z9fhhn2fDT(>_5lAt1O)^JLq>AnVQpmu3AkcnW!@cuLvL<woj?Qy|8QerY-|JyMDuBLzQ6)O00IUHe*rcRPXGZiHQ=w004fM_ff``~3;y&aAOIh10098<P$B|0ph%!6FkAqi7#INnY$2cm;snJ20s#d{;^sjS2Lo>3Wp@MzR;@s9a{n^~1bSt1Zv_7qL349uZDMTic}!_;%|KRVZ2xa#X>@r200Q3x05&JD4S+VWzW^-&6B;%QAOhO}5-$KV185*9FWm$J00jUQRbVy-{{R#KH4*?R7607;3>z>9LQ}s08#ya300d!U{{S-<3@JRX0P_a`2_Fd#@c<kY<tPaXY>eO#f(Za!{{R&o03ak^0RJNoFl+z<02ACkVH060F9I<@G7b7XU^o*&Hxd9V9RJ+_4jn89LUV5b6hSr$AT<Plz}+brfMWnO6aYO5e*^_VVsCb3Hm3as_CRYvbOZ=cVQ=eT*C8h+DB=Y|B|yD*`~(ASX>L)V4F3Q&2fqL+9|5xfBqZUT!6h;hAte1V4Z$QZ1pw{=-zY5+90M~02XemMqXYv(K}|*AZ2f88zyt?PZ)A19Y-Mu<3rYMyQ@?L@a${w4G5`h-05<diqQEd<v&FV#-wOZ~0|JR)0YU#02m_J;3Je2(06X0P1{W!?L0>=sGAAXTU@9I!|I+|JDmN<->HfXIzW^{H1pp=XX#g|^s{kSnGR@5Z1wbYyngBWA2pj(Zvj8|CCL}J`rT{mXASJkATmZKk7zQgqEDDJs2mY^sK>#WMAh-biBT^tMI0yh`0RI{m4@DO)04)1A37Vi6AplbV{~$dtTmT>-3I6~K02~Vn06P6_0RR~;04+KU{{WZ(3@i-*M*l7VFFXza-2lH3Aub0%kKDkfez9O704ulv9nT>DB{B~HV*oN1{|YHPiU12S19k-f2N)Y7M*uU+fd41}DnK0+UjX|p4tm0-0673C{{Sn40PO!12Xz9zpd@0TEIA0ip#Lp41OU+h3lzU74IrifKC56S{icK<EdU^204l!_FbV(|Cd?oxzYs5M01yBeU@Pl55eL8{-+(MQ5~>3s4#?mhwSXG0K_j{gKqlh=E;|#-055(EK(hckCom=ug#SALFaRgG03L4VKqfO37Gf&}@IbRX0+XNufG0F00TS-SVLviKEMX!5A@{fdBn_cC6#&%#04Os&L4*J$?=KP=I3d9x04T4x03Z)nAr{yGC(AS!xZn_tqBH>|0PP_vKsXr4qK^PH`uZR~>HsN&0O0?x6$tbH5hWRTpbNZZBQL@x8UR1dpf&F6VI&VOb)g9<Ja10`1T>I>EeoEZ{~rJ%E&wh$8~W5lH|9VouK*kXjXA0yKpm<l7^4MXFaJ3n0IvWa06^c)03R75@x>+pttoUMG8_XyAO~VWt_Nt304~yiJ4wJJ*SG*Cc|b4?;9mg0EDkU(05J)|A%6fumjFr`8aF}zCIBmM02vjgdjLP=AS$>3A)g?pDK;WC!G5A6IROp+2S6+{7Xa}9AAc7s@c<naDX7E$I{+g9BQ5|it2rcC05So9D+)xo+W;p`;4eHi!4M(+Fg3wN0*?SS3jd}6JOCsBDhl5K6CeOpT0jy)=|1*gH-PCC;0gd5{`Y|)04xAJKo_U!01-qX`N1lXfGb}V=>X>c2w)EdLI1`8AT<jBE-vo?DmM&6;3fbZ?l$5qIVW0x4IVD*1whRp47vaw9w>1Dgh3l1U?3?rDbXPR5gj)cGXMZYFA)hP7u16$cwk@vPAZ@*I1^L?)POb`0J$b|AZH*eI4fm<41XOj2tcL)J?Oyf0^m#o699j}DJlT=w16%;2SF+hFd<I>IVT*~p-`n6sDPg{5T*b}g`iJ>CH`?>Ejk7O(*Q#MGdC^|3jiJs@_D2icmYYmE-U~@`ZeG_d7%;`F9$&X8~__3EFUfa_cK5UMxa417+=o-FAgv|;BDa=C6+Y6DiCU*ICS6(<1KswLG6J#03HA+g=p~t2w(`{grFZW2SUo?13faJC?w+tqb~s8k^mJJ3tC|>Jo*wNFcK`?01_cGs|7-SKnxE6Ba1*ee-;ZVLXQA5G(i6=05AjxXk}slY-w(11O#(w{ba%5X>eg_a&w;q18Ze@_P_yR2Jc~GbZNz42WDyeb7%!Y21svgWPfFH1PEqnZUR8xWn=^kQwM+`QU7&ib98eA26Ov#as<L=Z*py6?{oweMg+tlC3F8EC@UpoAZ2*pa47@{aRtFnVgGGq1Ppg!bYuHyMhnCRbYWs_-(>^^V{G(51O==KfD9l9V)a044L}6{cW-iQ1PE?r|9Es%VRLH)4*U;64<bWoVQFpzzXeudY;|QBz;OFzV;X>TZ*T-c)({6|ARNIU4?-w&|0ymYRCRK0ApdV}AVGC>Zy<kRV`F7-bRY|1{U8CrYh`6{AZNXA9zZSx3{uyFWY*N71O^>M4htY;M*b!MbVF!qY-9xQ1XOu&>VQybWB+S)a0CcUVRQF%RB0Rl2SjCTE+{~91P2u(L<JxOVE+UKLvM9%bOiGuP8pyQgCJ>cAnPS$B;aQw03c&;-Yp<+cWx=~Bm`skWoc|I0bz7?b5{fea0p=pAwdK*fNmFI1QbCSVr674g8nUK0&i{v1|@TCE&_lA1t}r~7Y{(cY-AvAZ*(5TCHr$a27mwn3ljkUHu3>a00A)-wI)@dF3O-96mVl6`~su^!44-cZvYPJg`hK6U?2QJYybh>0OLR;F#@6B0|4(eUjQM<fg%75{{b&O83!%^B)c&Lkb)TiAFUxEs{kMD;2Hwq1p?qZF8~w(9|&p&2xh>c_a!d}3g8F;HkYpeJ`E1$p&|w03H1Qx!U~3f4IDQj?JxXbGX;~tGByo&=>Qwmpd~L0m*8g*AOHs9X=5?~5Mt3bod9*<3nL5*CO!cF696BU04o?g|G@wqBL=tu7ylX!00cP$F%zc&06G}K903j-2KpoaF4sU4fe1%6!T<{*eGJzi4h-o48uNf%8`>ZxFARQwA@{}eG5{c;4NeRJB0TFK2nwMLp<oOfIO`xRDS!=!VCMfE-vAa9FA~dOFAwtZKqwo4+CVQ5003VAJ`xQfm>@D9pq(ECpb|C_Fd?L%H2MsIjk-WJIi>(Yw6{Pm;2SRBB`~+a5d9&%fEhL@TmTt+84=#1xBwdp8bQho0VWIrCkz1bpf3{s|DY)^69Dc3DQ_(m9Rv)aI}rx~B@N}k94&$%;S@B4ErtIZ03S~P0x}S@CNBWNO2Whc5(P4#>wqwh2PGq*5g`)!AQk-p9-t;O765tx{{#R!5CA>h0RIUXEeAqq03WX?5g{cB!9W|}G^8KF3uQPf!QKHZO<^6a78;;33>3g7FrdzV02L1y=>RAepqC^s7f=93)Sy1XO@2RNM^69)GZb8c{`Fu+05Jd`xdZ(**+4*C02&$$Y7zhm5(5gjfFljq;QtyL7yzpQDhanE3F$1LYyeX$9{N)v81w)c5hV%$`wukhfJ^`mK19A$N%;UhFh9M+N%sIV08?NjFBt&;^Z-K>!vH-#wHiku56B>l|0%&1{%|1=3#I@|06J>`AaAN0Z>EI*IiRRTz)s;3K@&$HG!{W5zYQ=701}u#U>g58D#8H*5ehgTi2*!I=~n<h;M}13B}@Q#K{2KPNdQ$jVgpTlY8+rja9~2Z6(K|wAU;1DaiJTxITS5%pf4SPz#gjrHw~aB-QXhNL1+K}-2ep_DhEIOhG9Cw0st!j7X|+x025yTBn~iruQuQ~mjFQzS>XRd04e|?YycJc02e|(!#fZFKHcvC3K=dx!67LS>merz2(RyeH(vm?BaeYqAHW?9WuYDJHXtGZ6j-1&BLIH_04_Tu04|WBe<J`Tj{q$S>|=dAf&e0403{D2VA~TUI{^?c3o0c5{tG2U|E~Zh06OXE1|SV&Kms5q05`qq72qcX1a#A(1pjwoX><XanVH|2nVHEy?WYQ4|8HbxWmRr;Y5i;iq^Umy1Z!#UZe#=n(}Dy7Z=G}CL2qMg0Kmke1^Z)Y>)-?ibYXJ)XJrb7**^pZcXwfKbnt;_Z*vLY?`2PJZ1-SmX>9du#6WK7VFq$xWc_Kz0eNL~X#@xVR%K&!Z*nsP?*ndScL~69VRrvzYy<^!X>McQ*I;ySXJ_xA2vf6Vbm<}!#MwUq1_ZAKY++&sASlQua{pyvV`w0BXl3mn*1;!p*8pu|VgGa>b7OL8aCH13VB*4Vb!}p0a#;bDAOJuFK-l4O>wy0R24-(^ZDDl(1RG9oAaihG?{{t>aPEL~AZx{L-#{P(fZ1RVrweqsXbT`9gflZU06@d<KL7v|!vGS10^b!40RTJIff)ex9@1fT(qJS401NER0GdHD1FwQEUjY9g3^L6CKL9XGCncz%Gt&Xt0VCN1^#x6VDFUD$00#iiI|cwRLSR<mE&%<5kAM;g8UP0by$&#-V{dM5DWGZpZ*Fr025E3%|7mh_1PxDaLw{^(Wo~pub^w5X1PDfTZew%=ApZmfaARR?Yy{s5Mrm_s9^g`M|6~LTLTPkmL;YbdAZ!2t0SN%RHU{fK2PQADKnq_k03$E~e}F=Nfd4!_0svzGFc<#}DmelK2tjp!bZ=8|X>J5G#(w|+0s{axOt&Mr2Eq0O9^)i20kdEu^DqLt!uequ03K}j00RJPz%&3I0Iwjp02=BbHt--GSGWKj>H-7>WH;F$wgccC4)o)%0P>)h_W(T%>!2Y3j{rL>2)u!B01l*p&mup+052d10BC^RU?^+h^nkx%2$h98bD))gw+H|b=^+UKtiUqg4JI&b00JrrCQ&fQfjB`jBMSV(3;e_X6)vm;K>#*7Q51TBn4tb)3$Vkl<^caUXaFE75)vl=C;%iiAqigq{UU)OE&#s(D<P*103!k6KVmXJVk)aO4!>YC(10aI0W1Fi8wdjc7GD7UC-g@p03{9p4gWq08!B%A6%qbRp&I}uE&wVu{|^8y02eMD9(^3$0bBqc9uJIweGmdb04q2V00IE%ALao8WfSXyg8=xy{}c!g024s~a(`uIdSy*-VtqjVZGr?2X>)F6bnka>a%*2eWpV_c2WDY%ZDe7CV+8(q0t9Ylcyt5>cXVN5bpQopY<xlFg~w~;;DZ2C1O`xH{c=$u217=2VQu|ofCmJ6WpZx>{}w@Wb7gH}Z1;IgX@#LyWo&Q1V`+4G1Q!D3LBDQib!=gB0|fy800;{JHU}#JUljrY01(6>Fw=qU0&5~LA7kJ*0|50a)!_wJKrt8%E1x<A1PFAKfPJC`_iS%>8zEa>C1L+1WL*RR1O#XIb9G{L-~|9SAoNpX-ryx)K=uGT1V5+%6e}`pwg6Iq_b4v|^?)Zd1OVT|06;+nv%n+{I(a}Nc|k}3GkHK$q5nO@07OIw0PX((I4uN1N(un~7$E>V0}VtJzaTCEFE$7=pd)`H2>=QJ86W{d^$J*EHO!zh02=_ADh>ezpf?L-<^q6R{{SN+3;;#~9)A%%D<bItFb83EAp`&^fnWgu6*)j{3^9RoYk){mb+th6Np5p=dqD&RRQ|zWa|8=VWpqRDXlZO@F`xtkO<!Sn1P(^NAV!9OZUW;31Wq&I1a1JK{{?noY;|P>1>Qpg18re=)}Rgm^EM9fL3MyK03HDQ9u3(b6afG!48H&i8#odxFM&0`0{|%s01(%KApVv?GXM(!6axcS064GSpfv*^D%!yI10pT}q#*<Z40HcwbYpC3aAI%&VRB>yC1`YX|8R3UFE3<ibN^#+a%3)JZ*A`{X>N9v054Z$|4?IiW;H@MGyen%Q*3W=X?TAiNOfWaC`1KA`5*+tzo2kwWn>`#bZ;PeZ*_7Y`U_?*oL~e1HunMkf&mpMFOL8$3ig!aA+NOHIKu!x?LSDtBM*OqZvYX!3%NrgrT{cE;38B4AdbK*b>KE1pd$HTdolw#KocMUkaghy5a|FZ0OSBK|1ksrKK1}T1=nl<1^wd&`2Zyi{`x^908;=PIV-+(!7czPG6#pi2>Nxy2}>X<Hwplk?*Kv(5)PvyrU1V-03ZM(uP7ip-@^bxKMYPFCJ+BGrT{zuB>*J;3(c$pMgTcGAO4yE1~v{RFB|}0Dj6{rE`cBo3qt=60J8u!A}b;9Ev5iH2f+#e6#pOq`2ayQL+R#^U<v>jfEVL1G7tV2;XVZm02&Dp_W(lOJ76gXL2v5-5>&uAhoB?m0JkwS5d>jB1)M-Rs~rslK`R776j>xC|HJ?)J2Exo0QWL95($Ao1y2C~2sjxhFDL*b|2#4f002c23hO8rD}yElU_LT9cenr~6`(9R6Kp{LD>xJY^8qF@{{S2&6aY9D0RJo;q5vWQ835fUX2c*P4kBP75G@rGp%Nk!q8SOmG=cvrE&wby4gg7i05||9H6Q>BfPX?VJX`=E90o)E76wd805Je6<nI79HWwNJLIt?Ktza$yEjk!|AT0km4gf;{NH;qF{r~|A{r~_C{s3SM{Qxl@)&u`9J}nIk03Qzj82~{H02UiKe;PL~04_Tk)nNY|06-f6G~EE-5g;!HLIgn_0KY+B04okJHQ^g-d!Rf)!7M?+8a_e5k0L-a=@4KP<9~q;y8y9B;2s<k96}!a73|z$Dt!P)Dj@&%07V4%0Q>*{2mn6a01qKE`v*T&gDR!~Hvsnz04hV_94-Jb{XI{?Ee$a201p34Md<)20NnuF5F!PjZvZAiG64M=AK^DS9{@gl{{T4_I!^!%J^vUdFAD%65FqXsAuSFsV1Xh4C;tloA`lG#I{N<r3P~z5!vIO!N+F;iEfE_69WK`ZF+N=3E?nUpA<i2BBtkSB0X`r=H2)L;07(-HEFOMZBP|O6BN8Gp0oxQLOClQ?Yylzwe=NxWG!X(a5a8b#I(-019AQTU{^+1UDHPNIAvpg)MhpNL9XcrgJKX>jB`F6$Z*Kq`8f0M}016@h5hDOZ!vIQ4@?@bdWTE{bEPVh<x+OtK2*4^rAL`&Q^A0g*A+ew|K?VT-ga9os5FJ3K_C=r|0BayV0R8`cENdYiE&wt=cLCimCm|3`M<*c)0Q(;zvql;KFjD}(B1Jdp05X7JAN3%zKq_y54?h|v?=R^94FY4A08ZN*9f*M)03_leF82U6LV@8j4KOT^076C;_aTsDE<h&R6(m!^7bk7v9vuD~gD)Kc9UKuJzcV2N6Hhh}Kp_7BRRBr=9Zoo}0DS;V8-Yq2fkgWs7#V;t5g|Q~zW_NJ=>QjtU?u$k4dNyMQUE$J|0e)Tga9rt63Ze#$bq<@Vu2wrPyYZDLkuP_#sL2<K_~z_E&w-wL@5B602MYFp#R+f8YwyjLc{+6PERWU3;-Sf8#W<5xBx90-&_DHDl8AcO)LITz)J+L04)GS_vrv3qX04h9RTVm04NV5Ddzw>NG|&TI}aus0IvWq{sn;<051dxNOk{hVQz0}WCRs{(JN18Lu_Gl+5rDZWnpY|XapAjLug@gVPkY<|8gK{b0BVSbpIf7WnpA_1OoqWa|8urY;R-#YXl8OY;SLJ`%Pg4U}<4&1O&fDZgp)02m$5;|3PVT1PN1jX}4`tbOc}o4B>!5|8#V6X<~JBW&Z>UMrm_sX>PA)Qg3A5B`E~pZvSK;Z*CxTXl45#WDGzcZ*m}W|7dS=Wguc@X8HiZW(I=+nwgoI|CyP|KLj&Sb?<Z_VITtJAaZZ~2jb9zXm504VRH2>34v}GfM#-KbNy%p0doW}PH!N;Z*XO9Aa@sGApdS<VRB-5E+GF^b7de@a$$DkWo+323Plj%1Pn?4bY*RGUqf$h|7K}t1PDcOb^mE_aAjlxW@hbX06^wH5(Mc#1j{N^7hq@lfDS=*bMoSYWd-3HqH|?zW%??BWECL<3rTKs|8!w)bW&wyY`+8wLt%4tA^<M`E-nNJRBuyd|8jO^as&!gZ{KfhUrlcbAOr$`Rd56qS7B)cp@|?Nz#iaY^k4=655&30KLj-!Kmvgt0ApqUX?A5~E+9>B8+K*#Aa8RyK=c3~2>oF#pmJq&a(M(X3J^gLgfk#=We>v|#4o8o1Pe99LJj~8r~d_XVPb4$1P1?OZ*F5@bOZw5EFc61b37n!XR8DT6aZ}kU@j*jAU|Vab!TXFI{-<5|8r$?b7^mGI^Q5AWC~0kfFNP*bSt26bOHc#1PA|9Wpq?!cyt6c4KM^l2O<O!D&aC=`ygjgU}1M*c?7={LvM9#WK&{e`)_P2;UFb*1QX{@Z*)rmNabv4ZvSNf0T~zpHVE&y02&JY0U7`v|G@wq6$a1(JpT<nCO8WK76ktR06D_|Jw5{a0BLzZ3oIip0Y4irFA)v`9|~AY{{R331OPS-zyAO!9{~U%UjY9g4l>OEKL9YhCnebcC^G_cKsNr<pd)Mm0{{;$?*Jn(1eIU{F$e!9F!lgB1M~oYMHE~B92^CkqWyyeU=j!!00jiU25E3%X>xGjP(NXEWo~o?EJSWV>{Oscfo?+`U}<D!{{R312LLuF!T$gp69rrV7#RHl48R@;KLWS_;~NSMp%3AMK_2=5ZwWacA_PGK00V&43lTvBhTt{lKps#300A)yCohix`zi?7fgk`MxBwj-1VAJ)1M$EXVWq>LHUJO+9s@uNKqRR#7Gt;}B?aLd3Pkk3074VP06gEKAe9fYARG<g90nv0;RpVt00;mOE&wDk%LxDy0Sdc9F<=u0zgz$r83h0%AqxKl1ZZz;WCRC(a3ll>L3MO*PvN|U1q0x1WdsOCAXax_Y;{lILq>9LAom0ZR%>8yax(<~1bSt1Zv+-W|8sL?ZDMSBOx{31VRBYwmY`{L?|A?K1UBGlxB&efB;X}70RYhej|2)K2I2toA=IEH`!E8|LMs3l1Oxv75?=r#4lu9(00aOxNdPkd_aHPH{Xhvi2o-ZCkKlkNfgb=O1welV0{|0W03-!NUpUSH7ZK$m9l`<oCo&2nj{qwS>8k)GwtzS<fFa(Y63;FGC^6H)2O<Xm?gu0304KX3Gyof}$-yQu2;Cqn0s<WR0s{#G0^|TLFbe+wKK1}S1y2CC1T+jd;Vlc>V<Pvj00vrNKtKxs_7cDkFy6s$01^)FU;!BbBi#Wa03%;604XyJRp2TRVE-%tHaZdM04e_f-vAvt4FCxC17J1|(%=gy4*>5$E&wbP!YB?de`5eP76~anUjXkU5CA6xp%DNm{{SO89uA5E5B~rVK!gAxF%|n2Hf<v&ZvYh#{_aH^04Co6A3gsP00@r&GY_Wg06rmLC<j109S?sD023TI6*UaN`#BTXKrBBL05We102v_{fGH690RI&L87=@VIu`Z;;3^Fspco?nQ}+NMJ{rI=0Am2ZITi~kL9g&2Jy+=fD@>pm1)~|?Kz|wlK3@PT4pG3~Eg%3RJ{>v$D-ORf`2a>aL?L4+{y2dS04Qt#6#(BFE&wh&41p^Re=zI-3`s-j8$j+9AUz!s2%#`l0RKP$7eq1u!~p*)Kr=ez05vy#8!!Pw1senmv0&S6bF$!bVWMCKQ1^0aW1~QHd2nUxZ)SMK1OdSW16QwQZUhG9pkllr2mMgifOTVZ1PDhe#-MQUVG!-Xb6{Y+qT&UC4)u#+1+9$<Ze`zPWOE=Spuh!i|6^fnYy<{FVgGJIb$J8`bZ`8#1j}a-P<3)+X#ZhzWkzyuZBv(MZ*cpG5b$B|U~vA}<pczDVRLH)^8|O$0Pp7yZf_u-9^oKia&pbVl7J5X05%wG0096I_bvb>Uf^E<A`L$<Qvet?B|xE}fjR>M1T#Pd05$`lGeh^d03LC`CNl;Ae*geK5(y#^Gh-znGh-kM0cAiYs=#sJ?lWNoK|3>HPXGh2GYBRxd8GzHfHEHz3Mo4V8HpE9<v{-eZ*Bkq0tNu{Hc5eBd-XB^832bNrT}#YxuJCfcO(X`bpj6nHGtqNbb$%|Cs}|8023|%C;K!ARbUqe2>=v#UjQY?fkFT^$AJGU03Hkq02*KY092r_01E&=&UXMF7z}_m03B3e_XhwKZb1kDmjF9L4<w*A03LaviUI#93IG@&0FVIxEfN*!04e|q=KvBQ%c6Z@9RMTu4*)y}AS<r`4F3Q=mjFi-7N+|EH40(&06qkdn*c78AS(cJ;D`V-+zmmSK_vhv1;IbV&j3b14R1k+<E8-TJpd*VgJuE_0FwUz78eHqJuU$EFg*_;z&SohU;h9t4laZMCok_08#3t)04M+}ZfJ$+03+l;E;5e+*DX2_6l5JKU?_wC0O9`^2=xC7I{+6KVHN-oYX5DZzG#pHZDDk1$v|}vXJrHh>SJ%CZv}9o{%Z{bZE0=<1!nJTZ*OwVqyPZ}-w*&c26d8vBmwsT3$N_JHp2ityFLVyAR!Mf{@@JnFk=8PPGC6%1m6m5Z((F@1O#XP(qUC-baZfYI{z;(a$$EaXKDX*Xmw(Bb7gYxV{dMB`@k+^Z~tvCWMye~X=MHZAaieSZ!b?`|8r?%X<=?JZU13uZZBbEWN-g&b1zhAWo>2uO<`_fXJv9Ozif431P4e8z(=!XbY-B~fD#Q8pcMB304ndn0{{R4|3MQ81Cjs=48H^bJC6V?`#>^&$w9*aK|KWkv%v2!5fw4AWf}k>{&0aZ%>Y3FGADm00H^>KEHp>K|I+|IDmN+*>3aY#^1wO-g8)?k{|Fxd1q2CqZ{Kojb8ums!9-=>Vsd3=1e5IsY5FcB3lu;@XlZO@_i|-!6+j69HaY&rz#jnsA}#<V>oEd=U;{%y06Y`>3m<+79snRK0Qna5!0&|x05{G6_ZAQtej%m+H~?!R0D>R{j6o+b=YjO}A_RvgX22E&2LQi0uK)-DH(=l-{(`|54JtVl05BgC03;P`8G!F02Z9|WZ(%?HG;d(cKn1{mZvYk)rT{tcU|%N-02l`d;A{#2`fkDuK)^0M4FE6y-2e<5EC)ggmjDzc3t%)0Vd4NN*8u=4)WHHppff=K4gfQR03|RJ`x!amV=0dSG!p*dV>19804ak2-~0a-2oQAu7$L^lpcyvVqIiG-p&B=?_Cjm`57L7WrT`Ih06&7k*<d075n7=9yh6GM3PW#XWm6w?VRUtKwV=-c&c(Y0V*>zl1O)@(bN>V!LvM9#WFX|sfmOjEy&(hvAZ%&-b97~82y$g)WwuU$WCYBOCsG3>Al)ShfMs_e3xOze`zbpC;dO3dc404RY++*HKneu|5`p-~idJA&!00~!00RESU>Z*V0Wk+B*0>-X3_^hckYFqb(rh6DY$Bz=1Ic3q0KX6b1VbeSr$GVkhyW)u1z*5E5)1nw5cvTf03Wyjeh6hQ046U60CeH`2MD8G!3zKt1PHqTIX{FZGYb9yAnywc01(PR4=@VX01+d{pfN<j3k3fPNM&JcP;YeqX>V=>2~%ZsUshpkb!8|(bQ?ln1ZHV&WbmW`8RPHpKLiK_<pc>qPjz%}AP7Mx&LJkCJ!lJHbZ8)O3&JNr_aJX>FrsL0bYlNuasU7W2LLvuA?RTcWXFz(Fk^rNV+8=@Ld@WLz&-|g*Zo6!%dY?j06fF*07F9rfgmF<67Lr_rU1R+CN%(OKOHB(;4ffAM4O@AD7}M^05U7$902_%X~90j07XR!@+yES!DZlqC-wkA{)9mN{}c!j00~}%Q3q0GXDNVlg@5LSU<3|W!7pH8a(UNIaAPjuO<O>01iu4Gb3p(B*Z?;F1-Jkk3N8R6|1bdnPXGfm2<s;=pJ4+3z%UmK|0+2G1PelMbN_QxVRC0>baSXUC{BQ;047d`9ZrBH@iIxlk>PaXA8!B;{R;Y_8~`Aw02BQxrC=%m<Nz%%zXJe1_5eFj04BRH1W*7aG6evjChsr=07;TyA2S;N0N(%_HwFL*-cO)22LLdpAQ%WE037we1VH>@F!vw_BKIjZ1r;DO77Z!kI~Sw|Ku{o9;TZrSU7q1U8x#YB01)7z^(zYNubZGZE&wS01>!RR8UQ220RJjDGcscUGZuFYDLekeD*y|!!hd0GQ)O&rV_5=!3{qurb!l>Xz<q8afDdG0bYXzTUu9$j1X8+T1zke^R_+*YZftoVX8&(;ASH7kD0#ncbs%AKWdUF*?*s^RZ{9=&OlALeWo!fsZe?YkWOE=)c7z~VfCxVTHWj!49W|gW0e`aqF&ifxDJ>)AAS$5(Dx(BN0{|%B03$XY3euntF#E3n+rY5^B>)t=8a6OME-(cJfjs{OuK)%BHc0^cG5{{2<Nz)(2ebm?4B!ic;4la)!VCW?JO~5^NN;TaWMy&$4Rvm7ziw}LZXj`a0Cf8V6VpIYY+-q2^KwxE;ikc51O-HYZ)t941O{Ox;Qw}I1O!fRZe@D}3G+a3Y-MyLAZ{oM009FKfF`d}0CIDIJ(c5gfdm5p*Cqc105_KaKMoIElp#sLxBwm?;3k(KcG=(#81RJ|03bMFdonT_;WxtoJ_&;RA`c0G7X<?V6YpODBn}~92LL#4mjFNyal#@1gdq0^028612mn$5|1Bd406w??B>oG)EI9=LBLO@AI~O811ppX2{~v__Ej$1%IzIpaKoSij&;)jYy&*>6IWjY^OyD{9!vH`IU~&KoE&n|oE&(1gG7<j~3Iq>Ca&K_|Pj_x*a#eF>-*QQ01PuA$L3ICga%p09bY%ql26W6|Z)OArZkKg!Vk{sA1f&MSQvGEHKz3zhMsISwpk}7S0W1U!3jss_Y+-3_Wn@Bme*ggi3;;F>a$@}^Y=9sLKLYvy{|PxDB3u9%82<qPzW^*B0s#LZUjQHuFGB$DKQ%i3N}yu^F#8t^eE|n@b#89<HlYP@;o$%P1p|KpHUqc-8VZ6T`2m6=1pomA232nU-QfTL0RjLv4gOLm(EtPrAqE+8G$d^NAg;hBFaw-m(;^P=f^x$ke_#YFKL8a20ss+HfCE9NDgXmZ=3vJSN+L;rZgX^DZewK|pzj3$HW9fXF98642_YK*A1(kT0f0cegFs=r0o<SpqFzKKUP3qa06Gpp76Su^31FOI<p`iK1^^PFw_*mp1gv0pVRB@pz)(wXcV0jQGy%{i1=nO(PGM~lfB+JJ9web&9^)Ry02&fNC#a+REkL`e9tZ#{2qynL4FCfG6afJFDk|Z}p&Ty~5HJ2F!ymo?KOO}DwF~y(J;z}o5GMkUCjcu6D&$)wKJo!uAkJS!8UP>!p#jJY0q-9@6A3MWjsO$i=>RGK2g&IUN&j<1WpiU?Ze;IaZgfvifJ9|t_i|-r%FYf#Y+-+6YamTwa%*=$w{ipp$S42-G9VT5>;V$BL3aTo4KP#h02wzXF`?Z62mcu<2S0BB5Dv;eAsuZY0c|6EVI&Q|Fzf&YLOkZ-8vOuhf-^Iw05<@?4gevz03UncCs#BB064)oZb1reL3=0wZDRxk0&g?G|6^=#V`~HicmH8&bOD-~nVEl?nYljz0s;QOT_w{Y4<;|B02D-^UehLT01XRAgC5smzYZoZ3jh>Cz&`w7<k|rVCNJgy8vj248yRQ-9wz?}5F{J`9uX}65cB{-6kGrqCm93)=3tQo9|1u%fV(~g`5++<FHnKFy8s-MU?edH1mGS04FiD(0PX=PEq@Xr1Z)5Z0AhguBryp9LjXWJs&D}XaDWGK01I(|4Eg?CfO3EdK>#@c{~bT}067B*1pf#@b#!k=X><E%1j-}_Q*>`|&2Xro2WA4Gb|DHxziD%0Z*FeWzy$vdPi{kOX=QGAbVYUmfCL9a0_6V$bYXLA1O;>daA9|D000aH_W?E_6@eT884+tM5Q0H4bD<spBEokJCNG770RSQD!0#~&DKP}V6)O~gFvRPm6Tv%R{2-u${Q(R603kh~3+VtW08dW<1T+Z1wEzr5WB>F3MH9mSKS2Kj01N;Q8#xobE`UG<1OOA*BO~vR04@r+#Tx)4zO^APUjQQvDnJ_j00V#t=>RDJ1bGCLgCd9sQ)P7RBkqR=000Kc01yfQ{|+DkyZ{>j5`QlV0ObM_G;Tn?lB6Ut0{}30AQsmI02>pb2Dd;FT)zM`053E{4uB5hFl+;W!a@Tf5?lb^;sZYqBobm{0N*hd2`M^+fMs}BaA|Tdzy|iD2Ks>iZDDi-2PI@WKP50SWCR2Opf;eNW^8Y7a@&AXpn?AZr~ncvFuwr5DIfs=B(J1EIRAtIATJRVFkk-wAr3Ol073xwF()NU;35t#0RJjC0{|`nD>VNE0MP&m5+)0O9;N^`03HBaAnO7$R6u$ZKsONpzdDZqED56fAQ;}E!74Qc04Sq40Dm9=B_RMc9xMR=IshmDB2@wd|0qBd3IGux0QBF0=^;Zjz#)$SG5&L)L;x=UCa3`S88A160S*8PJAVZhCm{eg9yUPNKtTpJKo2%RFc!Z8IV3&|A>4pLmXE<C4>O=tb>IcU^wR)F1)>8cPj`R_0M#}T<tTc=Be(!7IR6O%)Bq+jIzU%n04Ss7J{@2tWr2PTfeaft7c6Wtfc}c&3jmk^3?&SI06#7OC^ZctV0S4s4sF0A5H1Dd{xU!p2`V|S01y5Rfg%9P038JY|0q0D03bdvF7E&?G!Te@5dc5`1ppjABdP#B`z0@yAr~$HEj0BKcAzOP;Yk2FC;un_r~n!<IO+cYA^`UQ^8fq)|28fFGCUIi{~-WBB_S>VGy6Og4?r|L6#zuP0Tw$>DmhmJF5j;J763yWV>1B%8UQYX0Kxwg_XyPgVc{GAE|2#BITkkoAOJ4D{{t5y7XTNg0KGX1U@)%$7zW`gx{07G<p4E383Ld|%P%A)!!<5I2VgrEUMHh802}}YAQ}cCT^$g>H9Z?V<T6|U`W&D(0stWZLnbA*Xk{P(Sbz!u7XUT;LJO#%8~{cx0NpqQqD3Yr0YiiUpDr&GB0rXaCSozaMN<GNM>#J6BHu0mHbV<k06a;*9RNHo068H5F6#g~AYwZpVBG*5uP8bPMJd28CLk{V0D}PD{~HMH|Nk8X25E3%Y5#I_1O#(wWM%&PrUPqbc?1bm{*Yi(aAjk21P6Y0z*J>;bOZ`_;s0rKX<}?;1U&anZy*MtAaQkN|8sO8VPkY@cHd<#AW&)00B>&pWgua0WFT~PKXPs$Z*Cx>p#_Nlb1no2ZE16J{Gq{e4HzYJ3Px%5Zm2+I2jFOFb0B|mb#6K!C1m<Re_?cWa|8%x1H}IXSz94pAUz=eXkl|8bZ;PHw`Cw?4*_C%0w8YBWG*025TFx-aAp5;AY);4WoK{ya(N&qL}_7cKW}GsWh@}IA+lg~DFc9R4B;SQbQQq=V`VM`2x)F}|8!w)V`T&ZI`aetvB4yOZeeX@{{#hgVQh6}1pfnVVR!@sTX^?f1ONcQAzcIn_f&as0>E1!T?F3@Qe|;<jloHD|7C3i6CfZcZvAB$pe1A=ZEte_WgsPUDFhH8_yE8GAOOH*FC}Cp|8oEU2pRx33!jz%Di=G{;IQB$=P&^Pyu_g)4=w<=BQOJ>U=ATozzZ)MI1?+uAPv}}yP<yr1P5kea&62(Y{$dxA^-s8;5IJo0V@Y4-Xt3QA|S`30-*G4Aq%1c_y7X{Gz{$k3!oA!0KqpFEKcx+82}#0f#_fh5h3jaaiAa#(BcUI9{&RX9|%AKzW~oF9|ZtWpy}ak0Nn@Y!6h*W6~P@j{}L?#06q~3AN>&;VF3UjC;%mwHXaGh!3i9~jv!pm02&$z@d41FB{F>p(*PC(3IGzkf^q|43-o~xpd~U4!XW<&02d7a8{GiE2pK8|K(CtsIr^PJ4}_p34=@D)zZEtcUjQQfp#<KAU==Jg>2kmi1l}WP0RR9106^eB{{#YWZUhE+aPMPbY;0jbbY*b=1O;SeVs&Q({|R(*VPj=tVgF-m1PFC$MRK!pZ)JejW&{dm!BIG0;b=kqAOspyX#iqF?{gq%X=31RAZ7jr!8#xW23}iU-wItS1O?4NV`%pP00qo|AgBNn+bJ;sfGRP~03iXZ03+_f0;VAj>Odmh49ws`05Z(ruK<4o06fD0Lqjhi`zH@CAT|Ib044n2fwaISG6n$M0RILTDh5FI06KjHrhyj207XOzA$2JUAt(tUKma(_ApWHwI|l%>06r?eB`P$g05i{kD}RFk{{IvR5~hItFau!I07WS`G5;3I03HPZEI|KL03<>*E&wr}27synJ}D^xh(Q9s02&Av00)Rh3;#!DbVF!qY-GQ3Wo`rtL4m?fHE@TZ4tc<2MvR~X!~AKXhv5WsZ*p`5`vgvEU;qFC5dgn72)F<m3SI#n`v4vRLBjw%Jpum!asUM^JQ<1e0Xv@}T>$|E3Pk^Db7OCAZe?S=bO%5J05&#T;wPmqDC8<A|0wGrDC&^^12PsMG8JP0zcLpLD>|=O;64At07OFw0BHdKKpG1yD$W2KyA>X{MJ50xB*G^DIy(akLJ}Ta?*Jhk325L706%xb07eFYUjQmKfnPEJ9RMf;fFZl#eB;0aiZuWp04UsGuI2#g04KBH@-cu0{Qw2Q4gik;GYIa};UNGh=Ak|50Dma}!vIM`5aHmvEe_^@FFX-8;V*v?0Pz4L8!rgp^EwjF2o9nX07e2o91uGxAn6d`XCU1m(jX}S6F0L3P5*CXWo!fkNppQcHLC_mb5C$P!2Jw8U_o?ra%p1Qb#$U2V`#u21P8rC0KrLQ1O%kw3T6SqQ*^GtJfj2!svzD4zyUu52nXO$Y5#U_bOZ=cZ*%u)bZKwk2~A;V?`~;yb<p4lWNH4dg8%>m4*@m<)`WmB0USUlq9DQpe?B+`2owPX1c$!@00say8bCo0Uneh*04gP*GW&qfA1(kS2EgoRA0h7p14AYNfJP<^{{bO983^<MLjM%F0T&tq00jRG0Vq5a2n+z<3>!BWEG?lP0G}U@021kJK%O8EU&8=BJ_9Y_A&KE_E|9<+3Jahy1d;*$4FiD%0PX=PE%y>31hGK{1O`LnMsmf0vPM=&1PMt0Wnpr3Vr5};d?sL6#R>!fHWFCGcenr?zu+V>0Y6~tEC>%_0=_^D8#&(-F1P?713)M>_94PF19+e^A1EHBD8%C*2L~oW1Vq3+Yd!@Q!4Jg71qAEB`*UdCpi*yS1PMI)0ombm1O-+A;i6>m@HAipMaV!105*94{QxHv{QxNzzKcN>E&wSui$Ny;4KNA-6ionA?*JS+EG;1@03&}n91ULpCJw_w{~Q1$3jiAl19bqiU_zH7CJ!(&CHw<`35~1+Jpej9`xXEQ!(#w87z_U^KjZ*0GX((uKK1}V1-Jkq?$4kpHU`xo2LL<w!vI2TAcO!SFZU7_HRWL(042V^06!!N01>4j2=-(kClC$dj{q?bev4x!E&wYw3J2h;3jlh-MFfE;5{V|&uPuN+r-2P@ASn<3Fi8M703kUa`v7drU>Gg{EIIuT2cQrDJzoGR_Cdh|03$)L04y8H4NYMq;TdpYuR$sewsYVxH*?`HJgcEHyEhYA05Lui`2ZaMA^<c1I6_WSuK*%IGOOS=c)~rl1i>>l1i>;t1i>Bt1i?8&PgespAon8?B%~oA04wqT045qEYycDh?H;+nKNWvKC>bRGuK*SRL|*_e^A9i!0$)WP04uNm02cs6a{wMk|36azCO<V&1K&R<FFZ_&!5jeZEeZe{f#D|r&iaSo7-j_<04?7D|0YBj00=7pBkvL!03ZdUFw_A5D=I%Y=>Yuy-!1?(I2w&8FkkBcG1j3l)}uftC+;0!H8>lMVlDtU`$HW4AT$6a05kt@038{o0674EApkD?07Vuy!2N8a;3qBsJ4hbxBj7qmAD@6OE*{>lKusA6EI2?i0N>;QJ3Syk!AS*wj{qzd=>Qd_0Dt}eA_x-zAow8eSRi9;Z}k8RMrr0-;zDVSfR!r|Qf2#PY+pbibZKp6|70L<b#w#?Q2%UUd1Z1(b!pcG1Wn4o1l7$4bp3Mwz-4j-22f%C+dy;#143bP1pf;|VQzL|b4R~&Z*_147~Cd7`)*^QKyPwSW<&pMVRLf?1ax8lb87?ycVTIC-vOGLnVA4UKLkGzL1J@nY^NZfX72%61PlU&Q)zntWdsCmVRUE&{{wAdcme#W@&D3IVo*N;3fI4*a6JmgKelEL=VxVf;KZl^a|8<iNp5g;bV6lk`C;$?0b)gNWMyQZ1PDfTZt=jZU<Cg~Zgp)04OMgdWpV@JRC#b^1pf?8Z*_BJLUn(1bZ>4k1SBV<`ygovfgosMZe;&#WpW^Cb0BqpZeey|X>4KlfPVl10viA}1fwAOpui)tp!xs`Iw1ceV*oG~3@JJH0R#ub;6!0`Vg9$^0{}J-k^l_v4FLc-xWF?40N+voD<T7Dfg=z9GR*)#05c{f{{U|Q6%3{TGyb-KCiVb31T_HHMI$HPzz*)fKLpzVgt*`m7<j^i0RIF46$css1O)pAbI-tTX9Nak{v|+TXaojZUM2S~T`M=u00ICD_W(8*6(?T+APugQLK^@c7v%z2W*qPWi3LJ>LCR=P00J`e2q&qciNhaU02%ui1A|}$01++#cO^0fR{$9q24bT6!C?kdKyCyCXm9&$WWuLbWn*-2|8g?~1bSt1Z~p`qL349uZDQYSc}!_;!yr~=?pVNSba~%^1pqev42j_nE&wAi0{;L*06#oB{s5~00RUhH0N@A#U<axIU;_YP0s!Cy0bmBcFn|{eDmemAWCj0oaA9|D000Qz0|7RI0n7p>FaHYw6$AkQJYUBEAr6z^3qc%39RTXcfE^hk1C;<KF9dFMU@{;TAj2yOsAJzCxBwjx9i!9$e<3V2I$r=Hy5o0m01!DKG5{R40RI3N1_l5+uK@oC05}Q&6C?n?V*oQ34JtsvG5H9A0Q6xYE&wMm{Rx7i9{?h#02N;>GwA>-q#!5)px-V4DlrPBpeZ)(3xxnRBa<c?03zQm04OpH2I3n4zayvs7A-Ue;ih)AARqvuzzqNt2cYvZ4!8i(Ag=%q0RK9d074NGrU2hI01*Hq*T6Cmz7C)_03rY+2|zQ+449w}!6^nn3qUmy{F<PwfB+f^5&#$fUjQf$Fs}d;e*iqr02>t^pu?>t;6O7JpMWRyfH3_Itw$xl04gRG`v57-z&I8F-2nd#94`n#j{q|K&%h1ACr<zfI0yeGFDn2V2oeBq7GD4-3u8M;VPN|tI1Ygw3labs_g?@i0|P#n07mr{ouDoxpg#a70F@`|017JLY`P%Pq8NVJU>N{CE&whiqIWJj3)aI502eM{y*DmlxBw#!5&;^n&wwg78!iAfDnKRb62K7gqdFlVC%6FpA_Sl+HyQx+09#2D=paNK=pheX!fqDf3@0xrAt?X{Apb5A=>Q1;jsU3|HUYPx7ak!VVIULT0OX<`0D5(xKn(u?L)`!m9y15OLQ?=BIW8%JT#o=B9~}iE27<kTA2lD)K`wQm919zy=%Ribp&<Z1E&wk<V*4*U8=)!>FbV+m7)l{H8=)Zt1ap6BWMu&W0000$<?y5+NNvEjKm%)K|9J!mZe@6MRCci83sVH3AW?O+K)-VYAx>`~2B9FmaRK2VZ(?e4fNB4BWgv2CXJ~ZqAZ~AW3ZQUhWB&vPO<{6tWpaMGhHhbPWdsPfW=jNgsDTN&WzfKMq(R>V2~=Tnv;a<Ud1Dgj1z~Sy1P6cx{R0EQ1O;$oVQeRC1Pi8s1)x)P;hV>|W^Zzw00bHpplh}gU~VAXU}1E<;2{13ARs3tb0-81&p~x`ZyP}yA_N8RR$**)6d+S&blw3Y217=27GVQ!d1V@4j#&f;L39dY-i6=}05*(;;uR)OFA4w+Go!vB6rSOSAOIhsAp<~@!GS;|`!NDgzykm^3;^E@8#o{=0KqpL?=5ct4uQfM03Yt5fw%x3q<|(f1o(QOr9lJ3A^;cwAO8yg76k?XKJEViGA#o_K?(rx4<G<l!=Mg69{&L502@949UGtd06j22u7n8%2h<4&a77`QK^(DwBr){_SpY*>06jhk0R9poITI`&015#AHVFVK3IGu%R%GBI5L<u<R)7n)!~F~bU?L4L@c<e75h4(PKLDNp65jwC6V?A6!4xO=FOLAAV;le=um1oI05`(`K0dIFp`XN~#K8bC4RXK_dISPL1PG4+ED9(C?;*GVAiCfvH4yd?z$Fc^;3+W$0Ka_$Jqji!>YymTkYJDiCJhf7!|vDr7yt$!9(bT8Gyf6*PXGos3njlV!vH@(6B{57{~I<PE&u>O688xr6A(cm03x_s03XrdCo~{IMj$}@KtUiu4;wiXFaI9^6aYC104>)F02ClWBp^ZB|N0TY7N0>C0MP&kuMH##92sF8seu+N027^o7Zl+R@WMbt*sS2m00Tfa4D?_kFaHo0E+_ydIUN5D3;+=xI3P5C3;+}xHybqh0sf|AD31Ux3+VveBqJag06jJ38UVj2TmT^<8Ipo0e*h#a02~Vzpal2n04YDgKL8{m|7ZXwFBlOm3;zHe3<&@^Yyh_!02-b^I~)8UG5<jv05m87Cqe%t6<+`@4lrLg04orL02w8r0UM#;v;S`Z7QcWp0Bf87oS-BlAS^i}A+1Y8fJH__ffOSkG_5cSpdJas;VugV9sd9{-2f3FFbA(f3IG{K0VyS+rThOK>%;_iVQF;#0h*banVFf%=RX7qaY1m(24io(ZDL_`1PYGAL%(QYX>J4vb4Cj61>uq-1UHicAZBU*ZfSF9Wn?ZO|5SByZXj=NAU*_QVPj)uaFW28VE-U=Zy;-BWpMu>XK!h4XD$Tm0&k9hV}jso1P1<_gbqe&Ze&Jj|8jG5LuhGiWd8&ROks0$RB8T~00dNNV`~Hlt`Va|1PP&{Py%5I&V~hZ1S6whqQY|^|7>MubRcwSVc&Ehd2e;4U}0>xX=ZtkVFU)Ogb3esZ*z2V5g-H&{um-jZgX^DZex0+U_lmQWn=^ktYW`YbYXOLbDK^S{shG!C37GsC1n2~Wq5EY1Q$bZZ*^>Bu)uU6A4K;hb2<bd000jV{{S{qPXGZi4_zkH0=NJgl4KqNq}-BWYd|9~0)2oEA^v0l3mZ5ZD+~bt3mZ2aEN=h}T?<=b82}!VV;yAxhb1xtl3<1*1ISjP8&d!t3;^VyE9Qb60l|M83@!j8Fa`gBO)Bz$8UO@h0)qwuf)u2{1VRS`z%oi<6kuNf>i9u21)&^Kpg0i#UjRK43Ltz04WNJ^7vk(-rl5p^rl6+mV44Cw9dm#uF9-mJp!p!zC^ZSFKqz~l?EvpHEd)bTpb#Jc-<JSB4GwGJE&%-`wqT6_D+@R}zI9_DxBwj$lE5<m3jjj^LN+@7R{#J80AK-^;6I*XSr2;xci=c4kD?71LZ=}BBb2~@z$y<yBX*C#D>x59D>npz!2c!>FjD{<IV<m602><y0W<*5-~S*A020N4BLMu9pr1et01g{C7w-PxBMmT$LCOCib_Ku~3MByD{|;!$djtq)p-gXYbl7G02WVwY;BIFG2l-}VU`#;=W?^z|^i5&#2MPuuQek9i{7YfoL<vY`VRCf)Vr6dt2SaaeZqEBa1O{viAW?t{ME7ZPV*+CU01gY+0X7dt!3VoxDhP_6ff~pG8#U(LVBCmL{{RCr2q!RH0Jj(z0mi@s0N;WH*#H6oLLn{yN`VCg^zMrN<^=D#00066zW_EFxBwh5ASA0X0Y`!y*`XZ*03}N@0aPLaOdv@E9^C>~1!VL9-2(&Kfe&K@`5aK7T47%RAq_A3x#1pH!(0Fv7X|$Qw}1o&06AR%9}^z{A0q@{!2uWJ_XY$FnIThYWM%xBs+T7Ra%F5~VUu%ZdBJ+Z3k89hLv#NC0Rsg9HVl@}04f(dVPzS^9{}?nY_=eCq5}XN0GAjOEN`L&`2pYHU-069dZH+!J;nrdVRQd$1O;<&VRvr#1PVq#fLCQ<aJz4AMI-<K1P%Zh-y8rL6f54qCNuseVI?vG0J8uvFC8WvD1GA}ec|~5w+JRL`QZvDB7!IT03Y@N0{}S#GOrW^04ij`1Up~_{{Rv$046g80RMUb1OPe<06n(~029hVBM@Go8ox9sUjQNwK>!)k83P4^h@u8T02vwi2Q*@fp$7yIS8xAvY-B`bb98CXZeet37DhxrZDQYSc}!_;Ss+$r{=1-Qba?;(1qc5CHXx_~6e%+QL;x`WF(Q%x{|gNP06Yr-8vh9b062sIA}{|D7BXJ|BMvfu%>Y3FGbbezKwAL-hhQu=Lm?;v;on67I434l!3Hk(05Cf*Au&4z0DqnU9snjE0gM2DCkrkBF*^qRz-uiIc0e<hAS;75fcF&$7AfFAC?zZZHKqVK0384<|H=R#1pqBUQ~v-ZLp3e{GCO|<0IC2#Dm42c{ssXW2onI)07d^PH!&6p02?8{08;=MH8c7_2VVpRX>eiFzy#yP`2{=S*uZvSY;|S-1OshhcmxDv|8Hbv1O#qjZ4G5(AQAu"),b)end}):g({"M","h","W","N","E","C","R","j","k","a","K","X","l","b","A","B","S","V","i","T","G","n","I","p","Q","L","J","e","o","F","U","O","H","D","m","P","f"},"X",...)
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local RunService = game:GetService("RunService")
+local LocalPlayer = Players.LocalPlayer
+
+local Library = loadstring(game:HttpGet(
+    "https://raw.githubusercontent.com/TrustyCoding/slopix-hub/main/ui/Library.lua"
+))()
+local Options = Library.Options
+local Toggles = Library.Toggles
+
+local Signals = ReplicatedStorage.Communication.ServerAndClient.Signals
+local SignalFunction = require(Signals.SignalFunction)
+local SignalEvent = require(Signals.SignalEvent)
+local Clans = require(ReplicatedStorage.CAM.Clans)
+local Utility = require(ReplicatedStorage.CAM.Global.Utility)
+local SpinBalance = require(ReplicatedStorage.CAM.Global.SpinBalance)
+local Items = require(ReplicatedStorage.CAM.Global.Collectibles.Items)
+local Regions = require(ReplicatedStorage.Regions)
+local Quests = require(ReplicatedStorage.CAM.Global.Subsets.Gameplay.Quests)
+local Breathings = require(ReplicatedStorage.CAM.Global.Powers.Breathings)
+local ItemRequirements = require(ReplicatedStorage.CAM.Global.Collectibles.ItemRequirements)
+local gameSettings = require(ReplicatedStorage.CAM.Global.gameSettings)
+local Shop = require(ReplicatedStorage.CAM.Global.Shop)
+local Rarities = require(ReplicatedStorage.CAM.Global.Rarities)
+local TimedVendor = require(ReplicatedStorage.CAM.Global.Subsets.Gameplay.TimedVendor)
+local RotatingShop = require(ReplicatedStorage.CAM.Global.Subsets.Gameplay.RotatingShop)
+local TimedEvents = require(ReplicatedStorage.CAM.Global.Subsets.Gameplay.TimedEvents)
+
+local PENDING_ATTRIBUTE = "PendingClanSpin"
+local FINALIZE_TIMEOUT = 3
+local REDEEM_INTERVAL = 0.75
+local IDLE_INTERVAL = 0.2
+local DEFAULT_TARGET_RARITY = 6
+
+local TOOLBAR_SLOTS = { "One", "Two", "Three", "Four", "Five" }
+local POSITION_MODES = { "Behind", "Above", "Below" }
+local SEARCH_INTERVAL = 0.4
+local PUNCH_RETRY = 0.15
+local TRAVEL_SETTLE = 2.5
+local TRAVEL_HEIGHT = 8
+local MAX_BEHIND_OFFSET = 6
+local EQUIP_SETTLE = 0.5
+
+local BOSS_TIMER_ROWS = 10
+local QUEST_TASK_ROWS = 8
+local TIMER_TICK = 1
+local QUEST_ACCEPT_COOLDOWN = 31
+local GIVER_OFFSET = Vector3.new(0, 3, 4)
+local GIVER_SETTLE = 2.5
+local GIVER_ACCEPT_WAIT = 2.5
+
+local POTION_DRINK_TIME = 2.1
+local HEAL_RETREAT_HEIGHT = 30
+local HEAL_CHECK_INTERVAL = 0.25
+
+local RegionRoot = workspace:WaitForChild("Humanoids"):WaitForChild("Regions")
+local BossHunts = ReplicatedStorage:WaitForChild("BossHunts")
+local ChestFolder = workspace:WaitForChild("Chests")
+local CollectionService = game:GetService("CollectionService")
+local VirtualUser = game:GetService("VirtualUser")
+
+-- live-reload hands the script STATE as a local (Real's notes-getgenv-identity), so read it directly.
+local RuntimeState = STATE
+local alive = true
+
+local state = {
+    build = "slopix",
+    running = false,
+    spins = 0,
+    farming = false,
+    kills = 0,
+    deaths = 0,
+    target = nil,
+}
+
+local RARITY_BY_NAME = {}
+local RARITY_NAMES = {}
+for _, tier in ipairs(Clans.Rarities) do
+    RARITY_BY_NAME[tier.name] = tier.rarity
+    RARITY_NAMES[#RARITY_NAMES + 1] = tier.name
+end
+
+local setIdentity = setthreadidentity or set_thread_identity or setidentity or setthreadcontext
+
+local function elevate()
+    if setIdentity then
+        pcall(setIdentity, 8)
+    end
+end
+
+local function notify(title, description, time)
+    elevate()
+    Library:Notify({ Title = title, Description = description, Time = time })
+end
+
+local function getSlot()
+    return Utility.GetData(LocalPlayer, true)
+end
+
+local function getClanName()
+    local slot = getSlot()
+    local clan = slot and slot:FindFirstChild("Clan")
+    return clan and clan.Value or "None"
+end
+
+local function rarityOf(clanName)
+    local data = clanName and Clans.GetClan(clanName)
+    return data and data.rarity or 0
+end
+
+local function tierNameOf(clanName)
+    local tier = Clans.TierOf(clanName)
+    return tier and tier.name or "?"
+end
+
+local function getSpinCount()
+    local slot = getSlot()
+    if not slot then
+        return 0
+    end
+    local ok, total = pcall(SpinBalance.Total, slot, true)
+    return ok and total or 0
+end
+
+local function finalizePending(timeout)
+    if LocalPlayer:GetAttribute(PENDING_ATTRIBUTE) == nil then
+        return true
+    end
+
+    SignalEvent.ToServer("ClanSpinComplete")
+
+    local started = os.clock()
+    while alive and LocalPlayer:GetAttribute(PENDING_ATTRIBUTE) ~= nil do
+        if os.clock() - started > (timeout or FINALIZE_TIMEOUT) then
+            return false
+        end
+        task.wait(0.05)
+    end
+    return true
+end
+
+local function spinOnce()
+    if not finalizePending(FINALIZE_TIMEOUT) then
+        return false, "pending"
+    end
+
+    local ok, rolled = pcall(SignalFunction.ToServer, "ClanSpin")
+    if not ok or type(rolled) ~= "string" then
+        return false, "rejected"
+    end
+
+    state.spins += 1
+    finalizePending(FINALIZE_TIMEOUT)
+    return true, rolled, rarityOf(rolled)
+end
+
+local function redeemKnownCodes()
+    local ok, status = pcall(SignalFunction.ToServer, "CodeStatus")
+    if not ok or type(status) ~= "table" or type(status.codes) ~= "table" then
+        notify("Codes", "Could not load the code list", 4)
+        return
+    end
+
+    local redeemed, failed = 0, 0
+    for code, info in pairs(status.codes) do
+        if not info.redeemed then
+            local sent, result = pcall(SignalFunction.ToServer, "RedeemCode", code)
+            if sent and result then
+                redeemed += 1
+            else
+                failed += 1
+            end
+            task.wait(REDEEM_INTERVAL)
+        end
+    end
+
+    notify("Codes", string.format("Redeemed %d new code(s); %d unavailable", redeemed, failed), 5)
+end
+
+local punchFn = nil
+
+local function getPunch()
+    if punchFn then
+        return punchFn
+    end
+    local scripts = LocalPlayer:FindFirstChild("PlayerScripts")
+    local cu = scripts and scripts:FindFirstChild("CU")
+    local combatScript = cu and cu:FindFirstChild("Combat")
+    if not combatScript then
+        return nil
+    end
+    local ok, env = pcall(getsenv, combatScript)
+    if ok and type(env) == "table" and type(env.punch) == "function" then
+        punchFn = env.punch
+    end
+    return punchFn
+end
+
+local function getRoot()
+    local char = LocalPlayer.Character
+    return char and char:FindFirstChild("HumanoidRootPart"), char
+end
+
+local function hotbarItems(predicate)
+    local slot = getSlot()
+    local inventory = slot and slot:FindFirstChild("Inventory")
+    local owned = inventory and inventory:FindFirstChild("Inventory")
+    local toolbar = inventory and inventory:FindFirstChild("Toolbar")
+    if not owned or not toolbar then
+        return {}, {}
+    end
+
+    local nameById = {}
+    for _, folder in ipairs(owned:GetChildren()) do
+        local id = folder:FindFirstChild("Id")
+        if id then
+            nameById[id.Value] = folder.Name
+        end
+    end
+
+    local names, slotByName = {}, {}
+    for index, slotName in ipairs(TOOLBAR_SLOTS) do
+        local entry = toolbar:FindFirstChild(slotName)
+        local itemName = entry and nameById[entry.Value]
+        local def = itemName and Items[itemName]
+        if type(def) == "table" and predicate(itemName, def) then
+            names[#names + 1] = itemName
+            slotByName[itemName] = index
+        end
+    end
+    return names, slotByName
+end
+
+local function toolbarWeapons()
+    return hotbarItems(function(_, def)
+        return def.HasCombat or def.CombatPreset
+    end)
+end
+
+local function hotbarPotions()
+    return hotbarItems(function(name, def)
+        return def.Category == "Potions" and string.find(name, "Health", 1, true) ~= nil
+    end)
+end
+
+local function itemCount(name)
+    local slot = getSlot()
+    local inventory = slot and slot:FindFirstChild("Inventory")
+    local owned = inventory and inventory:FindFirstChild("Inventory")
+    local item = owned and owned:FindFirstChild(name)
+    if not item then
+        return 0
+    end
+    local amount = item:FindFirstChild("Amount")
+    return amount and amount.Value or 1
+end
+
+local weaponSlot = nil
+
+-- quiet: the farm retries a failed equip before saying anything (a stun or respawn can refuse one).
+local function equipWeapon(name, quiet)
+    if not name or name == "" then
+        return false
+    end
+
+    local _, slotByName = toolbarWeapons()
+    local index = slotByName[name]
+    weaponSlot = index
+    if not index then
+        if not quiet then
+            notify("Auto Farm", string.format("%s is not on your hotbar - add it, then press Refresh", name), 6)
+        end
+        return false
+    end
+
+    local config = LocalPlayer:FindFirstChild("Items_Config")
+    local equipped = config and config:FindFirstChild("Equipped")
+    if not equipped then
+        if not quiet then
+            notify("Auto Farm", "Items_Config is not ready yet", 4)
+        end
+        return false
+    end
+    if equipped.Value == index then
+        return true
+    end
+
+    if equipped.Value ~= 0 then
+        equipped.Value = 0
+        task.wait(EQUIP_SETTLE)
+    end
+    equipped.Value = index
+    task.wait(EQUIP_SETTLE)
+
+    if equipped.Value ~= index then
+        if not quiet then
+            notify("Auto Farm", string.format("The game refused to equip %s - pick another weapon", name), 6)
+        end
+        return false
+    end
+    return true
+end
+
+local function weaponReady(quiet)
+    local config = LocalPlayer:FindFirstChild("Items_Config")
+    local equipped = config and config:FindFirstChild("Equipped")
+    if equipped and weaponSlot and equipped.Value == weaponSlot then
+        return true
+    end
+    return equipWeapon(Options.FarmWeapon.Value, quiet)
+end
+
+local function mobNames()
+    local seen, names = {}, {}
+    for _, region in ipairs(RegionRoot:GetChildren()) do
+        local active = region:FindFirstChild("ActiveNpcs")
+        if active then
+            for _, folder in ipairs(active:GetChildren()) do
+                if not seen[folder.Name] then
+                    seen[folder.Name] = true
+                    names[#names + 1] = folder.Name
+                end
+            end
+        end
+    end
+    table.sort(names)
+    return names
+end
+
+local function selectedValues(option)
+    local value = option and option.Value
+    local wanted, count = {}, 0
+    if type(value) == "table" then
+        for name, picked in pairs(value) do
+            if picked then
+                wanted[name] = true
+                count += 1
+            end
+        end
+    elseif type(value) == "string" and value ~= "" then
+        wanted[value] = true
+        count = 1
+    end
+    return wanted, count
+end
+
+local function activeBossHunts()
+    local hunts = {}
+    for _, config in ipairs(BossHunts:GetChildren()) do
+        local name = config:GetAttribute("Boss")
+        local expires = config:GetAttribute("ExpiresAt")
+        if name and expires then
+            hunts[#hunts + 1] = {
+                name = name,
+                expires = expires,
+                tier = config:GetAttribute("Tier") or "?",
+                side = config:GetAttribute("Side") or "?",
+            }
+        end
+    end
+    table.sort(hunts, function(a, b)
+        return a.expires < b.expires
+    end)
+    return hunts
+end
+
+local function bossNames()
+    local seen, names = {}, {}
+    for _, hunt in ipairs(activeBossHunts()) do
+        if not seen[hunt.name] then
+            seen[hunt.name] = true
+            names[#names + 1] = hunt.name
+        end
+    end
+    return names
+end
+
+local function playerLevel()
+    local slot = getSlot()
+    local goal = slot and slot:FindFirstChild("Exp") and slot.Exp:FindFirstChild("Goal")
+    if not goal or not gameSettings.expPerLevel or gameSettings.expPerLevel == 0 then
+        return 0
+    end
+    return math.floor(goal.Value / gameSettings.expPerLevel)
+end
+
+local function normalizeName(text)
+    return (tostring(text):lower():gsub("[^%a%d]", ""))
+end
+
+local function npcNameForCode(code)
+    if not code then
+        return nil
+    end
+    local wanted = normalizeName(code)
+    for _, region in ipairs(RegionRoot:GetChildren()) do
+        local active = region:FindFirstChild("ActiveNpcs")
+        if active then
+            for _, folder in ipairs(active:GetChildren()) do
+                if normalizeName(folder.Name) == wanted then
+                    return folder.Name
+                end
+            end
+        end
+    end
+    return nil
+end
+
+-- Side quests are everything the combat farm cannot finish by fighting (Dialogue, Fishing, ...).
+-- The game allows one active quest per category, so a combat and a side quest can run together.
+local function isSideQuest(definition)
+    local category = definition and definition.Category or "Combat"
+    return category ~= "Combat" and category ~= "BossHunt"
+end
+
+-- kind: "combat" or "side" to filter by category, nil for every active quest.
+local function activeQuests(kind)
+    local slot = getSlot()
+    local questFolder = slot and slot:FindFirstChild("Quests")
+    local holder = questFolder and questFolder:FindFirstChild("Holder")
+    if not holder then
+        return {}
+    end
+
+    local list = {}
+    for _, folder in ipairs(holder:GetChildren()) do
+        local questString = folder:FindFirstChild("QuestString")
+        local taskFolder = folder:FindFirstChild("Tasks")
+        local key = questString and questString.Value or folder.Name
+        local side = isSideQuest(Quests.Holder[key])
+        if kind == nil or (kind == "side") == side then
+            local tasks = {}
+            for _, task in ipairs(taskFolder and taskFolder:GetChildren() or {}) do
+                local value = task:FindFirstChild("Value")
+                local max = task:FindFirstChild("Max")
+                local code = task:FindFirstChild("Code")
+                tasks[#tasks + 1] = {
+                    name = task.Name,
+                    value = value and value.Value or 0,
+                    max = max and max.Value or 1,
+                    code = code and code.Value or nil,
+                }
+            end
+            list[#list + 1] = {
+                instance = folder.Name,
+                key = key,
+                folder = folder,
+                tasks = tasks,
+            }
+        end
+    end
+    return list
+end
+
+local function questTargets()
+    local wanted, count, blocked = {}, 0, {}
+    for _, quest in ipairs(activeQuests("combat")) do
+        for _, task in ipairs(quest.tasks) do
+            if task.value < task.max then
+                local npcName = npcNameForCode(task.code)
+                if npcName then
+                    if not wanted[npcName] then
+                        wanted[npcName] = true
+                        count += 1
+                    end
+                else
+                    blocked[#blocked + 1] = task.name
+                end
+            end
+        end
+    end
+    return wanted, count, blocked
+end
+
+local function resolveValue(container, path)
+    local current = container
+    for part in string.gmatch(path, "[^%.]+") do
+        if not current then
+            return nil
+        end
+        current = current:FindFirstChild(part)
+    end
+    return current
+end
+
+-- Returns false plus a short reason ("needs Lv 105", "Slayer/Hybrid only") when a rule fails.
+local function requirementsPass(requirements)
+    if requirements == nil then
+        return true
+    end
+    local slot = getSlot()
+    if not slot then
+        return false, "data not loaded"
+    end
+    local perLevel = gameSettings.expPerLevel or 60
+
+    for key, needed in pairs(requirements) do
+        if key == "Level" and type(needed) == "number" then
+            local goal = resolveValue(slot, "Exp.Goal")
+            if not goal or goal.Value / perLevel < needed then
+                return false, string.format("needs Lv %d", needed)
+            end
+        elseif key == "MaxLevel" and type(needed) == "number" then
+            local goal = resolveValue(slot, "Exp.Goal")
+            if not goal or needed < goal.Value / perLevel then
+                return false, string.format("up to Lv %d only", needed)
+            end
+        elseif key == "Items" then
+            local inventory = slot:FindFirstChild("Inventory")
+            inventory = inventory and inventory:FindFirstChild("Inventory")
+            local list = type(needed) == "table" and needed or { needed }
+            local found = false
+            for _, name in ipairs(list) do
+                if inventory and type(name) == "string" and inventory:FindFirstChild(name) then
+                    found = true
+                    break
+                end
+            end
+            if not found then
+                return false, "needs " .. table.concat(list, " or ")
+            end
+        else
+            local holder = resolveValue(slot, key)
+            local value = holder and holder.Value or nil
+            if type(needed) == "table" then
+                if table.find(needed, value) == nil then
+                    return false, key == "Race" and (table.concat(needed, "/") .. " only")
+                        or string.format("needs %s %s", key, table.concat(needed, "/"))
+                end
+            elseif value ~= needed then
+                return false, key == "Race" and (tostring(needed) .. " only")
+                    or string.format("needs %s %s", key, tostring(needed))
+            end
+        end
+    end
+    return true
+end
+
+local function questEligible(key)
+    local definition = Quests.Holder[key]
+    if not definition then
+        return false, "unknown quest"
+    end
+    local questState = Quests.GetPlayerQuestState(LocalPlayer, key)
+    if questState == "Doing" then
+        return false, "active"
+    elseif questState ~= "None" then
+        return false, "completed"
+    end
+    return requirementsPass(definition.Requirements)
+end
+
+-- One label map for both dropdowns; the lock map holds the reason for rows you cannot take.
+local questKeyByLabel = {}
+local questLockByLabel = {}
+local questsTaken = 0
+local BEST_QUEST_LABEL = "* Best for my level"
+
+local function questExp(definition)
+    return (definition.Rewards and definition.Rewards.Exp) or 0
+end
+
+local function questPowerName(definition)
+    local power = definition.Rewards and definition.Rewards.Power
+    if type(power) == "string" then
+        return power
+    end
+    if type(power) == "table" then
+        return power.Name
+    end
+    return nil
+end
+
+local function isBreathingQuest(definition)
+    local power = questPowerName(definition)
+    return power ~= nil and Breathings[power] ~= nil
+end
+
+local function powerAlreadyHeld(name)
+    if not name then
+        return true
+    end
+    local slot = getSlot()
+    local powers = slot and slot:FindFirstChild("Powers")
+    if not powers then
+        return false
+    end
+    for _, value in ipairs(powers:GetChildren()) do
+        if value:IsA("ValueBase") and value.Value == name then
+            return true
+        end
+    end
+    return false
+end
+
+-- Labels for the combat list (side = nil) or the side-quest list (side = true). Quests you can
+-- take come first, then locked ones tagged with the reason, so a short list never looks broken.
+-- Returns the labels and how many of them can actually be taken.
+local function eligibleQuestLabels(side)
+    side = side == true
+    for label, key in pairs(questKeyByLabel) do
+        if isSideQuest(Quests.Holder[key]) == side then
+            questKeyByLabel[label] = nil
+            questLockByLabel[label] = nil
+        end
+    end
+    local open, locked = {}, {}
+    for key, definition in pairs(Quests.Holder) do
+        -- Side quests without a giver (Muzan's trainings) are started by other systems.
+        local offered = not side or (definition.OfferNpc ~= nil and definition.OfferNpc ~= false)
+        if offered and isSideQuest(definition) == side and not isBreathingQuest(definition) then
+            local ok, why = questEligible(key)
+            -- Locked boss hunts would add ~30 rows of noise; they only matter once you qualify.
+            if ok or definition.Category ~= "BossHunt" then
+                local level = (definition.Requirements and definition.Requirements.Level) or 0
+                local power = questPowerName(definition)
+                local suffix = ""
+                if power and not powerAlreadyHeld(power) then
+                    suffix = string.format("  (swaps to %s)", power)
+                end
+                if not ok then
+                    suffix = string.format("%s  [%s]", suffix, tostring(why))
+                end
+                local label = string.format("Lv%d  %s  -  %d exp%s", level, tostring(definition.QuestInstance or key), questExp(definition), suffix)
+                questKeyByLabel[label] = key
+                questLockByLabel[label] = not ok and tostring(why) or nil
+                local rows = ok and open or locked
+                rows[#rows + 1] = { label = label, level = level }
+            end
+        end
+    end
+
+    local labels = { BEST_QUEST_LABEL }
+    for _, rows in ipairs({ open, locked }) do
+        table.sort(rows, function(a, b)
+            if a.level ~= b.level then
+                return a.level < b.level
+            end
+            return a.label < b.label
+        end)
+        for _, row in ipairs(rows) do
+            labels[#labels + 1] = row.label
+        end
+    end
+    elevate()
+    return labels, #open
+end
+
+-- usable(key), when given, filters out quests that cannot be finished right now.
+local function bestQuestKey(side, usable)
+    side = side == true
+    local bestKey, bestExp, bestSafe, bestLevel
+    for label, key in pairs(questKeyByLabel) do
+        local definition = Quests.Holder[key]
+        if definition and not questLockByLabel[label] and isSideQuest(definition) == side
+            and questEligible(key) and (usable == nil or usable(key)) then
+            local exp = questExp(definition)
+            local level = (definition.Requirements and definition.Requirements.Level) or 0
+            local safe = powerAlreadyHeld(questPowerName(definition))
+            local better = false
+            if not bestKey then
+                better = true
+            elseif exp ~= bestExp then
+                better = exp > bestExp
+            elseif safe ~= bestSafe then
+                better = safe
+            else
+                better = level > bestLevel
+            end
+            if better then
+                bestKey, bestExp, bestSafe, bestLevel = key, exp, safe, level
+            end
+        end
+    end
+    return bestKey, bestExp
+end
+
+local function resolveQuestSelection()
+    local picked = Options.QuestPick and Options.QuestPick.Value
+    if picked == nil or picked == "" or picked == BEST_QUEST_LABEL then
+        return bestQuestKey()
+    end
+    local key = questKeyByLabel[picked]
+    if key and questEligible(key) then
+        return key
+    end
+    return bestQuestKey()
+end
+
+local giverPositions = {}
+
+local function findGiverPrompt(npcName)
+    local debree = workspace:FindFirstChild("Debree")
+    if not debree or not npcName then
+        return nil
+    end
+    for _, instance in ipairs(debree:GetDescendants()) do
+        if instance:IsA("ProximityPrompt") then
+            local parent = instance.Parent
+            local position = parent and (parent:IsA("Attachment") and parent.WorldPosition or parent:IsA("BasePart") and parent.Position)
+            if position then
+                giverPositions[instance.ObjectText] = position
+            end
+            if instance.ObjectText == npcName then
+                return instance
+            end
+        end
+    end
+    return nil
+end
+
+findGiverPrompt("") -- Remember giver locations before travelling streams their prompts out.
+
+local giverHold = nil
+
+local function releaseGiverHold()
+    if giverHold then
+        giverHold:Disconnect()
+        giverHold = nil
+    end
+end
+
+local function holdAtGiver(prompt)
+    releaseGiverHold()
+    local anchorPart = prompt.Parent
+    giverHold = RunService.Heartbeat:Connect(function()
+        local hrp = getRoot()
+        if hrp and anchorPart and anchorPart.Parent then
+            hrp.CFrame = CFrame.new(anchorPart.Position + GIVER_OFFSET)
+            hrp.AssemblyLinearVelocity = Vector3.zero
+        end
+    end)
+    return giverHold
+end
+
+local function acceptQuest(key)
+    local definition = Quests.Holder[key]
+    if not definition then
+        return false, "unknown quest"
+    end
+    if not requirementsPass(definition.Requirements) then
+        local ok, why = pcall(ItemRequirements.Describe, definition.Requirements)
+        return false, string.format("requires %s", ok and tostring(why) or "something you don't have")
+    end
+    local allowed, code, blocker = Quests.CanAddQuest(key)
+    elevate()
+    if not allowed then
+        if code == true then
+            return false, "quest cooldown is still active", true
+        end
+        if code == 2 then
+            return false, "already completed"
+        end
+        return false, string.format("already doing %s", tostring(blocker))
+    end
+
+    local npcName = tostring(definition.OfferNpc)
+    local prompt = findGiverPrompt(npcName)
+    if not prompt and not giverPositions[npcName] then
+        local ok, position = pcall(Regions.GetNpcSpawn, npcName)
+        if ok and typeof(position) == "Vector3" then
+            giverPositions[npcName] = position
+        end
+    end
+    if not prompt and giverPositions[npcName] then
+        local hrp = getRoot()
+        if hrp then
+            hrp.CFrame = CFrame.new(giverPositions[npcName] + GIVER_OFFSET)
+            local deadline = os.clock() + 10
+            repeat
+                task.wait(0.25)
+                prompt = findGiverPrompt(npcName)
+            until prompt or not alive or os.clock() >= deadline
+            elevate()
+        end
+    end
+    if not prompt then
+        return false, string.format("waiting for %s to load", npcName), true
+    end
+
+    holdAtGiver(prompt)
+    task.wait(GIVER_SETTLE)
+    pcall(fireproximityprompt, prompt)
+    task.wait(0.4)
+    SignalEvent.ToServer("AddQuest", key)
+    task.wait(GIVER_ACCEPT_WAIT)
+    releaseGiverHold()
+    elevate()
+
+    if Quests.GetPlayerQuestState(LocalPlayer, key) ~= "Doing" then
+        return false, string.format("%s would not hand it over", npcName)
+    end
+    return true
+end
+
+local function formatCountdown(seconds)
+    if seconds <= 0 then
+        return "expired"
+    end
+    return string.format("%d:%02d", math.floor(seconds / 60), math.floor(seconds % 60))
+end
+
+local function isValidTarget(rig, wanted, wantedCount, hostileOnly)
+    if not rig or not rig.Parent then
+        return false
+    end
+    local humanoid = rig:FindFirstChildOfClass("Humanoid")
+    local root = rig:FindFirstChild("HumanoidRootPart")
+    if not humanoid or not root or humanoid.Health <= 0 then
+        return false
+    end
+    if hostileOnly and rig:GetAttribute("IsMob") ~= true then
+        return false
+    end
+    if wantedCount > 0 and not wanted[rig.Name] then
+        return false
+    end
+    return true
+end
+
+local function targetDied(rig)
+    if not rig then
+        return false
+    end
+    if not rig.Parent then
+        return true
+    end
+    local humanoid = rig:FindFirstChildOfClass("Humanoid")
+    return humanoid == nil or humanoid.Health <= 0
+end
+
+local function findTarget(wanted, wantedCount, hostileOnly, near, radius)
+    local hrp = getRoot()
+    if not hrp then
+        return nil
+    end
+    local best, bestDistance
+    for _, region in ipairs(RegionRoot:GetChildren()) do
+        local active = region:FindFirstChild("ActiveNpcs")
+        if active then
+            for _, folder in ipairs(active:GetChildren()) do
+                local rig = folder:FindFirstChild(folder.Name)
+                if isValidTarget(rig, wanted, wantedCount, hostileOnly)
+                    and (not near or (rig.HumanoidRootPart.Position - near).Magnitude <= radius) then
+                    local distance = (rig.HumanoidRootPart.Position - hrp.Position).Magnitude
+                    if not bestDistance or distance < bestDistance then
+                        best, bestDistance = rig, distance
+                    end
+                end
+            end
+        end
+    end
+    return best
+end
+
+local function spawnPosition(wanted)
+    for name in pairs(wanted) do
+        local ok, position = pcall(Regions.GetNpcSpawn, name)
+        if ok and typeof(position) == "Vector3" then
+            return position, name
+        end
+    end
+    return nil
+end
+
+local function attackCFrame(root, mode, distance)
+    if mode == "Above" then
+        return CFrame.lookAt(root.Position + Vector3.new(0, distance, 0), root.Position)
+    elseif mode == "Below" then
+        return CFrame.lookAt(root.Position - Vector3.new(0, distance, 0), root.Position)
+    end
+    local behind = math.min(distance, MAX_BEHIND_OFFSET)
+    return CFrame.lookAt((root.CFrame * CFrame.new(0, 0, behind)).Position, root.Position)
+end
+
+local farmTarget = nil
+local anchorPosition = nil
+local anchorConnection = nil
+local returnCFrame = nil
+local noclipParts = {}
+local activeFarm = nil
+local lootPosition = nil
+local healRetreat = nil
+
+--// Loot drops: BaseParts tagged "LootDrop" in workspace.LootDrops, each with a LootDropPrompt
+--// (range 10). The client keeps the prompt disabled while the drop flies to its rest spot
+--// (DropTarget), and the server stamps DropClaimedBy on whoever takes it.
+local Loot = {
+    HOVER = Vector3.new(0, 3, 0),
+    FLIGHT_WAIT = 4,
+    -- The server checks the prompt's range against where it last saw us, which trails the teleport.
+    SETTLE = 0.35,
+    CLAIM_WAIT = 1.5,
+    CLAIM_TRIES = 2,
+    failed = setmetatable({}, { __mode = "k" }),
+}
+
+function Loot.eligible(drop)
+    -- Mirrors the game's own LootDrop VisualBinder.isEligible check.
+    local owner = drop:GetAttribute("DropOwnerUserId")
+    if typeof(owner) == "number" and owner ~= LocalPlayer.UserId then
+        return false
+    end
+    local reserved = drop:GetAttribute("DropReservedFor")
+    if typeof(reserved) == "string" and not string.find(reserved, "," .. LocalPlayer.UserId .. ",", 1, true) then
+        return false
+    end
+    return drop:GetAttribute("DropClaimedBy") == nil
+end
+
+function Loot.restPosition(drop)
+    local target = drop:GetAttribute("DropTarget")
+    return typeof(target) == "Vector3" and target or drop.Position
+end
+
+-- landedOnly skips drops still in flight (their prompt is disabled until they land).
+local function lootNear(center, radius, landedOnly)
+    local found = {}
+    for _, drop in ipairs(CollectionService:GetTagged("LootDrop")) do
+        local prompt = drop:IsA("BasePart") and drop.Parent and drop:FindFirstChildWhichIsA("ProximityPrompt")
+        if prompt and not Loot.failed[drop] and Loot.eligible(drop)
+            and (not landedOnly or prompt.Enabled)
+            and (Loot.restPosition(drop) - center).Magnitude <= radius then
+            found[#found + 1] = drop
+        end
+    end
+    return found
+end
+
+function Loot.grab(drop)
+    local prompt = drop:FindFirstChildWhichIsA("ProximityPrompt")
+    if not prompt then
+        return false
+    end
+    lootPosition = Loot.restPosition(drop) + Loot.HOVER
+    local deadline = os.clock() + Loot.FLIGHT_WAIT
+    repeat
+        task.wait(0.1)
+    until prompt.Enabled or not drop.Parent or os.clock() >= deadline
+    task.wait(Loot.SETTLE)
+    for _ = 1, Loot.CLAIM_TRIES do
+        if not drop.Parent or drop:GetAttribute("DropClaimedBy") ~= nil then
+            break
+        end
+        pcall(fireproximityprompt, prompt)
+        deadline = os.clock() + Loot.CLAIM_WAIT
+        repeat
+            task.wait(0.1)
+        until not drop.Parent or drop:GetAttribute("DropClaimedBy") ~= nil or os.clock() >= deadline
+    end
+    lootPosition = nil
+    return not drop.Parent or drop:GetAttribute("DropClaimedBy") == LocalPlayer.UserId
+end
+
+local lootBusy = false
+
+local function collectLoot(center, radius)
+    if lootBusy then
+        return 0
+    end
+    lootBusy = true
+    local taken = 0
+    for _ = 1, 20 do
+        local drops = lootNear(center, radius)
+        if #drops == 0 or not alive then
+            break
+        end
+        if Loot.grab(drops[1]) then
+            taken += 1
+        else
+            Loot.failed[drops[1]] = true
+        end
+    end
+    lootPosition = nil
+    lootBusy = false
+    return taken
+end
+
+--// Chests: the server announces every chest to every player through the "ChestState" signal
+--// ({ chestGuid, configId, position, state, openedByUserId }; states seen live: Spawned, Locked,
+--// Opening, Opened, Despawned), and the first player to fire an unlocked chest's ChestPrompt
+--// opens it for everyone - a Common Chest went 4s after it spawned. Sealed caches start Locked
+--// behind three guards in the Temporary region and unlock once those die. workspace.Chests also
+--// holds things that are not chests (Snow Mounds need a Shovel), so only models with a ChestGuid
+--// count, and chests streamed out of range are still known from the signal.
+local Chest = {
+    ROWS = 6,
+    GUARD_RADIUS = 120, -- captains leash 100 studs from their post
+    NEAR_RADIUS = 60, -- guard search for chest types whose guard names are unknown
+    GUARD_WAIT = 12, -- still Locked with no guard in sight for this long: give up on it for now
+    STREAM_WAIT = 10, -- hovering over its spot and the model never streamed in
+    BUDGET = 240, -- one chest, guards (and a respawn or two) included
+    SKIP = 300,
+    -- Respawning is instant, but three lives lost to one chest's guards (T3 at Lv77: three in
+    -- 110s without clearing them) means it is not winnable yet, so stop feeding it.
+    MAX_DEATHS = 3,
+    TOO_STRONG_SKIP = 900,
+    SWEEP_RADIUS = 120, -- guards die up to a leash from their chest, and their drops count too
+    LOOT_WAIT = 3,
+    OPEN_TRIES = 3,
+    CLOSED = { Opening = true, Opened = true, Despawned = true },
+    known = {}, -- tostring(guid) -> { guid, id, position, state, by, model }
+    skipUntil = {},
+    done = {},
+    guardNames = {}, -- ChestId -> { [normalized guard name] = true }
+    types = {},
+    spawns = {}, -- every sealed cache spawn point, for finding caches that spawned before you joined
+    SWEEP_INTERVAL = 120,
+    current = nil, -- the entry being worked
+    detour = nil, -- where the chest run started (another farm's spot, or where you stood)
+    lastSpot = nil, -- the chest being worked, swept for loot before we leave it
+    opening = false, -- keeps auto loot off a chest's drops while the chest run takes them
+    status = "Off",
+}
+
+function Chest.record(payload)
+    if type(payload) ~= "table" or payload.chestGuid == nil then
+        return
+    end
+    local key = tostring(payload.chestGuid)
+    if payload.state == "Despawned" then
+        Chest.known[key] = nil
+        Chest.done[key] = nil
+        Chest.skipUntil[key] = nil
+        return
+    end
+    local entry = Chest.known[key] or { guid = key }
+    Chest.known[key] = entry
+    entry.state = payload.state or entry.state
+    entry.id = payload.configId or entry.id
+    entry.by = payload.openedByUserId
+    if typeof(payload.position) == "Vector3" then
+        entry.position = payload.position
+    end
+end
+
+do
+    -- The game's ChestController keeps the last state of every chest announced since you joined.
+    local ok, controller = pcall(require, ReplicatedStorage.CAM.Client.Controllers.ChestController)
+    if ok and type(controller) == "table" then
+        local states = type(controller.handleState) == "function" and select(2, pcall(debug.getupvalue, controller.handleState, 1))
+        if type(states) == "table" then
+            for _, payload in pairs(states) do
+                Chest.record(payload)
+            end
+        end
+        local idsOk, ids = pcall(controller.getChestIds)
+        if idsOk and type(ids) == "table" then
+            for _, id in ipairs(ids) do
+                Chest.types[#Chest.types + 1] = tostring(id)
+            end
+        end
+    end
+    -- Guard rosters come from the world-event NPC definitions (Sealed Chest T1/T2/T3).
+    local content = ReplicatedStorage:FindFirstChild("Ouwland") and ReplicatedStorage.Ouwland:FindFirstChild("Content")
+    for _, module in ipairs(content and content:GetDescendants() or {}) do
+        if module:IsA("ModuleScript") and module.Parent and module.Parent.Name == "Npcs"
+            and (string.find(module.Name, "Chest", 1, true) or string.find(module.Name, "Cache", 1, true)) then
+            local loaded, definition = pcall(require, module)
+            local event = loaded and type(definition) == "table" and definition.WorldEvent
+            if type(event) == "table" and event.ChestId and type(event.Guards) == "table" then
+                local names = {}
+                for _, guard in ipairs(event.Guards) do
+                    for _, name in ipairs({ guard.NpcCode, guard.Config }) do
+                        if type(name) == "string" then
+                            names[normalizeName(name)] = true
+                        end
+                    end
+                end
+                Chest.guardNames[event.ChestId] = names
+                for _, spawn in ipairs(type(definition.Spawns) == "table" and definition.Spawns or {}) do
+                    if typeof(spawn) == "CFrame" then
+                        Chest.spawns[#Chest.spawns + 1] = spawn.Position
+                    end
+                end
+            end
+        end
+    end
+    if #Chest.types == 0 then
+        for id in pairs(Chest.guardNames) do
+            Chest.types[#Chest.types + 1] = id
+        end
+        table.insert(Chest.types, "Common Chest")
+        table.insert(Chest.types, "Rare Chest")
+    end
+    table.sort(Chest.types)
+    local connection = SignalEvent:Connect(function(name, payload)
+        if name == "ChestState" then
+            Chest.record(payload)
+        end
+    end)
+    if connection then
+        Library:GiveSignal(connection)
+    end
+    elevate()
+end
+
+-- Folds in chest models that streamed in (some were announced before you joined).
+function Chest.scan()
+    for _, model in ipairs(ChestFolder:GetChildren()) do
+        local guid = model:GetAttribute("ChestGuid")
+        if guid ~= nil and model:IsA("Model") then
+            local key = tostring(guid)
+            local entry = Chest.known[key]
+            if not entry then
+                entry = { guid = key, state = model:GetAttribute("ChestState") }
+                Chest.known[key] = entry
+            end
+            entry.model = model
+            entry.id = model:GetAttribute("ChestId") or entry.id or model.Name
+            entry.position = model:GetPivot().Position
+        end
+    end
+    return Chest.known
+end
+
+function Chest.model(entry)
+    local model = entry.model
+    if model and model.Parent == ChestFolder then
+        return model
+    end
+    entry.model = nil
+    for _, candidate in ipairs(ChestFolder:GetChildren()) do
+        if tostring(candidate:GetAttribute("ChestGuid")) == entry.guid then
+            entry.model = candidate
+            return candidate
+        end
+    end
+    return nil
+end
+
+-- The signal only announces chests that change after you join, so caches already standing are
+-- found by asking the game to stream in each spawn point in range; the character never moves.
+function Chest.discover(from, range)
+    for _, position in ipairs(Chest.spawns) do
+        if not alive or not (Toggles.AutoChest and Toggles.AutoChest.Value) then
+            break
+        end
+        local known = false
+        for _, entry in pairs(Chest.known) do
+            if entry.position and (entry.position - position).Magnitude < 20 then
+                known = true
+                break
+            end
+        end
+        if not known and (position - from).Magnitude <= range then
+            pcall(LocalPlayer.RequestStreamAroundAsync, LocalPlayer, position, 2)
+            elevate()
+            Chest.scan()
+        end
+    end
+end
+
+function Chest.stateOf(entry)
+    local model = entry.model
+    local live = model and model.Parent and model:GetAttribute("ChestState")
+    -- The signal knows about Opening/Opened before (or without) the model attribute changing.
+    if Chest.CLOSED[entry.state] then
+        return entry.state
+    end
+    return live or entry.state or "?"
+end
+
+function Chest.isOpen(entry)
+    local model = entry.model
+    return Chest.CLOSED[Chest.stateOf(entry)] == true
+        or (model ~= nil and model.Parent ~= nil and model:GetAttribute("IsOpen") == true)
+end
+
+function Chest.eligible(entry)
+    if Chest.known[entry.guid] ~= entry or Chest.done[entry.guid] or not entry.position
+        or (Chest.skipUntil[entry.guid] or 0) > os.clock() or Chest.isOpen(entry) then
+        return false
+    end
+    local picked, count = selectedValues(Options.ChestTypes)
+    if count > 0 and not picked[entry.id] then
+        return false
+    end
+    if Toggles.ChestUnlockedOnly and Toggles.ChestUnlockedOnly.Value and Chest.stateOf(entry) == "Locked" then
+        return false
+    end
+    return true
+end
+
+-- Optional (off by default, respawning is instant): below the leave threshold chests wait. The
+-- chest is not dropped, it is picked up again once you have healed.
+function Chest.lowHealth()
+    local _, char = getRoot()
+    local humanoid = char and char:FindFirstChildOfClass("Humanoid")
+    local limit = Options.ChestLeaveHealth and Options.ChestLeaveHealth.Value or 0
+    return humanoid ~= nil and humanoid.MaxHealth > 0 and humanoid.Health / humanoid.MaxHealth * 100 < limit
+end
+
+-- Nearest chest worth a trip, counting range from where the chest run started.
+function Chest.pick()
+    Chest.scan()
+    if Chest.lowHealth() then
+        Chest.status = "HP too low for chest guards - waiting to heal"
+        return nil
+    end
+    local current = Chest.current
+    local keep = current and Chest.eligible(current)
+    if keep and Chest.stateOf(current) ~= "Locked" then
+        return current
+    end
+    local hrp = getRoot()
+    if not hrp then
+        return nil
+    end
+    local from = Chest.detour and Chest.detour.Position or hrp.Position
+    local range = Options.ChestRange and Options.ChestRange.Value or math.huge
+    local best, bestDistance, ready, readyDistance
+    for _, entry in pairs(Chest.known) do
+        if Chest.eligible(entry) then
+            local distance = (entry.position - from).Magnitude
+            if distance <= range then
+                if not bestDistance or distance < bestDistance then
+                    best, bestDistance = entry, distance
+                end
+                if Chest.stateOf(entry) ~= "Locked" and (not readyDistance or distance < readyDistance) then
+                    ready, readyDistance = entry, distance
+                end
+            end
+        end
+    end
+    -- An unlocked chest goes to whoever fires it first (a Common Chest lasted 4s), so it cuts in
+    -- ahead of a guard fight, which is resumed afterwards.
+    if ready then
+        return ready
+    end
+    if keep then
+        return current
+    end
+    if not best then
+        Chest.status = "No chest in range - waiting for one to spawn"
+    end
+    return best
+end
+
+function Chest.isGuard(rig, entry, center)
+    if not isValidTarget(rig, {}, 0, true) then
+        return false
+    end
+    local distance = (rig.HumanoidRootPart.Position - center).Magnitude
+    local names = Chest.guardNames[entry.id]
+    if names then
+        -- By name: a 3000 HP boss (Sumari) stands 95 studs from one T1 cache.
+        return names[normalizeName(rig.Name)] == true and distance <= Chest.GUARD_RADIUS
+    end
+    return distance <= Chest.NEAR_RADIUS
+end
+
+function Chest.guard(entry, center)
+    if Chest.isGuard(farmTarget, entry, center) then
+        return farmTarget
+    end
+    local hrp = getRoot()
+    local best, bestDistance
+    for _, region in ipairs(RegionRoot:GetChildren()) do
+        local active = region:FindFirstChild("ActiveNpcs")
+        for _, folder in ipairs(active and active:GetChildren() or {}) do
+            local rig = folder:FindFirstChild(folder.Name)
+            if Chest.isGuard(rig, entry, center) then
+                local distance = hrp and (rig.HumanoidRootPart.Position - hrp.Position).Magnitude or 0
+                if not bestDistance or distance < bestDistance then
+                    best, bestDistance = rig, distance
+                end
+            end
+        end
+    end
+    return best
+end
+
+function Chest.skip(entry, why, seconds)
+    Chest.skipUntil[entry.guid] = os.clock() + (seconds or Chest.SKIP)
+    Chest.status = string.format("Skipped %s: %s", tostring(entry.id), why)
+    if Chest.current == entry then
+        Chest.current = nil
+    end
+    anchorPosition = nil
+end
+
+-- Takes every drop of ours within radius of center, first giving fresh drops up to spawnWait
+-- seconds to appear. Auto loot stands off meanwhile so the two never fight over a drop.
+function Chest.take(center, radius, spawnWait)
+    Chest.opening = true
+    local deadline = os.clock() + (spawnWait or 0)
+    while alive and os.clock() < deadline and #lootNear(center, radius) == 0 do
+        task.wait(0.2)
+    end
+    deadline = os.clock() + 5
+    while lootBusy and alive and os.clock() < deadline do
+        task.wait(0.1)
+    end
+    local taken = collectLoot(center, radius)
+    Chest.opening = false
+    state.looted = (state.looted or 0) + taken
+    elevate()
+    return taken
+end
+
+-- Loot first: before leaving a chest for the next one or for home, take every drop of ours still
+-- around it - the chest's own and whatever its guards dropped up to a leash away.
+function Chest.sweep()
+    local spot = Chest.lastSpot
+    Chest.lastSpot = nil
+    if spot and #lootNear(spot, Chest.SWEEP_RADIUS) > 0 then
+        Chest.status = "Picking up the loot before moving on..."
+        farmTarget = nil
+        anchorPosition = spot + Vector3.new(0, TRAVEL_HEIGHT, 0)
+        Chest.take(spot, Chest.SWEEP_RADIUS, 0)
+        anchorPosition = nil
+    end
+end
+
+function Chest.open(entry, model, prompt)
+    Chest.status = string.format("Opening %s...", tostring(entry.id))
+    local anchor = prompt.Parent
+    local spot = anchor and (anchor:IsA("Attachment") and anchor.WorldPosition or anchor:IsA("BasePart") and anchor.Position)
+    if not spot then
+        local pivot = model:GetPivot()
+        spot = pivot.Position + pivot.LookVector * 4
+    end
+    anchorPosition = spot + Loot.HOVER
+    task.wait(0.6)
+    for _ = 1, Chest.OPEN_TRIES do
+        pcall(fireproximityprompt, prompt)
+        local deadline = os.clock() + 2
+        repeat
+            task.wait(0.1)
+        until Chest.isOpen(entry) or not model.Parent or os.clock() >= deadline
+        if Chest.isOpen(entry) or not model.Parent then
+            break
+        end
+    end
+    elevate()
+    if not Chest.isOpen(entry) then
+        Chest.skip(entry, "the game would not open it")
+        return
+    end
+    Chest.done[entry.guid] = true
+    if Chest.current == entry then
+        Chest.current = nil
+    end
+    -- IsOpen can flip before the signal saying who opened it arrives.
+    local deadline = os.clock() + 1.5
+    while entry.by == nil and alive and os.clock() < deadline do
+        task.wait(0.1)
+    end
+    local mine = entry.by == LocalPlayer.UserId
+    if mine then
+        state.chestsOpened = (state.chestsOpened or 0) + 1
+    end
+    local taken = Chest.take(model:GetPivot().Position, Chest.SWEEP_RADIUS, Chest.LOOT_WAIT)
+    Chest.status = string.format("%s %s, took %d drop(s)", mine and "Opened" or "Someone else opened", tostring(entry.id), taken)
+    anchorPosition = nil
+end
+
+-- One tick of work on a chest. Returns a guard to fight, or nil after travelling, waiting,
+-- opening or giving up.
+function Chest.step(entry)
+    if Chest.current ~= entry then
+        -- Loot first, then the next chest (even one somebody could open before we get there).
+        Chest.sweep()
+        if not Chest.detour then
+            local hrp = getRoot()
+            Chest.detour = hrp and hrp.CFrame
+            -- Leaving the farm spot: take what already dropped there before flying off.
+            if hrp and Toggles.AutoLoot.Value and #lootNear(hrp.Position, Options.LootRadius.Value) > 0 then
+                Chest.status = "Picking up the loot before leaving..."
+                Chest.take(hrp.Position, Options.LootRadius.Value, 0)
+            end
+        end
+        Chest.current = entry
+        entry.started = os.clock()
+        entry.guardSeen = entry.started
+        entry.streamAsked = false
+    end
+    local now = os.clock()
+    Chest.lastSpot = entry.position
+    if now - entry.started > Chest.BUDGET then
+        Chest.skip(entry, "took too long")
+        return nil
+    end
+    local model = Chest.model(entry)
+    if not model then
+        -- Chest models stream out a couple of hundred studs away, which a guard chase can reach:
+        -- keep fighting from the known position, and only give up if it never loads over the spot.
+        if Chest.stateOf(entry) == "Locked" then
+            local guard = Chest.guard(entry, entry.position)
+            if guard then
+                entry.guardSeen = now
+                entry.missingSince = nil
+                Chest.status = string.format("Fighting the %s guards...", tostring(entry.id))
+                return guard
+            end
+        end
+        entry.missingSince = entry.missingSince or now
+        Chest.status = string.format("Flying to %s...", tostring(entry.id))
+        anchorPosition = entry.position + Vector3.new(0, TRAVEL_HEIGHT, 0)
+        if not entry.streamAsked then
+            entry.streamAsked = true
+            pcall(LocalPlayer.RequestStreamAroundAsync, LocalPlayer, entry.position, 2)
+            elevate()
+        end
+        if os.clock() - entry.missingSince > Chest.STREAM_WAIT then
+            Chest.skip(entry, "it never loaded")
+        end
+        task.wait(SEARCH_INTERVAL)
+        return nil
+    end
+    entry.missingSince = nil
+    local center = model:GetPivot().Position
+    if Chest.isOpen(entry) then
+        -- Someone got there first; anything reserved for us is still worth taking.
+        Chest.done[entry.guid] = true
+        Chest.current = nil
+        anchorPosition = center + Vector3.new(0, TRAVEL_HEIGHT, 0)
+        Chest.take(center, Chest.SWEEP_RADIUS, Chest.LOOT_WAIT)
+        Chest.status = string.format("Someone else opened %s", tostring(entry.id))
+        anchorPosition = nil
+        return nil
+    end
+    local prompt = model:FindFirstChild("ChestPrompt", true)
+    if prompt and Chest.stateOf(entry) ~= "Locked" then
+        Chest.open(entry, model, prompt)
+        return nil
+    end
+    local guard = Chest.guard(entry, center)
+    if guard then
+        entry.guardSeen = now
+        Chest.status = string.format("Fighting the %s guards...", tostring(entry.id))
+        return guard
+    end
+    -- Hover over it so its guards stream in and come to us.
+    Chest.status = string.format("Waiting for the %s guards...", tostring(entry.id))
+    anchorPosition = center + Vector3.new(0, TRAVEL_HEIGHT, 0)
+    if now - entry.guardSeen > Chest.GUARD_WAIT then
+        Chest.skip(entry, prompt and "no guards showed up" or "it has no prompt")
+    end
+    task.wait(SEARCH_INTERVAL)
+    return nil
+end
+
+-- Back from a chest run: put the character where it started (where another farm left off, or
+-- where you stood), well clear of any guards still up.
+function Chest.returnHome()
+    Chest.sweep()
+    local home = Chest.detour
+    Chest.detour = nil
+    Chest.current = nil
+    farmTarget = nil
+    state.target = nil
+    anchorPosition = nil
+    local hrp = getRoot()
+    if hrp and home then
+        hrp.CFrame = home
+        hrp.AssemblyLinearVelocity = Vector3.zero
+    end
+end
+
+local function farmConfig()
+    if Toggles.AutoYeti and Toggles.AutoYeti.Value then
+        -- Around 60s in, two Small Yetis appear and the Yeti takes no damage for ~90s (seen in
+        -- both fights), so they go first while any is alive.
+        local smalls = false
+        local temporary = RegionRoot:FindFirstChild("Temporary")
+        local active = temporary and temporary:FindFirstChild("ActiveNpcs")
+        for _, folder in ipairs(active and active:GetChildren() or {}) do
+            local rig = folder.Name == "Small Yeti" and folder:FindFirstChild(folder.Name)
+            local humanoid = rig and rig:FindFirstChildOfClass("Humanoid")
+            if humanoid and humanoid.Health > 0 then
+                smalls = true
+                break
+            end
+        end
+        return {
+            kind = "yeti",
+            label = "Auto Yeti",
+            wanted = smalls and { ["Small Yeti"] = true } or { ["Yeti Demon"] = true },
+            count = 1,
+            hostileOnly = true,
+            position = Options.BossPosition.Value,
+            distance = Options.BossDistance.Value,
+            travel = false,
+            toggle = Toggles.AutoYeti,
+        }
+    end
+    local bossConfig
+    if Toggles.AutoBoss and Toggles.AutoBoss.Value then
+        local wanted, count = selectedValues(Options.BossTargets)
+        bossConfig = {
+            kind = "boss",
+            label = "Boss Farm",
+            wanted = wanted,
+            count = count,
+            hostileOnly = false,
+            position = Options.BossPosition.Value,
+            distance = Options.BossDistance.Value,
+            travel = Toggles.BossTravel.Value,
+            toggle = Toggles.AutoBoss,
+        }
+        -- A live hunt for a picked boss outranks chests: hunts expire, chests wait.
+        for _, hunt in ipairs(activeBossHunts()) do
+            if count == 0 or wanted[hunt.name] then
+                return bossConfig
+            end
+        end
+    end
+    if Toggles.AutoChest and Toggles.AutoChest.Value then
+        -- Beside another farm, chests only take over while one is in range, and that farm picks
+        -- up where it was once they are done.
+        local alongside = bossConfig ~= nil or (Toggles.AutoQuest and Toggles.AutoQuest.Value)
+            or (Toggles.AutoFarm and Toggles.AutoFarm.Value) or false
+        local entry = Chest.pick()
+        if entry or not alongside then
+            return {
+                kind = "chest",
+                label = "Auto Chest",
+                chest = entry,
+                wanted = {},
+                count = 0,
+                hostileOnly = true,
+                position = Options.FarmPosition.Value,
+                distance = Options.FarmDistance.Value,
+                travel = true,
+                toggle = Toggles.AutoChest,
+            }
+        end
+    end
+    if Toggles.AutoQuest and Toggles.AutoQuest.Value then
+        local wanted, count = questTargets()
+        return {
+            kind = "quest",
+            label = "Auto Quest",
+            wanted = wanted,
+            count = count,
+            hostileOnly = false,
+            position = Options.QuestPosition.Value,
+            distance = Options.QuestDistance.Value,
+            travel = true,
+            toggle = Toggles.AutoQuest,
+        }
+    end
+    if bossConfig then
+        return bossConfig
+    end
+    if Toggles.AutoFarm and Toggles.AutoFarm.Value then
+        local wanted, count = selectedValues(Options.FarmMobs)
+        return {
+            kind = "mob",
+            label = "Auto Farm",
+            wanted = wanted,
+            count = count,
+            hostileOnly = Toggles.HostileOnly.Value,
+            position = Options.FarmPosition.Value,
+            distance = Options.FarmDistance.Value,
+            travel = Toggles.TravelToSpawn.Value,
+            toggle = Toggles.AutoFarm,
+        }
+    end
+    return nil
+end
+
+local function cacheNoclipParts()
+    table.clear(noclipParts)
+    local _, char = getRoot()
+    if not char then
+        return
+    end
+    for _, part in ipairs(char:GetDescendants()) do
+        if part:IsA("BasePart") and part.CanCollide then
+            noclipParts[#noclipParts + 1] = part
+        end
+    end
+end
+
+local function restoreCollisions()
+    for _, part in ipairs(noclipParts) do
+        if part.Parent then
+            part.CanCollide = true
+        end
+    end
+    table.clear(noclipParts)
+end
+
+local function onAnchorStep()
+    local hrp = getRoot()
+    if not hrp then
+        return
+    end
+    for _, part in ipairs(noclipParts) do
+        if part.Parent then
+            part.CanCollide = false
+        end
+    end
+    local dodging = state.dodgeUntil and os.clock() < state.dodgeUntil and state.dodgePosition
+    local hold = lootPosition or healRetreat or dodging or nil
+    if hold then
+        hrp.CFrame = CFrame.new(hold)
+        hrp.AssemblyLinearVelocity = Vector3.zero
+        return
+    end
+    if farmTarget and farmTarget.Parent and activeFarm then
+        local root = farmTarget:FindFirstChild("HumanoidRootPart")
+        if root then
+            hrp.CFrame = attackCFrame(root, activeFarm.position, activeFarm.distance)
+            hrp.AssemblyLinearVelocity = Vector3.zero
+            return
+        end
+    end
+    if anchorPosition then
+        hrp.CFrame = CFrame.new(anchorPosition)
+        hrp.AssemblyLinearVelocity = Vector3.zero
+    end
+end
+
+local function startFarm()
+    local hrp = getRoot()
+    returnCFrame = hrp and hrp.CFrame or nil
+    farmTarget = nil
+    anchorPosition = nil
+    state.farming = true
+    weaponSlot = nil
+    cacheNoclipParts()
+    if anchorConnection then
+        anchorConnection:Disconnect()
+    end
+    anchorConnection = RunService.Heartbeat:Connect(onAnchorStep)
+end
+
+local function stopFarm()
+    state.farming = false
+    farmTarget = nil
+    state.target = nil
+    activeFarm = nil
+    anchorPosition = nil
+    Chest.current = nil
+    Chest.detour = nil
+    Chest.lastSpot = nil
+    releaseGiverHold()
+    if anchorConnection then
+        anchorConnection:Disconnect()
+        anchorConnection = nil
+    end
+    restoreCollisions()
+    local hrp = getRoot()
+    if hrp and returnCFrame then
+        hrp.CFrame = returnCFrame
+    end
+    returnCFrame = nil
+end
+
+local function drinkPotion(name)
+    local _, slotByName = hotbarPotions()
+    local index = slotByName[name]
+    if not index then
+        return false, string.format("%s is not on your hotbar", tostring(name))
+    end
+    local config = LocalPlayer:FindFirstChild("Items_Config")
+    local equipped = config and config:FindFirstChild("Equipped")
+    local hrp = getRoot()
+    if not equipped or not hrp then
+        return false, "Character is not ready"
+    end
+    local before = itemCount(name)
+    local previous = equipped.Value
+    state.healing = true
+    if state.farming then
+        healRetreat = hrp.Position + Vector3.new(0, HEAL_RETREAT_HEIGHT, 0)
+    end
+    if equipped.Value ~= index then
+        if equipped.Value ~= 0 then
+            equipped.Value = 0
+            task.wait(EQUIP_SETTLE)
+        end
+        equipped.Value = index
+        task.wait(EQUIP_SETTLE)
+    end
+    local drank = false
+    if equipped.Value == index then
+        -- The server drinks over ~1.85s after Down; an Up before that cancels it.
+        SignalEvent.ToServer("Tool_Mouse", "Down", hrp.Position)
+        task.wait(POTION_DRINK_TIME)
+        SignalEvent.ToServer("Tool_Mouse", "Up", hrp.Position)
+        local deadline = os.clock() + 1
+        repeat
+            task.wait(0.1)
+        until itemCount(name) < before or os.clock() >= deadline
+        drank = itemCount(name) < before
+    end
+    equipped.Value = 0
+    task.wait(EQUIP_SETTLE)
+    if previous ~= 0 and previous ~= index then
+        equipped.Value = previous
+        task.wait(EQUIP_SETTLE)
+    end
+    healRetreat = nil
+    state.healing = false
+    elevate()
+    if not drank then
+        return false, string.format("The game refused the %s", name)
+    end
+    return true
+end
+
+local Window = Library:CreateWindow({
+    Title = "Slopix Hub",
+    Footer = "Slayers 2",
+    AutoShow = true,
+    Center = true,
+    Resizable = true,
+    ShowCustomCursor = false,
+    NotifySide = "Right",
+})
+
+-- Tabs are created up front so the sidebar order is fixed here, whatever order the
+-- sections below fill them in.
+local Tabs = {
+    Home = Window:AddTab("Home", "house", "Welcome to Slopix Hub"),
+    Farm = Window:AddTab("Farm", "swords", "Mobs, boss hunts and auto heal"),
+    Quests = Window:AddTab("Quests", "scroll-text", "Accept, chain and complete quests"),
+    Chests = Window:AddTab("Chests", "package", "Sealed caches and loot drops"),
+    Fishing = Window:AddTab("Fishing", "fish", "Auto fishing with instant reel"),
+    Market = Window:AddTab("Market", "store", "Black Marketer, shops and timed events"),
+    Clan = Window:AddTab("Clan", "dices", "Clan spins"),
+    Travel = Window:AddTab("Travel", "map", "Teleport to NPCs and shops"),
+    Settings = Window:AddTab("Settings", "settings", "Menu, themes and configs"),
+}
+
+-- Groupboxes that more than one section adds to.
+local Boxes = {
+    Hub = Tabs.Home:AddGroupbox({ Side = "Left", Name = "Slopix Hub", IconName = "sparkles" }),
+    Character = Tabs.Home:AddGroupbox({ Side = "Right", Name = "Character", IconName = "user" }),
+    Codes = Tabs.Home:AddGroupbox({ Side = "Right", Name = "Codes", IconName = "gift" }),
+}
+
+do
+    local DISCORD_INVITE = "https://discord.com/invite/WdPcxf5B83"
+    Boxes.Hub:AddLabel(string.format("Welcome, %s.\nSlopix Hub for Slayers 2 (build %s).", LocalPlayer.DisplayName, state.build), true)
+    Boxes.Hub:AddButton({
+        Text = "Copy Discord invite",
+        Func = function()
+            if setclipboard then
+                setclipboard(DISCORD_INVITE)
+                notify("Slopix Hub", "Discord invite copied to your clipboard.", 4)
+            else
+                notify("Slopix Hub", DISCORD_INVITE, 10)
+            end
+        end,
+    })
+    Boxes.Hub:AddDivider()
+end
+
+local SpinGroup = Tabs.Clan:AddGroupbox({ Side = "Left", Name = "Clan auto spin", IconName = "refresh-cw" })
+
+SpinGroup:AddDropdown("StopRarity", {
+    Searchable = true,
+    Text = "Stop at rarity",
+    Values = RARITY_NAMES,
+    Default = "Mythic",
+    Multi = false,
+})
+
+SpinGroup:AddSlider("SpinDelay", {
+    Text = "Spin delay",
+    Default = 0.4,
+    Min = 0.1,
+    Max = 3,
+    Rounding = 1,
+    Suffix = "s",
+})
+
+SpinGroup:AddToggle("AutoSpin", {
+    Text = "Auto spin",
+    Default = false,
+    Tooltip = "Rolls the clan remote directly (no UI). Stops at the selected rarity or when spins run out.",
+})
+
+SpinGroup:AddButton({
+    Text = "Spin once",
+    Func = function()
+        if getSpinCount() <= 0 then
+            notify("Auto Spin", "No clan spins left", 4)
+            return
+        end
+
+        local ok, rolled = spinOnce()
+        if ok then
+            notify("Auto Spin", string.format("Rolled %s (%s)", rolled, tierNameOf(rolled)), 4)
+        else
+            notify("Auto Spin", "Roll rejected by server", 4)
+        end
+    end,
+})
+
+Boxes.Codes:AddButton({ Text = "Redeem all known codes", Func = function() task.spawn(redeemKnownCodes) end })
+Boxes.Codes:AddLabel("Codes are read from the game's live catalog.", true)
+
+local TargetGroup = Tabs.Farm:AddGroupbox({ Side = "Left", Name = "Mob farm", IconName = "crosshair" })
+local WeaponGroup = Tabs.Farm:AddGroupbox({ Side = "Right", Name = "Weapon", IconName = "sword" })
+Boxes.Positioning = Tabs.Farm:AddRightTabbox("Positioning")
+local PositionGroup = Boxes.Positioning:AddTab("Mobs", "crosshair")
+
+TargetGroup:AddDropdown("FarmMobs", {
+    Searchable = true,
+    Text = "Mobs",
+    Values = mobNames(),
+    Default = {},
+    Multi = true,
+    Tooltip = "Pick nothing to attack whatever hostile mob is nearest.",
+})
+
+TargetGroup:AddToggle("HostileOnly", {
+    Text = "Hostile only",
+    Default = true,
+    Tooltip = "Only attack rigs the game flags as mobs, so quest NPCs and civilians are left alone.",
+})
+
+TargetGroup:AddToggle("TravelToSpawn", {
+    Text = "Travel to spawn",
+    Default = true,
+    Tooltip = "When nothing is loaded, fly to the selected mob's spawn point and wait for it to appear.",
+})
+
+TargetGroup:AddToggle("AutoFarm", {
+    Text = "Auto farm",
+    Default = false,
+    Tooltip = "Holds position on the target and swings with the equipped weapon.",
+})
+
+PositionGroup:AddDropdown("FarmPosition", {
+    Searchable = true,
+    Text = "Stand",
+    Values = POSITION_MODES,
+    Default = "Behind",
+    Multi = false,
+})
+
+PositionGroup:AddSlider("FarmDistance", {
+    Text = "Offset",
+    Default = 5,
+    Min = 3,
+    Max = 10,
+    Rounding = 1,
+    Suffix = " studs",
+})
+
+PositionGroup:AddLabel(
+    string.format("Behind is capped at %d studs - the game's swing box is shallow and stops landing past that. Above and Below reach further. Below needs the noclip Auto farm turns on for you.", MAX_BEHIND_OFFSET),
+    true
+)
+
+local weaponNames = toolbarWeapons()
+WeaponGroup:AddDropdown("FarmWeapon", {
+    Searchable = true,
+    Text = "Weapon",
+    Values = weaponNames,
+    Default = weaponNames[1] or "",
+    Multi = false,
+    Tooltip = "Owned weapons that are on your hotbar.",
+})
+
+WeaponGroup:AddButton({
+    Text = "Equip selected",
+    Func = function()
+        if equipWeapon(Options.FarmWeapon.Value) then
+            notify("Auto Farm", string.format("Equipped %s", Options.FarmWeapon.Value), 3)
+        end
+    end,
+})
+
+WeaponGroup:AddButton({
+    Text = "Refresh lists",
+    Func = function()
+        local names = toolbarWeapons()
+        Options.FarmWeapon:SetValues(names)
+        Options.FarmMobs:SetValues(mobNames())
+        notify("Auto Farm", string.format("%d weapon(s) on the hotbar", #names), 3)
+    end,
+})
+
+WeaponGroup:AddLabel("This weapon is used by the boss farm too.", true)
+
+local BossGroup = Tabs.Farm:AddGroupbox({ Side = "Left", Name = "Boss farm", IconName = "skull" })
+local BossPositionGroup = Boxes.Positioning:AddTab("Bosses", "skull")
+local TimerGroup = Tabs.Farm:AddGroupbox({ Side = "Left", Name = "Active hunts", IconName = "timer" })
+
+BossGroup:AddDropdown("BossTargets", {
+    Searchable = true,
+    Text = "Bosses",
+    Values = bossNames(),
+    Default = {},
+    Multi = true,
+    Tooltip = "Only bosses with an active hunt are listed. Pick nothing and the farm takes the nearest one that is loaded.",
+})
+
+BossGroup:AddToggle("BossTravel", {
+    Text = "Travel to boss",
+    Default = true,
+    Tooltip = "Fly to the boss spawn point and wait for it to appear.",
+})
+
+BossGroup:AddToggle("AutoBoss", {
+    Text = "Auto boss farm",
+    Default = false,
+    Tooltip = "Same engine as the mob farm, aimed only at active boss hunts.",
+})
+
+BossGroup:AddButton({
+    Text = "Refresh hunts",
+    Func = function()
+        local names = bossNames()
+        Options.BossTargets:SetValues(names)
+        notify("Boss Farm", string.format("%d active hunt(s)", #names), 3)
+    end,
+})
+
+BossPositionGroup:AddDropdown("BossPosition", {
+    Searchable = true,
+    Text = "Stand",
+    Values = POSITION_MODES,
+    Default = "Above",
+    Multi = false,
+})
+
+BossPositionGroup:AddSlider("BossDistance", {
+    Text = "Offset",
+    Default = 7,
+    Min = 3,
+    Max = 10,
+    Rounding = 1,
+    Suffix = " studs",
+})
+
+BossPositionGroup:AddLabel("Above keeps you off a boss's melee arc. Behind is still capped at 6 studs.", true)
+
+local timerLabels = {}
+for index = 1, BOSS_TIMER_ROWS do
+    timerLabels[index] = TimerGroup:AddLabel("", true)
+end
+TimerGroup:AddDivider()
+local timerFooter = TimerGroup:AddLabel("", true)
+
+local function refreshTimers()
+    local hunts = activeBossHunts()
+    local now = os.time()
+    for index = 1, BOSS_TIMER_ROWS do
+        local hunt = hunts[index]
+        local label = timerLabels[index]
+        if hunt then
+            label:SetText(string.format("%s  [%s / %s]  %s", hunt.name, hunt.tier, hunt.side, formatCountdown(hunt.expires - now)))
+            label:SetVisible(true)
+        else
+            label:SetVisible(false)
+        end
+    end
+    if #hunts == 0 then
+        timerFooter:SetText("No active boss hunts right now.")
+    elseif #hunts > BOSS_TIMER_ROWS then
+        timerFooter:SetText(string.format("%d hunts active, showing the %d expiring soonest.", #hunts, BOSS_TIMER_ROWS))
+    else
+        timerFooter:SetText(string.format("%d active hunt(s), soonest first.", #hunts))
+    end
+end
+
+local QuestGroup = Tabs.Quests:AddGroupbox({ Side = "Left", Name = "Combat quest", IconName = "swords" })
+local QuestPositionGroup = Tabs.Quests:AddGroupbox({ Side = "Left", Name = "Positioning", IconName = "move-3d" })
+local QuestProgressGroup = Tabs.Quests:AddGroupbox({ Side = "Right", Name = "Progress", IconName = "list-checks" })
+
+local startingQuestLabels = eligibleQuestLabels()
+QuestGroup:AddDropdown("QuestPick", {
+    Searchable = true,
+    Text = "Quest",
+    Values = startingQuestLabels,
+    Default = startingQuestLabels[1] or "",
+    Multi = false,
+    Tooltip = "Quests you can take come first. Locked ones follow with the reason in brackets, e.g. [Slayer/Hybrid only].",
+})
+
+QuestGroup:AddToggle("QuestChain", {
+    Text = "Auto accept next",
+    Default = false,
+    Tooltip = "When the current quest finishes, take the next eligible one from the list.",
+})
+
+QuestGroup:AddToggle("AutoQuest", {
+    Text = "Auto quest",
+    Default = false,
+    Tooltip = "Fights whatever your active quest's tasks point at.",
+})
+
+
+QuestGroup:AddButton({
+    Text = "Accept selected",
+    Func = function()
+        task.spawn(function()
+            elevate()
+            local lock = questLockByLabel[Options.QuestPick.Value]
+            if lock then
+                notify("Auto Quest", string.format("That quest is locked: %s", lock), 5)
+                return
+            end
+            local key = resolveQuestSelection()
+            if not key then
+                notify("Auto Quest", "Nothing you qualify for right now", 4)
+                return
+            end
+            local definition = Quests.Holder[key]
+            local name = definition and tostring(definition.QuestInstance) or key
+            notify("Auto Quest", string.format("Going to %s...", tostring(definition.OfferNpc)), 3)
+            local ok, why = acceptQuest(key)
+            notify("Auto Quest", ok and string.format("Accepted %s (%d exp)", name, questExp(definition)) or string.format("Could not accept %s: %s", name, why), 5)
+        end)
+    end,
+})
+
+QuestGroup:AddButton({
+    Text = "Refresh quest list",
+    Func = function()
+        local labels, openCount = eligibleQuestLabels()
+        Options.QuestPick:SetValues(labels)
+        local bestKey, bestExp = bestQuestKey()
+        local definition = bestKey and Quests.Holder[bestKey]
+        notify("Auto Quest", string.format("%d quest(s) available, %d locked. Best: %s (%d exp)",
+            openCount, #labels - 1 - openCount,
+            definition and tostring(definition.QuestInstance) or "none",
+            bestExp or 0), 5)
+    end,
+})
+
+QuestPositionGroup:AddDropdown("QuestPosition", {
+    Searchable = true,
+    Text = "Stand",
+    Values = POSITION_MODES,
+    Default = "Behind",
+    Multi = false,
+})
+
+QuestPositionGroup:AddSlider("QuestDistance", {
+    Text = "Offset",
+    Default = 5,
+    Min = 3,
+    Max = 10,
+    Rounding = 1,
+    Suffix = " studs",
+})
+
+local questTaskLabels = {}
+for index = 1, QUEST_TASK_ROWS do
+    questTaskLabels[index] = QuestProgressGroup:AddLabel("", true)
+end
+QuestProgressGroup:AddDivider()
+local questFooter = QuestProgressGroup:AddLabel("", true)
+
+local function refreshQuestProgress()
+    local rows = {}
+    for _, quest in ipairs(activeQuests("combat")) do
+        rows[#rows + 1] = { text = quest.instance .. ":", header = true }
+        for _, task in ipairs(quest.tasks) do
+            local done = task.value >= task.max
+            local reachable = npcNameForCode(task.code) ~= nil
+            local mark = done and "[x]" or (reachable and "[ ]" or "[!]")
+            rows[#rows + 1] = {
+                text = string.format("  %s %s  %d/%d", mark, task.name, task.value, task.max),
+            }
+        end
+    end
+
+    for index = 1, QUEST_TASK_ROWS do
+        local row = rows[index]
+        if row then
+            questTaskLabels[index]:SetText(row.text)
+            questTaskLabels[index]:SetVisible(true)
+        else
+            questTaskLabels[index]:SetVisible(false)
+        end
+    end
+
+    if #rows == 0 then
+        questFooter:SetText("No quest active. Pick one and press Accept.")
+    else
+        local _, count, blocked = questTargets()
+        if count > 0 then
+            questFooter:SetText(string.format("Auto quest can fight %d target(s). [!] = not a mob, do it yourself.", count))
+        elseif #blocked > 0 then
+            questFooter:SetText("Nothing here is a mob - this quest needs fishing, items or an NPC visit.")
+        else
+            questFooter:SetText("All tasks done. Turn it in, or enable Auto accept next.")
+        end
+    end
+end
+
+do
+    local group = Tabs.Chests:AddGroupbox({ Side = "Left", Name = "Chests", IconName = "package" })
+    local lootGroup = Tabs.Chests:AddGroupbox({ Side = "Left", Name = "Loot drops", IconName = "gem" })
+    local listGroup = Tabs.Chests:AddGroupbox({ Side = "Right", Name = "Chests in world", IconName = "map-pin" })
+
+    group:AddToggle("AutoChest", {
+        Text = "Auto chests",
+        Default = false,
+        Tooltip = "Clears a chest's guards, opens it and picks up all your loot around it (guard drops too) before moving to the next chest. Beside the mob, boss or quest farm it only leaves for chests in range and puts you back where you were afterwards; a live boss hunt goes first.",
+    })
+
+    group:AddToggle("ChestUnlockedOnly", {
+        Text = "Only open unlocked chests",
+        Default = false,
+        Tooltip = "Skip sealed caches whose guards are still up.",
+    })
+
+    group:AddDropdown("ChestTypes", {
+        Searchable = true,
+        Text = "Chest types",
+        Values = Chest.types,
+        Default = {},
+        Multi = true,
+        Tooltip = "Pick nothing to take every type. Sealed Cache T2 and T3 guards hit harder than T1.",
+    })
+
+    group:AddSlider("ChestRange", {
+        Text = "Range",
+        Default = 1000,
+        Min = 100,
+        Max = 6000,
+        Rounding = 0,
+        Suffix = " studs",
+        Tooltip = "How far a chest may be, counted from where the chest run started (where another farm was, or where you stood).",
+    })
+
+    group:AddSlider("ChestLeaveHealth", {
+        Text = "Leave chests below",
+        Default = 0,
+        Min = 0,
+        Max = 90,
+        Rounding = 0,
+        Suffix = "% HP",
+        Tooltip = "0 = never leave: respawning is instant and the chest run carries on after it. Above 0, chest guards are left alone below this HP and you go back until you have healed.",
+    })
+
+    local statusLabel = group:AddLabel("", true)
+    group:AddLabel("Chests are first come, first served: whoever opens one opens it for everyone. Uses the Mob farm weapon and positioning.", true)
+
+    lootGroup:AddToggle("AutoLoot", {
+        Text = "Auto pick up loot",
+        Default = false,
+        Tooltip = "Grabs loot drops you are allowed to claim, mid-farm too (under a second each), then returns you to where you were.",
+    })
+
+    lootGroup:AddSlider("LootRadius", {
+        Text = "Pickup radius",
+        Default = 80,
+        Min = 10,
+        Max = 500,
+        Rounding = 0,
+        Suffix = " studs",
+    })
+
+    local rows = {}
+    for index = 1, Chest.ROWS do
+        rows[index] = listGroup:AddLabel("", true)
+    end
+    listGroup:AddDivider()
+    local footer = listGroup:AddLabel("", true)
+
+    Chest.refresh = function()
+        statusLabel:SetText(Toggles.AutoChest.Value and Chest.status or "Off")
+        local hrp = getRoot()
+        local list = {}
+        for _, entry in pairs(Chest.scan()) do
+            if entry.position and not Chest.isOpen(entry) then
+                list[#list + 1] = {
+                    entry = entry,
+                    distance = hrp and (entry.position - hrp.Position).Magnitude or 0,
+                }
+            end
+        end
+        table.sort(list, function(a, b)
+            return a.distance < b.distance
+        end)
+        for index = 1, Chest.ROWS do
+            local row = list[index]
+            local label = rows[index]
+            if row then
+                local entry = row.entry
+                local note = Chest.done[entry.guid] and "  (done)"
+                    or (Chest.skipUntil[entry.guid] or 0) > os.clock() and "  (skipped)"
+                    or not Chest.model(entry) and "  (not loaded)" or ""
+                label:SetText(string.format("%s  [%s]  %d studs%s", tostring(entry.id), Chest.stateOf(entry), math.floor(row.distance), note))
+                label:SetVisible(true)
+            else
+                label:SetVisible(false)
+            end
+        end
+        if #list == 0 then
+            footer:SetText(string.format("No unopened chests known right now. Opened: %d, loot taken: %d",
+                state.chestsOpened or 0, state.looted or 0))
+        else
+            footer:SetText(string.format("%d unopened chest(s), nearest first. Opened: %d, loot taken: %d",
+                #list, state.chestsOpened or 0, state.looted or 0))
+        end
+    end
+end
+
+--// Market: the Black Marketer and rotating shops are seeded from server time, so the
+--// client can compute where he is, what he sells now, and what he will sell next visit.
+-- Scoped in its own block: the main chunk is near Luau's 200-local limit.
+local refreshMarket
+do
+    local MARKET_FORECAST_VISITS = 3
+    local MARKET_FORECAST_CYCLES = 84
+    local MARKET_TICK = 2
+    local PURCHASE_WAIT = 3
+
+    local MarketerDef = require(ReplicatedStorage.Ouwland.Content.Misc.Npcs["Black Marketer"])
+    local MarketerVendor = MarketerDef.TimedVendor
+    local ROTATING_SHOPS = {
+        { label = "Elara (Mistfall Harbor)", path = { "Mistfall Harbor", "Npcs", "Elara" } },
+        { label = "Lynx (Iceveil winter store)", path = { "Iceveil Valley", "Npcs", "Iceveil Settlement", "Winter Store Rep Lynx" } },
+    }
+    for _, shop in ipairs(ROTATING_SHOPS) do
+        local node = ReplicatedStorage.Ouwland.Content
+        for _, part in ipairs(shop.path) do
+            node = node and node:FindFirstChild(part)
+        end
+        local ok, definition = pcall(require, node)
+        shop.config = ok and type(definition) == "table" and definition.RotatingShop or nil
+    end
+    elevate()
+
+    local function formatDuration(seconds)
+        seconds = math.max(0, math.floor(seconds))
+        local hours, minutes = seconds // 3600, (seconds % 3600) // 60
+        if hours > 0 then
+            return string.format("%d:%02d:%02d", hours, minutes, seconds % 60)
+        end
+        return string.format("%d:%02d", minutes, seconds % 60)
+    end
+
+    local function withCommas(number)
+        local text = tostring(math.floor(number))
+        while true do
+            local changed
+            text, changed = text:gsub("^(-?%d+)(%d%d%d)", "%1,%2")
+            if changed == 0 then
+                return text
+            end
+        end
+    end
+
+    local function entryName(entry)
+        return type(entry) == "table" and entry.Name or tostring(entry)
+    end
+
+    -- Returns the Wen price, or nil plus a label when the item costs Robux or is unknown.
+    local function entryPrice(entry)
+        local name = entryName(entry)
+        local price = type(entry) == "table" and entry.Price or nil
+        if typeof(price) ~= "table" then
+            local listing = Shop.itemsforsale[name]
+            price = listing and listing.Price
+        end
+        if typeof(price) ~= "table" then
+            local definition = Items[name]
+            price = definition and definition.Price
+        end
+        if typeof(price) ~= "table" then
+            return nil, "?"
+        end
+        if price.Product or price.Gamepass then
+            return nil, "Robux"
+        end
+        if type(price.Wen) == "number" then
+            return price.Wen, "$" .. withCommas(price.Wen)
+        end
+        local currency, amount = next(price)
+        return nil, string.format("%s %s", tostring(amount), tostring(currency))
+    end
+
+    local function rarityOfItem(name)
+        local definition = Items[name]
+        return definition and Rarities.Order[definition.Rarity] or "?"
+    end
+
+    local function describeEntry(entry)
+        local name = entryName(entry)
+        local _, priceText = entryPrice(entry)
+        local owned = itemCount(name) > 0 and "  (owned)" or ""
+        return string.format("%s  [%s]  %s%s", name, rarityOfItem(name), priceText, owned)
+    end
+
+    local marketerAlways = {}
+    for _, entry in ipairs(MarketerVendor.Always or {}) do
+        marketerAlways[entryName(entry)] = true
+    end
+
+    local function marketerCatalog()
+        local names = {}
+        for _, list in ipairs({ MarketerVendor.Always or {}, MarketerVendor.Stock or {} }) do
+            for _, entry in ipairs(list) do
+                local name = entryName(entry)
+                if entryPrice(entry) and not table.find(names, name) then
+                    names[#names + 1] = name
+                end
+            end
+        end
+        table.sort(names)
+        return names
+    end
+
+    local function marketerStock(cycle)
+        local ok, stock = pcall(TimedVendor.GetStock, MarketerVendor, cycle)
+        return ok and stock or {}
+    end
+
+    local cachedMarketer
+    local function marketerModel()
+        if cachedMarketer and cachedMarketer:IsDescendantOf(workspace) then
+            return cachedMarketer
+        end
+        local debree = workspace:FindFirstChild("Debree")
+        local model = debree and debree:FindFirstChild("Black Marketer", true)
+        cachedMarketer = model and model:IsA("Model") and model or nil
+        return cachedMarketer
+    end
+
+    local function marketerStandPosition(cycle)
+        local model = marketerModel()
+        if model then
+            return (model:GetPivot() * CFrame.new(0, 0, -4)).Position + Vector3.new(0, 2, 0)
+        end
+        local index = TimedVendor.GetSpotIndex(MarketerVendor, cycle, #MarketerDef.Spawns)
+        local spot = MarketerDef.Spawns[index]
+        return spot and spot.Position + Vector3.new(0, 4, 6)
+    end
+
+    -- Holds the character at a position for the duration of fn, then returns it home.
+    local function visitPosition(position, fn)
+        local hrp = getRoot()
+        if not hrp or not position then
+            return false
+        end
+        local home = hrp.CFrame
+        lootBusy = true
+        lootPosition = position
+        local hold = not anchorConnection and RunService.Heartbeat:Connect(function()
+            local root = getRoot()
+            if root and lootPosition then
+                root.CFrame = CFrame.new(lootPosition)
+                root.AssemblyLinearVelocity = Vector3.zero
+            end
+        end)
+        local ok, result = pcall(fn)
+        lootPosition = nil
+        lootBusy = false
+        if hold then
+            hold:Disconnect()
+            local root = getRoot()
+            if root then
+                root.CFrame = home
+            end
+        end
+        elevate()
+        return ok and result
+    end
+
+    local function buyFromShop(name)
+        -- Only ever spends Wen: a listing priced in Robux would open a real-money prompt.
+        local listing = Shop.itemsforsale[name]
+        local price = listing and listing.Price
+        if typeof(price) ~= "table" then
+            -- Vendor stock listed by name only (the Black Marketer's Frozen Heart) is priced on the item.
+            local definition = Items[name]
+            price = definition and definition.Price
+        end
+        if typeof(price) ~= "table" or type(price.Wen) ~= "number" or price.Product or price.Gamepass then
+            return false, "not sold for Wen"
+        end
+        local slot = getSlot()
+        local wen = slot and slot:FindFirstChild("Wen")
+        if not wen or wen.Value < price.Wen then
+            return false, string.format("needs $%s", withCommas(price.Wen))
+        end
+        local checked, allowed, reason = pcall(Shop.CanBuy, LocalPlayer, name, nil, 1)
+        if checked and not allowed then
+            return false, tostring(reason or "the shop refused")
+        end
+        local before = itemCount(name)
+        SignalEvent.ToServer("PurchaseFromShop", name, 1)
+        local deadline = os.clock() + PURCHASE_WAIT
+        repeat
+            task.wait(0.2)
+        until itemCount(name) > before or os.clock() >= deadline
+        if itemCount(name) > before then
+            return true
+        end
+        return false, "no item arrived"
+    end
+
+    local MarketerGroup = Tabs.Market:AddGroupbox({ Side = "Left", Name = "Black Marketer", IconName = "venetian-mask" })
+    local WishlistGroup = Tabs.Market:AddGroupbox({ Side = "Left", Name = "Auto buy", IconName = "shopping-cart" })
+    local ForecastGroup = Tabs.Market:AddGroupbox({ Side = "Right", Name = "Upcoming visits", IconName = "calendar-clock" })
+    local RotatingGroup = Tabs.Market:AddGroupbox({ Side = "Right", Name = "Rotating shops", IconName = "refresh-ccw" })
+    local EventsGroup = Tabs.Market:AddGroupbox({ Side = "Right", Name = "Timed events", IconName = "timer" })
+
+    local marketStatusLabel = MarketerGroup:AddLabel("", true)
+    local marketStockLabel = MarketerGroup:AddLabel("", true)
+    local marketReturnPoint
+    MarketerGroup:AddButton({ Text = "Teleport to Black Marketer", Func = function()
+        local root = getRoot()
+        local stateNow = TimedVendor.GetState(MarketerVendor)
+        local position = marketerStandPosition(stateNow.Cycle)
+        if not root or not position then
+            return
+        end
+        if not stateNow.Active then
+            notify("Black Market", "He is away right now; this is where he appears next.", 4)
+        end
+        marketReturnPoint = marketReturnPoint or root.CFrame
+        root.CFrame = CFrame.new(position)
+        root.AssemblyLinearVelocity = Vector3.zero
+    end })
+    MarketerGroup:AddButton({ Text = "Return", Func = function()
+        local root = getRoot()
+        if root and marketReturnPoint then
+            root.CFrame = marketReturnPoint
+            root.AssemblyLinearVelocity = Vector3.zero
+        end
+        marketReturnPoint = nil
+    end })
+    MarketerGroup:AddToggle("MarketNotify", {
+        Text = "Notify when he arrives",
+        Default = true,
+    })
+
+    WishlistGroup:AddDropdown("MarketWishlist", {
+        Searchable = true,
+        Text = "Wishlist",
+        Values = marketerCatalog(),
+        Default = {},
+        Multi = true,
+        Tooltip = "Everything he can stock for Wen. Robux-priced items are never listed or bought.",
+    })
+    WishlistGroup:AddToggle("MarketAutoBuy", {
+        Text = "Auto buy wishlist",
+        Default = false,
+        Tooltip = "When he is in town with a wishlist item, teleports to him, buys it once per visit, and returns you.",
+    })
+    local wishlistLabel = WishlistGroup:AddLabel("", true)
+
+    local forecastLabel = ForecastGroup:AddLabel("", true)
+    local rotatingLabel = RotatingGroup:AddLabel("", true)
+    local eventsLabel = EventsGroup:AddLabel("", true)
+
+    function refreshMarket()
+        -- Calling into the game's own modules (TimedVendor, RotatingShop, Shop) strips this
+        -- thread's UI capability even though getthreadidentity() still reports 8, so every
+        -- label text is computed first and written after a single elevate().
+        local pending = {}
+        local stateNow = TimedVendor.GetState(MarketerVendor)
+        local every = TimedVendor.GetEvery(MarketerVendor)
+
+        if stateNow.Active then
+            local position = marketerStandPosition(stateNow.Cycle)
+            local root = getRoot()
+            local distance = root and position and (position - root.Position).Magnitude or 0
+            pending[marketStatusLabel] = (string.format("In town now - leaves in %s\n%d studs away", formatDuration(stateNow.NextEdgeIn), math.floor(distance)))
+        else
+            pending[marketStatusLabel] = (string.format("Away - arrives in %s", formatDuration(stateNow.NextEdgeIn)))
+        end
+
+        -- While he is away, show the stock he will bring next.
+        local shownCycle = stateNow.Active and stateNow.Cycle or stateNow.Cycle + 1
+        local lines = {}
+        for _, entry in ipairs(marketerStock(shownCycle)) do
+            if not marketerAlways[entryName(entry)] then
+                lines[#lines + 1] = describeEntry(entry)
+            end
+        end
+        pending[marketStockLabel] = ((stateNow.Active and "Selling now:\n" or "Next visit brings:\n")
+            .. table.concat(lines, "\n") .. "\n+ Frozen Heart ($10,000) and Robux items every visit")
+
+        local forecast = {}
+        for offset = 1, MARKET_FORECAST_VISITS do
+            local cycle = stateNow.Cycle + offset
+            local startsIn = cycle * every - workspace:GetServerTimeNow()
+            local names = {}
+            for _, entry in ipairs(marketerStock(cycle)) do
+                if not marketerAlways[entryName(entry)] then
+                    names[#names + 1] = entryName(entry)
+                end
+            end
+            forecast[#forecast + 1] = string.format("In %s: %s", formatDuration(startsIn), table.concat(names, ", "))
+        end
+        pending[forecastLabel] = (table.concat(forecast, "\n\n"))
+
+        local wanted, wantedCount = selectedValues(Options.MarketWishlist)
+        if wantedCount == 0 then
+            pending[wishlistLabel] = ("Pick items to see when he next sells them.")
+        else
+            local found, wishLines = {}, {}
+            for offset = stateNow.Active and 0 or 1, MARKET_FORECAST_CYCLES do
+                local cycle = stateNow.Cycle + offset
+                for _, entry in ipairs(marketerStock(cycle)) do
+                    local name = entryName(entry)
+                    if wanted[name] and not found[name] then
+                        found[name] = cycle
+                    end
+                end
+            end
+            for name in pairs(wanted) do
+                local cycle = found[name]
+                if not cycle then
+                    wishLines[#wishLines + 1] = string.format("%s: not within a week", name)
+                elseif cycle == stateNow.Cycle and stateNow.Active then
+                    wishLines[#wishLines + 1] = string.format("%s: IN STOCK NOW", name)
+                else
+                    wishLines[#wishLines + 1] = string.format("%s: in %s", name, formatDuration(cycle * every - workspace:GetServerTimeNow()))
+                end
+            end
+            table.sort(wishLines)
+            pending[wishlistLabel] = (table.concat(wishLines, "\n"))
+        end
+
+        local shopLines = {}
+        for _, shop in ipairs(ROTATING_SHOPS) do
+            if shop.config then
+                local shopEvery = RotatingShop.GetEvery(shop.config)
+                local cycle = RotatingShop.GetCycleIndex(shop.config)
+                local now, upcoming = {}, {}
+                for _, entry in ipairs(RotatingShop.GetRotation(shop.config, cycle)) do
+                    local _, priceText = entryPrice(entry)
+                    now[#now + 1] = string.format("%s %s", entryName(entry), priceText)
+                end
+                for _, entry in ipairs(RotatingShop.GetRotation(shop.config, cycle + 1)) do
+                    upcoming[#upcoming + 1] = entryName(entry)
+                end
+                shopLines[#shopLines + 1] = string.format("%s - restock in %s\nNow: %s\nNext: %s",
+                    shop.label,
+                    formatDuration(shopEvery - workspace:GetServerTimeNow() % shopEvery),
+                    table.concat(now, ", "),
+                    table.concat(upcoming, ", "))
+            end
+        end
+        pending[rotatingLabel] = (#shopLines > 0 and table.concat(shopLines, "\n\n") or "No rotating shops found.")
+
+        local slot = getSlot()
+        local finalSelection = TimedEvents.FinalSelection
+        local requirement = finalSelection.Requirements or {}
+        local qualifies = slot and slot.Race.Value == requirement.Race and playerLevel() >= (requirement.Level or 0)
+        pending[eventsLabel] = (string.format("Final Selection in %s (%s)\nBoss hunt rotation in %s",
+            formatDuration(finalSelection.Every - workspace:GetServerTimeNow() % finalSelection.Every),
+            qualifies and "you qualify" or string.format("needs %s, Lv %d", tostring(requirement.Race), requirement.Level or 0),
+            formatDuration(TimedEvents.BossHunt.Every - workspace:GetServerTimeNow() % TimedEvents.BossHunt.Every)))
+
+        elevate()
+        for label, text in pending do
+            label:SetText(text)
+        end
+    end
+
+    task.spawn(function()
+        elevate()
+        local announcedCycle = nil
+        local attempted = {}
+        while alive do
+            elevate()
+            task.wait(MARKET_TICK)
+            elevate()
+            if not alive then
+                break
+            end
+            local ok, stateNow = pcall(TimedVendor.GetState, MarketerVendor)
+            if not ok or not stateNow.Active then
+                continue
+            end
+
+            local stock = marketerStock(stateNow.Cycle)
+            local wanted = selectedValues(Options.MarketWishlist)
+            if announcedCycle ~= stateNow.Cycle then
+                announcedCycle = stateNow.Cycle
+                attempted = {}
+                if Toggles.MarketNotify.Value then
+                    local hits = {}
+                    for _, entry in ipairs(stock) do
+                        if wanted[entryName(entry)] then
+                            hits[#hits + 1] = entryName(entry)
+                        end
+                    end
+                    notify("Black Market", string.format("The Black Marketer is in town for %s.%s",
+                        formatDuration(stateNow.NextEdgeIn),
+                        #hits > 0 and ("\nWishlist in stock: " .. table.concat(hits, ", ")) or ""), 8)
+                end
+            end
+
+            if not Toggles.MarketAutoBuy.Value or lootBusy or state.fishing or state.healing then
+                continue
+            end
+            local targets = {}
+            for _, entry in ipairs(stock) do
+                local name = entryName(entry)
+                local tries = attempted[name]
+                if wanted[name] and entryPrice(entry) and not (tries and (tries.done or tries.count >= 3 or os.clock() < tries.nextAt)) then
+                    targets[#targets + 1] = name
+                end
+            end
+            if #targets == 0 then
+                continue
+            end
+
+            visitPosition(marketerStandPosition(stateNow.Cycle), function()
+                task.wait(1.5) -- let him stream in before buying
+                for _, name in ipairs(targets) do
+                    -- Up to 3 tries per item per visit, 20s apart: right after he arrives the
+                    -- shop has not registered his stock yet and refuses, so one try missed it.
+                    local tries = attempted[name] or { count = 0, nextAt = 0 }
+                    attempted[name] = tries
+                    tries.count += 1
+                    tries.nextAt = os.clock() + 20
+                    local bought, why = buyFromShop(name)
+                    tries.done = bought
+                    if bought or tries.count >= 3 then
+                        notify("Black Market", bought and ("Bought " .. name) or string.format("Could not buy %s: %s", name, tostring(why)), 6)
+                    end
+                end
+            end)
+        end
+    end)
+end
+
+do
+    local travel = Tabs.Travel:AddGroupbox({ Side = "Left", Name = "NPCs and shops", IconName = "map-pin" })
+    local character = Boxes.Character
+    local stats = character:AddLabel("Loading character...", true)
+    local destinations = {}
+    local content = ReplicatedStorage.Ouwland.Content
+    for _, region in ipairs(content:GetChildren()) do
+        local npcs = region:FindFirstChild("Npcs")
+        if npcs then
+            for _, npc in ipairs(npcs:GetChildren()) do
+                local ok, position = pcall(Regions.GetNpcSpawn, npc.Name)
+                if ok and typeof(position) == "Vector3" then
+                    destinations[region.Name .. " / " .. npc.Name] = position
+                end
+            end
+        end
+    end
+    elevate()
+    local names = {}
+    for name in pairs(destinations) do names[#names + 1] = name end
+    table.sort(names)
+    travel:AddDropdown("WorldDestination", { Searchable = true, Text = "Destination", Values = names, Default = names[1] })
+    local returnPoint
+    local function pauseFarms()
+        elevate()
+        if Toggles.AutoFish then Toggles.AutoFish:SetValue(false) end
+        if Toggles.AutoSideQuest then Toggles.AutoSideQuest:SetValue(false) end
+        Toggles.AutoFarm:SetValue(false)
+        Toggles.AutoBoss:SetValue(false)
+        Toggles.AutoQuest:SetValue(false)
+        Toggles.AutoChest:SetValue(false)
+        if Toggles.AutoYeti then Toggles.AutoYeti:SetValue(false) end
+        Toggles.AutoLoot:SetValue(false)
+    end
+    travel:AddButton({ Text = "Travel to selected NPC", Func = function()
+        local position = destinations[Options.WorldDestination.Value]
+        if not position then return end
+        pauseFarms()
+        local root = getRoot()
+        if root then
+            returnPoint = root.CFrame
+            root.CFrame = CFrame.new(position + Vector3.new(0, 3, 5))
+            root.AssemblyLinearVelocity = Vector3.zero
+        end
+    end })
+    travel:AddButton({ Text = "Return to previous location", Func = function()
+        if not returnPoint then
+            notify("Travel", "Travel somewhere first", 3)
+            return
+        end
+        pauseFarms()
+        local root = getRoot()
+        if root then root.CFrame = returnPoint; root.AssemblyLinearVelocity = Vector3.zero end
+        returnPoint = nil
+    end })
+    travel:AddLabel("Travel pauses combat automation. Shops and quest givers load when you arrive.", true)
+    Boxes.Hub:AddButton({ Text = "Stop all automation", Func = function()
+        pauseFarms()
+        Toggles.AutoSpin:SetValue(false)
+    end })
+    Boxes.Hub:AddToggle("AntiAfk", {
+        Text = "Anti AFK",
+        Default = true,
+        Tooltip = "Stops Roblox from kicking you after 20 idle minutes.",
+    })
+
+    local survival = Tabs.Farm:AddGroupbox({ Side = "Right", Name = "Auto heal", IconName = "heart-pulse" })
+    local potionNames = hotbarPotions()
+    survival:AddToggle("AutoHeal", {
+        Text = "Auto heal",
+        Default = false,
+        Tooltip = "Drinks a potion from your hotbar when health drops below the threshold. Combat pauses while drinking.",
+    })
+    survival:AddSlider("HealThreshold", {
+        Text = "Heal below",
+        Default = 50,
+        Min = 10,
+        Max = 95,
+        Rounding = 0,
+        Suffix = "%",
+    })
+    survival:AddDropdown("HealPotion", {
+        Searchable = true,
+        Text = "Potion on hotbar",
+        Values = potionNames,
+        Default = potionNames[1] or "",
+        Multi = false,
+    })
+    survival:AddButton({ Text = "Refresh potions", Func = function()
+        local names = hotbarPotions()
+        Options.HealPotion:SetValues(names)
+        if not table.find(names, Options.HealPotion.Value) then
+            Options.HealPotion:SetValue(names[1])
+        end
+        notify("Auto Heal", string.format("%d health potion(s) on the hotbar", #names), 3)
+    end })
+    survival:AddLabel("Put a Health Potion or Elixir on your hotbar. Paused while fishing.", true)
+    task.spawn(function()
+        while alive do
+            elevate()
+            local slot = getSlot()
+            elevate()
+            if not alive then break end
+            if slot then
+                local clan = getClanName()
+                local text = string.format("Level %d  |  %s\nClan: %s (%s)\nWen: %s\nReputation: %s\nSkill points: %s",
+                    playerLevel(), slot.Race.Value, clan, tierNameOf(clan), tostring(slot.Wen.Value),
+                    tostring(slot.Reputation.Value), tostring(slot.SkillPoints.Value))
+                elevate()
+                stats:SetText(text)
+            end
+            task.wait(1)
+        end
+    end)
+end
+
+local cleanupFishing
+do
+    local group = Tabs.Fishing:AddGroupbox({ Side = "Left", Name = "Auto fishing", IconName = "fish" })
+    local progress = Tabs.Fishing:AddGroupbox({ Side = "Right", Name = "Catch log", IconName = "list" })
+    local statusLabel = progress:AddLabel("Idle", true)
+    local catchLabel = progress:AddLabel("Items caught this session: 0", true)
+    local rodSlots = {}
+    local session = 0
+    local fishingSlot
+    local caught = 0
+    local function status(text)
+        state.fishingStatus = text
+        if alive then
+            elevate()
+            statusLabel:SetText(text)
+        end
+    end
+    local function rods()
+        table.clear(rodSlots)
+        local slot = getSlot()
+        local inventory = slot and slot:FindFirstChild("Inventory")
+        local owned = inventory and inventory:FindFirstChild("Inventory")
+        local toolbar = inventory and inventory:FindFirstChild("Toolbar")
+        local names = {}
+        if owned and toolbar then
+            for _, item in ipairs(owned:GetChildren()) do
+                local definition = Items[item.Name]
+                local id = item:FindFirstChild("Id")
+                if definition and definition.ToolScript == "Rare Fishing Rod" and id then
+                    for index, key in ipairs(TOOLBAR_SLOTS) do
+                        local entry = toolbar:FindFirstChild(key)
+                        if entry and entry.Value == id.Value then
+                            rodSlots[item.Name] = index
+                            names[#names + 1] = item.Name
+                            break
+                        end
+                    end
+                end
+            end
+        end
+        table.sort(names)
+        elevate()
+        return names
+    end
+    local function pauseCombat()
+        elevate()
+        Toggles.AutoFarm:SetValue(false)
+        Toggles.AutoBoss:SetValue(false)
+        Toggles.AutoQuest:SetValue(false)
+        Toggles.AutoChest:SetValue(false)
+        if Toggles.AutoYeti then Toggles.AutoYeti:SetValue(false) end
+    end
+    group:AddDropdown("FishingRod", { Searchable = true, Text = "Rod on hotbar", Values = rods(), Default = 1 })
+    group:AddButton({ Text = "Refresh rods", Func = function()
+        local names = rods()
+        Options.FishingRod:SetValues(names)
+        if not rodSlots[Options.FishingRod.Value] then Options.FishingRod:SetValue(names[1]) end
+    end })
+    group:AddToggle("InstantReel", {
+        Text = "Instant reel",
+        Default = true,
+        Tooltip = "Reports a won reel minigame straight to the server instead of playing it.",
+    })
+    group:AddToggle("AutoFish", { Text = "Auto fishing", Default = false })
+    group:AddButton({ Text = "Travel to fishing dock", Func = function()
+        Toggles.AutoFish:SetValue(false)
+        pauseCombat()
+        local ok, position = pcall(Regions.GetNpcSpawn, "Fisherman Jeso")
+        local root = getRoot()
+        if ok and typeof(position) == "Vector3" and root then
+            root.CFrame = CFrame.new(position + Vector3.new(0, 3, 5))
+            root.AssemblyLinearVelocity = Vector3.zero
+            status("At the dock. Enable auto fishing when standing on the ground.")
+        else
+            status("Fishing dock is unavailable in this place.")
+        end
+    end })
+    group:AddLabel("Uses your equipped bait, if any. Stand beside water with a rod on your hotbar. Catches are collected into your inventory.", true)
+
+    local function inventoryCounts()
+        local slot = getSlot()
+        local inventory = slot and slot:FindFirstChild("Inventory")
+        local owned = inventory and inventory:FindFirstChild("Inventory")
+        local counts = {}
+        if owned then
+            for _, item in ipairs(owned:GetChildren()) do
+                local amount = item:FindFirstChild("Amount")
+                counts[item.Name] = amount and amount.Value or 1
+            end
+        end
+        return counts
+    end
+    local function gainsSince(before)
+        local gains, total = {}, 0
+        for name, amount in pairs(inventoryCounts()) do
+            local gain = amount - (before[name] or 0)
+            if gain > 0 then
+                total += gain
+                gains[#gains + 1] = string.format("%s x%d", name, gain)
+            end
+        end
+        table.sort(gains)
+        return gains, total
+    end
+    local PortalEvent = ReplicatedStorage.CAM.Global.ServerClientPortal:WaitForChild("Event")
+    local portalConnection
+    local biteToken, biteMissed
+    local function onPortal(channel, kind, token)
+        if channel ~= "FishingRod" then return end
+        if kind == "Bite" then
+            biteToken = token
+        elseif kind == "BiteMissed" then
+            biteMissed = true
+        end
+    end
+    local function closeBiteUi()
+        -- BiteCancel tears the minigame down without it reporting a verdict, so it cannot overwrite the win.
+        if not getconnections then return end
+        for _, connection in ipairs(getconnections(PortalEvent.OnClientEvent)) do
+            if connection.Function then
+                pcall(connection.Function, "FishingRod", "BiteCancel")
+            end
+        end
+    end
+    local function newCatch(root, existing)
+        local debree = workspace:FindFirstChild("Debree")
+        local best, bestPrompt, bestDistance
+        for _, model in ipairs(debree and debree:GetChildren() or {}) do
+            if not existing[model] and model:GetAttribute("CatchItem") then
+                local prompt = model:FindFirstChildWhichIsA("ProximityPrompt", true)
+                local part = prompt and prompt.Parent
+                if part and part:IsA("BasePart") then
+                    local distance = (part.Position - root.Position).Magnitude
+                    if not bestDistance or distance < bestDistance then
+                        best, bestPrompt, bestDistance = model, prompt, distance
+                    end
+                end
+            end
+        end
+        return best, bestPrompt, bestDistance
+    end
+    local function catchSnapshot()
+        local debree = workspace:FindFirstChild("Debree")
+        local existing = {}
+        for _, model in ipairs(debree and debree:GetChildren() or {}) do
+            existing[model] = true
+        end
+        return existing
+    end
+    local function waterTarget(root, char)
+        local water = RaycastParams.new()
+        water.FilterType = Enum.RaycastFilterType.Include
+        water.BruteForceAllSlow = true
+        local parts = {}
+        for _, part in ipairs(game:GetService("CollectionService"):GetTagged("SwimParts")) do
+            parts[#parts + 1] = part.Parent or part
+        end
+        water.FilterDescendantsInstances = parts
+        local ground = RaycastParams.new()
+        ground.FilterType = Enum.RaycastFilterType.Exclude
+        local excluded = { char }
+        local debree = workspace:FindFirstChild("Debree")
+        if debree then excluded[#excluded + 1] = debree end
+        ground.FilterDescendantsInstances = excluded
+        for radius = 8, 32, 4 do
+            for index = 0, 15 do
+                local angle = index * math.pi / 8
+                local origin = root.Position + Vector3.new(math.cos(angle) * radius, 50, math.sin(angle) * radius)
+                local direction = Vector3.new(0, -150, 0)
+                local hit = workspace:Raycast(origin, direction, water)
+                local obstruction = workspace:Raycast(origin, direction, ground)
+                if hit and (hit.Instance.Name == "Texture" or hit.Instance.Name == "TouchPart")
+                    and (not obstruction or obstruction.Position.Y <= hit.Position.Y + 0.1) then
+                    return hit.Position
+                end
+            end
+        end
+        return nil
+    end
+    local function active(token)
+        return alive and session == token and Toggles.AutoFish and Toggles.AutoFish.Value
+    end
+    local function waitActive(seconds, token)
+        local deadline = os.clock() + seconds
+        repeat
+            task.wait(0.05)
+            if not active(token) then return false end
+        until os.clock() >= deadline
+        return true
+    end
+    local function reel(token)
+        local lastY, lastTime, held, currentGui
+        local deadline = os.clock() + 45
+        while active(token) and LocalPlayer:GetAttribute("FishingBite") do
+            if os.clock() >= deadline then return false, "Reeling timed out" end
+            local misc = LocalPlayer.PlayerGui:FindFirstChild("Misc")
+            local tracker = misc and misc:FindFirstChild("tracker", true)
+            local bar = tracker and tracker.Parent:FindFirstChild("Bar")
+            if bar then
+                local gui = tracker:FindFirstAncestorOfClass("CanvasGroup")
+                if currentGui ~= gui then lastY, lastTime, held = nil, nil, nil; currentGui = gui end
+                local now = os.clock()
+                local y = bar.AbsolutePosition.Y + bar.AbsoluteSize.Y / 2
+                local target = tracker.AbsolutePosition.Y + tracker.AbsoluteSize.Y / 2
+                local velocity = lastY and (y - lastY) / math.max(now - lastTime, 0.001) or 0
+                local press = y + velocity * 0.18 > target
+                if gui and press ~= held then
+                    local invoked = false
+                    for _, connection in ipairs(getconnections(press and gui.InputBegan or gui.InputEnded)) do
+                        if connection.Function then
+                            connection.Function({ UserInputType = Enum.UserInputType.MouseButton1 })
+                            invoked = true
+                        end
+                    end
+                    if not invoked then return false, "Fishing input handler is unavailable" end
+                    held = press
+                end
+                lastY, lastTime = y, now
+            end
+            task.wait(0.025)
+        end
+        return active(token)
+    end
+    local function collectCatch(root, existing, token)
+        -- A won bite hangs the catch off the rod tip behind a 2s "Collect" prompt.
+        -- Recasting or unequipping before it is collected drops it on the ground to despawn.
+        local model, prompt, distance
+        local deadline = os.clock() + 3
+        repeat
+            if not waitActive(0.1, token) or biteMissed then return nil end
+            model, prompt, distance = newCatch(root, existing)
+        until model or os.clock() >= deadline
+        if not model then return nil end
+        local item = tostring(model:GetAttribute("CatchItem"))
+        status(string.format("Pulling in %s...", item))
+        deadline = os.clock() + 6
+        while distance > prompt.MaxActivationDistance - 1 and os.clock() < deadline do
+            if not waitActive(0.1, token) or not model.Parent then return false, item end
+            distance = (prompt.Parent.Position - root.Position).Magnitude
+        end
+        status(string.format("Collecting %s...", item))
+        if fireproximityprompt then
+            pcall(fireproximityprompt, prompt)
+            deadline = os.clock() + 1
+            while model.Parent and os.clock() < deadline do
+                if not waitActive(0.1, token) then return false, item end
+            end
+        end
+        if model.Parent then
+            pcall(prompt.InputHoldBegin, prompt)
+            local held = waitActive(prompt.HoldDuration + 0.3, token)
+            pcall(prompt.InputHoldEnd, prompt)
+            if not held then return false, item end
+            deadline = os.clock() + 1.5
+            while model.Parent and os.clock() < deadline do
+                task.wait(0.1)
+            end
+        end
+        return model.Parent == nil, item
+    end
+    local function fishOnce(token)
+        local root, char = getRoot()
+        local humanoid = char and char:FindFirstChildOfClass("Humanoid")
+        if not root or not humanoid or humanoid.Health <= 0 then return false, "Character is not ready" end
+        -- Landing a catch can leave you airborne for a moment; only give up if you stay off the ground.
+        local groundDeadline = os.clock() + 3
+        while humanoid.FloorMaterial == Enum.Material.Air or (char:GetAttribute("SwimState") or 0) > 0 do
+            if os.clock() >= groundDeadline then
+                return false, "Stand on the dock or shore before fishing"
+            end
+            if not waitActive(0.2, token) then return false end
+        end
+        rods()
+        local index = rodSlots[Options.FishingRod.Value]
+        if not index then return false, "Put a fishing rod on your hotbar, then refresh rods" end
+        local target = waterTarget(root, char)
+        if not target then return false, "No open water nearby. Use Travel to fishing dock" end
+        local before = inventoryCounts()
+        if not active(token) then return false end
+        local equipped = LocalPlayer.Items_Config.Equipped
+        -- Unequipping clears the previous line and catch presentation before recasting.
+        -- Right after a catch the server is still uncasting and reverts the equip, so retry.
+        fishingSlot = index
+        for _ = 1, 4 do
+            equipped.Value = 0
+            if not waitActive(0.7, token) then return false end
+            equipped.Value = index
+            if not waitActive(0.8, token) then return false end
+            if equipped.Value == index then break end
+        end
+        if equipped.Value ~= index then return false, "The game refused to equip the selected rod" end
+        local instant = Toggles.InstantReel.Value
+        local function bitten()
+            if instant then return biteToken ~= nil end
+            return LocalPlayer:GetAttribute("FishingBite") == true
+        end
+        biteToken, biteMissed = nil, nil
+        status("Casting...")
+        SignalEvent.ToServer("Tool_Mouse", "Up", target)
+        status("Waiting for a bite...")
+        local deadline = os.clock() + 30
+        repeat
+            if not waitActive(0.1, token) then return false end
+        until bitten() or os.clock() >= deadline
+        if not bitten() then return false, "No bite received. Move closer to open water and retry" end
+        local existing = catchSnapshot()
+        status("Reeling...")
+        if instant then
+            -- The server takes the client's minigame verdict as-is.
+            PortalEvent:FireServer("FishingRod", biteToken, true)
+            local shown = os.clock() + 1
+            repeat
+                if not waitActive(0.05, token) then return false end
+            until LocalPlayer:GetAttribute("FishingBite") or os.clock() >= shown
+            closeBiteUi()
+        else
+            local ok, why = reel(token)
+            if not ok then return false, why end
+        end
+        local collected, item = collectCatch(root, existing, token)
+        if not active(token) then return false end
+        local gains, total = gainsSince(before)
+        deadline = os.clock() + (collected and 2 or 0)
+        while total == 0 and os.clock() < deadline do
+            if not waitActive(0.1, token) then return false end
+            gains, total = gainsSince(before)
+        end
+        caught += total
+        local outcome
+        if total > 0 then
+            outcome = table.concat(gains, ", ")
+        elseif biteMissed then
+            outcome = "The fish got away"
+        elseif item then
+            outcome = string.format("Could not collect %s", item)
+        else
+            outcome = "Nothing on the line"
+        end
+        elevate()
+        catchLabel:SetText(string.format("Items caught this session: %d\nLast attempt: %s", caught, outcome))
+        state.fishingCaught = caught
+        return true
+    end
+    cleanupFishing = function()
+        session += 1
+        local config = LocalPlayer:FindFirstChild("Items_Config")
+        local equipped = config and config:FindFirstChild("Equipped")
+        if equipped and fishingSlot and (equipped.Value == fishingSlot or equipped.Value == 0) then
+            equipped.Value = 0
+        end
+        fishingSlot = nil
+        state.fishing = false
+        if portalConnection then
+            portalConnection:Disconnect()
+            portalConnection = nil
+        end
+    end
+    Toggles.AutoFish:OnChanged(function()
+        elevate()
+        if not Toggles.AutoFish.Value then
+            cleanupFishing()
+            status("Stopped")
+            return
+        end
+        pauseCombat()
+        session += 1
+        local token = session
+        state.fishing = true
+        if portalConnection then portalConnection:Disconnect() end
+        portalConnection = PortalEvent.OnClientEvent:Connect(onPortal)
+        task.spawn(function()
+            while active(token) do
+                elevate()
+                local success, ok, why = pcall(fishOnce, token)
+                if not active(token) then break end
+                if not success or not ok then
+                    elevate()
+                    Toggles.AutoFish:SetValue(false)
+                    status(tostring(success and why or ok))
+                    break
+                end
+            end
+        end)
+    end)
+end
+
+--// Side quests: Dialogue and Fishing quests, finished through the game's own progress remote.
+--// Every task type reports with ("QuestProgress", questKey, taskName[, pickupIndex]) and the
+--// server only checks that the character is standing in the right place: at the deposit spot,
+--// the pickup spot, or in front of the NPC for a hand-in. Accepting still needs the giver's
+--// prompt fired first. Scoped in its own block: the main chunk is near Luau's 200-local limit.
+local refreshSideQuests
+do
+    local SIDE_TICK = 0.5
+    local SIDE_ROWS = 9
+    local DEPOSIT_INTERVAL = 0.2 -- the game's own deposit loop runs every 0.15s
+    local NPC_SPAWN_WAIT = 2
+    local FISH_STALL = 480
+    local FISH_DOCK_NPC = "Fisherman Jeso"
+    local SUPPORTED = { Deposit = true, Deliver = true, Pickup = true }
+
+    local ItemSources
+    pcall(function()
+        ItemSources = require(ReplicatedStorage.CAM.Client.Modules.ItemSources)
+    end)
+
+    -- Every NPC's definition by display name. Wandering NPCs (like Estate Worker Niko) walk
+    -- between their Spawns, so a single spawn point is not enough to find them.
+    local npcDefs, sellerOf = {}, {}
+    for _, region in ipairs(ReplicatedStorage.Ouwland.Content:GetChildren()) do
+        local npcs = region:FindFirstChild("Npcs")
+        for _, module in ipairs(npcs and npcs:GetChildren() or {}) do
+            if module:IsA("ModuleScript") then
+                local ok, definition = pcall(require, module)
+                if ok and type(definition) == "table" and type(definition.Name) == "string" then
+                    npcDefs[definition.Name] = definition
+                    if type(definition.Shop) == "table" then
+                        for item in pairs(definition.Shop) do
+                            sellerOf[item] = sellerOf[item] or definition.Name
+                        end
+                    end
+                end
+            end
+        end
+    end
+    elevate()
+
+    local Side = {
+        hold = nil, -- function returning the CFrame to pin the character to, or nil
+        home = nil,
+        active = {}, -- quest keys seen active last tick, to notice hand-ins
+        fishing = false,
+        finished = 0,
+        status = "Idle",
+        blocked = {}, -- quest key -> why it cannot progress, so the picker skips it
+        tried = {}, -- pickup slots already attempted
+    }
+
+    function Side.on()
+        return alive and Toggles.AutoSideQuest ~= nil and Toggles.AutoSideQuest.Value
+    end
+
+    -- Only pins while the runner is on, so a step still unwinding after a stop cannot hold you.
+    Library:GiveSignal(RunService.Heartbeat:Connect(function()
+        local target = Side.on() and Side.hold and Side.hold()
+        local root = target and getRoot()
+        if root then
+            root.CFrame = target
+            root.AssemblyLinearVelocity = Vector3.zero
+        end
+    end))
+
+    -- Waits while the runner stays on; false means it was switched off meanwhile.
+    function Side.wait(seconds)
+        local deadline = os.clock() + seconds
+        repeat
+            task.wait(0.1)
+        until not Side.on() or os.clock() >= deadline
+        elevate()
+        return Side.on()
+    end
+
+    function Side.waitFor(done, seconds)
+        local deadline = os.clock() + seconds
+        while not done() do
+            if os.clock() >= deadline or not Side.wait(0.1) then
+                return false
+            end
+        end
+        return true
+    end
+
+    function Side.npcModel(name)
+        local regions = workspace.Debree:FindFirstChild("Regions")
+        for _, region in ipairs(regions and regions:GetChildren() or {}) do
+            local stationary = region:FindFirstChild("StationaryNpcs")
+            local model = stationary and stationary:FindFirstChild(name)
+            if model and model:IsA("Model") then
+                return model
+            end
+        end
+        return nil
+    end
+
+    function Side.goTo(position)
+        local target = CFrame.new(position + Vector3.new(0, 3, 0))
+        Side.hold = function()
+            return target
+        end
+        return Side.wait(1)
+    end
+
+    -- Stands in front of an NPC and follows it if it wanders. Returns the model or nil.
+    -- Only streamed-in NPCs exist on the client, so walk its spawn points until it loads,
+    -- starting where it was last seen: a wanderer is usually still near there.
+    Side.lastSeen = {}
+    function Side.goToNpc(name)
+        local model = Side.npcModel(name)
+        local definition = npcDefs[name]
+        local points = {}
+        for _, spawn in ipairs(definition and definition.Spawns or {}) do
+            spawn = type(spawn) == "table" and spawn[1] or spawn -- route lists hold their points
+            local position = typeof(spawn) == "CFrame" and spawn.Position or spawn
+            if typeof(position) == "Vector3" then
+                points[#points + 1] = position
+            end
+        end
+        local seen = Side.lastSeen[name]
+        if seen then
+            table.sort(points, function(a, b)
+                return (a - seen).Magnitude < (b - seen).Magnitude
+            end)
+            table.insert(points, 1, seen)
+        end
+        local index = 0
+        while not model and index < #points do
+            index += 1
+            Side.goTo(points[index] + Vector3.new(0, 1, 0))
+            local deadline = os.clock() + NPC_SPAWN_WAIT
+            repeat
+                if not Side.wait(0.2) then
+                    return nil
+                end
+                model = Side.npcModel(name)
+            until model or os.clock() >= deadline
+        end
+        if not model then
+            return nil
+        end
+        Side.hold = function()
+            if not model.Parent then
+                return nil
+            end
+            local pivot = model:GetPivot()
+            Side.lastSeen[name] = pivot.Position
+            return CFrame.lookAt((pivot * CFrame.new(0, 0, -4)).Position, pivot.Position)
+        end
+        Side.wait(0.8)
+        return model
+    end
+
+    function Side.taskFolder(quest, taskName)
+        local tasks = quest.folder:FindFirstChild("Tasks")
+        return tasks and tasks:FindFirstChild(taskName)
+    end
+
+    -- Task rows for an active quest, or zeroed rows from the template before accepting.
+    function Side.tasksOf(definition, quest)
+        if quest then
+            return quest.tasks
+        end
+        local list = {}
+        for _, task in ipairs(definition.QuestInstance.Tasks:GetChildren()) do
+            local max = task:FindFirstChild("Max")
+            list[#list + 1] = { name = task.Name, value = 0, max = max and max.Value or 1 }
+        end
+        return list
+    end
+
+    -- A task is ready once every task its marker lists under After (and its Need) is complete.
+    function Side.ready(definition, quest, taskName)
+        local marker = definition.Markers and definition.Markers[taskName]
+        local before = marker and marker.After or {}
+        local folder = Side.taskFolder(quest, taskName)
+        local need = folder and folder:FindFirstChild("Need")
+        if need and need.Value ~= "" then
+            before = table.clone(before)
+            before[#before + 1] = need.Value
+        end
+        for _, name in ipairs(before) do
+            for _, task in ipairs(quest.tasks) do
+                if task.name == name and task.value < task.max then
+                    return false
+                end
+            end
+        end
+        return true
+    end
+
+    -- Next unfinished, ready task: pickups and deposits you can make first, hand-ins last.
+    function Side.nextTask(definition, quest)
+        local specs = definition.TaskSpecs or {}
+        local best, bestScore
+        for _, task in ipairs(quest.tasks) do
+            if task.value < task.max and Side.ready(definition, quest, task.name) then
+                local spec = specs[task.name]
+                local kind = spec and spec.Type
+                local score = 1
+                if kind == "Pickup" or (kind == "Deposit" and itemCount(spec.RequiredItem) > 0) then
+                    score = 3
+                elseif kind ~= "Deliver" then
+                    score = 2
+                end
+                if not bestScore or score > bestScore then
+                    best, bestScore = { task = task, spec = spec }, score
+                end
+            end
+        end
+        return best
+    end
+
+    -- Items the unfinished tasks still need beyond what you hold, as { [item] = count }.
+    function Side.missing(definition, quest)
+        local need = {}
+        local specs = definition.TaskSpecs or {}
+        local tasks = Side.tasksOf(definition, quest)
+        local hasPickup = false
+        for _, task in ipairs(tasks) do
+            hasPickup = hasPickup or (specs[task.name] and specs[task.name].Type == "Pickup") or false
+        end
+        for _, task in ipairs(tasks) do
+            local spec = specs[task.name]
+            local item = spec and spec.RequiredItem
+            if item and task.value < task.max then
+                if spec.Type == "Deposit" then
+                    need[item] = (need[item] or 0) + (task.max - task.value)
+                elseif spec.Type == "Deliver" and not (quest == nil and item == definition.GrantItemOnAccept) and not hasPickup then
+                    -- Items handed over on accept, or found by the quest's own pickup, come for free.
+                    need[item] = math.max(need[item] or 0, spec.Count or 1)
+                end
+            end
+        end
+        local short = {}
+        for item, count in pairs(need) do
+            local have = itemCount(item)
+            if have < count then
+                short[item] = count - have
+            end
+        end
+        return short
+    end
+
+    -- How the runner can get an item: "buy", "fish" or nil, plus a hint for the player.
+    function Side.source(item)
+        local listing = Shop.itemsforsale[item]
+        local price = listing and listing.Price
+        if sellerOf[item] and typeof(price) == "table" and not price.Product and not price.Gamepass then
+            return "buy", string.format("sold by %s", sellerOf[item])
+        end
+        local definition = Items[item]
+        if type(definition) == "table" and definition.Category == "Fishing" then
+            return "fish", "fished up"
+        end
+        local ok, sources = pcall(function()
+            return ItemSources and ItemSources.Get(item)
+        end)
+        elevate()
+        local where = ok and type(sources) == "table" and sources[1] and sources[1].Where
+        return nil, where and tostring(where) or "no known source"
+    end
+
+    -- How many the player can pay for now. Wen or material prices only, never Robux.
+    function Side.affordable(item)
+        local listing = Shop.itemsforsale[item]
+        local price = listing and listing.Price
+        if typeof(price) ~= "table" or price.Product or price.Gamepass then
+            return 0
+        end
+        local slot = getSlot()
+        local count = math.huge
+        for currency, cost in pairs(price) do
+            if type(cost) ~= "number" or cost <= 0 then
+                return 0
+            end
+            local have = currency == "Wen" and (slot and slot:FindFirstChild("Wen") and slot.Wen.Value or 0) or itemCount(currency)
+            count = math.min(count, math.floor(have / cost))
+        end
+        return count == math.huge and 0 or count
+    end
+
+    function Side.questName(key)
+        local definition = Quests.Holder[key]
+        return definition and tostring(definition.QuestInstance) or tostring(key)
+    end
+
+    -- Whether the runner can take this quest and finish it with what you have or can get.
+    function Side.finishable(key)
+        local definition = Quests.Holder[key]
+        if not definition or definition.ItemCostOnAccept or definition.WenCostOnAccept then
+            return false, "costs something to accept"
+        end
+        for _, quest in ipairs(activeQuests("side")) do
+            local other = Quests.Holder[quest.key]
+            if other and other.Category == definition.Category then
+                return false, string.format("you already have a %s quest", tostring(definition.Category))
+            end
+        end
+        for _, task in ipairs(definition.QuestInstance.Tasks:GetChildren()) do
+            local spec = definition.TaskSpecs and definition.TaskSpecs[task.Name]
+            if not spec or not SUPPORTED[spec.Type] then
+                return false, string.format("'%s' has to be done by hand", task.Name)
+            end
+        end
+        for item, count in pairs(Side.missing(definition, nil)) do
+            local how, hint = Side.source(item)
+            if how == "fish" then
+                if not Toggles.SideQuestFish.Value then
+                    return false, string.format("needs %d %s (turn on Fish for missing fish)", count, item)
+                end
+            elseif how == "buy" then
+                if not Toggles.SideQuestBuy.Value then
+                    return false, string.format("needs %d %s (%s; turn on Buy missing items)", count, item, hint)
+                elseif Side.affordable(item) < count then
+                    return false, string.format("needs %d %s, you can afford %d", count, item, Side.affordable(item))
+                end
+            else
+                return false, string.format("needs %d %s (%s)", count, item, hint)
+            end
+        end
+        return true
+    end
+
+    -- Undoes everything the runner holds: position pin, loot lock, its own fishing, and returns home.
+    function Side.release()
+        Side.hold = nil
+        lootBusy = false
+        if Side.fishing then
+            Side.fishing = false
+            if Toggles.AutoFish and Toggles.AutoFish.Value then
+                Toggles.AutoFish:SetValue(false)
+            end
+        end
+        local root = getRoot()
+        if root and Side.home then
+            root.CFrame = Side.home
+            root.AssemblyLinearVelocity = Vector3.zero
+        end
+        Side.home = nil
+    end
+
+    function Side.stop(message)
+        if Toggles.AutoSideQuest and Toggles.AutoSideQuest.Value then
+            Toggles.AutoSideQuest:SetValue(false) -- its OnChanged runs Side.release()
+        end
+        Side.release()
+        if message then
+            Side.status = message
+            notify("Side Quests", message, 8)
+        end
+    end
+
+    function Side.block(key, why)
+        Side.blocked[key] = why
+        Side.status = why
+        notify("Side Quests", why, 8)
+    end
+
+    function Side.accept(key)
+        local definition = Quests.Holder[key]
+        Side.status = string.format("Going to %s for %s...", tostring(definition.OfferNpc), Side.questName(key))
+        local model = Side.goToNpc(tostring(definition.OfferNpc))
+        if not model then
+            return false, string.format("could not find %s", tostring(definition.OfferNpc))
+        end
+        -- The server ignores AddQuest unless the giver's dialogue was opened first.
+        local prompt = model:FindFirstChildWhichIsA("ProximityPrompt", true)
+        if prompt then
+            pcall(fireproximityprompt, prompt)
+        end
+        Side.wait(0.5)
+        SignalEvent.ToServer("AddQuest", key)
+        Side.waitFor(function()
+            return Quests.GetPlayerQuestState(LocalPlayer, key) == "Doing"
+        end, 3)
+        elevate()
+        if Quests.GetPlayerQuestState(LocalPlayer, key) ~= "Doing" then
+            return false, string.format("%s would not hand it over", tostring(definition.OfferNpc))
+        end
+        return true
+    end
+
+    function Side.buy(item, amount)
+        if not Side.goToNpc(sellerOf[item]) then
+            return 0
+        end
+        local before = itemCount(item)
+        local checked, allowed = pcall(Shop.CanBuy, LocalPlayer, item, nil, amount)
+        elevate()
+        if checked and not allowed then
+            return 0
+        end
+        SignalEvent.ToServer("PurchaseFromShop", item, amount)
+        Side.waitFor(function()
+            return itemCount(item) >= before + amount
+        end, 3)
+        -- Fall back to single purchases if the shop only honours one at a time.
+        while Side.on() and itemCount(item) < before + amount and itemCount(item) > before do
+            local now = itemCount(item)
+            SignalEvent.ToServer("PurchaseFromShop", item, 1)
+            if not Side.waitFor(function()
+                return itemCount(item) > now
+            end, 3) then
+                break
+            end
+        end
+        return itemCount(item) - before
+    end
+
+    function Side.deposit(definition, quest, spec)
+        if not Side.goTo(spec.Position + Vector3.new(0, 0, 3)) then
+            return true
+        end
+        for _, task in ipairs(quest.tasks) do
+            local other = definition.TaskSpecs[task.name]
+            local folder = Side.taskFolder(quest, task.name)
+            if other and other.Type == "Deposit" and folder and (other.Position - spec.Position).Magnitude < 1
+                and Side.ready(definition, quest, task.name) then
+                local refused = 0
+                while Side.on() and folder.Parent and folder.Value.Value < folder.Max.Value and itemCount(other.RequiredItem) > 0 do
+                    local before = folder.Value.Value
+                    SignalEvent.ToServer("QuestProgress", quest.key, task.name)
+                    if not Side.waitFor(function()
+                        return not folder.Parent or folder.Value.Value > before
+                    end, 1.5) then
+                        refused += 1
+                        if refused >= 3 then
+                            return false, string.format("The server refused to stock %s", other.RequiredItem)
+                        end
+                    end
+                    Side.wait(DEPOSIT_INTERVAL)
+                end
+            end
+        end
+        return true
+    end
+
+    function Side.deliver(quest, taskName, spec)
+        local model = Side.goToNpc(spec.TargetNpc)
+        if not model then
+            return false, string.format("Could not find %s", spec.TargetNpc)
+        end
+        local folder = Side.taskFolder(quest, taskName)
+        for _ = 1, 2 do
+            SignalEvent.ToServer("QuestProgress", quest.key, taskName)
+            if Side.waitFor(function()
+                return not folder or not folder.Parent or folder.Value.Value >= folder.Max.Value
+            end, 2.5) then
+                return true
+            end
+            -- Fall back to opening the dialogue, in case a hand-in only counts from there.
+            local prompt = model:FindFirstChildWhichIsA("ProximityPrompt", true)
+            if prompt then
+                pcall(fireproximityprompt, prompt)
+                Side.wait(0.5)
+            end
+        end
+        return false, string.format("%s did not take the hand-in", spec.TargetNpc)
+    end
+
+    function Side.pickup(quest, taskName, spec)
+        local folder = Side.taskFolder(quest, taskName)
+        local positions = spec.Positions
+        local count = type(positions) == "table" and #positions or spec.SpawnCount or 1
+        local progressed = false
+        for index = 1, count do
+            if not Side.on() or not folder or not folder.Parent or folder.Value.Value >= folder.Max.Value then
+                break
+            end
+            local slotKey = string.format("%s/%s/%d", quest.key, taskName, index)
+            local position = type(positions) == "table" and positions[index] or nil
+            if type(positions) == "function" then
+                local ok, result = pcall(positions, index)
+                position = ok and result or nil
+            end
+            if typeof(position) == "Vector3" and not Side.tried[slotKey] then
+                Side.tried[slotKey] = true
+                Side.goTo(position)
+                local before = folder.Value.Value
+                SignalEvent.ToServer("QuestProgress", quest.key, taskName, index)
+                if Side.waitFor(function()
+                    return not folder.Parent or folder.Value.Value > before
+                end, 1.5) then
+                    progressed = true
+                end
+            end
+        end
+        if not progressed and spec.RespawnTime ~= nil then
+            -- Respawning pickups come back; forget the attempts and try again later.
+            for slotKey in pairs(Side.tried) do
+                if string.find(slotKey, quest.key .. "/" .. taskName, 1, true) == 1 then
+                    Side.tried[slotKey] = nil
+                end
+            end
+            return true
+        end
+        return progressed
+    end
+
+    function Side.startFishing(quest)
+        local ok, position = pcall(Regions.GetNpcSpawn, FISH_DOCK_NPC)
+        elevate()
+        if not ok or typeof(position) ~= "Vector3" then
+            return Side.block(quest.key, "The fishing dock is not in this place")
+        end
+        Side.hold = nil
+        local root = getRoot()
+        if root then
+            root.CFrame = CFrame.new(position + Vector3.new(0, 3, 5))
+            root.AssemblyLinearVelocity = Vector3.zero
+        end
+        -- Auto fishing refuses to cast mid-air, so land first.
+        Side.waitFor(function()
+            local _, char = getRoot()
+            local humanoid = char and char:FindFirstChildOfClass("Humanoid")
+            return humanoid ~= nil and humanoid.FloorMaterial ~= Enum.Material.Air
+        end, 5)
+        if not Side.on() then
+            return
+        end
+        Side.fishing = true
+        Side.fishQuest = quest.key
+        Side.fishLeft = nil
+        Side.fishSince = os.clock()
+        Toggles.AutoFish:SetValue(true)
+    end
+
+    function Side.watchFishing()
+        local quest
+        for _, active in ipairs(activeQuests("side")) do
+            if active.key == Side.fishQuest then
+                quest = active
+            end
+        end
+        local definition = quest and Quests.Holder[quest.key]
+        local left, parts = 0, {}
+        for item, count in pairs(definition and Side.missing(definition, quest) or {}) do
+            if type(Items[item]) == "table" and Items[item].Category == "Fishing" then
+                left += count
+                parts[#parts + 1] = string.format("%d %s", count, item)
+            end
+        end
+        if left == 0 then
+            Side.fishing = false
+            if Toggles.AutoFish.Value then
+                Toggles.AutoFish:SetValue(false)
+            end
+            Side.status = "Got the fish, going to stock them..."
+            return
+        end
+        if not Toggles.AutoFish.Value then
+            -- Auto fishing gave up (knocked off the dock, a refused equip...). Restart from the
+            -- dock a few times before calling the quest blocked.
+            Side.fishing = false
+            Side.fishRetries = (Side.fishRetries or 0) + 1
+            if Side.fishRetries <= 3 then
+                Side.status = "Fishing stopped, restarting from the dock..."
+                return Side.startFishing(quest)
+            end
+            return Side.block(quest.key, "Auto fishing stopped: " .. tostring(state.fishingStatus))
+        end
+        if not Side.fishLeft or left < Side.fishLeft then
+            Side.fishRetries = 0
+            Side.fishLeft, Side.fishSince = left, os.clock()
+        elseif os.clock() - Side.fishSince > FISH_STALL then
+            Side.fishing = false
+            Toggles.AutoFish:SetValue(false)
+            return Side.block(quest.key, string.format("No %s in %d minutes - your rod may not reach it",
+                table.concat(parts, ", "), FISH_STALL // 60))
+        end
+        table.sort(parts)
+        Side.status = "Fishing for " .. table.concat(parts, ", ")
+    end
+
+    -- Gets whatever the quest is short of: buys it, or goes fishing, or explains why it can't.
+    function Side.acquire(definition, quest)
+        local fishing = false
+        for item, count in pairs(Side.missing(definition, quest)) do
+            local how, hint = Side.source(item)
+            if how == "buy" and Toggles.SideQuestBuy.Value and Side.affordable(item) >= count then
+                Side.status = string.format("Buying %d %s from %s...", count, item, sellerOf[item])
+                local got = Side.buy(item, count)
+                if got < count and Side.on() then
+                    return Side.block(quest.key, string.format("Bought %d of %d %s - the shop refused the rest", got, count, item))
+                end
+                return
+            elseif how == "fish" and Toggles.SideQuestFish.Value then
+                fishing = true
+            else
+                local reason = hint
+                if how == "fish" then
+                    reason = "turn on Fish for missing fish"
+                elseif how == "buy" then
+                    reason = Toggles.SideQuestBuy.Value and string.format("%s, you can afford %d", hint, Side.affordable(item))
+                        or string.format("%s - turn on Buy missing items", hint)
+                end
+                return Side.block(quest.key, string.format("%s needs %d more %s (%s)", Side.questName(quest.key), count, item, reason))
+            end
+        end
+        if fishing then
+            return Side.startFishing(quest)
+        end
+    end
+
+    function Side.work(quest)
+        local definition = Quests.Holder[quest.key]
+        if not definition then
+            return Side.block(quest.key, "Unknown quest " .. tostring(quest.key))
+        end
+        local pick = Side.nextTask(definition, quest)
+        if not pick then
+            Side.status = string.format("Turning in %s...", Side.questName(quest.key))
+            return
+        end
+        local task, spec = pick.task, pick.spec
+        local kind = spec and spec.Type
+        if not SUPPORTED[kind] then
+            return Side.block(quest.key, string.format("'%s' has to be done by hand - use Go to current objective", task.name))
+        end
+        if kind == "Pickup" then
+            Side.status = string.format("Picking up %s...", task.name)
+            if not Side.pickup(quest, task.name, spec) and Side.on() then
+                Side.block(quest.key, string.format("Could not pick up '%s'", task.name))
+            end
+            return
+        end
+        if spec.RequiredItem and itemCount(spec.RequiredItem) < (kind == "Deliver" and (spec.Count or 1) or 1) then
+            return Side.acquire(definition, quest)
+        end
+        local ok, why
+        if kind == "Deliver" then
+            Side.status = string.format("Handing in to %s...", spec.TargetNpc)
+            ok, why = Side.deliver(quest, task.name, spec)
+        else
+            Side.status = string.format("Stocking %s...", spec.RequiredItem)
+            ok, why = Side.deposit(definition, quest, spec)
+        end
+        if not ok and Side.on() then
+            Side.block(quest.key, why)
+        end
+    end
+
+    function Side.pick()
+        local labels = eligibleQuestLabels(true)
+        Options.SideQuestPick:SetValues(labels)
+        local picked = Options.SideQuestPick.Value
+        local key = picked ~= BEST_QUEST_LABEL and questKeyByLabel[picked] or nil
+        if key then
+            if questLockByLabel[picked] then
+                return nil, string.format("%s is locked: %s", Side.questName(key), questLockByLabel[picked])
+            end
+            if Side.blocked[key] then
+                return nil, Side.blocked[key]
+            end
+            local ok, why = Side.finishable(key)
+            if not ok then
+                return nil, string.format("%s %s", Side.questName(key), why)
+            end
+            return key
+        end
+        key = bestQuestKey(true, function(candidate)
+            return not Side.blocked[candidate] and (Side.finishable(candidate))
+        end)
+        return key, key == nil and "Nothing left that the runner can finish with what you have" or nil
+    end
+
+    function Side.step()
+        if state.healing then
+            return
+        end
+        local quests = activeQuests("side")
+        local nowActive = {}
+        for _, quest in ipairs(quests) do
+            nowActive[quest.key] = true
+        end
+        for key in pairs(Side.active) do
+            if not nowActive[key] then
+                local definition = Quests.Holder[key]
+                Side.finished += 1
+                notify("Side Quests", string.format("Finished %s (+%d exp)", Side.questName(key),
+                    definition and questExp(definition) or 0), 6)
+                table.clear(Side.tried)
+            end
+        end
+        Side.active = nowActive
+        if Side.fishing then
+            return Side.watchFishing()
+        end
+
+        -- Active quests first, and among them the ones that can move right now: a quick
+        -- hand-in should not sit behind a long fishing trip.
+        local fallback
+        for _, quest in ipairs(quests) do
+            local definition = Quests.Holder[quest.key]
+            if definition and not Side.blocked[quest.key] then
+                local pick = Side.nextTask(definition, quest)
+                local spec = pick and pick.spec
+                local short = spec and spec.RequiredItem and spec.Type ~= "Pickup"
+                    and itemCount(spec.RequiredItem) < (spec.Type == "Deliver" and (spec.Count or 1) or 1)
+                if not short then
+                    return Side.work(quest)
+                end
+                fallback = fallback or quest
+            end
+        end
+        if fallback then
+            return Side.work(fallback)
+        end
+
+        -- Nothing active that can move: take a new one.
+        if Side.finished > 0 and not Toggles.SideQuestChain.Value then
+            return Side.stop(string.format("Finished %d side quest(s). Turn on Auto accept next to keep going.", Side.finished))
+        end
+        local slot = getSlot()
+        local lastTime = slot and slot:FindFirstChild("Quests") and slot.Quests:FindFirstChild("LastTime")
+        local cooldown = lastTime and Quests.QuestCD - (Utility.Tick() - lastTime.Value) or 0
+        if cooldown > 0 then
+            Side.status = string.format("Next quest in %ds (game cooldown)", math.ceil(cooldown))
+            return
+        end
+        local key, why = Side.pick()
+        elevate()
+        if not key then
+            local stuck = next(Side.blocked) and Side.blocked[next(Side.blocked)]
+            return Side.stop(stuck and string.format("%s. %s", why, stuck) or why)
+        end
+        local ok, reason = Side.accept(key)
+        if ok then
+            Side.active[key] = true
+            notify("Side Quests", string.format("Accepted %s (%d exp)", Side.questName(key), questExp(Quests.Holder[key])), 5)
+        elseif Side.on() then
+            Side.block(key, string.format("Could not accept %s: %s", Side.questName(key), reason))
+        end
+    end
+
+    local group = Tabs.Quests:AddGroupbox({ Side = "Left", Name = "Side quests", IconName = "package-check" })
+    local progress = Tabs.Quests:AddGroupbox({ Side = "Right", Name = "Side quest progress", IconName = "list-todo" })
+    local startingLabels = eligibleQuestLabels(true)
+    group:AddDropdown("SideQuestPick", {
+        Searchable = true,
+        Text = "Side quest",
+        Values = startingLabels,
+        Default = startingLabels[1],
+        Multi = false,
+        Tooltip = "Dialogue and fishing quests. Best picks the highest-exp one the runner can finish with what you have. Locked ones show why in brackets.",
+    })
+    group:AddToggle("SideQuestChain", {
+        Text = "Auto accept next",
+        Default = true,
+        Tooltip = "After a hand-in, take the next side quest instead of stopping.",
+    })
+    group:AddToggle("SideQuestFish", {
+        Text = "Fish for missing fish",
+        Default = true,
+        Tooltip = "Goes to the dock and runs Auto fishing until the quest's fish are in your bag. Needs a rod on your hotbar.",
+    })
+    group:AddToggle("SideQuestBuy", {
+        Text = "Buy missing items",
+        Default = false,
+        Tooltip = "Buys task items from the NPC that sells them, only when you can afford every one. Pays Wen or materials (the infirmary elixirs cost 2 Demon Horns each). Never Robux.",
+    })
+    group:AddToggle("AutoSideQuest", {
+        Text = "Auto side quests",
+        Default = false,
+        Tooltip = "Accepts, travels, stocks, picks up and hands in by itself. Turns the combat farms off while it runs.",
+    })
+    group:AddButton({ Text = "Refresh list", Func = function()
+        local labels, openCount = eligibleQuestLabels(true)
+        Options.SideQuestPick:SetValues(labels)
+        local best = bestQuestKey(true, function(candidate)
+            return (Side.finishable(candidate))
+        end)
+        elevate()
+        notify("Side Quests", string.format("%d available, %d locked. Best you can finish: %s", openCount,
+            #labels - 1 - openCount, best and Side.questName(best) or "none"), 6)
+    end })
+    group:AddButton({ Text = "Go to current objective", Func = function()
+        task.spawn(function()
+            elevate()
+            local quest = activeQuests("side")[1]
+            local definition = quest and Quests.Holder[quest.key]
+            local pick = definition and Side.nextTask(definition, quest)
+            if not pick then
+                notify("Side Quests", "No side quest objective right now", 4)
+                return
+            end
+            local spec = pick.spec or {}
+            local marker = definition.Markers and definition.Markers[pick.task.name] or {}
+            local position = spec.Position or (type(spec.Positions) == "table" and spec.Positions[1]) or marker.Position
+            local npc = spec.TargetNpc or marker.Npc
+            if typeof(position) ~= "Vector3" and npc then
+                local ok, spawn = pcall(Regions.GetNpcSpawn, npc)
+                position = ok and typeof(spawn) == "Vector3" and spawn or nil
+            end
+            elevate()
+            if typeof(position) ~= "Vector3" then
+                notify("Side Quests", string.format("No known location for '%s'", pick.task.name), 4)
+                return
+            end
+            if Toggles.AutoSideQuest.Value then
+                Toggles.AutoSideQuest:SetValue(false)
+            end
+            local root = getRoot()
+            if root then
+                root.CFrame = CFrame.new(position + Vector3.new(0, 4, 0))
+                root.AssemblyLinearVelocity = Vector3.zero
+            end
+            notify("Side Quests", string.format("At '%s'", pick.task.name), 4)
+        end)
+    end })
+    local statusLabel = group:AddLabel("Idle", true)
+
+    local rowLabels = {}
+    for index = 1, SIDE_ROWS do
+        rowLabels[index] = progress:AddLabel("", true)
+    end
+    progress:AddDivider()
+    local footer = progress:AddLabel("", true)
+
+    function refreshSideQuests()
+        local rows = {}
+        for _, quest in ipairs(activeQuests("side")) do
+            local definition = Quests.Holder[quest.key]
+            local specs = definition and definition.TaskSpecs or {}
+            local short = definition and Side.missing(definition, quest) or {}
+            rows[#rows + 1] = quest.instance .. ":"
+            for _, task in ipairs(quest.tasks) do
+                local spec = specs[task.name]
+                local done = task.value >= task.max
+                local mark = done and "[x]" or (spec and SUPPORTED[spec.Type]) and "[ ]" or "[!]"
+                local extra = ""
+                if not done and spec and spec.RequiredItem and short[spec.RequiredItem] then
+                    extra = string.format("  (need %d more %s)", short[spec.RequiredItem], spec.RequiredItem)
+                end
+                rows[#rows + 1] = string.format("  %s %s  %d/%d%s", mark, task.name, task.value, task.max, extra)
+            end
+        end
+        elevate()
+        for index = 1, SIDE_ROWS do
+            if rows[index] then
+                rowLabels[index]:SetText(rows[index])
+                rowLabels[index]:SetVisible(true)
+            else
+                rowLabels[index]:SetVisible(false)
+            end
+        end
+        footer:SetText(#rows == 0 and "No side quest active. Pick one and turn on Auto side quests."
+            or "[!] = has to be done by hand. One quest per category (Dialogue, Fishing) can run at once.")
+        statusLabel:SetText(string.format("%s\nFinished this run: %d", Side.status, Side.finished))
+    end
+
+    Toggles.AutoSideQuest:OnChanged(function()
+        elevate()
+        if not Toggles.AutoSideQuest.Value then
+            Side.release()
+            Side.status = "Stopped"
+            return
+        end
+        -- The runner moves the character, so every other mover stands down first.
+        for _, name in ipairs({ "AutoFarm", "AutoBoss", "AutoQuest", "AutoChest", "AutoFish", "AutoYeti" }) do
+            if Toggles[name] and Toggles[name].Value then
+                Toggles[name]:SetValue(false)
+            end
+        end
+        local root = getRoot()
+        Side.home = root and root.CFrame
+        Side.finished = 0
+        Side.fishing = false
+        Side.fishRetries = 0
+        table.clear(Side.active)
+        table.clear(Side.blocked)
+        table.clear(Side.tried)
+        Side.status = "Starting..."
+    end)
+
+    task.spawn(function()
+        elevate()
+        while alive do
+            elevate()
+            task.wait(SIDE_TICK)
+            elevate()
+            if not alive then
+                break
+            end
+            if Side.on() then
+                lootBusy = true -- keeps auto loot and the market buyer from pulling the character away
+                local ok, err = xpcall(Side.step, debug.traceback)
+                elevate()
+                if not ok then
+                    state.uiErrors = state.uiErrors or {}
+                    state.uiErrors.sideQuests = tostring(err)
+                    Side.stop("Side quests hit an error: " .. tostring(err):match("^[^\n]*"))
+                end
+            end
+        end
+    end)
+    state.side = Side
+end
+
+--// Final Selection: every 2 hours the server sends Level 45+ Humans who stand in the plains'
+--// "Final Selection" safe zone into a minigame server, where passing the trial makes you a Slayer.
+--// This gets you into the zone on time, and queues a scout that records the trial itself (its
+--// content lives in the minigame place, not in this one) so it can be automated next.
+do
+    local ARRIVE_EARLY = 45
+    local GIVE_UP_AFTER = 90
+    local ZONE_SPOT = Vector3.new(-2625.6, 288, -185)
+    local ZONE_MIN, ZONE_MAX = Vector2.new(-2717, -227), Vector2.new(-2533, 71)
+    local SCOUT = [==[
+if game.PlaceId == 136406881576517 or game.PlaceId == 16205713724 then return end
+task.wait(5)
+local Players = game:GetService("Players")
+local lp = Players.LocalPlayer
+local file = "slopix-finalselection-scout.txt"
+local function log(line) pcall(appendfile, file, os.date("%H:%M:%S ") .. line .. "\n") end
+pcall(writefile, file, "Final Selection scout, place " .. game.PlaceId .. " job " .. game.JobId .. "\n")
+local VirtualUser = game:GetService("VirtualUser")
+lp.Idled:Connect(function() pcall(function() VirtualUser:CaptureController() VirtualUser:ClickButton2(Vector2.zero) end) end)
+local seen = {}
+for pass = 1, 90 do
+    local ok, err = pcall(function()
+        if pass == 1 then
+            local attrs = {}
+            for k, v in pairs(workspace:GetAttributes()) do attrs[#attrs + 1] = k .. "=" .. tostring(v) end
+            log("workspace attrs: " .. table.concat(attrs, ", "))
+            local tops = {}
+            for _, c in ipairs(workspace:GetChildren()) do tops[#tops + 1] = c.Name end
+            log("workspace: " .. table.concat(tops, ", "))
+        end
+        for _, d in ipairs(workspace:GetDescendants()) do
+            if not seen[d] then
+                if d:IsA("ProximityPrompt") then
+                    seen[d] = true
+                    local p = d.Parent
+                    local pos = p and (p:IsA("BasePart") and p.Position or p:IsA("Attachment") and p.WorldPosition)
+                    log(string.format("prompt %s | %s / %s @ %s", d:GetFullName(), d.ObjectText, d.ActionText, tostring(pos)))
+                elseif d:IsA("Model") and d:FindFirstChildOfClass("Humanoid") and not Players:GetPlayerFromCharacter(d) then
+                    seen[d] = true
+                    log(string.format("npc %s | mob=%s @ %s", d:GetFullName(), tostring(d:GetAttribute("IsMob")), tostring(d:GetPivot().Position)))
+                end
+            end
+        end
+        local Utility = require(game:GetService("ReplicatedStorage").CAM.Global.Utility)
+        local slot = Utility.GetData(lp, true)
+        for _, quest in ipairs(slot and slot.Quests.Holder:GetChildren() or {}) do
+            local parts = {}
+            for _, t in ipairs(quest:FindFirstChild("Tasks") and quest.Tasks:GetChildren() or {}) do
+                parts[#parts + 1] = string.format("%s %s/%s", t.Name, tostring(t:FindFirstChild("Value") and t.Value.Value), tostring(t:FindFirstChild("Max") and t.Max.Value))
+            end
+            local line = "quest " .. quest.Name .. " | " .. table.concat(parts, "; ")
+            if not seen[line] then seen[line] = true log(line) end
+        end
+        local root = lp.Character and lp.Character:FindFirstChild("HumanoidRootPart")
+        local humanoid = lp.Character and lp.Character:FindFirstChildOfClass("Humanoid")
+        log(string.format("me @ %s hp %s", tostring(root and root.Position), tostring(humanoid and math.floor(humanoid.Health))))
+    end)
+    if not ok then log("error " .. tostring(err)) end
+    task.wait(10)
+end
+]==]
+
+    local group = Tabs.Quests:AddGroupbox({ Side = "Right", Name = "Final Selection", IconName = "flower" })
+    local label = group:AddLabel("", true)
+    group:AddToggle("AutoFinalSelection", {
+        Text = "Auto join",
+        Default = false,
+        Tooltip = "45s before each run, pauses your farms and stands you in the plains safe zone so the server sends you in. Also queues a scout that logs the trial to slopix-finalselection-scout.txt.",
+    })
+    local statusText = "Idle"
+
+    local function inZone(position)
+        return position.X >= ZONE_MIN.X and position.X <= ZONE_MAX.X and position.Z >= ZONE_MIN.Y and position.Z <= ZONE_MAX.Y
+    end
+
+    local function qualifies()
+        local slot = getSlot()
+        local requirement = TimedEvents.FinalSelection.Requirements or {}
+        if not slot then
+            return false, "data not loaded"
+        end
+        if slot.Race.Value ~= requirement.Race then
+            return false, string.format("only for %s (you are %s)", tostring(requirement.Race), slot.Race.Value)
+        end
+        if playerLevel() < (requirement.Level or 0) then
+            return false, string.format("needs Lv %d", requirement.Level or 0)
+        end
+        return true
+    end
+
+    local function goToZone()
+        for _, name in ipairs({ "AutoFarm", "AutoBoss", "AutoQuest", "AutoChest", "AutoFish", "AutoSideQuest", "AutoLoot", "AutoYeti" }) do
+            if Toggles[name] and Toggles[name].Value then
+                Toggles[name]:SetValue(false)
+            end
+        end
+        local root = getRoot()
+        if root then
+            root.CFrame = CFrame.new(ZONE_SPOT)
+            root.AssemblyLinearVelocity = Vector3.zero
+        end
+    end
+
+    group:AddButton({ Text = "Go to the plains now", Func = function()
+        goToZone()
+        notify("Final Selection", "Standing in the Final Selection safe zone.", 4)
+    end })
+
+    local waitingFor, home = nil, nil
+    task.spawn(function()
+        elevate()
+        while alive do
+            elevate()
+            task.wait(1)
+            elevate()
+            if not alive then
+                break
+            end
+            local every = TimedEvents.FinalSelection.Every
+            local now = workspace:GetServerTimeNow()
+            local cycle = math.floor(now / every)
+            local sinceStart = now % every
+            local untilNext = every - sinceStart
+            local ok, why = qualifies()
+
+            if Toggles.AutoFinalSelection.Value and ok then
+                if not waitingFor then
+                    if untilNext <= ARRIVE_EARLY then
+                        waitingFor = cycle + 1
+                    elseif sinceStart <= GIVE_UP_AFTER then
+                        waitingFor = cycle
+                    end
+                    if waitingFor then
+                        local root = getRoot()
+                        home = root and root.CFrame
+                        if queue_on_teleport then
+                            pcall(queue_on_teleport, SCOUT)
+                        end
+                        goToZone()
+                        notify("Final Selection", "Heading to the plains - stay put until you are sent in.", 6)
+                    end
+                end
+                if waitingFor then
+                    local root = getRoot()
+                    if root and not inZone(root.Position) then
+                        goToZone()
+                    end
+                    if cycle >= waitingFor and sinceStart > GIVE_UP_AFTER then
+                        -- Still here well after the start: the server did not take us this round.
+                        waitingFor = nil
+                        statusText = "Was not sent in last run - check the requirements, or join at the start next time"
+                        notify("Final Selection", statusText, 8)
+                        if root and home then
+                            root.CFrame = home
+                        end
+                        home = nil
+                    else
+                        statusText = cycle < waitingFor and string.format("In the safe zone, starts in %ds", math.ceil(untilNext))
+                            or "Run started - waiting to be sent in..."
+                    end
+                end
+            elseif waitingFor then
+                waitingFor, home = nil, nil
+                statusText = "Idle"
+            end
+
+            elevate()
+            label:SetText(string.format("Next run in %d:%02d:%02d%s\n%s\n%s",
+                untilNext // 3600, (untilNext % 3600) // 60, math.floor(untilNext % 60),
+                sinceStart <= GIVE_UP_AFTER and string.format("  (last one started %ds ago)", math.floor(sinceStart)) or "",
+                ok and "You qualify." or ("Not eligible: " .. tostring(why)),
+                statusText))
+        end
+    end)
+end
+
+--// Freeze mobs: mid-fight the client simulates the target's physics (isnetworkowner was true on
+--// ~99% of frames at melee range), so pinning its root in place replicates. A frozen mob cannot
+--// walk off or be knocked away, which keeps a pack in one spot for the swing box. It does not
+--// stop their attacks - the server decides those (measured: damage taken unchanged).
+do
+    local FREEZE_RADIUS = 25
+    local SCAN_INTERVAL = 0.5
+    local anchors = setmetatable({}, { __mode = "k" })
+    local pinned = {}
+    local nextScan = 0
+
+    TargetGroup:AddToggle("FreezeMobs", {
+        Text = "Freeze mobs",
+        Default = false,
+        Tooltip = "While farming, holds your target and every mob within 25 studs that your client simulates where it stands, so they cannot walk off or be knocked away. They can still attack.",
+    })
+
+    local function rescan(hrp)
+        table.clear(pinned)
+        local keep = {}
+        for _, region in ipairs(RegionRoot:GetChildren()) do
+            local active = region:FindFirstChild("ActiveNpcs")
+            for _, folder in ipairs(active and active:GetChildren() or {}) do
+                local rig = folder:FindFirstChild(folder.Name)
+                local root = rig and rig:FindFirstChild("HumanoidRootPart")
+                local humanoid = rig and rig:FindFirstChildOfClass("Humanoid")
+                if root and humanoid and humanoid.Health > 0
+                    and (rig == farmTarget or rig:GetAttribute("IsMob") == true)
+                    and (root.Position - hrp.Position).Magnitude <= FREEZE_RADIUS then
+                    pinned[#pinned + 1] = root
+                    keep[root] = true
+                end
+            end
+        end
+        -- A mob that left range loses its spot, so it is never snapped back from afar later.
+        for root in pairs(anchors) do
+            if not keep[root] then
+                anchors[root] = nil
+            end
+        end
+    end
+
+    -- A respawn must not snap mobs back to spots pinned during the previous life.
+    Library:GiveSignal(LocalPlayer.CharacterAdded:Connect(function()
+        table.clear(anchors)
+        table.clear(pinned)
+        nextScan = 0
+    end))
+
+    Library:GiveSignal(RunService.Heartbeat:Connect(function()
+        -- The Yeti farm always freezes: pinned, the Yeti's melee stopped landing in testing.
+        local wanted = (Toggles.FreezeMobs and Toggles.FreezeMobs.Value) or (activeFarm and activeFarm.kind == "yeti")
+        if not (isnetworkowner and state.farming and wanted) then
+            if next(anchors) then
+                table.clear(anchors)
+                table.clear(pinned)
+            end
+            return
+        end
+        local hrp = getRoot()
+        if not hrp then
+            return
+        end
+        if os.clock() >= nextScan then
+            nextScan = os.clock() + SCAN_INTERVAL
+            rescan(hrp)
+        end
+        for _, root in ipairs(pinned) do
+            if root.Parent and isnetworkowner(root) then
+                local anchor = anchors[root]
+                if not anchor then
+                    anchor = root.CFrame
+                    anchors[root] = anchor
+                end
+                root.CFrame = anchor
+                root.AssemblyLinearVelocity = Vector3.zero
+                root.AssemblyAngularVelocity = Vector3.zero
+            end
+        end
+    end))
+end
+
+--// Auto Yeti: a Frozen Heart returned to the ice block under the White Terror Lair wakes the Yeti
+--// Demon (2790 HP) at the berg. Its only drop is the Emberheart Lantern (25%, Unique). Its melee
+--// stops landing once it is frozen, but its special attacks (heat vision, Yeti Crash, snowballs,
+--// ice walls) killed a Lv71 in testing, and dying despawns it and wastes the heart. They reach the
+--// client as effect events the moment they start, so the farm steps clear until they finish.
+local yetiIdle
+do
+    local BERG = Vector3.new(-1381.9, -32.8, 502.6)
+    local BERG_STAND = BERG + Vector3.new(0, 3, 8)
+    local DODGE_HEIGHT = 45
+    -- The Yeti despawns the moment its summoner is ~150 studs away (a retreat that far cost a
+    -- heart), while 45-stud dodges were fine, so backing off stays inside that.
+    local RETREAT_HEIGHT = 40
+    local RESUME_AT = 0.85
+    -- Measured: Yeti Crash and snowballs deal nothing to a dodger; Heat Vision's beam tracks and
+    -- still lands (~78 per cast), so dodging it only saves the opening hit.
+    local YETI_ATTACKS = {
+        ["Telegraph"] = 2.5, -- the Yeti's wind-up ("Start"), 0.2-0.5s before Crash / Heat Vision
+        ["Heat_Vision_VFX"] = 2.5,
+        ["Yeti Crash"] = 2.5,
+        ["SnowballFX_effs"] = 2.5,
+        ["IceWallFX_effs"] = 2,
+    }
+    local EffectsEvent = require(ReplicatedStorage.Communication.ServerAndClient.Effects.EffectsEvent)
+    elevate()
+
+    local group = Tabs.Farm:AddGroupbox({ Side = "Left", Name = "Yeti", IconName = "snowflake" })
+    local statusLabel = group:AddLabel("", true)
+    group:AddToggle("AutoYeti", {
+        Text = "Auto Yeti",
+        Default = false,
+        Tooltip = "Summons the Yeti with your Frozen Hearts, kills it, dodges its special attacks and picks up the drop. Uses the Boss positioning.",
+    })
+    group:AddToggle("YetiDodge", {
+        Text = "Dodge special attacks",
+        Default = true,
+        Tooltip = "Steps clear while heat vision, Yeti Crash, snowballs or ice walls are going off.",
+    })
+    group:AddToggle("YetiStopOnLantern", {
+        Text = "Stop once I own the Lantern",
+        Default = true,
+        Tooltip = "The Emberheart Lantern is Unique, so more kills gain nothing once you have it.",
+    })
+    group:AddSlider("YetiRetreat", {
+        Text = "Back off below",
+        Default = 45,
+        Min = 20,
+        Max = 80,
+        Rounding = 0,
+        Suffix = "% HP",
+    })
+    group:AddLabel("Hearts: Black Marketer ($10,000), or 10% from rare chests and sealed caches. The Yeti leaves ~160s after it wakes, killed or not, and shrugs off damage for ~90s once its Small Yetis appear: it needs well over 20 damage per second to kill. A Lv71 dealing ~7/s lost 2 hearts.", true)
+
+    local statusText = "Idle"
+
+    local function yetiRig()
+        for _, region in ipairs(RegionRoot:GetChildren()) do
+            local active = region:FindFirstChild("ActiveNpcs")
+            local folder = active and active:FindFirstChild("Yeti Demon")
+            local rig = folder and folder:FindFirstChild("Yeti Demon")
+            local humanoid = rig and rig:FindFirstChildOfClass("Humanoid")
+            if humanoid and humanoid.Health > 0 then
+                return rig
+            end
+        end
+        return nil
+    end
+
+    Library:GiveSignal(EffectsEvent:Connect(function(name, source, stage)
+        local duration = YETI_ATTACKS[name]
+        if not duration or not (Toggles.AutoYeti and Toggles.AutoYeti.Value and Toggles.YetiDodge.Value) then
+            return
+        end
+        -- Every boss sends Telegraph; only the Yeti's wind-up (not its "Cancel") counts here.
+        if name == "Telegraph" and not (typeof(source) == "Instance" and source.Name == "Yeti Demon" and stage ~= "Cancel") then
+            return
+        end
+        local rig = yetiRig()
+        local root = rig and rig:FindFirstChild("HumanoidRootPart")
+        local hrp = getRoot()
+        if not root or not hrp or (root.Position - hrp.Position).Magnitude > 150 then
+            return
+        end
+        if (state.dodgeUntil or 0) < math.huge then
+            state.dodgePosition = root.Position + Vector3.new(0, DODGE_HEIGHT, 0)
+            state.dodgeUntil = math.max(state.dodgeUntil or 0, os.clock() + duration)
+        end
+        state.yetiDodges = (state.yetiDodges or 0) + 1
+        state.yetiLastAttack = name
+    end))
+
+    -- Low HP: back far off and regenerate instead of dying (a death despawns the Yeti).
+    task.spawn(function()
+        local retreating = false
+        while alive do
+            task.wait(0.25)
+            local _, char = getRoot()
+            local humanoid = char and char:FindFirstChildOfClass("Humanoid")
+            local active = Toggles.AutoYeti and Toggles.AutoYeti.Value and state.farming
+            if active and humanoid and humanoid.MaxHealth > 0 then
+                local ratio = humanoid.Health / humanoid.MaxHealth
+                if not retreating and ratio * 100 < Options.YetiRetreat.Value then
+                    retreating = true
+                    local rig = yetiRig()
+                    state.dodgePosition = (rig and rig:GetPivot().Position or BERG) + Vector3.new(0, RETREAT_HEIGHT, 0)
+                    state.dodgeUntil = math.huge
+                    statusText = "Low HP - backing off to regenerate"
+                elseif retreating and ratio >= RESUME_AT then
+                    retreating = false
+                    state.dodgeUntil = 0
+                    statusText = "Back in the fight"
+                end
+            elseif retreating then
+                retreating = false
+                state.dodgeUntil = 0
+            end
+        end
+    end)
+
+    -- A death mid-fight has already cost the heart; stop before the next one goes the same way.
+    Library:GiveSignal(LocalPlayer.CharacterAdded:Connect(function()
+        if Toggles.AutoYeti and Toggles.AutoYeti.Value and os.clock() - (state.yetiSeenAt or -math.huge) < 20 then
+            state.yetiFighting = false
+            state.dodgeUntil = 0
+            Toggles.AutoYeti:SetValue(false)
+            notify("Auto Yeti", "You died and the Yeti despawned. Stopped so it does not spend another heart.", 8)
+        end
+    end))
+
+    yetiIdle = function()
+        state.yetiFighting = false
+        if Toggles.YetiStopOnLantern.Value and itemCount("Emberheart Lantern") > 0 then
+            Toggles.AutoYeti:SetValue(false)
+            notify("Auto Yeti", "You own the Emberheart Lantern - stopping.", 6)
+            return
+        end
+        -- The kill's drop lands at the berg; take it before anything else.
+        if #lootNear(BERG, 150) > 0 then
+            statusText = "Picking up the drop..."
+            state.looted = (state.looted or 0) + collectLoot(BERG, 150)
+            return
+        end
+        if itemCount("Frozen Heart") <= 0 then
+            statusText = "No Frozen Heart. The Black Marketer sells them for $10,000."
+            anchorPosition = nil
+            task.wait(2)
+            return
+        end
+        statusText = "Going to the berg..."
+        anchorPosition = BERG_STAND
+        local deadline = os.clock() + 8
+        local prompt, berg
+        repeat
+            task.wait(0.3)
+            local map = workspace:FindFirstChild("Map")
+            berg = map and map:FindFirstChild("Map") and map.Map:FindFirstChild("FrozenYeti")
+            prompt = berg and berg:FindFirstChildWhichIsA("ProximityPrompt", true)
+        until prompt or os.clock() >= deadline or not alive
+        if not prompt then
+            if berg == nil then
+                -- Once woken, the ice block stays gone from that server for a long while
+                -- (still missing 39 min after a summon in testing), even if the Yeti despawned.
+                statusText = "The berg is gone in this server (it was woken recently). Join another server or wait."
+                anchorPosition = nil
+                task.wait(10)
+            else
+                statusText = "Waiting for the berg to load..."
+            end
+            return
+        end
+        statusText = "Returning the heart..."
+        pcall(fireproximityprompt, prompt)
+        deadline = os.clock() + 8
+        repeat
+            task.wait(0.3)
+        until yetiRig() or os.clock() >= deadline or not alive
+        if yetiRig() then
+            state.yetiSummons = (state.yetiSummons or 0) + 1
+            statusText = "Yeti summoned - fighting"
+        else
+            statusText = "The berg did not wake - retrying"
+        end
+    end
+
+    task.spawn(function()
+        while alive do
+            task.wait(1)
+            -- Unload clears Toggles, and this tick may already be past the loop check.
+            if not alive or not Toggles.AutoYeti then
+                break
+            end
+            local rig = yetiRig()
+            local humanoid = rig and rig:FindFirstChildOfClass("Humanoid")
+            state.yetiFighting = Toggles.AutoYeti.Value and state.farming and humanoid ~= nil or false
+            if state.yetiFighting then
+                state.yetiSeenAt = os.clock()
+            end
+            elevate()
+            statusLabel:SetText(string.format("%s\nHearts: %d  |  Lantern: %s\nYeti: %s  |  summoned %d, dodged %d",
+                Toggles.AutoYeti.Value and statusText or "Off",
+                itemCount("Frozen Heart"),
+                itemCount("Emberheart Lantern") > 0 and "owned" or "not yet",
+                humanoid and string.format("%d / %d HP", math.floor(humanoid.Health), humanoid.MaxHealth) or "not up",
+                state.yetiSummons or 0, state.yetiDodges or 0))
+        end
+    end)
+end
+
+local SaveManager
+do
+    local MenuGroup = Tabs.Settings:AddGroupbox({ Side = "Left", Name = "Menu", IconName = "sliders-horizontal" })
+    MenuGroup:AddDropdown("NotificationSide", {
+        Searchable = true,
+        Text = "Notification side",
+        Values = { "Left", "Right" },
+        Default = "Right",
+        Callback = function(Value)
+            Library:SetNotifySide(Value)
+        end,
+    })
+    MenuGroup:AddDropdown("DPIScale", {
+        Searchable = true,
+        Text = "DPI scale",
+        Values = { "50%", "75%", "100%", "125%", "150%", "175%", "200%" },
+        Default = "100%",
+        Callback = function(Value)
+            Library:SetDPIScale(tonumber((Value:gsub("%%", ""))))
+        end,
+    })
+    MenuGroup:AddDivider()
+    MenuGroup:AddLabel("Menu bind"):AddKeyPicker("MenuKeybind", {
+        Default = "RightShift",
+        NoUI = true,
+        Text = "Menu keybind",
+    })
+    MenuGroup:AddButton("Unload", function() Library:Unload() end)
+    Library.ToggleKeybind = Options.MenuKeybind
+
+    -- Official Obsidian addons (docs.mspaint.cc/obsidian): ThemeManager for themes,
+    -- SaveManager for named configs and autoload. A failed download leaves the hub usable.
+    local AddonRepo = "https://raw.githubusercontent.com/deividcomsono/Obsidian/main/addons/"
+    local themeOk, ThemeManager = pcall(function()
+        return loadstring(game:HttpGet(AddonRepo .. "ThemeManager.lua"))()
+    end)
+    local saveOk, LoadedSaveManager = pcall(function()
+        return loadstring(game:HttpGet(AddonRepo .. "SaveManager.lua"))()
+    end)
+    elevate()
+
+    if saveOk and LoadedSaveManager then
+        SaveManager = LoadedSaveManager
+        SaveManager:SetLibrary(Library)
+        SaveManager:IgnoreThemeSettings()
+        SaveManager:SetIgnoreIndexes({ "MenuKeybind" })
+        SaveManager:SetFolder("SlopixHub/Slayers2")
+        SaveManager:BuildConfigSection(Tabs.Settings)
+    else
+        notify("Slopix Hub", "Could not load the config manager: " .. tostring(LoadedSaveManager), 6)
+    end
+
+    if themeOk and ThemeManager then
+        ThemeManager:SetLibrary(Library)
+        ThemeManager:SetFolder("SlopixHub")
+        -- The crimson palette becomes the "Default" theme, so it also applies on the stock library.
+        ThemeManager:SetDefaultTheme({
+            BackgroundColor = "0d0c12",
+            MainColor = "1e1b28",
+            AccentColor = "eb4060",
+            OutlineColor = "302b3e",
+            FontColor = "f0eef6",
+            FontFace = "BuilderSans", -- must be one of the Font Face dropdown's values
+        })
+        ThemeManager:ApplyToTab(Tabs.Settings)
+        -- Without a saved default, select "Default" so the pickers and font dropdown match
+        -- the active theme instead of the dropdown's hard-coded "Code".
+        local _, hasSavedDefault = ThemeManager:GetDefaultTheme()
+        if hasSavedDefault then
+            ThemeManager:LoadDefault()
+        else
+            Options.ThemeManager_ThemeList:SetValue("Default")
+        end
+    else
+        notify("Slopix Hub", "Could not load the theme manager: " .. tostring(ThemeManager), 6)
+    end
+    elevate()
+end
+getgenv().__Slayers2Hub = { Library = Library, Options = Options, Toggles = Toggles, State = state, SaveManager = SaveManager, Chest = Chest }
+
+local function stopAutoSpin(description, time)
+    Toggles.AutoSpin:SetValue(false)
+    notify("Auto Spin", description, time)
+end
+
+Toggles.AutoSpin:OnChanged(function()
+    state.running = Toggles.AutoSpin.Value
+end)
+
+local switchingFarm = false
+
+local function bindFarmToggle(toggle, others)
+    toggle:OnChanged(function()
+        if switchingFarm then
+            return
+        end
+        if toggle.Value then
+            if Toggles.AutoFish and Toggles.AutoFish.Value then Toggles.AutoFish:SetValue(false) end
+            if Toggles.AutoSideQuest and Toggles.AutoSideQuest.Value then Toggles.AutoSideQuest:SetValue(false) end
+            if toggle == Toggles.AutoQuest then
+                questsTaken = #activeQuests("combat") > 0 and 1 or 0
+            end
+            local hadOther = false
+            switchingFarm = true
+            for _, other in ipairs(others) do
+                if other.Value then
+                    other:SetValue(false)
+                    hadOther = true
+                end
+            end
+            switchingFarm = false
+            if hadOther then
+                stopFarm()
+            end
+            activeFarm = farmConfig()
+            -- Auto chests rides along with another farm; joining one already running must not
+            -- reset its return point or target.
+            if not state.farming then
+                startFarm()
+            end
+        else
+            -- Only stop the engine once no farm is left on (chests can run beside another).
+            local anyOn = false
+            for _, name in ipairs({ "AutoFarm", "AutoBoss", "AutoQuest", "AutoChest", "AutoYeti" }) do
+                if Toggles[name] and Toggles[name].Value then
+                    anyOn = true
+                end
+            end
+            if not anyOn then
+                stopFarm()
+            end
+        end
+    end)
+end
+
+-- Mob, boss and quest farms share one target, so only one runs; Auto chests runs beside any of
+-- them (farmConfig gives it the fight only while a chest is up), and Auto Yeti runs alone.
+bindFarmToggle(Toggles.AutoFarm, { Toggles.AutoBoss, Toggles.AutoQuest, Toggles.AutoYeti })
+bindFarmToggle(Toggles.AutoBoss, { Toggles.AutoFarm, Toggles.AutoQuest, Toggles.AutoYeti })
+bindFarmToggle(Toggles.AutoQuest, { Toggles.AutoFarm, Toggles.AutoBoss, Toggles.AutoYeti })
+bindFarmToggle(Toggles.AutoChest, { Toggles.AutoYeti })
+bindFarmToggle(Toggles.AutoYeti, { Toggles.AutoFarm, Toggles.AutoBoss, Toggles.AutoQuest, Toggles.AutoChest })
+
+local idleConnection = LocalPlayer.Idled:Connect(function()
+    if Toggles.AntiAfk and Toggles.AntiAfk.Value then
+        pcall(function()
+            VirtualUser:CaptureController()
+            VirtualUser:ClickButton2(Vector2.zero)
+        end)
+    end
+end)
+
+-- GiveSignal lets Library:Unload disconnect these; raw connections outlived the menu and
+-- kept firing into the cleared Options table after every reload.
+Library:GiveSignal(BossHunts.ChildAdded:Connect(function()
+    Options.BossTargets:SetValues(bossNames())
+end))
+
+Library:GiveSignal(BossHunts.ChildRemoved:Connect(function()
+    Options.BossTargets:SetValues(bossNames())
+end))
+
+task.spawn(function()
+    elevate()
+    while alive do
+        elevate()
+        -- Panel errors are kept in state.uiErrors instead of vanishing inside pcall.
+        state.uiErrors = state.uiErrors or {}
+        for name, refresh in { timers = refreshTimers, quests = refreshQuestProgress, chests = Chest.refresh, market = refreshMarket, side = refreshSideQuests } do
+            -- A panel that yields drops thread identity for whatever runs after it.
+            elevate()
+            local ok, err = xpcall(refresh, debug.traceback)
+            state.uiErrors[name] = not ok and tostring(err) or nil
+        end
+        task.wait(TIMER_TICK)
+    end
+end)
+
+task.spawn(function()
+    elevate()
+    local lastAccept = 0
+    while alive do
+        elevate()
+        task.wait(IDLE_INTERVAL)
+        elevate()
+        if not alive then
+            break
+        end
+        if not Toggles.AutoQuest.Value then
+            continue
+        end
+        if #activeQuests("combat") > 0 then
+            continue
+        end
+        if questsTaken > 0 and not Toggles.QuestChain.Value then
+            Toggles.AutoQuest:SetValue(false)
+            notify("Auto Quest", "Quest finished. Turn on Auto accept next to keep going.", 6)
+            continue
+        end
+        if os.clock() - lastAccept < QUEST_ACCEPT_COOLDOWN then
+            continue
+        end
+        local slot = getSlot()
+        local lastTime = slot and slot:FindFirstChild("Quests") and slot.Quests:FindFirstChild("LastTime")
+        if lastTime and Utility.Tick() - lastTime.Value <= Quests.QuestCD then
+            continue
+        end
+
+        Options.QuestPick:SetValues(eligibleQuestLabels())
+        local key = resolveQuestSelection()
+        if not key then
+            Toggles.AutoQuest:SetValue(false)
+            notify("Auto Quest", "No quests left that you qualify for", 6)
+            continue
+        end
+
+        local definition = Quests.Holder[key]
+        local name = definition and tostring(definition.QuestInstance) or key
+        lastAccept = os.clock()
+        local ok, why, retry = acceptQuest(key)
+        elevate()
+        state.questStatus = ok and "Accepted" or tostring(why)
+        if ok then
+            questsTaken += 1
+            notify("Auto Quest", string.format("Accepted %s (%d exp)", name, questExp(definition)), 5)
+        elseif not retry then
+            Toggles.AutoQuest:SetValue(false)
+            notify("Auto Quest", string.format("Could not accept %s: %s", name, why), 6)
+        end
+    end
+end)
+
+Options.FarmWeapon:OnChanged(function()
+    weaponSlot = nil
+    if state.farming then
+        task.spawn(equipWeapon, Options.FarmWeapon.Value)
+    end
+end)
+
+Library:GiveSignal(LocalPlayer.CharacterAdded:Connect(function()
+    farmTarget = nil
+    local entry = Chest.current
+    if entry and Chest.stateOf(entry) == "Locked" then
+        entry.deaths = (entry.deaths or 0) + 1
+        if entry.deaths >= Chest.MAX_DEATHS then
+            entry.deaths = 0
+            Chest.skip(entry, string.format("its guards are too strong (died %d times)", Chest.MAX_DEATHS), Chest.TOO_STRONG_SKIP)
+        end
+    end
+    if state.farming then
+        task.wait(1)
+        cacheNoclipParts()
+    end
+end))
+
+Library:OnUnload(function()
+    elevate()
+    alive = false
+    if cleanupFishing then cleanupFishing() end
+    state.running = false
+    switchingFarm = true
+    Toggles.AutoFarm:SetValue(false)
+    Toggles.AutoBoss:SetValue(false)
+    Toggles.AutoQuest:SetValue(false)
+    Toggles.AutoChest:SetValue(false)
+    Toggles.AutoYeti:SetValue(false)
+    switchingFarm = false
+    stopFarm()
+    idleConnection:Disconnect()
+    lootPosition = nil
+    healRetreat = nil
+    Chest.opening = false
+    getgenv().__Slayers2Hub = nil
+end)
+
+task.spawn(redeemKnownCodes)
+
+task.spawn(function()
+    elevate()
+    while alive do
+        elevate()
+        if not Toggles.AutoSpin.Value then
+            task.wait(IDLE_INTERVAL)
+            continue
+        end
+
+        local target = RARITY_BY_NAME[Options.StopRarity.Value] or DEFAULT_TARGET_RARITY
+        local current = getClanName()
+
+        if rarityOf(current) >= target then
+            stopAutoSpin(
+                string.format("Stopped: already have %s (%s or better)", current, Options.StopRarity.Value),
+                6
+            )
+            continue
+        end
+
+        if getSpinCount() <= 0 then
+            stopAutoSpin("No clan spins left", 5)
+            continue
+        end
+
+        local ok, rolled, rolledRarity = spinOnce()
+        if not ok then
+            if getSpinCount() <= 0 then
+                stopAutoSpin("No clan spins left", 5)
+            else
+                stopAutoSpin("Roll rejected - open the clan spin screen / rejoin", 6)
+            end
+            continue
+        end
+
+        if rolledRarity >= target then
+            stopAutoSpin(
+                string.format("Got %s (%s) after %d spins", rolled, tierNameOf(rolled), state.spins),
+                8
+            )
+            continue
+        end
+
+        task.wait(Options.SpinDelay.Value)
+    end
+end)
+
+task.spawn(function()
+    elevate()
+    local function farmTick()
+        local config = farmConfig()
+        if not config then
+            task.wait(IDLE_INTERVAL)
+            return
+        end
+        activeFarm = config
+
+        if state.healing or (state.dodgeUntil and os.clock() < state.dodgeUntil) then
+            task.wait(0.05)
+            return
+        end
+
+        -- Dead or mid-respawn: the game's punch() indexes HumanoidRootPart and throws.
+        local hrp, char = getRoot()
+        local humanoid = char and char:FindFirstChildOfClass("Humanoid")
+        if not hrp or not humanoid or humanoid.Health <= 0 then
+            farmTarget = nil
+            state.target = nil
+            task.wait(0.5)
+            return
+        end
+
+        -- Back from a chest run: another farm picks up where it was, or you stand where you were.
+        if (config.kind ~= "chest" or not config.chest) and Chest.detour then
+            Chest.returnHome()
+        end
+
+        if config.kind == "chest" then
+            if not config.chest then
+                Chest.current = nil
+                if not Chest.lowHealth() then
+                    Chest.status = "No chest in range - waiting for one to spawn"
+                end
+                farmTarget = nil
+                state.target = nil
+                anchorPosition = nil
+                task.wait(SEARCH_INTERVAL)
+                return
+            end
+            local guard = Chest.step(config.chest)
+            elevate()
+            if farmTarget ~= guard and targetDied(farmTarget) then
+                state.kills += 1
+            end
+            farmTarget = guard
+            state.target = guard
+            if not guard then
+                return
+            end
+        else
+            if config.kind == "quest" and config.count == 0 then
+                farmTarget = nil
+                state.target = nil
+                anchorPosition = nil
+                task.wait(SEARCH_INTERVAL)
+                return
+            end
+
+            if not isValidTarget(farmTarget, config.wanted, config.count, config.hostileOnly) then
+                if targetDied(farmTarget) then
+                    state.kills += 1
+                end
+                farmTarget = findTarget(config.wanted, config.count, config.hostileOnly)
+                state.target = farmTarget
+            end
+
+            if not farmTarget and config.kind == "yeti" then
+                -- No Yeti up: loot, then summon another if there is a heart to spend.
+                yetiIdle()
+                elevate()
+                return
+            end
+
+            if not farmTarget then
+                if config.travel and config.count > 0 then
+                    local position, name = spawnPosition(config.wanted)
+                    if position then
+                        anchorPosition = position + Vector3.new(0, TRAVEL_HEIGHT, 0)
+                        task.wait(TRAVEL_SETTLE)
+                    else
+                        notify(config.label, string.format("No spawn point known for %s", name or "that target"), 4)
+                        task.wait(SEARCH_INTERVAL)
+                    end
+                else
+                    anchorPosition = nil
+                    task.wait(SEARCH_INTERVAL)
+                end
+                return
+            end
+        end
+
+        anchorPosition = nil
+
+        -- One refused equip (stunned, ragdolled, just respawned) used to switch the whole farm
+        -- off mid-fight; only a weapon that keeps refusing stops it now.
+        if not weaponReady(true) then
+            state.equipFails = (state.equipFails or 0) + 1
+            if state.equipFails >= 5 then
+                state.equipFails = 0
+                config.toggle:SetValue(false)
+                notify(config.label, string.format("Could not equip %s five times in a row - stopped. Check it is on your hotbar.", tostring(Options.FarmWeapon.Value)), 8)
+            else
+                task.wait(1)
+            end
+            return
+        end
+        state.equipFails = 0
+
+        local punch = getPunch()
+        if not punch then
+            config.toggle:SetValue(false)
+            notify(config.label, "Could not reach the game's combat script", 6)
+            return
+        end
+
+        local cooldown = punch()
+        task.wait(type(cooldown) == "number" and cooldown or PUNCH_RETRY)
+    end
+
+    while alive do
+        elevate()
+        -- One bad tick (a death mid-swing threw out of the game's punch()) used to end this
+        -- thread for good, leaving every farm frozen on a dead target until a re-execute.
+        local ok, err = xpcall(farmTick, debug.traceback)
+        if not ok then
+            state.uiErrors = state.uiErrors or {}
+            state.uiErrors.farm = tostring(err)
+            farmTarget = nil
+            state.target = nil
+            if Chest.opening then
+                -- It died mid-sweep: free the loot lock or auto loot would stay off for good.
+                Chest.opening = false
+                lootBusy = false
+                lootPosition = nil
+            end
+            task.wait(0.5)
+        end
+    end
+end)
+
+task.spawn(function()
+    elevate()
+    local warned = false
+    while alive do
+        elevate()
+        task.wait(HEAL_CHECK_INTERVAL)
+        elevate()
+        if not alive then
+            break
+        end
+        if not Toggles.AutoHeal.Value or state.healing or state.fishing then
+            continue
+        end
+        local _, char = getRoot()
+        local humanoid = char and char:FindFirstChildOfClass("Humanoid")
+        if not humanoid or humanoid.Health <= 0 or humanoid.MaxHealth <= 0 then
+            continue
+        end
+        if humanoid.Health / humanoid.MaxHealth * 100 > Options.HealThreshold.Value then
+            continue
+        end
+        local ok, why = drinkPotion(Options.HealPotion.Value)
+        elevate()
+        if ok then
+            state.heals = (state.heals or 0) + 1
+            warned = false
+        else
+            if not warned then
+                notify("Auto Heal", why, 5)
+                warned = true
+            end
+            task.wait(3)
+        end
+    end
+end)
+
+task.spawn(function()
+    elevate()
+    while alive do
+        elevate()
+        task.wait(0.5)
+        elevate()
+        if not alive then
+            break
+        end
+        if not Toggles.AutoLoot.Value or lootBusy or Chest.opening or state.healing or state.fishing then
+            continue
+        end
+        -- Only landed drops pull us off a live target: a grab takes well under a second and the
+        -- farm anchor puts us straight back. Waiting for a gap between kills never worked, since
+        -- the farm re-targets the instant one dies.
+        local hrp = getRoot()
+        if not hrp or #lootNear(hrp.Position, Options.LootRadius.Value, true) == 0 then
+            continue
+        end
+        local home = hrp.CFrame
+        -- The farm anchor already honours lootPosition; outside a farm hold the character ourselves.
+        local hold = not anchorConnection and RunService.Heartbeat:Connect(function()
+            local root = getRoot()
+            if root and lootPosition then
+                root.CFrame = CFrame.new(lootPosition)
+                root.AssemblyLinearVelocity = Vector3.zero
+            end
+        end)
+        state.looted = (state.looted or 0) + collectLoot(hrp.Position, Options.LootRadius.Value)
+        if hold then
+            hold:Disconnect()
+            local root = getRoot()
+            if root then
+                root.CFrame = home
+            end
+        end
+    end
+end)
+
+task.spawn(function()
+    elevate()
+    local nextSweep = 0
+    while alive do
+        elevate()
+        task.wait(1)
+        elevate()
+        if not alive then
+            break
+        end
+        -- (OnChanged would replace bindFarmToggle's handler, so a fresh switch-on is spotted here.)
+        if not Toggles.AutoChest.Value then
+            nextSweep = 0
+        elseif os.clock() >= nextSweep then
+            nextSweep = os.clock() + Chest.SWEEP_INTERVAL
+            local hrp = getRoot()
+            local from = Chest.detour and Chest.detour.Position or hrp and hrp.Position
+            if from then
+                Chest.discover(from, Options.ChestRange.Value)
+            end
+        end
+    end
+end)
+
+if SaveManager then
+    -- Last, so every toggle's OnChanged handler is bound before a config switches it on.
+    local ok, err = pcall(SaveManager.LoadAutoloadConfig, SaveManager)
+    elevate()
+    if not ok then
+        notify("Slopix Hub", "Autoload failed: " .. tostring(err), 6)
+    end
+end
+
+if RuntimeState then
+    RuntimeState.onCleanup(function()
+        elevate()
+        alive = false
+        state.running = false
+        pcall(stopFarm)
+        pcall(function() Library:Unload() end)
+    end)
+end
