@@ -1,9 +1,10 @@
-local REPO, BRANCH, SELF = "TrustyCoding/slopix-hub", "main", "loader.luau"
+local REPO, BRANCH, SELF = "TrustyCoding/slopix-hub", "main", "loader.lua" -- the name it has on GitHub
 local INVITE, INVITE_COOLDOWN = "https://discord.gg/s5UNS2fdPh", 86400
 
 local PLACES = {
     [16205713724] = "136406881576517",
     [136406881576517] = "136406881576517",
+    [75556147183481] = "136406881576517", -- Minigames place (Ouwigahara dungeon)
 }
 
 local genv = getgenv and getgenv() or _G
