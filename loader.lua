@@ -1,5 +1,5 @@
 local REPO, BRANCH, SELF = "TrustyCoding/slopix-hub", "main", "loader.lua" -- the name it has on GitHub
-local INVITE, INVITE_COOLDOWN = "https://discord.gg/s5UNS2fdPh", 86400
+local INVITE, INVITE_COOLDOWN = "s5UNS2fdPh", 86400 -- the invite code alone: discord.gg/<code>
 
 local PLACES = {
     [16205713724] = "136406881576517",
@@ -29,13 +29,15 @@ if not id then
     end
     return
 end
-if genv.SlopixLoading then
+-- A copy already loading (two queued reloads, a double execute) wins. The lock is a timestamp so
+-- a copy that died mid-load cannot block every later one.
+if type(genv.SlopixLoading) == "number" and os.clock() - genv.SlopixLoading < 90 then
     return
 end
 
-local syn = getfenv().syn
-local req = request or http_request or (http and http.request) or (syn and syn.request)
-local queue = queueonteleport or queue_on_teleport or (syn and syn.queue_on_teleport)
+local syn, fluxus = getfenv().syn, getfenv().fluxus
+local req = request or http_request or (http and http.request) or (syn and syn.request) or (fluxus and fluxus.request)
+local queue = queue_on_teleport or queueonteleport or (syn and syn.queue_on_teleport) or (fluxus and fluxus.queue_on_teleport)
 local fs = writefile and readfile and isfile and isfolder and makefolder
 
 local function raw(path)
@@ -45,11 +47,12 @@ end
 local function get(url)
     if req then
         local ok, res = pcall(req, { Url = url, Method = "GET" })
-        if ok and type(res) == "table" then
-            if res.StatusCode == 200 and type(res.Body) == "string" and res.Body ~= "" then
+        if ok and type(res) == "table" and res.StatusCode ~= nil then
+            local code = tonumber(res.StatusCode)
+            if code == 200 and type(res.Body) == "string" and res.Body ~= "" then
                 return res.Body
             end
-            return nil, "HTTP " .. tostring(res.StatusCode), res.StatusCode
+            return nil, "HTTP " .. tostring(res.StatusCode), code
         end
     end
     local ok, body = pcall(game.HttpGet, game, url)
@@ -61,7 +64,7 @@ local function get(url)
 end
 
 local function fetch(path)
-    local url, err = raw(path) .. "?t=" .. os.time() // 60, nil
+    local url, err = raw(path) .. "?t=" .. math.floor(os.time() / 60), nil
     for i = 1, 3 do
         local body, reason, code = get(url)
         if body then
@@ -153,15 +156,21 @@ local function boot()
         pcall(old.Ui.Library.Unload, old.Ui.Library)
     end
 
+    -- Real's HttpGet returns "429: ..." as the body instead of throwing, so the queued snippet
+    -- checks what it got and retries rather than calling a nil loadstring after the teleport.
     if queue and not genv.SlopixQueued then
         genv.SlopixQueued = true
-        pcall(queue, ("getgenv().SlopixAutoload=true loadstring(game:HttpGet(%q))()"):format(raw(SELF)))
+        pcall(queue, ("local g=getgenv and getgenv() or _G g.SlopixAutoload=true "
+            .. "for i=1,3 do local ok,s=pcall(game.HttpGet,game,%q) "
+            .. "local f=ok and type(s)=='string' and not s:find('^%%d%%d%%d: ') and loadstring(s) "
+            .. "if f then return f() end task.wait(i*2) end "
+            .. "warn('[Slopix] could not download the loader after the teleport')"):format(raw(SELF)))
     end
     task.spawn(invite)
     return fn()
 end
 
-genv.SlopixLoading = true
+genv.SlopixLoading = os.clock()
 local ok, res = xpcall(boot, debug.traceback)
 genv.SlopixLoading = nil
 
