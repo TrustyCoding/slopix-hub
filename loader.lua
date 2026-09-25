@@ -1,10 +1,14 @@
 local REPO, BRANCH, SELF = "TrustyCoding/slopix-hub", "main", "loader.lua" -- the name it has on GitHub
 local INVITE, INVITE_COOLDOWN = "s5UNS2fdPh", 86400 -- the invite code alone: discord.gg/<code>
 
+-- PlaceId -> the bundle it runs (games/<id>.lua in the repo). Every place of a game shares one.
 local PLACES = {
-    [16205713724] = "136406881576517",
+    -- Slayers 2
+    [16205713724] = "136406881576517", -- main menu
     [136406881576517] = "136406881576517",
     [75556147183481] = "136406881576517", -- Minigames place (Ouwigahara dungeon)
+    -- Ball VS Ball
+    [96510596525082] = "96510596525082",
 }
 
 local genv = getgenv and getgenv() or _G
