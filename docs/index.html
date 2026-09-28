@@ -105,7 +105,7 @@
   <section id="view"></section>
 
   <footer>
-    A key lasts <span id="hours"></span> hours and works on all your accounts.
+    A key lasts <span id="hours"></span> hours and only works on the Roblox account it was made for.
     Need help? <a id="discord" target="_blank" rel="noopener">Join the Discord</a>.
   </footer>
 </main>
@@ -116,9 +116,9 @@ const CONFIG = {
   // link 2's this page + "?cp=2".
   steps: ["https://loot-link.com/s?wCo0HpWP", "https://loot-link.com/s?8xSTLR3k"],
   secret: "7WCEwbcXxO9H6UnSEjxWydpFCgyZ8w8W", // KEY_SECRET in loader.lua
-  hours: 24,      // how long a key works
-  minSeconds: 5,  // coming back from a step sooner than this means it was skipped
-  maxMinutes: 60, // a step left open longer than this has to be started again
+  hours: 24,                                 // KEY_HOURS in loader.lua
+  minSeconds: 10, // coming back from a step sooner than this means it was skipped
+  maxMinutes: 30, // a step left open longer than this has to be started again
   discord: "https://discord.gg/s5UNS2fdPh",
 };
 
@@ -135,28 +135,16 @@ function hash32(bytes, seed) {
 
 const hex = (n, width) => n.toString(16).toUpperCase().padStart(width, "0");
 
-function makeKey(expiry) {
+function makeKey(id, expiry) {
   const expiryHex = hex(expiry, 8);
-  const bytes = new TextEncoder().encode(`${CONFIG.secret}|${expiryHex}`);
+  const bytes = new TextEncoder().encode(`${CONFIG.secret}|${id}|${expiryHex}`);
   return `SLOPIX-${expiryHex}-${hex(hash32(bytes, 0x811c9dc5), 8)}${hex(hash32(bytes, 0x2f6b7c3d), 8)}`;
 }
 
 // Progress, kept in this browser -------------------------------------------------------------
-// { started: { 1: ms, 2: ms }, done: 0 | 1, key, expiry }. The -v2 name leaves behind keys from
-// the old per-account system, which the hub no longer accepts.
+// { id, started: { 1: ms, 2: ms }, done: 0 | 1, key, keyId, expiry }
 
-const STORE = "slopix-key-v2";
-// With storage blocked (cookies/site data off) progress cannot survive the trip to LootLabs, so the
-// step checks are skipped instead of leaving the visitor stuck on step 1.
-const storage = (() => {
-  try {
-    localStorage.setItem(`${STORE}-test`, "1");
-    localStorage.removeItem(`${STORE}-test`);
-    return true;
-  } catch {
-    return false;
-  }
-})();
+const STORE = "slopix-key";
 function load() {
   try { return JSON.parse(localStorage.getItem(STORE)) || {}; } catch { return {}; }
 }
@@ -168,14 +156,21 @@ const now = () => Math.floor(Date.now() / 1000);
 let state = load();
 let notice = "";
 
-// Coming back from LootLabs: ?cp=<step>. It counts if that step was started here and not skipped.
-// Landing on a step that is already done (a refresh, LootLabs sending you back twice) is ignored.
-const checkpoint = Number(new URLSearchParams(location.search).get("cp"));
-const alreadyDone = hasKey() || (checkpoint === 1 && state.done === 1);
-if ((checkpoint === 1 || checkpoint === 2) && !alreadyDone) {
+// The hub's "Copy link" button opens this page as ?id=<Roblox UserId>. Another account starts the
+// steps over; a key already made stays, for when its account is back.
+const params = new URLSearchParams(location.search);
+const linked = params.get("id") || "";
+if (/^\d{1,20}$/.test(linked) && linked !== state.id) {
+  state = { id: linked, key: state.key, keyId: state.keyId, expiry: state.expiry };
+  save();
+}
+
+// Coming back from LootLabs: ?cp=<step>. It counts only if that step was started here, in time.
+const checkpoint = Number(params.get("cp"));
+if (checkpoint === 1 || checkpoint === 2) {
   const started = state.started && state.started[checkpoint];
-  const seconds = started ? (Date.now() - started) / 1000 : NaN; // NaN passes both time checks
-  if (storage && (!started || (checkpoint === 2 && state.done !== 1))) {
+  const seconds = started ? (Date.now() - started) / 1000 : NaN;
+  if (!state.id || !started || (checkpoint === 2 && state.done !== 1)) {
     notice = "Start each step with its button on this page.";
   } else if (seconds < CONFIG.minSeconds) {
     notice = "That was too quick. Finish the step on LootLabs, then it sends you back here.";
@@ -185,13 +180,14 @@ if ((checkpoint === 1 || checkpoint === 2) && !alreadyDone) {
     state.done = 1;
   } else {
     state.expiry = now() + CONFIG.hours * 3600;
-    state.key = makeKey(state.expiry);
+    state.key = makeKey(state.id, state.expiry);
+    state.keyId = state.id;
     state.done = 0;
   }
   if (state.started) delete state.started[checkpoint];
   save();
+  history.replaceState(null, "", location.pathname + (state.id ? `?id=${state.id}` : ""));
 }
-if (checkpoint) history.replaceState(null, "", location.pathname);
 
 // Views -----------------------------------------------------------------------------------------
 
@@ -204,7 +200,7 @@ function el(tag, props = {}, ...children) {
 }
 
 function hasKey() {
-  return state.key && state.expiry > now();
+  return state.key && state.keyId === state.id && state.expiry > now();
 }
 
 function timeLeft() {
@@ -221,6 +217,14 @@ function stepButton(step) {
     className: "btn", href: CONFIG.steps[step - 1], textContent: `Start step ${step}`,
     onclick: record, onauxclick: record,
   });
+}
+
+// Opened without the hub's link (a shared or bookmarked URL, nothing saved): no account to key.
+function noLinkView() {
+  return [
+    el("p", {}, "Open this page with the ", el("strong", { textContent: "Copy link" }),
+      " button in the Slopix Hub window, so your key is made for your account."),
+  ];
 }
 
 function stepOneView() {
@@ -254,15 +258,15 @@ function keyView() {
     el("p", {}, "Copy your key, paste it into the Slopix Hub window and press ", el("strong", { textContent: "Check key" }), "."),
     keyBox,
     copy,
-    el("p", { className: "hint", textContent: `Works on all your accounts. Expires in ${timeLeft()}, then come back here for a new one.` }),
+    el("p", { className: "hint", textContent: `Expires in ${timeLeft()}. Come back here for a new one after that.` }),
   ];
 }
 
 function render() {
-  const phase = hasKey() ? 3 : state.done === 1 ? 2 : 1;
-  view.replaceChildren(...[stepOneView, stepTwoView, keyView][phase - 1]());
+  const phase = !state.id ? 0 : hasKey() ? 3 : state.done === 1 ? 2 : 1;
+  view.replaceChildren(...[noLinkView, stepOneView, stepTwoView, keyView][phase]());
   document.querySelectorAll("#steps li").forEach((li, index) => {
-    li.className = index + 1 < phase ? "done" : index + 1 === phase ? "now" : "";
+    li.className = phase && index + 1 < phase ? "done" : index + 1 === phase ? "now" : "";
   });
   const box = document.getElementById("notice");
   box.textContent = notice;
