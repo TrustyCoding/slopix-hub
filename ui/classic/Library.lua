@@ -1,6 +1,18 @@
 -- LinoriaLib (github.com/mstudio45/LinoriaLib, MIT: see LICENSE beside this file), Slopix Hub's copy: the crimson Classic palette
--- as the default look, Label:SetVisible, and sliders showing their value without the max.
+-- as the default look, Label:SetVisible, sliders showing their value without the max, dropdowns
+-- without a default starting empty, and every public method re-elevating the thread.
 -- Everything else is upstream.
+-- Slopix: Real and Volt can drop the capability UI writes need after a yield or a game-module call
+-- ("lacking capability Plugin"). Every public method re-elevates first (the guard at the end of
+-- this file), and so does SafeCallback after running a callback, as in the Obsidian fork the hub
+-- used before.
+local SetThreadIdentity = setthreadidentity or set_thread_identity or setidentity or setthreadcontext
+local function Elevate()
+    if SetThreadIdentity then
+        pcall(SetThreadIdentity, 8)
+    end
+end
+
 local cloneref = (cloneref or clonereference or function(instance: any)
 	return instance
 end)
@@ -489,6 +501,7 @@ function Library:SafeCallback(Func, ...)
 
         return Error
     end, ...))
+    Elevate()
 
     if not Result[1] then
         return nil
@@ -2597,8 +2610,7 @@ do
 
         assert(Info.Values, string.format("AddDropdown (IDX: %s): Missing dropdown value list.", tostring(Idx)))
         if not (Info.AllowNull or Info.Default) then
-            Info.Default = 1
-            warn(string.format("AddDropdown (IDX: %s): Missing default value, selected the first index instead. Pass `AllowNull` as true if this was intentional.", tostring(Idx)))
+            Info.AllowNull = true -- Slopix: no default means nothing picked yet, as in the Obsidian menu
         end
 
         Info.Searchable = if typeof(Info.Searchable) == "boolean" then Info.Searchable else false
@@ -4594,8 +4606,7 @@ do
 
         assert(Info.Values, string.format("AddDropdown (IDX: %s): Missing dropdown value list.", tostring(Idx)))
         if not (Info.AllowNull or Info.Default) then
-            Info.Default = 1
-            warn(string.format("AddDropdown (IDX: %s): Missing default value, selected the first index instead. Pass `AllowNull` as true if this was intentional.", tostring(Idx)))
+            Info.AllowNull = true -- Slopix: no default means nothing picked yet, as in the Obsidian menu
         end
         
         Info.Searchable = if typeof(Info.Searchable) == "boolean" then Info.Searchable else false
@@ -8253,6 +8264,65 @@ Library:GiveSignal(RunService.RenderStepped:Connect(function(Delta)
 end))
 
 ----
+-- Slopix: every public method elevates the thread before it runs, and so do the methods of what it
+-- returns (windows, tabs, groupboxes, elements), so feature code can call the UI right after a
+-- game-module call. Ported from the Obsidian fork the hub used before.
+do
+    local GuardedFunctions = setmetatable({}, { __mode = "k" })
+    local GuardedObjects = setmetatable({}, { __mode = "k" })
+    local Skip = {
+        Validate = true,
+        SafeCallback = true,
+        GiveSignal = true,
+        AddToRegistry = true,
+        RemoveFromRegistry = true,
+        Callback = true,
+        Changed = true,
+    }
+    local GuardObject
+    local function GuardFunction(Function)
+        if GuardedFunctions[Function] then
+            return Function
+        end
+        local function Guarded(...)
+            Elevate()
+            local Results = table.pack(Function(...))
+            for Index = 1, Results.n do
+                if type(Results[Index]) == "table" then
+                    GuardObject(Results[Index])
+                end
+            end
+            return table.unpack(Results, 1, Results.n)
+        end
+        GuardedFunctions[Guarded] = true
+        return Guarded
+    end
+    function GuardObject(Object, Rescan)
+        if GuardedObjects[Object] and not Rescan then
+            return Object
+        end
+        GuardedObjects[Object] = true
+        for Key, Value in pairs(Object) do
+            if type(Key) == "string" and type(Value) == "function" and not Skip[Key]
+                and not string.match(Key, "^Get") and not string.match(Key, "^Is") then
+                Object[Key] = GuardFunction(Value)
+            end
+        end
+        return Object
+    end
+    GuardObject(BaseGroupbox.__index)
+    GuardObject(BaseAddons.__index)
+    GuardObject(Library)
+    local CreateWindow = Library.CreateWindow
+    local function Rescanning(...)
+        local Results = table.pack(CreateWindow(...))
+        GuardObject(Library, true)
+        return table.unpack(Results, 1, Results.n)
+    end
+    GuardedFunctions[Rescanning] = true
+    Library.CreateWindow = Rescanning
+end
+
 getgenv().Linoria = Library
 if getgenv().skip_getgenv_linoria ~= true then getgenv().Library = Library end
 return Library
