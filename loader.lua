@@ -160,18 +160,27 @@ local function boot()
         pcall(old.Ui.Library.Unload, old.Ui.Library)
     end
 
+    -- The hub asks for its key first (shared/key), so this returns once one was entered, or
+    -- straight away when the key window was closed: then there is no reload to queue and no
+    -- invite to show. (A bundle from before the key moved into the hub never says that.)
+    local result = fn()
+    if result == "Slopix Hub: no key" then
+        return result
+    end
+
     -- Real's HttpGet returns "429: ..." as the body instead of throwing, so the queued snippet
     -- checks what it got and retries rather than calling a nil loadstring after the teleport.
+    -- It carries the key along for executors without file functions to have saved it.
     if queue and not genv.SlopixQueued then
         genv.SlopixQueued = true
-        pcall(queue, ("local g=getgenv and getgenv() or _G g.SlopixAutoload=true "
+        pcall(queue, ("local g=getgenv and getgenv() or _G g.SlopixAutoload=true g.SlopixKey=%q "
             .. "for i=1,3 do local ok,s=pcall(game.HttpGet,game,%q) "
             .. "local f=ok and type(s)=='string' and not s:find('^%%d%%d%%d: ') and loadstring(s) "
             .. "if f then return f() end task.wait(i*2) end "
-            .. "warn('[Slopix] could not download the loader after the teleport')"):format(raw(SELF)))
+            .. "warn('[Slopix] could not download the loader after the teleport')"):format(tostring(genv.SlopixKey or ""), raw(SELF)))
     end
     task.spawn(invite)
-    return fn()
+    return result
 end
 
 genv.SlopixLoading = os.clock()
