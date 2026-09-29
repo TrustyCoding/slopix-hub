@@ -1,4 +1,4 @@
--- Slopix Hub (Slayers 2), built 2026-09-29 14:17 UTC by build.py. Edit the files in src/, not this one.
+-- Slopix Hub (Slayers 2), built 2026-09-29 18:08 UTC by build.py. Edit the files in src/, not this one.
 local __modules, __cache, __loading = {}, {}, {}
 local function use(name)
     local cached = __cache[name]
@@ -650,6 +650,7 @@ local MODULES = {
     Refinement = { "CAM", "Global", "Refinement" },
     StatTypes = { "CAM", "Global", "Types", "StatTypes" },
     Regions = { "Regions" },
+    DayAndNightHandler = { "CAM", "Global", "DayAndNightHandler" },
     Multipliers = { "CAM", "Global", "Multipliers" },
     LiveConfig = { "CAM", "Global", "LiveConfig" },
     Quests ={ "CAM", "Global", "Subsets", "Gameplay", "Quests" },
@@ -718,6 +719,66 @@ Env.MENU_PLACE = 16205713724
 Env.inMenu = game.PlaceId == Env.MENU_PLACE or workspace:GetAttribute("IsMenu") == true
 
 return Env
+end
+__modules["core/npcdata"] = function(use) -- src/games/slayers2/core/npcdata.luau
+-- What the game says a mob is worth.
+--
+-- LiveConfig "NpcDataTable" is synced from the server and holds, per NpcCode, the mob's Name, Icon
+-- and Rewards ({ Exp, Wen, <item> = { Chance, Quantity } }); the game's own boss bar reads the
+-- exp from there. A mob's NpcCode is on its folder in workspace.Humanoids.Regions.<Region>
+-- .ActiveNpcs (or on the rig, or a folder inside that), so a rig is matched by code first and by
+-- name after.
+
+local Env = use("core/env")
+
+local NpcData = {}
+
+local EVERY = 30 -- the table is copied on every read, so it is read this often
+local data, byName, readAt = nil, {}, -math.huge
+
+local function table_()
+    if os.clock() - readAt >= EVERY then
+        readAt = os.clock()
+        local ok, result = Env.call(Env.Game.LiveConfig.get, "NpcDataTable")
+        if ok and type(result) == "table" then
+            data, byName = result, {}
+            for _, entry in pairs(result) do
+                if type(entry) == "table" and type(entry.Name) == "string" and byName[entry.Name] == nil then
+                    byName[entry.Name] = entry
+                end
+            end
+        end
+    end
+    return data
+end
+
+-- The NpcDataTable entry for a rig, or nil (not synced yet, or the mob is not in it).
+function NpcData.entryOf(rig)
+    local all = table_()
+    if not all then
+        return nil
+    end
+    local folder = rig.Parent
+    local code = rig:GetAttribute("NpcCode") or (folder and folder:GetAttribute("NpcCode"))
+    if not code and folder then
+        for _, child in ipairs(folder:GetChildren()) do
+            code = child:GetAttribute("NpcCode")
+            if code then
+                break
+            end
+        end
+    end
+    return (code and all[code]) or all[rig.Name] or byName[rig.Name]
+end
+
+-- Exp for one kill, before your multiplier (0 when unknown).
+function NpcData.exp(rig)
+    local entry = NpcData.entryOf(rig)
+    local rewards = entry and entry.Rewards
+    return type(rewards) == "table" and tonumber(rewards.Exp) or 0
+end
+
+return NpcData
 end
 __modules["core/npcs"] = function(use) -- src/games/slayers2/core/npcs.luau
 -- Finding NPCs: their definitions (what they sell) and their models in the world.
@@ -1114,6 +1175,9 @@ return Ui.create({
     tabs = {
         { "Home", "house", "Welcome to Slopix Hub" },
         { "Guide", "book-open", "Fastest way to level, worked out for you" },
+        { "Timers", "timer", "Day and night clock and boss respawns" },
+        { "Locator", "map-pin", "A marker that points to any NPC, mob, shrine or training spot" },
+        { "ESP", "eye", "Name tags on mobs, bosses, NPCs, chests, loot and players" },
         { "Farm", "swords", "Auto skills, auto heal, anti drown, anti sun and boss hunt timers" },
         { "Fishing", "fish", "Auto fishing" },
         { "Market", "store", "Black Marketer, shops and timed events" },
@@ -1122,6 +1186,55 @@ return Ui.create({
     },
     only = Env.inDungeon and DUNGEON_TABS or Env.inMenu and MENU_TABS or nil,
 })
+end
+__modules["core/where"] = function(use) -- src/games/slayers2/core/where.luau
+-- Where things are from where the character stands: "NE 340 studs, 60 up".
+-- North is -Z and east is +X, as on the game's minimap. The map is very tall (towns sit around
+-- y 300, 1000 and 1100), so a target far above or below says so.
+
+local Data = use("core/data")
+
+local Where = {}
+
+local HEADINGS = { "N", "NE", "E", "SE", "S", "SW", "W", "NW" }
+local NEAR = 15 -- closer than this (and level) is "right here"
+local VERTICAL = 40 -- a difference in height this big is worth saying
+
+-- "N", "NE", ... for an offset (target - you).
+function Where.compass(offset)
+    local angle = math.deg(math.atan2(offset.X, -offset.Z)) -- 0 = north, 90 = east
+    return HEADINGS[(math.floor((angle + 22.5) / 45) % 8) + 1]
+end
+
+-- Studs along the ground from the character to `position`, or nil.
+function Where.flat(position)
+    local root = Data.character()
+    if not (root and typeof(position) == "Vector3") then
+        return nil
+    end
+    local offset = position - root.Position
+    return Vector3.new(offset.X, 0, offset.Z).Magnitude
+end
+
+function Where.text(position)
+    local root = Data.character()
+    if not (root and typeof(position) == "Vector3") then
+        return "location unknown"
+    end
+    local offset = position - root.Position
+    local studs = math.floor(Vector3.new(offset.X, 0, offset.Z).Magnitude)
+    local height = math.floor(offset.Y)
+    local vertical = ""
+    if math.abs(height) >= VERTICAL then
+        vertical = string.format(", %d %s", math.abs(height), height > 0 and "up" or "down")
+    end
+    if studs < NEAR and vertical == "" then
+        return "right here"
+    end
+    return string.format("%s %d studs%s", Where.compass(offset), studs, vertical)
+end
+
+return Where
 end
 __modules["features/accessories"] = function(use) -- src/games/slayers2/features/accessories.luau
 -- Accessories: one button that wears the best pieces for the stats you pick in the five stat slots
@@ -1707,6 +1820,302 @@ end, function()
     if rarity >= target then
         stop(string.format("Got %s (%s) after %d spins", rolled, tierOf(rolled), spins), 8)
     end
+end)
+
+return {}
+end
+__modules["features/esp"] = function(use) -- src/games/slayers2/features/esp.luau
+-- ESP tab: name tags on mobs, bosses, NPCs, chests, loot drops and players, seen through walls.
+--
+-- Each tag is a BillboardGui adorned to a part that already exists (a rig's root, a chest's
+-- RootPart, a drop), kept in a folder of its own in the executor's GUI holder, so nothing is added
+-- to the world and the game cannot see it. Only what is streamed in can be tagged.
+--  * Mobs and bosses: workspace.Humanoids.Regions.<Region>.ActiveNpcs.<Name>.<Name>. A folder
+--    with BossInfo is a boss. Health is the rig's Humanoid; exp per kill is what the game says the
+--    mob is worth (core/npcdata), shown before your multiplier.
+--  * NPCs: workspace.Debree.Regions.<Region>.StationaryNpcs.<Name> (idle ones too).
+--  * Chests: workspace.Chests models, with ChestState and IsOpen; opened ones are left out.
+--  * Loot: parts tagged "LootDrop" that are yours to take (same rules as the game's own
+--    VisualBinder.isEligible).
+
+local Env = use("core/env")
+local Life = use("shared/life")
+local Data = use("core/data")
+local Ui = use("core/ui")
+local Combat = use("core/combat")
+local NpcData = use("core/npcdata")
+
+local Options = Ui.Options
+
+local EVERY = 0.25
+local CAP = { mobs = 40, bosses = 12, npcs = 30, chests = 30, loot = 30, players = 30 }
+local COLORS = {
+    mobs = Color3.fromRGB(255, 150, 90),
+    bosses = Color3.fromRGB(235, 64, 96),
+    npcs = Color3.fromRGB(110, 200, 255),
+    chests = Color3.fromRGB(255, 214, 90),
+    loot = Color3.fromRGB(150, 255, 150),
+    players = Color3.fromRGB(255, 255, 255),
+}
+local CLOSED = { Opening = true, Opened = true, Despawned = true }
+local userId = Env.LocalPlayer.UserId
+
+-- UI --------------------------------------------------------------------------------------------------------
+
+local tab = Ui.Tabs.ESP
+local box = tab:AddGroupbox({ Side = "Left", Name = "Name tags", IconName = "eye" })
+local TOGGLES = {
+    { "EspMobs", "Mobs", "mobs", "Hostile mobs, with their health and the exp a kill is worth." },
+    { "EspBosses", "Bosses", "bosses", "Bosses, with their health." },
+    { "EspNpcs", "NPCs", "npcs", "Quest givers, shops and trainers that are streamed in." },
+    { "EspChests", "Chests", "chests", "Chests that can still be opened (guards up is marked)." },
+    { "EspLoot", "Loot drops", "loot", "Drops that are yours to pick up." },
+    { "EspPlayers", "Players", "players", "Other players, with their health." },
+}
+for _, entry in ipairs(TOGGLES) do
+    box:AddToggle(entry[1], { Text = entry[2], Default = false, Tooltip = entry[4] })
+end
+box:AddSlider("EspRange", {
+    Text = "Range",
+    Default = 700,
+    Min = 100,
+    Max = 3000,
+    Rounding = 0,
+    Suffix = " studs",
+    Tooltip = "Tags further away than this are hidden. Only what the game has streamed in near you can be tagged anyway.",
+})
+box:AddLabel("Tags are drawn on your screen only. The nearest ones of each kind are shown.", true)
+
+local function enabled(category)
+    for _, entry in ipairs(TOGGLES) do
+        if entry[3] == category then
+            return Ui.on(entry[1])
+        end
+    end
+    return false
+end
+
+-- Tags ------------------------------------------------------------------------------------------------------------
+
+local function guiParent()
+    local ok, parent = pcall(function()
+        return (gethui and gethui()) or game:GetService("CoreGui")
+    end)
+    if ok and parent then
+        return parent
+    end
+    return Env.LocalPlayer:WaitForChild("PlayerGui")
+end
+
+local holder = Instance.new("Folder")
+holder.Name = "SlopixEsp"
+holder.Parent = guiParent()
+Life.onCleanup(function()
+    holder:Destroy()
+end)
+
+local tags = {} -- key (the instance the tag belongs to) -> { gui, label, seen }
+local pass = 0
+
+local function tag(key, adornee, text, color)
+    local entry = tags[key]
+    if not entry then
+        local gui = Instance.new("BillboardGui")
+        gui.AlwaysOnTop = true
+        gui.LightInfluence = 0
+        gui.ResetOnSpawn = false
+        gui.Size = UDim2.fromOffset(190, 56)
+        gui.StudsOffset = Vector3.new(0, 3, 0)
+        local label = Instance.new("TextLabel")
+        label.BackgroundTransparency = 1
+        label.Size = UDim2.fromScale(1, 1)
+        label.Font = Enum.Font.GothamBold
+        label.TextSize = 13
+        label.TextStrokeTransparency = 0.4
+        label.TextWrapped = true
+        label.Parent = gui
+        entry = { gui = gui, label = label }
+        tags[key] = entry
+        gui.Parent = holder
+    end
+    entry.seen = pass
+    if entry.gui.Adornee ~= adornee then
+        entry.gui.Adornee = adornee
+    end
+    entry.gui.MaxDistance = Options.EspRange.Value
+    entry.label.Text = text
+    entry.label.TextColor3 = color
+end
+
+local function sweep()
+    for key, entry in pairs(tags) do
+        if entry.seen ~= pass then
+            entry.gui:Destroy()
+            tags[key] = nil
+        end
+    end
+end
+
+-- Candidates ------------------------------------------------------------------------------------------------------
+
+local function distanceTo(root, part)
+    return (part.Position - root.Position).Magnitude
+end
+
+-- The nearest `cap` of candidates ({ key, part, text, distance }), tagged.
+local function show(category, candidates)
+    table.sort(candidates, function(a, b)
+        return a.distance < b.distance
+    end)
+    for index = 1, math.min(#candidates, CAP[category]) do
+        local candidate = candidates[index]
+        tag(candidate.key, candidate.part, string.format("%s\n%d studs", candidate.text, math.floor(candidate.distance)), COLORS[category])
+    end
+end
+
+local function healthText(humanoid)
+    return string.format("%d / %d HP", math.floor(humanoid.Health), math.floor(humanoid.MaxHealth))
+end
+
+local function scanMobs(root, range)
+    local wantMobs, wantBosses = enabled("mobs"), enabled("bosses")
+    if not (wantMobs or wantBosses) then
+        return
+    end
+    local mobs, bosses = {}, {}
+    for _, rig in ipairs(Combat.rigs()) do
+        local part = rig:FindFirstChild("HumanoidRootPart")
+        local humanoid = rig:FindFirstChildOfClass("Humanoid")
+        if part and humanoid then
+            local distance = distanceTo(root, part)
+            if distance <= range then
+                local folder = rig.Parent
+                if folder and folder:FindFirstChild("BossInfo") then
+                    if wantBosses then
+                        bosses[#bosses + 1] = { key = rig, part = part, distance = distance, text = rig.Name .. "\n" .. healthText(humanoid) }
+                    end
+                elseif wantMobs and rig:GetAttribute("IsMob") == true then
+                    local exp = NpcData.exp(rig)
+                    local extra = exp > 0 and string.format("  +%d exp", math.floor(exp)) or ""
+                    mobs[#mobs + 1] = { key = rig, part = part, distance = distance, text = rig.Name .. extra .. "\n" .. healthText(humanoid) }
+                end
+            end
+        end
+    end
+    show("mobs", mobs)
+    show("bosses", bosses)
+end
+
+local function scanNpcs(root, range)
+    if not enabled("npcs") then
+        return
+    end
+    local debree = workspace:FindFirstChild("Debree")
+    local regions = debree and debree:FindFirstChild("Regions")
+    local list = {}
+    for _, region in ipairs(regions and regions:GetChildren() or {}) do
+        local stationary = region:FindFirstChild("StationaryNpcs")
+        for _, model in ipairs(stationary and stationary:GetChildren() or {}) do
+            local part = model:IsA("Model") and model:FindFirstChild("HumanoidRootPart")
+            if part then
+                local distance = distanceTo(root, part)
+                if distance <= range then
+                    list[#list + 1] = { key = model, part = part, distance = distance, text = model.Name }
+                end
+            end
+        end
+    end
+    show("npcs", list)
+end
+
+local function scanChests(root, range)
+    if not enabled("chests") then
+        return
+    end
+    local folder = workspace:FindFirstChild("Chests")
+    local list = {}
+    for _, model in ipairs(folder and folder:GetChildren() or {}) do
+        local state = model:GetAttribute("ChestState")
+        if model:IsA("Model") and model:GetAttribute("ChestGuid") ~= nil and model:GetAttribute("IsOpen") ~= true
+            and not CLOSED[state] then
+            local part = model:FindFirstChild("RootPart") or model.PrimaryPart or model:FindFirstChildWhichIsA("BasePart", true)
+            if part and part:IsA("BasePart") then
+                local distance = distanceTo(root, part)
+                if distance <= range then
+                    local name = tostring(model:GetAttribute("ChestId") or model.Name)
+                    list[#list + 1] = { key = model, part = part, distance = distance, text = name .. (state == "Locked" and "  (guards up)" or "") }
+                end
+            end
+        end
+    end
+    show("chests", list)
+end
+
+-- Mirrors the game's own LootDrop VisualBinder.isEligible.
+local function mine(drop)
+    local owner = drop:GetAttribute("DropOwnerUserId")
+    if typeof(owner) == "number" and owner ~= userId then
+        return false
+    end
+    local reserved = drop:GetAttribute("DropReservedFor")
+    if typeof(reserved) == "string" and not string.find(reserved, "," .. userId .. ",", 1, true) then
+        return false
+    end
+    return drop:GetAttribute("DropClaimedBy") == nil
+end
+
+local function scanLoot(root, range)
+    if not enabled("loot") then
+        return
+    end
+    local list = {}
+    for _, drop in ipairs(Env.CollectionService:GetTagged("LootDrop")) do
+        if drop:IsA("BasePart") and drop.Parent and mine(drop) then
+            local distance = distanceTo(root, drop)
+            if distance <= range then
+                local name = drop:GetAttribute("ItemName") or drop:GetAttribute("Item") or drop.Name
+                list[#list + 1] = { key = drop, part = drop, distance = distance, text = tostring(name) }
+            end
+        end
+    end
+    show("loot", list)
+end
+
+local function scanPlayers(root, range)
+    if not enabled("players") then
+        return
+    end
+    local list = {}
+    for _, player in ipairs(Env.Players:GetPlayers()) do
+        local char = player ~= Env.LocalPlayer and player.Character
+        local part = char and char:FindFirstChild("HumanoidRootPart")
+        local humanoid = char and char:FindFirstChildOfClass("Humanoid")
+        if part and humanoid then
+            local distance = distanceTo(root, part)
+            if distance <= range then
+                list[#list + 1] = { key = char, part = part, distance = distance, text = player.DisplayName .. "\n" .. healthText(humanoid) }
+            end
+        end
+    end
+    show("players", list)
+end
+
+Life.loop("esp:tags", EVERY, function()
+    pass += 1
+    local root = Data.character()
+    local any = false
+    for _, entry in ipairs(TOGGLES) do
+        any = any or Ui.on(entry[1])
+    end
+    if root and any then
+        local range = Options.EspRange.Value
+        scanMobs(root, range)
+        scanNpcs(root, range)
+        scanChests(root, range)
+        scanLoot(root, range)
+        scanPlayers(root, range)
+    end
+    sweep()
 end)
 
 return {}
@@ -2529,6 +2938,8 @@ local Life = use("shared/life")
 local Data = use("core/data")
 local Ui = use("core/ui")
 local Combat = use("core/combat")
+local NpcData = use("core/npcdata")
+local Where = use("core/where")
 local Accessories = use("core/accessories")
 local Boss = use("features/boss")
 
@@ -2537,10 +2948,8 @@ local HUNT_ROWS = 5
 local MOB_ROWS = 5
 local MIN_HUNT_TIME = 45 -- a hunt about to expire is not worth starting
 local SLOW_EVERY = 6 -- seconds between the quest and hunt rankings (the mobs refresh every pass)
-local NPC_DATA_EVERY = 30
 local CLAIM_WAIT = 3
 local EXP_STATS = { ["Exp Factor"] = true, ["Quest Exp Factor"] = true }
-local HEADINGS = { "N", "NE", "E", "SE", "S", "SW", "W", "NW" }
 
 -- Helpers ---------------------------------------------------------------------------------------
 
@@ -2563,20 +2972,7 @@ local function clock(seconds)
     return string.format("%d:%02d", seconds // 60, seconds % 60)
 end
 
--- "NE 340 studs" from where the character stands, or "location unknown".
-local function heading(position)
-    local root = Data.character()
-    if not (root and typeof(position) == "Vector3") then
-        return "location unknown"
-    end
-    local offset = position - root.Position
-    local studs = math.floor(Vector3.new(offset.X, 0, offset.Z).Magnitude)
-    if studs < 15 then
-        return "right here"
-    end
-    local angle = math.deg(math.atan2(offset.X, -offset.Z)) -- 0 = north (-Z), 90 = east (+X)
-    return string.format("%s %d studs", HEADINGS[(math.floor((angle + 22.5) / 45) % 8) + 1], studs)
-end
+local heading = Where.text
 
 local function spawnOf(name)
     local ok, position = Env.call(Env.Game.Regions.GetNpcSpawn, name)
@@ -2752,44 +3148,154 @@ local function rankHunts()
     return rows, others
 end
 
--- Mobs near you ------------------------------------------------------------------------------------------
+-- Breathing and style trials ---------------------------------------------------------------------------
 
-local npcData, npcByName, npcDataAt = nil, {}, -math.huge
-local function npcTable()
-    if os.clock() - npcDataAt >= NPC_DATA_EVERY then
-        npcDataAt = os.clock()
-        local ok, data = Env.call(Env.Game.LiveConfig.get, "NpcDataTable")
-        if ok and type(data) == "table" then
-            npcData = data
-            npcByName = {}
-            for _, entry in pairs(data) do
-                if type(entry) == "table" and type(entry.Name) == "string" and npcByName[entry.Name] == nil then
-                    npcByName[entry.Name] = entry
+-- The trainers' quests: they give a power (a breathing or a style) and their tasks go in order, each
+-- one naming the task before it in Need. Learning one replaces the power you have. Where a task is
+-- comes from Quests.GetTaskMarker: the quest's own marker (a trainee's spawn), or the training
+-- ground (gameSettings.TrainingMarkerPositions) named by the task's Code.
+local TRIAL_ROWS = 3
+
+local function powerName(power)
+    return type(power) == "table" and power.Name or power
+end
+
+local function powerHeld(name)
+    if not name then
+        return true
+    end
+    local slot = Data.slot()
+    local powers = slot and slot:FindFirstChild("Powers")
+    for _, value in ipairs(powers and powers:GetChildren() or {}) do
+        if value:IsA("ValueBase") and value.Value == name then
+            return true
+        end
+    end
+    return false
+end
+
+local function taskOrder(definition)
+    local pending = {}
+    local ok = pcall(function()
+        for _, child in ipairs(definition.QuestInstance.Tasks:GetChildren()) do
+            local need = child:FindFirstChild("Need")
+            pending[#pending + 1] = { instance = child, name = child.Name, need = (need and need.Value ~= "") and need.Value or nil }
+        end
+    end)
+    local ordered, placed = {}, {}
+    if not ok then
+        return ordered
+    end
+    while #ordered < #pending do
+        local before = #ordered
+        for _, entry in ipairs(pending) do
+            if not placed[entry.name] and (entry.need == nil or placed[entry.need]) then
+                ordered[#ordered + 1] = entry
+                placed[entry.name] = true
+            end
+        end
+        if #ordered == before then -- a Need that names nothing: take the rest as they come
+            for _, entry in ipairs(pending) do
+                if not placed[entry.name] then
+                    ordered[#ordered + 1] = entry
+                    placed[entry.name] = true
                 end
             end
         end
     end
-    return npcData
+    return ordered
 end
 
--- The game's data for a rig: its NpcCode is on the rig or its folder (or a folder inside that).
-local function entryOf(rig)
-    local data = npcTable()
-    if not data then
-        return nil
-    end
-    local folder = rig.Parent
-    local code = rig:GetAttribute("NpcCode") or (folder and folder:GetAttribute("NpcCode"))
-    if not code and folder then
-        for _, child in ipairs(folder:GetChildren()) do
-            code = child:GetAttribute("NpcCode")
-            if code then
-                break
+-- The tasks folder of the quest as you are doing it, or nil.
+local function activeTasks(definition)
+    local slot = Data.slot()
+    local holder = slot and slot:FindFirstChild("Quests") and slot.Quests:FindFirstChild("Holder")
+    local ok, name = pcall(function()
+        return definition.QuestInstance.Name
+    end)
+    local quest = ok and holder and holder:FindFirstChild(name)
+    return quest and quest:FindFirstChild("Tasks")
+end
+
+-- Trials you can start (or are in the middle of) for a power you do not have, the lowest level first.
+local function rankTrials()
+    local rows = {}
+    local Quests = Env.Game.Quests
+    for key, definition in pairs(Quests.Holder) do
+        local rewards = type(definition) == "table" and definition.Rewards or nil
+        if type(rewards) == "table" and rewards.Power ~= nil and definition.Category == "Combat"
+            and type(definition.OfferNpc) == "string" and not powerHeld(powerName(rewards.Power)) then
+            local okState, state = Env.call(Quests.GetPlayerQuestState, Env.LocalPlayer, key)
+            local active = okState and state == "Doing"
+            if active or takeable(key) then
+                local tasks = active and activeTasks(definition) or nil
+                local steps = {}
+                for index, entry in ipairs(taskOrder(definition)) do
+                    local done = false
+                    local progress = tasks and tasks:FindFirstChild(entry.name)
+                    local value, max = progress and progress:FindFirstChild("Value"), progress and progress:FindFirstChild("Max")
+                    if value and max then
+                        done = value.Value >= max.Value
+                    end
+                    local okMarker, marker = Env.call(Quests.GetTaskMarker, definition, entry.instance)
+                    steps[#steps + 1] = {
+                        index = index,
+                        name = entry.name,
+                        done = done,
+                        position = okMarker and type(marker) == "table" and typeof(marker.Position) == "Vector3" and marker.Position or nil,
+                    }
+                end
+                local costs, missing = {}, {}
+                local wen = tonumber(definition.WenCostOnAccept) or 0
+                if wen > 0 then
+                    costs[#costs + 1] = "$" .. commas(wen)
+                    if Data.wen() < wen then
+                        missing[#missing + 1] = "$" .. commas(wen - Data.wen())
+                    end
+                end
+                local items = type(definition.ItemCostOnAccept) == "table" and definition.ItemCostOnAccept or {}
+                local names = {}
+                for item in pairs(items) do
+                    names[#names + 1] = item
+                end
+                table.sort(names)
+                for _, item in ipairs(names) do
+                    costs[#costs + 1] = string.format("%s %s", tostring(items[item]), item)
+                    local short = (tonumber(items[item]) or 0) - Data.itemCount(item)
+                    if short > 0 then
+                        missing[#missing + 1] = string.format("%d %s", short, item)
+                    end
+                end
+                local ok, name = pcall(function()
+                    return definition.QuestInstance.Name
+                end)
+                rows[#rows + 1] = {
+                    name = ok and name or tostring(key),
+                    level = type(definition.Requirements) == "table" and tonumber(definition.Requirements.Level) or 0,
+                    power = tostring(powerName(rewards.Power)),
+                    gain = (tonumber(rewards.Exp) or 0) * factors.quest,
+                    trainer = definition.OfferNpc,
+                    active = active,
+                    steps = steps,
+                    costs = costs,
+                    missing = missing,
+                }
             end
         end
     end
-    return (code and data[code]) or data[rig.Name] or npcByName[rig.Name]
+    table.sort(rows, function(a, b)
+        if a.active ~= b.active then
+            return a.active
+        end
+        if a.level ~= b.level then
+            return a.level < b.level
+        end
+        return a.name < b.name
+    end)
+    return rows
 end
+
+-- Mobs near you ------------------------------------------------------------------------------------------
 
 -- Loaded mobs by exp per point of health (the fastest kills for the exp), one row per kind.
 local function rankMobs()
@@ -2801,8 +3307,7 @@ local function rankMobs()
     for _, rig in ipairs(Combat.rigs()) do
         local humanoid = rig:FindFirstChildOfClass("Humanoid")
         if rig:GetAttribute("IsMob") == true and humanoid and humanoid.MaxHealth > 0 then
-            local entry = entryOf(rig)
-            local exp = entry and type(entry.Rewards) == "table" and tonumber(entry.Rewards.Exp) or 0
+            local exp = NpcData.exp(rig)
             if exp > 0 then
                 local base = rig:GetAttribute("BaseMaxHealth")
                 local health = (type(base) == "number" and base > 0) and math.min(base, humanoid.MaxHealth) or humanoid.MaxHealth
@@ -2837,6 +3342,7 @@ end
 local tab = Ui.Tabs.Guide
 local levelBox = tab:AddGroupbox({ Side = "Left", Name = "Your level", IconName = "trending-up" })
 local huntBox = tab:AddGroupbox({ Side = "Left", Name = "Boss hunts for you", IconName = "skull" })
+local trialBox = tab:AddGroupbox({ Side = "Left", Name = "Breathing trials", IconName = "wind" })
 local questBox = tab:AddGroupbox({ Side = "Right", Name = "Best quests right now", IconName = "scroll-text" })
 local mobBox = tab:AddGroupbox({ Side = "Right", Name = "Best mobs near you", IconName = "crosshair" })
 
@@ -2930,12 +3436,13 @@ huntBox:AddButton({
     end,
 })
 local huntPanel = Ui.panel(huntBox, HUNT_ROWS)
+local trialPanel = Ui.panel(trialBox, TRIAL_ROWS)
 local questPanel = Ui.panel(questBox, QUEST_ROWS)
 local mobPanel = Ui.panel(mobBox, MOB_ROWS)
 
 -- Workers ------------------------------------------------------------------------------------------------------
 
-local huntRows, otherHunts, questRows = {}, 0, {}
+local huntRows, otherHunts, questRows, trialRows = {}, 0, {}, {}
 local slowAt = -math.huge
 
 local function share(gain, goal)
@@ -2953,6 +3460,7 @@ Life.loop("guide:panels", 2, function()
         huntRows, otherHunts = rankHunts()
         claimable = huntRows[1] and huntRows[1].hunt.expires - os.time() >= MIN_HUNT_TIME and huntRows[1].hunt or nil
         questRows = rankQuests()
+        trialRows = rankTrials()
         unlockLabel:SetText(nextHunts(level))
     end
 
@@ -2969,6 +3477,23 @@ Life.loop("guide:panels", 2, function()
     end
     huntPanel.set(lines, #huntRows == 0 and "No hunt on the board is one you can be paid for."
         or string.format("Biggest first.%s", otherHunts > 0 and string.format(" %d more are not for your race or level.", otherHunts) or ""))
+
+    lines = {}
+    for index = 1, math.min(#trialRows, TRIAL_ROWS) do
+        local row = trialRows[index]
+        local steps = {}
+        for _, step in ipairs(row.steps) do
+            steps[#steps + 1] = string.format("%s %d. %s: %s", step.done and "[x]" or "[ ]", step.index, escape(step.name),
+                step.done and "done" or escape(heading(step.position)))
+        end
+        lines[index] = string.format("%s  Lv%d  gives %s  +%s exp%s\n    Trainer: %s (%s)\n    Costs: %s%s\n    %s", escape(row.name), row.level,
+            escape(row.power), commas(row.gain), row.active and "  (in progress)" or "", escape(row.trainer), escape(whereIs(row.trainer)),
+            #row.costs > 0 and escape(table.concat(row.costs, ", ")) or "nothing",
+            #row.missing > 0 and ("  (you lack " .. escape(table.concat(row.missing, ", ")) .. ")") or "",
+            table.concat(steps, "\n    "))
+    end
+    trialPanel.set(lines, #trialRows == 0 and "No breathing trial for a power you do not have is open to you right now."
+        or "Do the tasks in order. Learning one replaces the breathing or style you have now.")
 
     lines = {}
     for index = 1, math.min(#questRows, QUEST_ROWS) do
@@ -3228,6 +3753,385 @@ codes:AddButton({ Text = "Redeem spin codes", Func = function()
 end })
 codes:AddLabel("Spin and reroll codes are redeemed when the hub loads. Reset codes (skill tree, breathing, demon art, points) are never touched.", true)
 task.spawn(redeemSpinCodes)
+
+return {}
+end
+__modules["features/locator"] = function(use) -- src/games/slayers2/features/locator.luau
+-- Locator tab: pick an NPC, shop, mob, boss, shrine, town or training spot and a marker on your
+-- screen points at it, with its heading and distance, until you get there. Nothing moves you and
+-- nothing is put in the world: the marker is a label in its own ScreenGui, placed each frame where
+-- the target projects on screen (at the screen edge, pointing the way, when it is off screen or behind
+-- you).
+--
+-- Where things are (read from the game, so they follow updates):
+--  * Regions.Regions[region].Npcs: stationary and idle NPCs have Spawns (points, or routes of
+--    points); active ones (mobs, bosses) have SendOver.Spawning.Locations / Center, and SendOver.Boss
+--    marks a boss. The Black Marketer moves between spots on a timer, so the Market tab has him.
+--  * Regions.Regions[region].CrystalAt (a town's spawn crystal), .Shrines ({ Name, At }) and the
+--    crystals of its child areas.
+--  * gameSettings.TrainingMarkerPositions[PlaceId]: the training grounds, and .UnderwaterRockSpots.
+-- An NPC that is streamed in is followed live (idle ones walk); otherwise the nearest known spawn.
+
+local Env = use("core/env")
+local Life = use("shared/life")
+local Data = use("core/data")
+local Ui = use("core/ui")
+local Npcs = use("core/npcs")
+local Where = use("core/where")
+
+local Options = Ui.Options
+
+local MARGIN = 48 -- pixels kept between the marker and the screen edge
+local ARRIVED = 12 -- studs along the ground, and this many up or down
+local CATEGORIES = { "NPCs and shops", "Mobs and bosses", "Shrines and towns", "Training spots" }
+
+-- Data ----------------------------------------------------------------------------------------------
+
+-- Every point in a Vector3, a CFrame or a (nested) list of them.
+local function flatten(value, into)
+    into = into or {}
+    if typeof(value) == "CFrame" then
+        into[#into + 1] = value.Position
+    elseif typeof(value) == "Vector3" then
+        into[#into + 1] = value
+    elseif type(value) == "table" then
+        for _, item in ipairs(value) do
+            flatten(item, into)
+        end
+    end
+    return into
+end
+
+local function eachRegion(fn)
+    local ok, regions = Env.call(function()
+        return Env.Game.Regions.Regions
+    end)
+    if not (ok and type(regions) == "table") then
+        return
+    end
+    for regionName, region in pairs(regions) do
+        if type(region) == "table" then
+            fn(regionName, region)
+        end
+    end
+end
+
+local function eachNpc(fn)
+    eachRegion(function(regionName, region)
+        for _, npc in ipairs(type(region.Npcs) == "table" and region.Npcs or {}) do
+            if type(npc) == "table" and type(npc.Name) == "string" then
+                fn(regionName, npc)
+            end
+        end
+    end)
+end
+
+-- label -> { name, positions = { Vector3 }, live = follow the streamed-in model }
+local BUILD = {}
+
+BUILD["NPCs and shops"] = function()
+    local list = {}
+    local kinds = Env.Game.Menum.npcType
+    eachNpc(function(regionName, npc)
+        if (npc.Type == kinds.Stationary or npc.Type == kinds.Idle) and npc.TimedVendor == nil then
+            local positions = flatten(npc.Spawns)
+            if #positions > 0 then
+                local shop = (npc.Shop ~= nil or npc.RotatingShop ~= nil) and "  [shop]" or ""
+                list[string.format("%s (%s)%s", npc.Name, regionName, shop)] = { name = npc.Name, positions = positions, live = true }
+            end
+        end
+    end)
+    return list
+end
+
+BUILD["Mobs and bosses"] = function()
+    local list = {}
+    local kinds = Env.Game.Menum.npcType
+    eachNpc(function(regionName, npc)
+        local spawning = type(npc.SendOver) == "table" and npc.SendOver.Spawning
+        if npc.Type == kinds.Active and type(spawning) == "table" then
+            local positions = flatten(spawning.Locations)
+            if #positions == 0 then
+                positions = flatten(spawning.Center)
+            end
+            if #positions > 0 then
+                local boss = npc.SendOver.Boss ~= nil and "  [boss]" or ""
+                list[string.format("%s (%s)%s", npc.Name, regionName, boss)] = { name = npc.Name, positions = positions }
+            end
+        end
+    end)
+    return list
+end
+
+BUILD["Shrines and towns"] = function()
+    local list = {}
+    local function town(name, crystal, spawns)
+        local positions = flatten(crystal)
+        if #positions == 0 then
+            positions = flatten(spawns and spawns[1])
+        end
+        if #positions > 0 then
+            list["Town: " .. name] = { name = name, positions = positions }
+        end
+    end
+    eachRegion(function(regionName, region)
+        if regionName == "Misc" then
+            return
+        end
+        town(regionName, region.CrystalAt, region.Spawns)
+        for _, shrine in ipairs(type(region.Shrines) == "table" and region.Shrines or {}) do
+            local positions = type(shrine) == "table" and flatten(shrine.At) or {}
+            if #positions > 0 then
+                local name = tostring(shrine.Name or regionName)
+                list["Shrine: " .. name] = { name = name, positions = positions }
+            end
+        end
+        for _, cell in ipairs(type(region.Area) == "table" and type(region.Area.Grid) == "table" and region.Area.Grid or {}) do
+            for childName, child in pairs(type(cell) == "table" and type(cell.ChildAreas) == "table" and cell.ChildAreas or {}) do
+                if type(child) == "table" and child.CrystalAt ~= nil then
+                    town(tostring(childName), child.CrystalAt, nil)
+                end
+            end
+        end
+    end)
+    return list
+end
+
+BUILD["Training spots"] = function()
+    local list = {}
+    local ok, markers = Env.call(function()
+        local all = Env.Game.gameSettings.TrainingMarkerPositions
+        return all[game.PlaceId] or all.Default
+    end)
+    for name, marker in pairs(ok and type(markers) == "table" and markers or {}) do
+        if type(marker) == "table" and typeof(marker.Position) == "Vector3" then
+            list[tostring(name)] = { name = tostring(name), positions = { marker.Position } }
+        end
+    end
+    local rocksOk, rocks = Env.call(function()
+        return Env.Game.gameSettings.UnderwaterRockSpots[game.PlaceId]
+    end)
+    for index, spot in ipairs(rocksOk and type(rocks) == "table" and rocks or {}) do
+        if typeof(spot) == "Vector3" then
+            local name = "Underwater rock spot " .. index
+            list[name] = { name = name, positions = { spot } }
+        end
+    end
+    return list
+end
+
+local entries = {}
+
+local function sortedLabels(list)
+    local labels = {}
+    for label in pairs(list) do
+        labels[#labels + 1] = label
+    end
+    table.sort(labels)
+    return labels
+end
+
+-- The marker ------------------------------------------------------------------------------------------
+
+local target = nil -- { label, entry }
+local targetPosition = nil
+
+local function escape(text)
+    return (tostring(text):gsub("&", "&amp;"):gsub("<", "&lt;"):gsub(">", "&gt;"))
+end
+
+local function guiParent()
+    local ok, parent = pcall(function()
+        return (gethui and gethui()) or game:GetService("CoreGui")
+    end)
+    if ok and parent then
+        return parent
+    end
+    return Env.LocalPlayer:WaitForChild("PlayerGui")
+end
+
+local screen = Instance.new("ScreenGui")
+screen.Name = "SlopixLocator"
+screen.ResetOnSpawn = false
+screen.IgnoreGuiInset = true
+screen.DisplayOrder = 20
+screen.Enabled = false
+screen.Parent = guiParent()
+Life.onCleanup(function()
+    screen:Destroy()
+end)
+
+local marker = Instance.new("TextLabel")
+marker.AnchorPoint = Vector2.new(0.5, 0.5)
+marker.AutomaticSize = Enum.AutomaticSize.XY
+marker.Size = UDim2.fromOffset(0, 0)
+marker.BackgroundColor3 = Color3.fromRGB(13, 12, 18)
+marker.BackgroundTransparency = 0.25
+marker.BorderSizePixel = 0
+marker.Font = Enum.Font.GothamBold
+marker.RichText = true
+marker.TextSize = 15
+marker.TextColor3 = Color3.fromRGB(240, 238, 246)
+marker.Text = ""
+marker.Parent = screen
+do
+    local corner = Instance.new("UICorner")
+    corner.CornerRadius = UDim.new(0, 6)
+    corner.Parent = marker
+    local stroke = Instance.new("UIStroke")
+    stroke.Color = Color3.fromRGB(235, 64, 96)
+    stroke.Thickness = 1.5
+    stroke.Parent = marker
+    local padding = Instance.new("UIPadding")
+    padding.PaddingLeft, padding.PaddingRight = UDim.new(0, 8), UDim.new(0, 8)
+    padding.PaddingTop, padding.PaddingBottom = UDim.new(0, 4), UDim.new(0, 4)
+    padding.Parent = marker
+end
+
+local statusLabel
+
+local function stop(message)
+    target, targetPosition = nil, nil
+    screen.Enabled = false
+    if statusLabel then
+        statusLabel:SetText(message or "Not tracking anything.")
+    end
+end
+
+-- Where the target is now: the live model for an NPC that is streamed in, else the nearest known spot.
+local function locate()
+    if not target then
+        return
+    end
+    local entry = target.entry
+    if entry.live then
+        local model = Npcs.model(entry.name)
+        if model then
+            local ok, pivot = pcall(model.GetPivot, model)
+            if ok then
+                targetPosition = pivot.Position
+                return
+            end
+        end
+    end
+    local root = Data.character()
+    local best, bestDistance = entry.positions[1], math.huge
+    if root then
+        for _, position in ipairs(entry.positions) do
+            local distance = (position - root.Position).Magnitude
+            if distance < bestDistance then
+                best, bestDistance = position, distance
+            end
+        end
+    end
+    targetPosition = best
+end
+
+local function place()
+    local camera = workspace.CurrentCamera
+    if not (target and targetPosition and camera) then
+        screen.Enabled = false
+        return
+    end
+    screen.Enabled = true
+    marker.Text = string.format('<font color="#eb4060">%s</font>\n%s', escape(target.label), escape(Where.text(targetPosition)))
+    local viewport = camera.ViewportSize
+    local projected, onScreen = camera:WorldToViewportPoint(targetPosition)
+    if onScreen then
+        marker.Position = UDim2.fromOffset(projected.X, math.max(projected.Y - 28, MARGIN))
+        return
+    end
+    -- Off screen (or behind the camera, where the projection is mirrored): stick to the edge, in its direction.
+    local center = viewport / 2
+    local offset = Vector2.new(projected.X, projected.Y) - center
+    if projected.Z < 0 then
+        offset = -offset
+    end
+    if offset.Magnitude < 1 then
+        offset = Vector2.new(0, -1)
+    end
+    local scale = math.min((center.X - MARGIN) / math.max(math.abs(offset.X), 1e-3), (center.Y - MARGIN) / math.max(math.abs(offset.Y), 1e-3))
+    local at = center + offset * scale
+    marker.Position = UDim2.fromOffset(at.X, at.Y)
+end
+
+Life.connect(Env.RunService.RenderStepped, place)
+
+Life.loop("locator:follow", 0.5, function()
+    if not target then
+        return
+    end
+    locate()
+    local root = Data.character()
+    if root and targetPosition then
+        local flat = Where.flat(targetPosition)
+        if flat and flat <= ARRIVED and math.abs(targetPosition.Y - root.Position.Y) <= ARRIVED + 8 then
+            local name = target.label
+            stop("You are at " .. name .. ".")
+            Ui.notify("Locator", "You are at " .. name, 4)
+        end
+    end
+end)
+
+-- UI ----------------------------------------------------------------------------------------------------------
+
+local tab = Ui.Tabs.Locator
+local box = tab:AddGroupbox({ Side = "Left", Name = "Find something", IconName = "map-pin" })
+
+local function refreshTargets()
+    local builder = BUILD[Options.LocatorCategory.Value]
+    local ok, list = pcall(builder or function()
+        return {}
+    end)
+    Env.elevate()
+    entries = ok and list or {}
+    local labels = sortedLabels(entries)
+    Options.LocatorTarget:SetValues(labels)
+    if labels[1] then
+        Options.LocatorTarget:SetValue(labels[1])
+    end
+end
+
+box:AddDropdown("LocatorCategory", {
+    Text = "Category",
+    Values = CATEGORIES,
+    Default = CATEGORIES[1],
+    Multi = false,
+    Callback = function()
+        if Options.LocatorTarget then
+            refreshTargets()
+        end
+    end,
+})
+box:AddDropdown("LocatorTarget", {
+    Searchable = true,
+    Text = "Target",
+    Values = {},
+    Default = "",
+    Multi = false,
+    Tooltip = "Shops are marked [shop] and bosses [boss]. A mob shows the nearest place it spawns.",
+})
+box:AddButton({ Text = "Track it", Func = function()
+    local label = Options.LocatorTarget.Value
+    local entry = entries[label]
+    if not entry then
+        Ui.notify("Locator", "Pick something to find first.", 3)
+        return
+    end
+    target = { label = label, entry = entry }
+    locate()
+    statusLabel:SetText("Tracking " .. label)
+    place()
+end })
+box:AddButton({ Text = "Stop tracking", Func = function()
+    stop()
+end })
+box:AddButton({ Text = "Refresh the list", Func = refreshTargets })
+statusLabel = box:AddLabel("Not tracking anything.", true)
+box:AddLabel("A marker on your screen points at it with the heading and distance (north is -Z, as on the map). "
+    .. "It goes away when you get there.", true)
+
+refreshTargets()
 
 return {}
 end
@@ -4301,6 +5205,226 @@ end)
 
 return {}
 end
+__modules["features/timers"] = function(use) -- src/games/slayers2/features/timers.luau
+-- Timers tab: the day and night clock (the sun burns Demons) and when each boss is back.
+--
+-- Day and night: DayAndNightHandler runs one cycle of DayTime + NighTime seconds (gameSettings.Day:
+-- 12 minutes of day, 24 of night) off the server clock, so every client agrees. It gives the phase,
+-- the clock and SecondsUntilPhaseChange (to the next sunrise or sunset). Only Demons burn: see Anti
+-- sun damage on the Farm tab.
+--
+-- Bosses: a boss's folder in workspace.Humanoids.Regions.<Region>.ActiveNpcs stays for the whole
+-- server while its rig comes and goes. It holds BossInfo (attribute SpawnTime, the respawn in
+-- seconds) and gets DespawnedAt (server time) when the boss goes down: the game's own boss bar
+-- counts down from those two. A boss without BossInfo falls back on the SpawnTime in its Regions
+-- definition, and one that went down before we saw it and has no DespawnedAt is timed from when we
+-- noticed.
+
+local Env = use("core/env")
+local Life = use("shared/life")
+local Data = use("core/data")
+local Ui = use("core/ui")
+local Where = use("core/where")
+
+local ROWS = 10
+local ALERT_AT = 60 -- seconds before sunrise
+
+local RegionRoot = Env.need(Env.need(workspace, "Humanoids"), "Regions")
+
+local tab = Ui.Tabs.Timers
+local clockBox = tab:AddGroupbox({ Side = "Left", Name = "Day and night", IconName = "sun-moon" })
+local bossBox = tab:AddGroupbox({ Side = "Right", Name = "Boss respawns", IconName = "skull" })
+
+local function countdown(seconds)
+    seconds = math.max(0, math.ceil(seconds))
+    return string.format("%d:%02d", seconds // 60, seconds % 60)
+end
+
+local function clockText(hours)
+    local whole = math.floor(hours) % 24
+    return string.format("%02d:%02d", whole, math.floor((hours - math.floor(hours)) * 60))
+end
+
+-- Day and night -----------------------------------------------------------------------------------
+
+local clockLabel = clockBox:AddLabel("Loading...", true)
+clockBox:AddToggle("SunAlert", {
+    Text = "Sunrise alert",
+    Default = true,
+    Tooltip = "Tells you a minute before the sun comes up, as a Demon. Nobody else burns in it.",
+})
+local cycleNote = ""
+do
+    local ok, text = pcall(function()
+        local day = Env.Game.gameSettings.Day
+        return string.format("One cycle is %d minutes of day and %d of night.", day.DayTime.Game // 60, day.NighTime.Game // 60)
+    end)
+    cycleNote = ok and text or ""
+end
+if cycleNote ~= "" then
+    clockBox:AddLabel(cycleNote, true)
+end
+
+local alerted = false
+local function updateClock()
+    local handler = Env.Game.DayAndNightHandler
+    local okEnabled, enabled = Env.call(handler.IsEnabled)
+    if okEnabled and enabled == false then
+        clockLabel:SetText("This place has no day and night cycle.")
+        return
+    end
+    local okNight, night = Env.call(handler.IsNight)
+    local okLeft, left = Env.call(handler.SecondsUntilPhaseChange)
+    local okHours, hours = Env.call(handler.GetClockTime)
+    if not (okNight and okLeft and type(left) == "number") then
+        clockLabel:SetText("The day cycle is not available right now.")
+        return
+    end
+    local race = Data.value("Race")
+    local lines = {}
+    if night then
+        lines[1] = string.format("Night: sunrise in %s", countdown(left))
+    else
+        lines[1] = string.format("Day: the sun is up, sunset in %s", countdown(left))
+        if race == "Demon" then
+            lines[2] = Ui.on("AntiSun") and "Anti sun damage is on." or "The sun burns you: stay in shade, or turn on Anti sun damage (Farm tab)."
+        end
+    end
+    if okHours and type(hours) == "number" then
+        lines[#lines + 1] = "Clock " .. clockText(hours)
+    end
+    clockLabel:SetText(table.concat(lines, "\n"))
+
+    if night and left <= ALERT_AT and not alerted then
+        alerted = true
+        if race == "Demon" and Ui.on("SunAlert") then
+            Ui.notify("Sunrise", string.format("The sun comes up in %s. Find shade or turn on Anti sun damage.", countdown(left)), 8)
+        end
+    elseif not night or left > ALERT_AT + 5 then
+        alerted = false
+    end
+end
+
+-- Boss respawns -----------------------------------------------------------------------------------
+
+local bossPanel
+bossBox:AddToggle("BossAlert", {
+    Text = "Alert when a boss spawns",
+    Default = false,
+    Tooltip = "A notification the moment a boss you saw down is back up, with where it is.",
+})
+bossPanel = Ui.panel(bossBox, ROWS)
+
+local definedRespawn = nil
+local function respawnOf(folder)
+    local info = folder:FindFirstChild("BossInfo")
+    local seconds = info and info:GetAttribute("SpawnTime")
+    if type(seconds) == "number" then
+        return seconds
+    end
+    if not definedRespawn then
+        definedRespawn = {}
+        local ok, regions = Env.call(function()
+            return Env.Game.Regions.Regions
+        end)
+        for _, region in pairs(ok and type(regions) == "table" and regions or {}) do
+            for _, npc in ipairs(type(region) == "table" and type(region.Npcs) == "table" and region.Npcs or {}) do
+                local spawning = type(npc) == "table" and type(npc.SendOver) == "table" and npc.SendOver.Spawning
+                if type(spawning) == "table" and type(spawning.SpawnTime) == "number" and type(npc.Name) == "string" then
+                    definedRespawn[npc.Name] = spawning.SpawnTime
+                end
+            end
+        end
+    end
+    return definedRespawn[folder.Name]
+end
+
+local function spawnOf(name)
+    local ok, position = Env.call(Env.Game.Regions.GetNpcSpawn, name)
+    return ok and typeof(position) == "Vector3" and position or nil
+end
+
+local wasUp = setmetatable({}, { __mode = "k" }) -- folder -> whether it was up last pass
+local wentDown = setmetatable({}, { __mode = "k" }) -- folder -> os.clock() when we saw it fall
+
+local function bosses()
+    local rows = {}
+    local now = workspace:GetServerTimeNow()
+    for _, region in ipairs(RegionRoot:GetChildren()) do
+        local active = region:FindFirstChild("ActiveNpcs")
+        for _, folder in ipairs(active and active:GetChildren() or {}) do
+            if folder:FindFirstChild("BossInfo") then
+                local rig = folder:FindFirstChild(folder.Name)
+                local humanoid = rig and rig:FindFirstChildOfClass("Humanoid")
+                local up = humanoid ~= nil and humanoid.Health > 0
+                local root = rig and rig:FindFirstChild("HumanoidRootPart")
+                local previous = wasUp[folder]
+                if up and previous == false and Ui.on("BossAlert") then
+                    Ui.notify("Boss", string.format("%s is up: %s", folder.Name, Where.text(root and root.Position or spawnOf(folder.Name))), 8)
+                end
+                if not up and previous ~= false then
+                    wentDown[folder] = os.clock()
+                end
+                wasUp[folder] = up
+
+                local left = nil
+                if not up then
+                    local seconds = respawnOf(folder)
+                    local despawned = folder:GetAttribute("DespawnedAt")
+                    if seconds and type(despawned) == "number" then
+                        left = seconds - (now - despawned)
+                    elseif seconds and wentDown[folder] then
+                        left = seconds - (os.clock() - wentDown[folder])
+                    end
+                end
+                rows[#rows + 1] = {
+                    name = folder.Name,
+                    up = up,
+                    left = left and math.max(0, left),
+                    position = root and root.Position or spawnOf(folder.Name),
+                }
+            end
+        end
+    end
+    table.sort(rows, function(a, b)
+        if a.up ~= b.up then
+            return a.up
+        end
+        if (a.left ~= nil) ~= (b.left ~= nil) then
+            return a.left ~= nil
+        end
+        if a.left ~= b.left then
+            return a.left < b.left
+        end
+        return a.name < b.name
+    end)
+    return rows
+end
+
+local function updateBosses()
+    local rows = bosses()
+    local lines, upCount = {}, 0
+    for index, row in ipairs(rows) do
+        if row.up then
+            upCount += 1
+        end
+        if index <= ROWS then
+            local state = row.up and "UP now" or (row.left and ("back in " .. countdown(row.left)) or "down, respawn unknown")
+            lines[index] = string.format("%s  %s\n    %s", row.name, state, Where.text(row.position))
+        end
+    end
+    bossPanel.set(lines, #rows == 0 and "No boss is known to this server yet."
+        or string.format("%d of %d boss(es) up. Up first, then the soonest back.%s", upCount, #rows,
+            #rows > ROWS and string.format(" Showing %d.", ROWS) or ""))
+end
+
+Life.loop("timers:panels", 1, function()
+    updateClock()
+    updateBosses()
+end)
+
+return {}
+end
 __modules["main"] = function(use) -- src/games/slayers2/main.luau
 -- Entry point. Core systems first, then features in tab order, then settings (autoload last).
 
@@ -4358,6 +5482,9 @@ local FEATURES = {
     "features/skills",
     "features/boss",
     "features/guide",
+    "features/timers",
+    "features/locator",
+    "features/esp",
     "features/heal",
     "features/antidrown",
     "features/antisun",
