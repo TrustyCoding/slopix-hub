@@ -9,6 +9,8 @@ local PLACES = {
     [75556147183481] = "136406881576517", -- Minigames place (Ouwigahara dungeon)
     -- Ball VS Ball
     [96510596525082] = "96510596525082",
+    -- Ride A Pet
+    [124216119978534] = "124216119978534",
 }
 
 local genv = getgenv and getgenv() or _G
