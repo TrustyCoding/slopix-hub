@@ -1,4 +1,4 @@
--- Slopix Hub (Slayers 2), built 2026-09-29 18:08 UTC by build.py. Edit the files in src/, not this one.
+-- Slopix Hub (Slayers 2), built 2026-10-08 17:20 UTC by build.py. Edit the files in src/, not this one.
 local __modules, __cache, __loading = {}, {}, {}
 local function use(name)
     local cached = __cache[name]
@@ -1177,7 +1177,7 @@ return Ui.create({
         { "Guide", "book-open", "Fastest way to level, worked out for you" },
         { "Timers", "timer", "Day and night clock and boss respawns" },
         { "Locator", "map-pin", "A marker that points to any NPC, mob, shrine or training spot" },
-        { "ESP", "eye", "Name tags on mobs, bosses, NPCs, chests, loot and players" },
+        { "ESP", "eye", "Name tags on mobs, bosses, NPCs, chests, spider lilies, loot and players" },
         { "Farm", "swords", "Auto skills, auto heal, anti drown, anti sun and boss hunt timers" },
         { "Fishing", "fish", "Auto fishing" },
         { "Market", "store", "Black Marketer, shops and timed events" },
@@ -1825,7 +1825,8 @@ end)
 return {}
 end
 __modules["features/esp"] = function(use) -- src/games/slayers2/features/esp.luau
--- ESP tab: name tags on mobs, bosses, NPCs, chests, loot drops and players, seen through walls.
+-- ESP tab: name tags on mobs, bosses, NPCs, chests, spider lilies, loot drops and players, seen
+-- through walls.
 --
 -- Each tag is a BillboardGui adorned to a part that already exists (a rig's root, a chest's
 -- RootPart, a drop), kept in a folder of its own in the executor's GUI holder, so nothing is added
@@ -1835,6 +1836,9 @@ __modules["features/esp"] = function(use) -- src/games/slayers2/features/esp.lua
 --    mob is worth (core/npcdata), shown before your multiplier.
 --  * NPCs: workspace.Debree.Regions.<Region>.StationaryNpcs.<Name> (idle ones too).
 --  * Chests: workspace.Chests models, with ChestState and IsOpen; opened ones are left out.
+--  * Spider lilies (9 for the Muzan Quest): workspace.Debree["Spider Lily"] models with a
+--    "Pick Up" prompt, where the old Become a Demon feature picked them on its live run. No
+--    client script names them: the server spawns them.
 --  * Loot: parts tagged "LootDrop" that are yours to take (same rules as the game's own
 --    VisualBinder.isEligible).
 
@@ -1848,12 +1852,13 @@ local NpcData = use("core/npcdata")
 local Options = Ui.Options
 
 local EVERY = 0.25
-local CAP = { mobs = 40, bosses = 12, npcs = 30, chests = 30, loot = 30, players = 30 }
+local CAP = { mobs = 40, bosses = 12, npcs = 30, chests = 30, lilies = 30, loot = 30, players = 30 }
 local COLORS = {
     mobs = Color3.fromRGB(255, 150, 90),
     bosses = Color3.fromRGB(235, 64, 96),
     npcs = Color3.fromRGB(110, 200, 255),
     chests = Color3.fromRGB(255, 214, 90),
+    lilies = Color3.fromRGB(255, 95, 200),
     loot = Color3.fromRGB(150, 255, 150),
     players = Color3.fromRGB(255, 255, 255),
 }
@@ -1869,6 +1874,7 @@ local TOGGLES = {
     { "EspBosses", "Bosses", "bosses", "Bosses, with their health." },
     { "EspNpcs", "NPCs", "npcs", "Quest givers, shops and trainers that are streamed in." },
     { "EspChests", "Chests", "chests", "Chests that can still be opened (guards up is marked)." },
+    { "EspLilies", "Spider lilies", "lilies", "Spider Lilies to pick for Muzan's quest (it takes 9)." },
     { "EspLoot", "Loot drops", "loot", "Drops that are yours to pick up." },
     { "EspPlayers", "Players", "players", "Other players, with their health." },
 }
@@ -2051,6 +2057,26 @@ local function scanChests(root, range)
     show("chests", list)
 end
 
+local function scanLilies(root, range)
+    if not enabled("lilies") then
+        return
+    end
+    local debree = workspace:FindFirstChild("Debree")
+    local list = {}
+    for _, model in ipairs(debree and debree:GetChildren() or {}) do
+        if model.Name == "Spider Lily" and model:IsA("Model") then
+            local part = model.PrimaryPart or model:FindFirstChildWhichIsA("BasePart", true)
+            if part then
+                local distance = distanceTo(root, part)
+                if distance <= range then
+                    list[#list + 1] = { key = model, part = part, distance = distance, text = "Spider Lily" }
+                end
+            end
+        end
+    end
+    show("lilies", list)
+end
+
 -- Mirrors the game's own LootDrop VisualBinder.isEligible.
 local function mine(drop)
     local owner = drop:GetAttribute("DropOwnerUserId")
@@ -2112,6 +2138,7 @@ Life.loop("esp:tags", EVERY, function()
         scanMobs(root, range)
         scanNpcs(root, range)
         scanChests(root, range)
+        scanLilies(root, range)
         scanLoot(root, range)
         scanPlayers(root, range)
     end
@@ -2268,8 +2295,14 @@ group:AddToggle("AutoFish", {
     Tooltip = "Casts, reels and collects on repeat where you stand. Auto heal takes over while it drinks a potion and fishing resumes after.",
 })
 Ui.automation("AutoFish")
-group:AddLabel("Walk up to open water yourself first (the dock, a shore): it fishes where you stand. Uses your "
-    .. "equipped bait, if any. Catches are collected into your inventory.", true)
+group:AddToggle("FishStandStill", {
+    Text = "Stand still while fishing",
+    Default = true,
+    Tooltip = "While auto fishing runs, your movement keys, jump and camera turning no longer move your character, so nothing walks you off the spot and loses the line. Turn Auto fishing off to walk again.",
+})
+group:AddLabel("Walk up to open water yourself first (the dock, a shore): it fishes where you stand, and with "
+    .. "Stand still on you stay there until you turn it off. Uses your equipped bait, if any. Catches are "
+    .. "collected into your inventory.", true)
 
 -- Game plumbing --------------------------------------------------------------------------------
 local PortalEvent = Env.need(Env.ReplicatedStorage.CAM.Global.ServerClientPortal, "Event")
@@ -2427,6 +2460,69 @@ end
 
 local function never()
     return false
+end
+
+-- Standing still --------------------------------------------------------------------------------
+-- The server pins the character only while it casts and while a fish bites (a FishingReelPin
+-- welded to the root). While it waits for a bite you can walk, which moves you off the water
+-- target, and the rod's server script cancels the line outright when the root's CFrame is set
+-- while it is not pinned (its MoveWatch). So while fishing runs, the movement controls are off:
+-- the stock PlayerModule's controls, which carry keyboard, gamepad, touch and click-to-move
+-- (nothing else in the game switches them), and the character stops turning with the camera.
+local held = nil -- { controls, humanoid, autoRotate } while movement is locked
+
+local function playerControls()
+    local scripts = Env.LocalPlayer:FindFirstChildOfClass("PlayerScripts")
+    local module = scripts and scripts:FindFirstChild("PlayerModule")
+    if not module then
+        return nil
+    end
+    local ok, playerModule = pcall(require, module)
+    Env.elevate()
+    if not ok or type(playerModule) ~= "table" or type(playerModule.GetControls) ~= "function" then
+        return nil
+    end
+    local gotControls, controls = pcall(playerModule.GetControls, playerModule)
+    return gotControls and type(controls) == "table" and controls or nil
+end
+
+local function letGo()
+    if not held then
+        return
+    end
+    if held.controls then
+        pcall(held.controls.Enable, held.controls)
+    end
+    if held.humanoid and held.humanoid.Parent then
+        held.humanoid.AutoRotate = held.autoRotate
+    end
+    held = nil
+end
+
+-- Locks movement, again on every call: a respawn brings a new humanoid, and the controls switch
+-- controllers when your input type changes.
+local function holdStill()
+    if not Ui.on("FishStandStill") then
+        letGo()
+        return
+    end
+    held = held or {}
+    if held.controls == nil then
+        held.controls = playerControls() or false
+    end
+    if held.controls then
+        pcall(held.controls.Disable, held.controls)
+    end
+    local _, humanoid = Data.character()
+    if humanoid and held.humanoid ~= humanoid then
+        if held.humanoid and held.humanoid.Parent then
+            held.humanoid.AutoRotate = held.autoRotate
+        end
+        held.humanoid, held.autoRotate = humanoid, humanoid.AutoRotate
+    end
+    if humanoid then
+        humanoid.AutoRotate = false
+    end
 end
 
 -- Waits `seconds`; false when fishing has to stop first.
@@ -2877,6 +2973,7 @@ function activity.start()
 end
 
 function activity.step()
+    holdStill()
     local ok, fine, why, retry = pcall(fishOnce)
     Env.elevate()
     if ok and fine then
@@ -2902,6 +2999,7 @@ end
 
 function activity.stop()
     disconnectAll()
+    letGo()
     local equipped = Data.equipped()
     if equipped and fishingSlot and (equipped.Value == fishingSlot or equipped.Value == 0) then
         equipped.Value = 0
@@ -2911,6 +3009,15 @@ function activity.stop()
 end
 
 Scheduler.register(activity)
+
+-- Stand still switched mid-fishing applies now, not at the next cast.
+Ui.Toggles.FishStandStill:OnChanged(function()
+    if Scheduler.current == activity then
+        holdStill()
+    else
+        letGo()
+    end
+end)
 
 return Fishing
 end
