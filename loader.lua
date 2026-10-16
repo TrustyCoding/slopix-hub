@@ -13,6 +13,8 @@ local PLACES = {
     [124216119978534] = "124216119978534",
     -- Anime Dice
     [113290951185459] = "113290951185459",
+    -- Tap Simulator Reborn
+    [72858262610964] = "72858262610964",
 }
 
 local genv = getgenv and getgenv() or _G
