@@ -1,4 +1,4 @@
--- Slopix Hub (Tap Simulator), built 2026-10-16 18:51 UTC by build.py. Edit the files in src/, not this one.
+-- Slopix Hub (Tap Simulator), built 2026-10-17 12:37 UTC by build.py. Edit the files in src/, not this one.
 local __modules, __cache, __loading = {}, {}, {}
 local function use(name)
     local cached = __cache[name]
@@ -252,7 +252,7 @@ return Ui.create({
 })
 end
 __modules["features/craft"] = function(use) -- src/games/tapsim/features/craft.luau
--- Craft tab: the pet machines (Normal -> Golden -> Diamond -> Rainbow) and the potion machine.
+-- Craft tab: the pet machines (Normal -> Golden -> Diamond -> Rainbow). Potions are features/potions.
 --
 -- Golden and Diamond take same-name pets of the source tier and roll a chance that rises with how
 -- many go in (MachineConfig.Chances, plus the Golden mastery bonus, scaled by your enchant craft
@@ -287,7 +287,7 @@ local FALLBACK_CONFIG = {
     Shiny = { SourceTier = "Diamond", MinPets = 2, MaxQueue = 3, Durations = { 28800, 18000, 9000, 3600, 30 } },
 }
 
-local MachineConfig, Mastery, EnchantFormula, PotionRecipes, CraftAllPlan
+local MachineConfig, Mastery, EnchantFormula, CraftAllPlan
 do
     local okPlan, plan = Env.call(function()
         local module = RS.Shared.Pets:FindFirstChild("CraftAllPlan")
@@ -306,10 +306,6 @@ do
         return require(RS.Shared.Pets.EnchantFormula)
     end)
     EnchantFormula = okEnchant and formula or nil
-    local okPotions, potions = Env.call(function()
-        return require(RS.Shared.Items.PotionCraftConfig)
-    end)
-    PotionRecipes = okPotions and type(potions) == "table" and potions.Recipes or {}
 end
 
 -- Where each machine stands; a machine can stand in several places and the nearest one is used.
@@ -328,8 +324,6 @@ local MACHINES = {
         { model = { "Ts2Islands", "Shadow Realm", "Folder", "RainbowMachine" }, fallback = Vector3.new(90.7, 7677.6, -1933.5) },
     } },
 }
-local POTION_MACHINE = { "Map1", "PotionMachine" }
-local POTION_FALLBACK = Vector3.new(-354, -524, -12047) -- moved in the Oct 16 update
 local ORDER = { "Golden", "Diamond", "Shiny" } -- low tier first, so one pass chains upward
 
 local NEVER_FAIL, BEST_VALUE = "Never fail (fewest pets at 100%)", "Best value (fewest pets per success)"
@@ -534,16 +528,6 @@ local function hasWork(key, data)
     return nextBatch(key, (batchSize(key, data)), data) ~= nil
 end
 
-local function potionWork(data)
-    local boosts = type(data.Boosts) == "table" and data.Boosts or {}
-    for _, recipe in ipairs(PotionRecipes) do
-        if (tonumber(boosts[recipe.Input]) or 0) >= (recipe.Required or 3) then
-            return true
-        end
-    end
-    return false
-end
-
 -- Movement -------------------------------------------------------------------------------------
 
 local function root()
@@ -719,15 +703,6 @@ box:AddToggle("CraftReturn", {
     Default = true,
 })
 
-local potionBox = tab:AddGroupbox({ Side = "Right", Name = "Potions", IconName = "flask-conical" })
-potionBox:AddToggle("AutoCraftPotions", {
-    Text = "Auto upgrade potions",
-    Default = false,
-    Tooltip = "Turns 3 tier I potions into 1 tier II at the potion machine whenever you have enough.",
-})
-Ui.automation("AutoCraftPotions")
-local potionLabel = potionBox:AddLabel("Idle.", true)
-
 local statusBox = tab:AddGroupbox({ Side = "Right", Name = "Crafting", IconName = "activity" })
 local panel = Ui.panel(statusBox, 5)
 
@@ -756,7 +731,7 @@ end)
 
 -- Passes ---------------------------------------------------------------------------------------
 
-local session = { Golden = 0, Diamond = 0, Shiny = 0, failed = 0, potions = 0 }
+local session = { Golden = 0, Diamond = 0, Shiny = 0, failed = 0 }
 local lastNote = "Idle."
 local busy = false
 
@@ -894,41 +869,6 @@ local function runRainbow(manual)
     end
 end
 
-local function runPotions()
-    local data = Env.data()
-    if not data or not potionWork(data) then
-        return
-    end
-    local target = modelPivot(POTION_MACHINE) or POTION_FALLBACK
-    Ui.status = "Going to the potion machine"
-    pcall(function()
-        Env.LocalPlayer:RequestStreamAroundAsync(target, 10)
-    end)
-    Env.elevate()
-    teleport(CFrame.new(target + Vector3.new(0, 4, 6)))
-    Life.wait(0.6)
-    for _, recipe in ipairs(PotionRecipes) do
-        while Life.alive and Ui.on("AutoCraftPotions") do
-            local current = Env.data()
-            local boosts = current and type(current.Boosts) == "table" and current.Boosts or {}
-            if (tonumber(boosts[recipe.Input]) or 0) < (recipe.Required or 3) then
-                break
-            end
-            local ok, result = Env.invoke("PotionMachineService", "Craft", recipe.Output)
-            if ok and type(result) == "table" and result.Success then
-                session.potions += 1
-            elseif ok and type(result) == "table" and result.Error == "RateLimited" then
-                Life.wait(1)
-            else
-                potionLabel:SetText("Potion machine: " .. tostring(ok and type(result) == "table" and result.Error or "refused"))
-                return
-            end
-            Life.wait(0.3)
-        end
-    end
-    potionLabel:SetText(string.format("Upgraded %d potions this session.", session.potions))
-end
-
 local function runPass(manual)
     -- Auto hatch walking to its egg, or an enchant trip, owns the character until it is done.
     if busy or Ui.hatchMoving or Ui.travelling then
@@ -946,8 +886,7 @@ local function runPass(manual)
             end
         end
     end
-    local potions = Ui.on("AutoCraftPotions") and potionWork(data)
-    if #work == 0 and not potions then
+    if #work == 0 then
         return
     end
     busy = true
@@ -968,9 +907,6 @@ local function runPass(manual)
                     runTier(key, manual)
                 end
             end
-        end
-        if Ui.on("AutoCraftPotions") then
-            runPotions()
         end
     end)
     Env.elevate()
@@ -998,7 +934,7 @@ Life.spawn("craft:auto", function()
     local last = -math.huge
     while Life.alive do
         local every = math.clamp(tonumber(Options.CraftEvery.Value) or 10, 3, 120)
-        if (Ui.on("AutoCraft") or Ui.on("AutoCraftPotions")) and os.clock() - last >= every then
+        if Ui.on("AutoCraft") and os.clock() - last >= every then
             last = os.clock()
             runPass(false)
         end
@@ -1038,6 +974,468 @@ end)
 
 Life.onCleanup(function()
     Ui.travelling = false
+end)
+
+return {}
+end
+__modules["features/defense"] = function(use) -- src/games/tapsim/features/defense.luau
+-- Rewards tab: Pet Defense, the wave defense on Mushroom island (ColosseumService in the game's
+-- code). Pets walk three tracks toward your bone pit; a tap hits the one closest to it, and every
+-- few seconds a critical does 10x damage and pushes it back. Three escapes end the run. Every
+-- cleared wave raises the relic you win (a ring with click multiplier and other boosts) and adds
+-- treats, dials and, from wave 11, totems. One run every 30 minutes (Data.Colosseum.Cooldown).
+--
+-- A run is played through the game's own Pet Defense screen so you can watch it:
+--   start     the controller's WaveDefenseForceStart handler (its attemptStartGame: the arena door,
+--             StartWaveDefense, the board, the critical buttons). It needs you at the arena
+--             entrance, so the hub stands you there first; the server then puts you in the arena.
+--   taps      ColosseumClientAdapter.Signals "PlayerTapped", the game's own tap button: it picks
+--             the pet closest to the pit, keeps the game's 0.14s tap cooldown and shows the hit.
+--   critical  the critical button the game spawns every 5-10 seconds, pressed through its own
+--             handler.
+-- Without getconnections the same run is played on the remotes directly (StartWaveDefense,
+-- AttackOpponent, CriticalAttackOpponent), and the fight is not drawn.
+--
+-- When the run ends the pending reward is claimed: ClaimMinigameReward "replace" takes the new
+-- relic, "keep" keeps yours, and the treats and items come either way.
+
+local Env = use("core/env")
+local Life = use("shared/life")
+local Ui = use("core/ui")
+
+local Options = Ui.Options
+local RS = Env.ReplicatedStorage
+local tab = Ui.Tabs.Rewards
+
+local COOLDOWN = 1800
+local TAP_GAP = 0.15 -- the game's own cooldown is ClickCooldown - grace + 0.02 = 0.14s
+local RUN_LIMIT = 20 * 60
+local ENTRANCE_FALLBACK = Vector3.new(-170, 2020, -1795)
+local RING_ORDER = { BronzeRing = 1, SilverRing = 2, GoldRing = 3, PlatinumRing = 4, DiamondRing = 5 }
+
+local function load(...)
+    local path = { ... }
+    local ok, module = Env.call(function()
+        local node = RS
+        for _, part in ipairs(path) do
+            node = node:FindFirstChild(part)
+        end
+        return node and require(node)
+    end)
+    return ok and type(module) == "table" and module or nil
+end
+
+local World = load("Shared", "Minigames", "ColosseumWorld")
+local Adapter = load("Controllers", "Minigames", "ColosseumClientAdapter")
+
+local KEEP_BETTER, LET_ME = "Keep the better ring", "Let me choose"
+local box = tab:AddGroupbox({ Side = "Left", Name = "Pet Defense", IconName = "shield" })
+box:AddToggle("AutoDefense", {
+    Text = "Auto Pet Defense",
+    Default = false,
+    Tooltip = "Plays Pet Defense on Mushroom island every 30 minutes, to the last heart, and comes back. Auto hatch pauses while a run lasts (a few minutes).",
+})
+Ui.automation("AutoDefense", false)
+box:AddSlider("DefenseStopAt", {
+    Text = "Stop at wave",
+    Default = 0,
+    Min = 0,
+    Max = 60,
+    Rounding = 0,
+    Tooltip = "0 plays until the last heart. A lower stop banks the run sooner (the relic is rolled from the wave you reach).",
+})
+box:AddDropdown("DefenseRelic", {
+    Text = "New relic",
+    Values = { KEEP_BETTER, LET_ME },
+    Default = KEEP_BETTER,
+    Tooltip = "Keep the better ring: a higher ring wins (Bronze, Silver, Gold, Platinum, Diamond), then the bigger click multiplier. Let me choose leaves the game's reward screen open.",
+})
+box:AddToggle("DefenseReturn", {
+    Text = "Return to where I was",
+    Default = true,
+})
+local label = box:AddLabel("Auto Pet Defense is off.", true)
+
+local session = { runs = 0, best = 0, last = nil, note = "" }
+
+local function colosseum(data)
+    return data and type(data.Colosseum) == "table" and data.Colosseum or {}
+end
+
+local function readyIn(data)
+    local cooldown = tonumber(colosseum(data).Cooldown) or 0
+    return math.max(0, cooldown + COOLDOWN - os.time())
+end
+
+local function root()
+    local character = Env.LocalPlayer.Character
+    return character and character:FindFirstChild("HumanoidRootPart")
+end
+
+-- The game's own handler on one of its remotes (ReplicatedStorage code, not the hub's).
+local function gameHandler(signal)
+    if type(getconnections) ~= "function" then
+        return nil
+    end
+    local ok, connections = pcall(getconnections, signal)
+    for _, connection in ipairs(ok and type(connections) == "table" and connections or {}) do
+        local fine, source = pcall(function()
+            return connection.Function and debug.info(connection.Function, "s")
+        end)
+        if fine and type(source) == "string" and source:find("^ReplicatedStorage%.") then
+            return connection.Function
+        end
+    end
+    return nil
+end
+
+local function standAtEntrance()
+    local hrp = root()
+    if not hrp then
+        return false
+    end
+    local entrance = World and World.GetEntrance()
+    if not entrance then
+        pcall(function()
+            Env.LocalPlayer:RequestStreamAroundAsync(ENTRANCE_FALLBACK, 10)
+        end)
+        Env.elevate()
+        hrp.CFrame = CFrame.new(ENTRANCE_FALLBACK + Vector3.new(0, 4, 0))
+        local deadline = os.clock() + 8
+        while Life.alive and not entrance and os.clock() < deadline do
+            Life.wait(0.2)
+            entrance = World and World.GetEntrance()
+        end
+    end
+    if not entrance then
+        return false
+    end
+    hrp.AssemblyLinearVelocity = Vector3.zero
+    hrp.CFrame = entrance.CFrame + Vector3.new(0, 3, 0)
+    Life.wait(0.8)
+    return true
+end
+
+-- The game's Pet Defense screens. Its wave events show the wave board whether or not its own
+-- controller started the run, and only that controller hides it again, so a run it did not draw
+-- (the direct mode, a run cut short) would leave the board over the screen. Outside a run the
+-- game has these off.
+local SCREENS = { "WaveDefense", "WaveStartMessage" }
+local function clearScreens()
+    if Env.LocalPlayer:GetAttribute("ColosseumActive") == true then
+        return
+    end
+    local gui = Env.LocalPlayer:FindFirstChildOfClass("PlayerGui")
+    for _, name in ipairs(SCREENS) do
+        local screen = gui and gui:FindFirstChild(name)
+        if screen and screen:IsA("ScreenGui") and screen.Enabled then
+            screen.Enabled = false
+        end
+    end
+end
+
+-- The run, as the server tells it.
+local run
+local function newRun()
+    return { active = true, over = false, wave = 0, hearts = 3, opponents = {}, result = nil }
+end
+
+Life.spawn("defense:events", function()
+    local function on(name, handler)
+        Life.connect(Env.remote("ColosseumService", name).OnClientEvent, function(payload)
+            if run and type(payload) == "table" then
+                handler(payload)
+            end
+        end)
+    end
+    on("WaveDefenseOpponentSpawned", function(opponent)
+        if opponent.Id ~= nil then
+            run.opponents[opponent.Id] = opponent
+        end
+    end)
+    on("WaveDefenseOpponentDefeated", function(event)
+        run.opponents[event.OpponentId] = nil
+    end)
+    on("WaveDefenseHeartLost", function(event)
+        run.opponents[event.OpponentId] = nil
+        run.hearts = tonumber(event.Hearts) or run.hearts
+    end)
+    on("WaveDefenseWaveComplete", function(event)
+        run.wave = tonumber(event.WaveCompleted) or run.wave
+        run.hearts = tonumber(event.Hearts) or run.hearts
+    end)
+    on("WaveDefenseGameOver", function(event)
+        run.over = true
+        run.result = event
+    end)
+end)
+
+-- The pet nearest the pit, for the direct mode.
+local function urgent()
+    local now = workspace:GetServerTimeNow()
+    local best
+    for _, opponent in pairs(run.opponents) do
+        if (tonumber(opponent.SpawnTime) or 0) <= now
+            and (not best or (tonumber(opponent.ArrivalTime) or math.huge) < (tonumber(best.ArrivalTime) or math.huge)) then
+            best = opponent
+        end
+    end
+    return best
+end
+
+-- Presses the game's critical button if one is up: "pressed", "none", or "unreachable" when its
+-- handler cannot be read (the run then sends criticals itself).
+local function pressCritical()
+    local gui = Env.LocalPlayer:FindFirstChildOfClass("PlayerGui")
+    local hud = gui and gui:FindFirstChild("WaveDefense")
+    local criticals = hud and hud:FindFirstChild("WaveHUD") and hud.WaveHUD:FindFirstChild("Criticals")
+    local active = criticals and criticals:FindFirstChild("CriticalActive")
+    local button = active and active:FindFirstChild("Button")
+    if not button then
+        return "none"
+    end
+    local handler = gameHandler(button.Activated)
+    if handler then
+        Life.spawn("defense:critical", handler)
+        return "pressed"
+    end
+    return "unreachable"
+end
+
+local function attackDirect(critical)
+    local target = urgent()
+    if not target then
+        return
+    end
+    local ok, result = Env.invoke("ColosseumService", critical and "CriticalAttackOpponent" or "AttackOpponent", target.Id)
+    if ok and type(result) == "table" then
+        if result.Defeated then
+            run.opponents[target.Id] = nil
+        elseif result.NewArrivalTime then
+            target.ArrivalTime = result.NewArrivalTime
+        end
+    end
+end
+
+-- Plays one run to its end. Returns true when it was played.
+local function playRun()
+    local forceStart = gameHandler(Env.remote("ColosseumService", "WaveDefenseForceStart").OnClientEvent)
+    local visual = forceStart ~= nil and Adapter ~= nil and type(Adapter.Signals) == "table"
+    run = newRun()
+    if visual then
+        Life.spawn("defense:start", forceStart)
+        local deadline = os.clock() + 15
+        while Life.alive and os.clock() < deadline and Env.LocalPlayer:GetAttribute("ColosseumActive") ~= true do
+            Life.wait(0.2)
+        end
+        if Env.LocalPlayer:GetAttribute("ColosseumActive") ~= true then
+            session.note = "The game did not start the run."
+            run = nil
+            return false
+        end
+    else
+        local ok, start = Env.invoke("ColosseumService", "StartWaveDefense")
+        if not ok or type(start) ~= "table" or start.Error or start.OnCooldown then
+            session.note = "Start refused: " .. tostring(type(start) == "table" and (start.Error or "on cooldown") or start)
+            run = nil
+            return false
+        end
+        run.hearts = tonumber(start.Hearts) or 3
+        for _, opponent in ipairs(type(start.PendingSpawns) == "table" and start.PendingSpawns or {}) do
+            if opponent.Id ~= nil then
+                run.opponents[opponent.Id] = opponent
+            end
+        end
+    end
+    Ui.status = "Playing Pet Defense"
+    local started = os.clock()
+    local nextCritical = os.clock() + 5 + math.random() * 3
+    local ownCriticals = not visual
+    while Life.alive and not run.over and os.clock() - started < RUN_LIMIT do
+        local stopAt = tonumber(Options.DefenseStopAt.Value) or 0
+        if not Ui.on("AutoDefense") or (stopAt > 0 and run.wave >= stopAt) then
+            Env.invoke("ColosseumService", "EndWaveDefense")
+            break
+        end
+        if visual then
+            Env.call(Adapter.Signals.Fire, "PlayerTapped")
+            if pressCritical() == "unreachable" then
+                ownCriticals = true
+            end
+        end
+        if ownCriticals and os.clock() >= nextCritical then
+            nextCritical = os.clock() + 5 + math.random() * 3
+            attackDirect(true)
+        elseif not visual then
+            attackDirect(false)
+        end
+        if not visual then
+            clearScreens() -- a board with no pets on it is only in the way
+        end
+        Life.wait(TAP_GAP)
+    end
+    if not run.over and os.clock() - started >= RUN_LIMIT then
+        Env.invoke("ColosseumService", "EndWaveDefense")
+    end
+    local deadline = os.clock() + 8
+    while Life.alive and not run.over and os.clock() < deadline do
+        Life.wait(0.2)
+    end
+    local reached = tonumber(type(run.result) == "table" and run.result.WavesCompleted) or run.wave
+    session.runs += 1
+    session.best = math.max(session.best, reached)
+    session.last = reached
+    if not visual then
+        Env.invoke("ColosseumService", "ReturnFromArena")
+    end
+    run = nil
+    return true
+end
+
+-- A ring's worth: its tier first, then its click multiplier, then everything else it gives.
+local function ringScore(relic)
+    if type(relic) ~= "table" then
+        return -1
+    end
+    local click, rest = 0, 0
+    for _, boost in ipairs(type(relic.Boosts) == "table" and relic.Boosts or {}) do
+        local value = tonumber(boost.Value) or 0
+        if boost.Type == "ClickMultiplier" then
+            click += value
+        else
+            rest += value
+        end
+    end
+    return (RING_ORDER[relic.Name] or 0) * 1000 + click * 100 + rest
+end
+
+local function claimReward()
+    if Options.DefenseRelic.Value == LET_ME then
+        return
+    end
+    local deadline = os.clock() + 10
+    local pending
+    repeat
+        pending = colosseum(Env.data()).PendingReward
+        if not pending then
+            Life.wait(0.3)
+        end
+    until pending or not Life.alive or os.clock() > deadline
+    if type(pending) ~= "table" then
+        return
+    end
+    local current = colosseum(Env.data()).Relic
+    local choice = ringScore(pending.NewRelic) > ringScore(current) and "replace" or "keep"
+    local ok, result = Env.invoke("ColosseumService", "ClaimMinigameReward", choice)
+    if ok and result then
+        local relic = type(pending.NewRelic) == "table" and pending.NewRelic.Name or "relic"
+        session.note = choice == "replace" and ("Took the new " .. tostring(relic) .. ".")
+            or ("Kept your ring over the new " .. tostring(relic) .. ".")
+    else
+        session.note = "Reward claim refused; it is waiting in the game's reward screen."
+    end
+end
+
+local busy = false
+local function trip()
+    if busy or Ui.hatchMoving or Ui.travelling then
+        return
+    end
+    busy = true
+    Ui.travelling = "defense"
+    local settle = os.clock() + 6
+    while Ui.hatchInFlight and os.clock() < settle do
+        Life.wait(0.05)
+    end
+    local hrp = root()
+    local home = hrp and hrp.CFrame
+    local ok, err = pcall(function()
+        Ui.status = "Going to Pet Defense"
+        if not standAtEntrance() then
+            session.note = "Could not reach the Pet Defense arena."
+            return
+        end
+        if playRun() then
+            Life.wait(3) -- the game's own end screen and its trip out of the arena
+            claimReward()
+        end
+    end)
+    Env.elevate()
+    if not ok then
+        Life.errors["defense:trip"] = tostring(err)
+        session.note = "Pet Defense error: " .. tostring(err)
+    end
+    run = nil
+    -- The game's end screen runs ~4s (banner, fade, its trip out of the arena); then nothing of the
+    -- run may stay on screen.
+    local settled = os.clock() + 6
+    while Life.alive and Env.LocalPlayer:GetAttribute("ColosseumActive") == true and os.clock() < settled do
+        Life.wait(0.2)
+    end
+    clearScreens()
+    if home and Ui.on("DefenseReturn") then
+        local back = root()
+        if back then
+            back.AssemblyLinearVelocity = Vector3.zero
+            back.CFrame = home
+        end
+    end
+    if Ui.status == "Playing Pet Defense" or Ui.status == "Going to Pet Defense" then
+        Ui.status = "Idle"
+    end
+    Ui.travelling = false
+    busy = false
+end
+
+local nextTry = 0
+Life.loop("defense:auto", 1, function()
+    local data = Env.data()
+    if not data then
+        return
+    end
+    -- Leftovers from a run that was not drawn (an older hub, a cut-short run) are cleared outside
+    -- a run, whether or not auto Pet Defense is on.
+    if not busy then
+        clearScreens()
+    end
+    local wait = readyIn(data)
+    local best = tonumber(colosseum(data).BestWave) or 0
+    local lines = {}
+    if run then
+        lines[1] = string.format("Wave %d, %d hearts left.", run.wave + 1, run.hearts)
+    elseif wait > 0 then
+        lines[1] = string.format("Next run in %d:%02d. Best wave %d.", wait // 60, wait % 60, best)
+    else
+        lines[1] = string.format("A run is ready. Best wave %d.", best)
+    end
+    if session.runs > 0 then
+        lines[#lines + 1] = string.format("%d runs this session, last reached wave %d.", session.runs, session.last or 0)
+    end
+    if session.note ~= "" then
+        lines[#lines + 1] = session.note
+    end
+    if not Ui.on("AutoDefense") then
+        label:SetText("Off. " .. table.concat(lines, "\n"))
+        return
+    end
+    label:SetText(table.concat(lines, "\n"))
+    -- A reward left from an earlier run (or one played by hand) is claimed where you stand.
+    if colosseum(data).PendingReward and not busy and not run and Options.DefenseRelic.Value ~= LET_ME
+        and os.clock() >= nextTry then
+        nextTry = os.clock() + 30
+        Life.spawn("defense:claim", claimReward)
+        return
+    end
+    if wait == 0 and not busy and os.clock() >= nextTry and not colosseum(data).PendingReward then
+        nextTry = os.clock() + 60 -- a refused start is not retried at once
+        Life.spawn("defense:trip", trip)
+    end
+end)
+
+Life.onCleanup(function()
+    if busy then
+        Ui.travelling = false
+    end
 end)
 
 return {}
@@ -2437,6 +2835,518 @@ end)
 
 return {}
 end
+__modules["features/mining"] = function(use) -- src/games/tapsim/features/mining.luau
+-- Rewards tab: the mine under Crystal Cave (MiningService). A 20 x 20 x 25 block mine per player,
+-- fresh every day. Ores fill your bag; selling them gives mining coins, which buy better pickaxes
+-- and bags and, in the daily shop, packs of real Coins and Gems. Clearing 25/50/75/100% of the
+-- mine pays milestone Coins and Gems once a day (MiningConfig.Milestones).
+--
+-- Everything goes through the game's own mine so it shows as you would play it:
+--   enter   standing in the portal makes the game's MiningController travel in (Enter) and draw
+--           the mine;
+--   mine    the controller's TouchTapInWorld handler is the game's "tap a block" input: the camera
+--           is pointed at the chosen block for that one call and put back, and the game aims,
+--           checks reach, sight and pickaxe power, sends Hit and breaks the block on screen;
+--   pets    your equipped pets mine blocks near you by themselves (the server's PetMine), which is
+--           most of the speed;
+--   sell    standing on the Sell pad makes the game sell the bag;
+--   shop    Purchase("BuyTool" | "BuyStorage", name) and DailyBuy(id) on their pads;
+--   leave   the Exit pad.
+-- Without getconnections the hub sends Hit itself, and broken blocks are not removed on screen
+-- until the mine is redrawn.
+
+local Env = use("core/env")
+local Life = use("shared/life")
+local Ui = use("core/ui")
+
+local Options = Ui.Options
+local RS = Env.ReplicatedStorage
+local UserInputService = game:GetService("UserInputService")
+local tab = Ui.Tabs.Rewards
+
+local function load(...)
+    local path = { ... }
+    local ok, module = Env.call(function()
+        local node = RS
+        for _, part in ipairs(path) do
+            node = node:FindFirstChild(part)
+        end
+        return node and require(node)
+    end)
+    return ok and type(module) == "table" and module or nil
+end
+
+local MiningWorld = load("Shared", "Minigames", "Mining", "MiningWorld")
+local MiningConfig = load("Shared", "Minigames", "Mining", "MiningConfig")
+local DailyShop = load("Shared", "Minigames", "Mining", "DailyShop")
+
+local CRYSTAL_CAVE = Vector3.new(-53, 5445, -1992)
+local SKIP_SECONDS = 60
+local DAILY_ALL, DAILY_COINS, DAILY_GEMS, DAILY_OFF = "Coins and Gems packs", "Coins packs", "Gems packs", "Off"
+
+local box = tab:AddGroupbox({ Side = "Right", Name = "Mine", IconName = "pickaxe" })
+box:AddToggle("AutoMine", {
+    Text = "Auto mine",
+    Default = false,
+    Tooltip = "Goes into the Crystal Cave mine and mines with you and your pets, selling whenever the bag is full. Auto hatch and other trips wait while it runs; turn it off to come back.",
+})
+Ui.automation("AutoMine", false)
+box:AddToggle("MineUpgrades", {
+    Text = "Buy pickaxes and bags",
+    Default = true,
+    Tooltip = "Spends mining coins on the next pickaxe or bag as soon as one is affordable. Better pickaxes break harder ore; the Copper Pickaxe is the only one that breaks Hardened Stone and the rare ores.",
+})
+box:AddDropdown("MineDaily", {
+    Text = "Daily shop",
+    Values = { DAILY_ALL, DAILY_COINS, DAILY_GEMS, DAILY_OFF },
+    Default = DAILY_ALL,
+    Tooltip = "Once every pickaxe and bag is bought, spare mining coins buy the daily shop's packs of real Coins or Gems (the Mining Legend title is never bought).",
+})
+local label = box:AddLabel("Auto mine is off.", true)
+
+local session = { sold = 0, earned = 0, bought = {}, note = "" }
+
+local function root()
+    local character = Env.LocalPlayer.Character
+    return character and character:FindFirstChild("HumanoidRootPart")
+end
+
+local function controller()
+    local module = RS:FindFirstChild("Controllers") and RS.Controllers:FindFirstChild("Minigames")
+    module = module and module:FindFirstChild("MiningController")
+    if not module then
+        return nil
+    end
+    local ok, result = Env.call(require, module)
+    return ok and type(result) == "table" and result or nil
+end
+
+local function mineState()
+    local mining = controller()
+    if not mining or type(mining.GetState) ~= "function" then
+        return nil
+    end
+    local ok, state = Env.call(mining.GetState, mining)
+    return ok and type(state) == "table" and state or nil
+end
+
+local function inMine()
+    return Env.LocalPlayer:GetAttribute("MiningActive") == true
+end
+
+local function teleport(cframe)
+    local hrp = root()
+    if hrp then
+        hrp.AssemblyLinearVelocity = Vector3.zero
+        hrp.CFrame = cframe
+    end
+end
+
+-- The game's own "tap a block" handler, once the mine's code has loaded.
+local tapHandler
+local function findTapHandler()
+    if tapHandler or type(getconnections) ~= "function" then
+        return tapHandler
+    end
+    local ok, connections = pcall(getconnections, UserInputService.TouchTapInWorld)
+    for _, connection in ipairs(ok and type(connections) == "table" and connections or {}) do
+        local fine, source = pcall(function()
+            return connection.Function and debug.info(connection.Function, "s")
+        end)
+        if fine and type(source) == "string" and source:find("MiningController") then
+            tapHandler = connection.Function
+        end
+    end
+    Env.elevate()
+    return tapHandler
+end
+
+local function enter()
+    if inMine() then
+        return true
+    end
+    pcall(function()
+        Env.LocalPlayer:RequestStreamAroundAsync(CRYSTAL_CAVE, 10)
+    end)
+    Env.elevate()
+    teleport(CFrame.new(CRYSTAL_CAVE))
+    local portal
+    local deadline = os.clock() + 10
+    repeat
+        Life.wait(0.3)
+        portal = MiningWorld and MiningWorld.Portal()
+    until portal or not Life.alive or os.clock() > deadline
+    if not portal then
+        session.note = "Could not find the mine portal on Crystal Cave."
+        return false
+    end
+    teleport(portal.CFrame)
+    deadline = os.clock() + 20
+    repeat
+        Life.wait(0.3)
+    until inMine() or not Life.alive or os.clock() > deadline
+    Life.wait(1.5) -- the game's fade and the first blocks being drawn
+    return inMine()
+end
+
+local function onPad(name, until_, seconds)
+    local pad = MiningWorld and MiningWorld.Part(name)
+    if not pad then
+        return false
+    end
+    teleport(pad.CFrame + Vector3.new(0, 4, 0))
+    local deadline = os.clock() + (seconds or 6)
+    repeat
+        Life.wait(0.3)
+    until not until_ or until_() or not Life.alive or os.clock() > deadline
+    return true
+end
+
+local function ask(name, ...)
+    local ok, result = Env.invoke("MiningService", name, ...)
+    if ok and type(result) == "table" and not result.Error then
+        return result
+    end
+    return nil, tostring(ok and type(result) == "table" and result.Error or result)
+end
+
+-- The next pickaxe or bag above what you use, if you can pay for it now.
+local function nextUpgrade(state)
+    if not MiningConfig then
+        return nil
+    end
+    local balance = tonumber(state.Balance) or 0
+    local best
+    for _, kind in ipairs({ "Tool", "Bag" }) do
+        local list = kind == "Tool" and MiningConfig.Tools or MiningConfig.Bags
+        local current = tonumber(kind == "Tool" and state.Tool or state.Backpack) or 1
+        local item = list[current + 1]
+        if item and (not best or item.Price < best.price) then
+            best = { kind = kind, name = item.Name, price = item.Price, affordable = item.Price <= balance }
+        end
+    end
+    return best
+end
+
+-- The dearest daily-shop pack of the chosen kind you can pay for, or nil.
+local dailySkip = {} -- id -> day it sold out for you
+local function nextDaily(state)
+    local pick = Options.MineDaily.Value
+    if not DailyShop or pick == DAILY_OFF then
+        return nil
+    end
+    local day = DailyShop.Day(os.time())
+    local offers = {}
+    local ok, rotating = Env.call(DailyShop.Rotating, day)
+    for _, offer in ipairs(ok and type(rotating) == "table" and rotating or {}) do
+        offers[#offers + 1] = offer
+    end
+    for _, offer in ipairs(DailyShop.PermanentOffers()) do
+        offers[#offers + 1] = offer
+    end
+    local balance = tonumber(state.Balance) or 0
+    local best
+    for _, offer in ipairs(offers) do
+        local kindOk = (offer.Kind == "Clicks" and pick ~= DAILY_GEMS) or (offer.Kind == "Gems" and pick ~= DAILY_COINS)
+        if kindOk and dailySkip[offer.Id] ~= day and (tonumber(offer.Price) or math.huge) <= balance
+            and (not best or offer.Price > best.Price) then
+            best = offer
+        end
+    end
+    return best, day
+end
+
+local function spend()
+    local state = mineState()
+    if not state then
+        return
+    end
+    if Ui.on("MineUpgrades") then
+        local upgrade = nextUpgrade(state)
+        while upgrade and upgrade.affordable and Life.alive do
+            onPad("Shop")
+            local result, why = ask("Purchase", upgrade.kind == "Tool" and "BuyTool" or "BuyStorage", upgrade.name)
+            if not result then
+                session.note = string.format("Could not buy the %s: %s.", upgrade.name, why)
+                return
+            end
+            session.bought[#session.bought + 1] = upgrade.name
+            session.note = "Bought the " .. upgrade.name .. "."
+            Life.wait(0.6)
+            state = mineState() or state
+            upgrade = nextUpgrade(state)
+        end
+        if upgrade then
+            return -- saving for the next upgrade before anything else
+        end
+    end
+    local offer, day = nextDaily(state)
+    while offer and Life.alive do
+        onPad("Daily")
+        local result, why = ask("DailyBuy", offer.Id)
+        if not result then
+            dailySkip[offer.Id] = day
+            session.note = string.format("Daily shop: %s (%s).", offer.Name, why)
+        else
+            session.bought[#session.bought + 1] = offer.Name
+            session.note = "Daily shop: bought a " .. offer.Name .. "."
+        end
+        Life.wait(0.6)
+        state = mineState() or state
+        offer, day = nextDaily(state)
+    end
+end
+
+local function sellAndSpend()
+    local before = mineState()
+    local balance = before and tonumber(before.Balance) or 0
+    onPad("Sell", function()
+        local state = mineState()
+        return state and (tonumber(state.Count) or 0) == 0
+    end, 8)
+    local after = mineState()
+    if after and (tonumber(after.Count) or 0) == 0 then
+        session.sold += 1
+        session.earned += math.max(0, (tonumber(after.Balance) or 0) - balance)
+    end
+    spend()
+end
+
+-- Mining ---------------------------------------------------------------------------------------
+
+local skipped = {} -- key -> skip until (os.clock)
+
+-- Ores at least this valuable are taken before plain rock wherever they are uncovered: Copper (20)
+-- and up. Dirt is worth 1, Stone 3, Coal 10; gems 250-650 (BlockStats).
+local ORE_VALUE = 20
+
+-- The block to mine: one the game has drawn (drawn blocks are the exposed ones near you) that your
+-- pickaxe can break and that has open space above it. The most valuable uncovered ore first, then
+-- plain rock top layers first (the mine is Dirt for 3 layers, Stone down to 20, Hardened Stone
+-- below), then the nearest.
+local function chooseTarget(state, marker)
+    local folder = workspace:FindFirstChild("LocalMiningBlocks")
+    if not folder or not MiningConfig then
+        return nil
+    end
+    local tool = MiningConfig.Tools[tonumber(state.Tool) or 1]
+    local power = tool and tool.Power or 1
+    local drawn = {}
+    for _, block in ipairs(folder:GetChildren()) do
+        if block.Name:match("^%d+:%d+:%d+$") then
+            drawn[block.Name] = block
+        end
+    end
+    local hrp = root()
+    local here = hrp and hrp.Position or marker.Position
+    local now = os.clock()
+    local best
+    local function better(candidate)
+        if not best then
+            return true
+        end
+        local oreA, oreB = candidate.value >= ORE_VALUE, best.value >= ORE_VALUE
+        if oreA ~= oreB then
+            return oreA
+        end
+        if oreA and candidate.value ~= best.value then
+            return candidate.value > best.value
+        end
+        if not oreA and candidate.y ~= best.y then
+            return candidate.y < best.y
+        end
+        return candidate.distance < best.distance
+    end
+    for key, block in pairs(drawn) do
+        if (skipped[key] or 0) <= now then
+            local x, y, z = key:match("^(%d+):(%d+):(%d+)$")
+            x, y, z = tonumber(x), tonumber(y), tonumber(z)
+            local above = y > 0 and MiningConfig.Key(x, y - 1, z) or nil
+            if not (above and drawn[above]) then
+                local ok, _, stats = pcall(MiningConfig.Ore, state.Seed, x, y, z)
+                if ok and stats and (tonumber(stats.pickaxeRequirement) or 0) <= power then
+                    local position = MiningConfig.Position(marker, x, y, z)
+                    local candidate = { key = key, x = x, y = y, z = z, position = position, block = block,
+                        health = tonumber(stats.health) or 10, value = tonumber(stats.value) or 0,
+                        distance = (position - here).Magnitude }
+                    if better(candidate) then
+                        best = candidate
+                    end
+                end
+            end
+        end
+    end
+    return best, tool
+end
+
+local function stillThere(target)
+    return target.block.Parent ~= nil and target.block.Name == target.key
+end
+
+-- One swing at the target through the game's own input, or the remote when that is out of reach.
+local function swing(state, target)
+    local handler = findTapHandler()
+    if handler then
+        local camera = workspace.CurrentCamera
+        local hrp = root()
+        if not (camera and hrp) then
+            return
+        end
+        local saved = camera.CFrame
+        camera.CFrame = CFrame.lookAt(hrp.Position + Vector3.new(0, 1.5, 0), target.position)
+        local center = camera.ViewportSize / 2
+        pcall(handler, Vector2.new(center.X, center.Y), false)
+        camera.CFrame = saved
+        Env.elevate()
+    else
+        Env.invoke("MiningService", "Hit", state.Id, target.x, target.y, target.z)
+    end
+end
+
+local function mineOne(state, marker)
+    local target, tool = chooseTarget(state, marker)
+    if not target then
+        return false
+    end
+    local stand = target.position + Vector3.new(0, MiningConfig.BlockSize + 1, 0)
+    local hrp = root()
+    if hrp and (hrp.Position - stand).Magnitude > 3 then
+        teleport(CFrame.new(stand))
+        Life.wait(0.2)
+    end
+    local damage = tool and tool.Damage or 1
+    local interval = tool and tool.Interval or 0.45
+    local swings = math.ceil(target.health / math.max(damage, 1)) + 4
+    for _ = 1, swings do
+        if not (Life.alive and Ui.on("AutoMine") and stillThere(target)) then
+            break
+        end
+        local current = mineState()
+        if current and (tonumber(current.Count) or 0) >= (tonumber(current.Capacity) or math.huge) then
+            return true -- the bag filled up mid-block
+        end
+        swing(state, target)
+        Life.wait(interval + 0.03)
+    end
+    if stillThere(target) then
+        skipped[target.key] = os.clock() + SKIP_SECONDS
+    end
+    return true
+end
+
+local busy = false
+local function run()
+    busy = true
+    Ui.travelling = "mining"
+    local settle = os.clock() + 6
+    while Ui.hatchInFlight and os.clock() < settle do
+        Life.wait(0.05)
+    end
+    local hrp = root()
+    local home = hrp and hrp.CFrame
+    local ok, err = pcall(function()
+        Ui.status = "Mining"
+        if not enter() then
+            session.note = session.note ~= "" and session.note or "Could not get into the mine."
+            return
+        end
+        local idle = 0
+        while Life.alive and Ui.on("AutoMine") do
+            if not inMine() and not enter() then
+                break
+            end
+            local state = mineState()
+            local marker = MiningWorld and MiningWorld.Marker()
+            if not (state and marker and state.Seed) then
+                Life.wait(0.5)
+            elseif (tonumber(state.Count) or 0) >= (tonumber(state.Capacity) or math.huge) then
+                sellAndSpend()
+            elseif not mineOne(state, marker) then
+                -- nothing drawn to mine right here: let the pets work and look again
+                idle += 1
+                Life.wait(1)
+                if idle % 10 == 0 then
+                    table.clear(skipped)
+                end
+            else
+                idle = 0
+            end
+        end
+        if inMine() then
+            if (tonumber((mineState() or {}).Count) or 0) > 0 then
+                sellAndSpend()
+            end
+            onPad("Exit", function()
+                return not inMine()
+            end, 12)
+        end
+    end)
+    Env.elevate()
+    if not ok then
+        Life.errors["mining:run"] = tostring(err)
+        session.note = "Mining error: " .. tostring(err)
+    end
+    Life.wait(1)
+    if home then
+        teleport(home)
+    end
+    if Ui.status == "Mining" then
+        Ui.status = "Idle"
+    end
+    Ui.travelling = false
+    busy = false
+end
+
+local function short(n)
+    for _, unit in ipairs({ { 1e6, "M" }, { 1e3, "K" } }) do
+        if n >= unit[1] then
+            return string.format("%.1f%s", n / unit[1], unit[2])
+        end
+    end
+    return tostring(math.floor(n))
+end
+
+Life.loop("mining:auto", 1, function()
+    local data = Env.data()
+    local mining = data and type(data.Mining) == "table" and data.Mining or {}
+    local state = inMine() and mineState() or nil
+    local lines = {}
+    local tools = MiningConfig and MiningConfig.Tools or {}
+    local bags = MiningConfig and MiningConfig.Bags or {}
+    local tool = tools[tonumber(mining.Tool) or 1]
+    local bag = bags[tonumber(mining.Backpack) or 1]
+    lines[1] = string.format("%s, %s. %s mining coins.", tool and tool.Name or "?", bag and bag.Name or "?",
+        short(tonumber(mining.Coins) or 0))
+    if state then
+        local total = tonumber(state.Total) or 10000
+        local mined = tonumber(state.Mined) or 0
+        lines[#lines + 1] = string.format("Mine %.1f%% cleared (%d / %d), bag %d/%d.", mined / total * 100, mined, total,
+            tonumber(state.Count) or 0, tonumber(state.Capacity) or 0)
+    end
+    if session.sold > 0 then
+        lines[#lines + 1] = string.format("%d sales this session for %s mining coins.", session.sold, short(session.earned))
+    end
+    if session.note ~= "" then
+        lines[#lines + 1] = session.note
+    end
+    if not Ui.on("AutoMine") then
+        label:SetText("Off. " .. table.concat(lines, "\n"))
+        return
+    end
+    label:SetText(table.concat(lines, "\n"))
+    if not busy and not Ui.travelling and not Ui.hatchMoving and MiningWorld and MiningConfig then
+        Life.spawn("mining:run", run)
+    end
+end)
+
+Life.onCleanup(function()
+    if busy then
+        Ui.travelling = false
+    end
+end)
+
+return {}
+end
 __modules["features/performance"] = function(use) -- src/games/tapsim/features/performance.luau
 -- Home tab, Performance: the shared performance mode (see shared/performance) plus Tap Simulator's
 -- own quality settings, which is where this game spends its frames: the hatch reveal that plays for
@@ -3124,6 +4034,410 @@ end)
 
 return {}
 end
+__modules["features/potions"] = function(use) -- src/games/tapsim/features/potions.luau
+-- Craft tab (right): the potion machine on Spawn, and drinking what it makes.
+--
+-- PotionMachineService (Shared.Items.PotionBrewConfig, PotionCraftConfig):
+--   Brew(name, slot)  starts a Coins, Luck or Gems Potion I in one of 3 slots. It takes 5 minutes
+--                     and costs PotionBrewConfig.GetPrice(rebirths) gems (1 + 5% of your rebirths).
+--   ClaimAll()        collects every finished slot.
+--   Craft(output)     merges 3 of a Potion I into its Potion II.
+-- All three answer { Success, Error } and refuse with "TooFar" unless you stand at the machine, so
+-- the machine is a trip like a craft: auto hatch pauses, one visit claims, merges and refills the
+-- slots, and you go back where you were.
+--
+-- BoostService.Use(name) drinks a potion from anywhere. Active boosts of one type add up
+-- (Shared.Items.BoostFormula sums every active potion's Multi), so each chosen potion is drunk
+-- again as soon as its own timer (Data.ActiveBoosts[name], > 0 while it runs) is out.
+
+local Env = use("core/env")
+local Life = use("shared/life")
+local Ui = use("core/ui")
+
+local Options = Ui.Options
+local RS = Env.ReplicatedStorage
+local tab = Ui.Tabs.Craft
+
+local function load(...)
+    local path = { ... }
+    local ok, module = Env.call(function()
+        local node = RS
+        for _, part in ipairs(path) do
+            node = node:FindFirstChild(part)
+        end
+        return node and require(node)
+    end)
+    return ok and type(module) == "table" and module or nil
+end
+
+local BrewConfig = load("Shared", "Items", "PotionBrewConfig")
+local CraftConfig = load("Shared", "Items", "PotionCraftConfig")
+local BoostConfig = load("Shared", "Items", "BoostConfig")
+
+local RECIPES = CraftConfig and CraftConfig.Recipes or {}
+local SLOTS = BrewConfig and BrewConfig.SlotCount or 3
+local BREWABLE = BrewConfig and BrewConfig.Potions or { "Coins Potion I", "Luck Potion I", "Gems Potion I" }
+local MACHINE = { "Map1", "PotionMachine" }
+local MACHINE_FALLBACK = Vector3.new(-354, -524, -12047) -- moved in the Oct 16 update
+
+-- Everything drinkable: the six potions first, then the rarer boosts you might hold.
+local DRINKABLE, DEFAULT_DRINKS = {}, {}
+do
+    local definitions = BoostConfig and BoostConfig.Definitions or {}
+    local potions, others = {}, {}
+    for name, def in pairs(definitions) do
+        if type(def) == "table" and (tonumber(def.Duration) or 0) > 0 then
+            if name:find("Potion") then
+                potions[#potions + 1] = name
+            elseif name == "Octo Incubator" or name == "Enchant Overclocker" then
+                others[#others + 1] = name
+            end
+        end
+    end
+    table.sort(potions)
+    table.sort(others)
+    for _, name in ipairs(potions) do
+        DRINKABLE[#DRINKABLE + 1] = name
+        DEFAULT_DRINKS[#DEFAULT_DRINKS + 1] = name
+    end
+    for _, name in ipairs(others) do
+        DRINKABLE[#DRINKABLE + 1] = name
+    end
+end
+
+local box = tab:AddGroupbox({ Side = "Right", Name = "Potions", IconName = "flask-conical" })
+box:AddToggle("AutoBrew", {
+    Text = "Auto brew potions",
+    Default = false,
+    Tooltip = "Keeps the potion machine's 3 slots brewing and collects each potion when it is done (5 minutes each). Each brew costs gems: 1 plus 5% of your rebirths.",
+})
+Ui.automation("AutoBrew")
+box:AddDropdown("BrewPicks", {
+    Text = "Brew these",
+    Values = BREWABLE,
+    Multi = true,
+    Default = BREWABLE,
+    Tooltip = "Each empty slot gets the chosen potion you have fewest of.",
+})
+box:AddToggle("AutoCraftPotions", {
+    Text = "Auto upgrade potions",
+    Default = false,
+    Tooltip = "Turns 3 tier I potions into 1 tier II at the potion machine whenever you have enough.",
+})
+Ui.automation("AutoCraftPotions")
+box:AddToggle("AutoDrink", {
+    Text = "Auto drink potions",
+    Default = false,
+    Tooltip = "Drinks each chosen potion again as soon as it runs out, from anywhere. Potions of the same kind add up, so a Coins I and a Coins II both count.",
+})
+Ui.automation("AutoDrink", true)
+box:AddDropdown("DrinkPicks", {
+    Text = "Drink these",
+    Values = #DRINKABLE > 0 and DRINKABLE or { "Coins Potion I" },
+    Multi = true,
+    Default = DEFAULT_DRINKS,
+    Tooltip = "Octo Incubator (hatch 8 at once) and Enchant Overclocker are here too, off by default.",
+})
+local label = box:AddLabel("Idle.", true)
+
+local session = { brewed = 0, claimed = 0, merged = 0, drunk = 0 }
+local note = ""
+
+local function boosts(data)
+    return type(data.Boosts) == "table" and data.Boosts or {}
+end
+
+local function slots(data)
+    local machine = type(data.PotionMachine) == "table" and data.PotionMachine or {}
+    return type(machine.Slots) == "table" and machine.Slots or {}
+end
+
+local function brewPrice(data)
+    if not BrewConfig then
+        return math.huge
+    end
+    local rebirths = tonumber(type(data.Statistics) == "table" and data.Statistics.Rebirths) or 0
+    local ok, price = Env.call(BrewConfig.GetPrice, rebirths)
+    return ok and tonumber(price) or math.huge
+end
+
+local function gems(data)
+    return tonumber(type(data.Currencies) == "table" and data.Currencies.Gems) or 0
+end
+
+-- What a visit to the machine would do now: finished slots, empty slots it can fill, merges.
+local function machineWork(data)
+    local ready, empty = 0, 0
+    local now = os.time()
+    for slot = 1, SLOTS do
+        local entry = slots(data)[tostring(slot)]
+        if type(entry) ~= "table" then
+            empty += 1
+        elseif (tonumber(entry.ReadyAt) or math.huge) <= now then
+            ready += 1
+        end
+    end
+    local brew = Ui.on("AutoBrew") and next(Options.BrewPicks.Value or {}) ~= nil
+    local work = {
+        claim = brew and ready > 0,
+        fill = brew and empty > 0 and gems(data) >= brewPrice(data),
+        merge = false,
+    }
+    if Ui.on("AutoCraftPotions") then
+        local owned = boosts(data)
+        for _, recipe in ipairs(RECIPES) do
+            if (tonumber(owned[recipe.Input]) or 0) >= (recipe.Required or 3) then
+                work.merge = true
+            end
+        end
+    end
+    return work, ready, empty
+end
+
+-- The chosen brewable potion you hold the fewest of, counting what is already brewing.
+local function nextBrew(data)
+    local picks = Options.BrewPicks.Value or {}
+    local counts = {}
+    for name, count in pairs(boosts(data)) do
+        counts[name] = tonumber(count) or 0
+    end
+    for _, entry in pairs(slots(data)) do
+        if type(entry) == "table" and entry.Name then
+            counts[entry.Name] = (counts[entry.Name] or 0) + 1
+        end
+    end
+    local best, fewest
+    for _, name in ipairs(BREWABLE) do
+        if picks[name] and (not best or (counts[name] or 0) < fewest) then
+            best, fewest = name, counts[name] or 0
+        end
+    end
+    return best
+end
+
+local function root()
+    local character = Env.LocalPlayer.Character
+    return character and character:FindFirstChild("HumanoidRootPart")
+end
+
+local function machinePosition()
+    local node = workspace
+    for _, name in ipairs(MACHINE) do
+        node = node and node:FindFirstChild(name)
+    end
+    local ok, pivot = false, nil
+    if node then
+        ok, pivot = pcall(node.GetPivot, node)
+    end
+    return ok and pivot.Position or MACHINE_FALLBACK
+end
+
+local function ask(name, ...)
+    local ok, result = Env.invoke("PotionMachineService", name, ...)
+    if ok and type(result) == "table" and result.Error == "RateLimited" then
+        Life.wait(1)
+        ok, result = Env.invoke("PotionMachineService", name, ...)
+    end
+    if ok and type(result) == "table" and result.Success then
+        return result
+    end
+    return nil, tostring(ok and type(result) == "table" and result.Error or result)
+end
+
+local function atMachine()
+    local data = Env.data()
+    if not data then
+        return
+    end
+    local work, ready = machineWork(data)
+    if work.claim then
+        local claimed, why = ask("ClaimAll")
+        if claimed then
+            session.claimed += ready
+        else
+            note = "Collect refused: " .. why .. "."
+        end
+        Life.wait(0.4)
+    end
+    if Ui.on("AutoCraftPotions") then
+        for _, recipe in ipairs(RECIPES) do
+            while Life.alive and Ui.on("AutoCraftPotions") do
+                local current = Env.data()
+                if not current or (tonumber(boosts(current)[recipe.Input]) or 0) < (recipe.Required or 3) then
+                    break
+                end
+                local merged, why = ask("Craft", recipe.Output)
+                if not merged then
+                    note = "Upgrade refused: " .. why .. "."
+                    break
+                end
+                session.merged += 1
+                Life.wait(0.3)
+            end
+        end
+    end
+    if Ui.on("AutoBrew") then
+        for slot = 1, SLOTS do
+            local current = Env.data()
+            if not current then
+                break
+            end
+            if type(slots(current)[tostring(slot)]) ~= "table" then
+                local potion = nextBrew(current)
+                if not potion then
+                    break
+                end
+                if gems(current) < brewPrice(current) then
+                    note = "Not enough gems to brew."
+                    break
+                end
+                local brewed, why = ask("Brew", potion, slot)
+                if not brewed then
+                    note = "Brew refused: " .. why .. "."
+                    break
+                end
+                session.brewed += 1
+                Life.wait(0.4)
+            end
+        end
+    end
+end
+
+local busy = false
+local function trip()
+    if busy or Ui.hatchMoving or Ui.travelling then
+        return
+    end
+    busy = true
+    Ui.travelling = "potions"
+    local settle = os.clock() + 6
+    while Ui.hatchInFlight and os.clock() < settle do
+        Life.wait(0.05)
+    end
+    local hrp = root()
+    local home = hrp and hrp.CFrame
+    local ok, err = pcall(function()
+        Ui.status = "At the potion machine"
+        local target = machinePosition()
+        pcall(function()
+            Env.LocalPlayer:RequestStreamAroundAsync(target, 10)
+        end)
+        Env.elevate()
+        local here = root()
+        if not here then
+            return
+        end
+        here.AssemblyLinearVelocity = Vector3.zero
+        here.CFrame = CFrame.new(target + Vector3.new(0, 4, 6))
+        Life.wait(0.6)
+        atMachine()
+    end)
+    Env.elevate()
+    if not ok then
+        Life.errors["potions:trip"] = tostring(err)
+        note = "Potion trip error: " .. tostring(err)
+    end
+    -- The Craft tab's "Return to where I was" covers every machine trip.
+    if home and (not Ui.Toggles.CraftReturn or Ui.on("CraftReturn")) then
+        local back = root()
+        if back then
+            back.AssemblyLinearVelocity = Vector3.zero
+            back.CFrame = home
+        end
+    end
+    if Ui.status == "At the potion machine" then
+        Ui.status = "Idle"
+    end
+    Ui.travelling = false
+    busy = false
+end
+
+local nextTrip = 0
+Life.loop("potions:machine", 2, function()
+    if not (Ui.on("AutoBrew") or Ui.on("AutoCraftPotions")) or busy or os.clock() < nextTrip then
+        return
+    end
+    local data = Env.data()
+    if not data then
+        return
+    end
+    local work = machineWork(data)
+    if work.claim or work.fill or work.merge then
+        nextTrip = os.clock() + 15 -- one visit at a time, and a refused one is not retried at once
+        Life.spawn("potions:trip", trip)
+    end
+end)
+
+-- Drinking --------------------------------------------------------------------------------------
+
+local drinkRefused = {} -- name -> retry after (os.clock)
+Life.loop("potions:drink", 2, function()
+    if not Ui.on("AutoDrink") then
+        return
+    end
+    local data = Env.data()
+    if not data then
+        return
+    end
+    local owned = boosts(data)
+    local active = type(data.ActiveBoosts) == "table" and data.ActiveBoosts or {}
+    local picks = Options.DrinkPicks.Value or {}
+    for _, name in ipairs(DRINKABLE) do
+        if picks[name] and (tonumber(owned[name]) or 0) > 0 and not ((tonumber(active[name]) or 0) > 0)
+            and (drinkRefused[name] or 0) <= os.clock() then
+            local ok, result = Env.invoke("BoostService", "Use", name)
+            if ok and type(result) == "table" and result.Success then
+                session.drunk += 1
+                note = "Drank " .. name .. "."
+            else
+                drinkRefused[name] = os.clock() + 30
+                note = string.format("Could not drink %s: %s.", name,
+                    tostring(ok and type(result) == "table" and result.Error or result))
+            end
+            Life.wait(0.5)
+        end
+    end
+end)
+
+-- Panel -----------------------------------------------------------------------------------------
+
+Life.loop("potions:panel", 1, function()
+    local data = Env.data()
+    if not data then
+        return
+    end
+    local now = os.time()
+    local parts = {}
+    for slot = 1, SLOTS do
+        local entry = slots(data)[tostring(slot)]
+        if type(entry) ~= "table" then
+            parts[#parts + 1] = "empty"
+        else
+            local left = (tonumber(entry.ReadyAt) or now) - now
+            local short = tostring(entry.Name or "?"):gsub(" Potion", "")
+            parts[#parts + 1] = left > 0 and string.format("%s %d:%02d", short, left // 60, left % 60)
+                or (short .. " ready")
+        end
+    end
+    local lines = {
+        "Slots: " .. table.concat(parts, ", "),
+        string.format("This session: %d brewed, %d collected, %d upgraded, %d drunk", session.brewed,
+            session.claimed, session.merged, session.drunk),
+    }
+    if note ~= "" then
+        lines[#lines + 1] = note
+    end
+    label:SetText(table.concat(lines, "\n"))
+end)
+
+Life.onCleanup(function()
+    if busy then
+        Ui.travelling = false
+    end
+end)
+
+return {}
+end
 __modules["features/rewards"] = function(use) -- src/games/tapsim/features/rewards.luau
 -- Rewards tab: everything the game hands out for free. Offline earnings, finished quests, tap
 -- chests and the event spin wheel. Each claim is the game's own remote, fired only when the data
@@ -3600,9 +4914,10 @@ __modules["features/tap"] = function(use) -- src/games/tapsim/features/tap.luau
 --
 -- A tap is TapService.TapRequested { Auto, ClientSequence, Source }: the server credits coins for
 -- each one at the player's current tap power, so firing them on a timer is the whole trick. Source
--- names what was pressed ("button" is the tap button, as the game's own client sends it). The rate
--- is capped and jittered a little because the game runs an abuse checker and a real player's taps
--- are never perfectly periodic.
+-- names what was pressed ("button" is the tap button, as the game's own client sends it). The
+-- server counts at most one tap per GameConfig.ManualTapInterval (0.1s) and drops the rest, so the
+-- rate tops out at 10 a second, and the gaps are only ever stretched by the jitter, never shortened
+-- below that interval (a real player's taps are never perfectly periodic either).
 
 local Env = use("core/env")
 local Life = use("shared/life")
@@ -3613,6 +4928,18 @@ local tab = Ui.Tabs.Tapping
 
 -- Auto tap -------------------------------------------------------------------------------------
 
+local MIN_GAP = 0.1
+do
+    local ok, config = Env.call(function()
+        return require(Env.ReplicatedStorage.Shared.Core.GameConfig)
+    end)
+    local interval = ok and type(config) == "table" and tonumber(config.ManualTapInterval)
+    if interval and interval > 0 then
+        MIN_GAP = interval
+    end
+end
+local MAX_RATE = math.max(1, math.floor(1 / MIN_GAP + 1e-6))
+
 local tapBox = tab:AddGroupbox({ Side = "Left", Name = "Auto tap", IconName = "hand" })
 tapBox:AddToggle("AutoTap", {
     Text = "Auto tap",
@@ -3622,23 +4949,48 @@ tapBox:AddToggle("AutoTap", {
 Ui.automation("AutoTap", true)
 tapBox:AddSlider("TapRate", {
     Text = "Taps per second",
-    Default = 18,
+    Default = MAX_RATE,
     Min = 1,
-    Max = 35,
+    Max = MAX_RATE,
     Rounding = 0,
     Suffix = "/s",
-    Tooltip = "Higher earns faster. Very high rates look less human; the game runs an abuse checker.",
+    Tooltip = string.format("The server counts at most %d taps a second and throws faster ones away.", MAX_RATE),
 })
 local tapLabel = tapBox:AddLabel("Auto tap is off.", true)
 
-local sequence = 0
+-- The server only takes a tap whose ClientSequence is above the last one it took from you this
+-- session, and drops the rest without a word. A reloaded hub that counted from 0 again was ignored
+-- until it caught up with the copy before it, so the count lives in the executor's globals and
+-- carries on across reloads. Every accepted tap is answered on TapResult; if a run of taps gets no
+-- answer (the game's own taps or another script got ahead), the count jumps forward until they do.
+local SEQUENCE_KEY = "__SlopixTapSequence"
+local STALL_TAPS, STALL_SECONDS = 25, 2
+local sequence = tonumber(Env.genv[SEQUENCE_KEY]) or 0
+local lastAnswer, unanswered, resyncs = os.clock(), 0, 0
+
+Life.spawn("tap:results", function()
+    local results = Env.remote("TapService", "TapResult")
+    Life.connect(results.OnClientEvent, function(result)
+        if type(result) == "table" and result.ClientSequence ~= nil then
+            lastAnswer, unanswered = os.clock(), 0
+        end
+    end)
+end)
+
 Life.spawn("tap:auto", function()
     local remote = Env.remote("TapService", "TapRequested")
     local session = 0
     while Life.alive do
         if Ui.on("AutoTap") then
+            if unanswered >= STALL_TAPS and os.clock() - lastAnswer > STALL_SECONDS then
+                sequence = math.max(sequence * 2, sequence + 1000000)
+                lastAnswer, unanswered = os.clock(), 0
+                resyncs += 1
+            end
             sequence += 1
             session += 1
+            unanswered += 1
+            Env.genv[SEQUENCE_KEY] = sequence
             Env.elevate()
             remote:FireServer({ Auto = false, ClientSequence = sequence, Source = "button" })
             -- Tapping runs under everything else; it only names itself when nothing else has.
@@ -3646,12 +4998,14 @@ Life.spawn("tap:auto", function()
                 Ui.status = "Auto tapping"
             end
             if session % 11 == 0 then
-                tapLabel:SetText(string.format("Tapped %d times this session.", session))
+                tapLabel:SetText(string.format("Tapped %d times this session.%s", session,
+                    os.clock() - lastAnswer > STALL_SECONDS and "\nThe server is not answering taps; re-syncing."
+                        or resyncs > 0 and string.format(" Re-synced %d times.", resyncs) or ""))
             end
-            local rate = math.clamp(tonumber(Options.TapRate.Value) or 18, 1, 35)
-            -- A little jitter so the gaps are not perfectly uniform.
-            local gap = 1 / rate
-            Life.wait(gap * (0.85 + math.random() * 0.3))
+            local rate = math.clamp(tonumber(Options.TapRate.Value) or MAX_RATE, 1, MAX_RATE)
+            -- Jitter only lengthens a gap: one under the server's interval is a tap thrown away.
+            local gap = math.max(1 / rate, MIN_GAP * 1.04)
+            Life.wait(gap * (1 + math.random() * 0.12))
         else
             if Ui.status == "Auto tapping" then
                 Ui.status = "Idle"
@@ -4167,10 +5521,13 @@ local FEATURES = {
     "features/treats",
     "features/enchant",
     "features/craft",
+    "features/potions",
     "features/skilltree",
     "features/rewards",
     "features/pickups",
     "features/dig",
+    "features/defense",
+    "features/mining",
 }
 
 local function load(name)
@@ -4747,7 +6104,9 @@ end
 function Life.wait(seconds)
     local deadline = os.clock() + seconds
     repeat
-        task.wait(math.min(0.1, seconds))
+        -- In slices of at most 0.1s so an unload is noticed, but never past the deadline: a full
+        -- 0.1s slice after a 0.11s wait's first one made it 0.2s.
+        task.wait(math.min(0.1, math.max(0, deadline - os.clock())))
     until not Life.alive or os.clock() >= deadline
     Env.elevate()
     return Life.alive
