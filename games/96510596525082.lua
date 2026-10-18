@@ -1,4 +1,4 @@
--- Slopix Hub (Ball VS Ball), built 2026-10-09 14:54 UTC by build.py. Edit the files in src/, not this one.
+-- Slopix Hub (Ball VS Ball), built 2026-10-18 13:51 UTC by build.py. Edit the files in src/, not this one.
 local __modules, __cache, __loading = {}, {}, {}
 local function use(name)
     local cached = __cache[name]
@@ -61,6 +61,7 @@ Env.Game, Env.loadModule = Env.modules(RS, {
     GameModeRegistry = service("GameModeRegistry"),
     CheckInService = service("CheckInService"),
     OnlineRewardConfig = service("OnlineRewardConfig"),
+    HalloweenCandyRules = service("HalloweenCandyRules"), -- which event is on, its end, the daily candy cap
     StatsCore = { "Engine", "Service", "BallBattleStatsService", "Core" },
     BattleConfig = { "BattleDemo", "BattleConfig" },
     BattleSimulation = { "BattleDemo", "BattleSimulation" },
@@ -142,6 +143,24 @@ function Env.invoke(name, ...)
     end
     Env.requestIssues[name] = nil
     return table.unpack(work.result, 1, work.result.n)
+end
+
+-- What kind of server this is: "standard" (3 HP tables), "twoVTwoServer" (2v2 tables) or
+-- "tradeServer", or nil until the game has said. Since the October 16 update each mode has its own
+-- servers and Quick Play seats you at whatever this one has. The game's ServerTeleport package
+-- keeps it as an attribute on its module; getServerType() waits for it, this does not.
+function Env.serverType()
+    local ok, kind = pcall(function()
+        for _, child in ipairs(Env.need(RS, "Packages", 10)._Index:GetChildren()) do
+            if child.Name:find("serverteleport", 1, true) then
+                local module = child:FindFirstChild("serverteleport")
+                return module and module:GetAttribute("serverType")
+            end
+        end
+        return nil
+    end)
+    Env.elevate()
+    return ok and type(kind) == "string" and kind or nil
 end
 
 -- The local player's saved data as the game's client sees it: Env.data("coins") -> 490.
@@ -288,6 +307,37 @@ function Limits.coins()
     return { day = day, dayMax = dayMax, week = week, weekMax = weekMax, capped = capped == true }
 end
 
+-- Halloween candy: every 3 HP or 2v2 match pays 1, won or lost, up to the event's daily cap (30),
+-- and keeps paying after the coin cap. Saved per event as halloweenCandy[eventId] =
+-- { balance, dayKey, dailyEarned }, where dailyEarned only counts for its own dayKey.
+-- { active, eventId, balance, today, dayMax, capped, endsIn }; active is false outside the event.
+function Limits.candy()
+    local ok, event, now = Env.call(function()
+        local now = Env.loadModule("TimeService").now()
+        return Env.loadModule("HalloweenCandyRules").active(Env.loadModule("Config").event.list, now), now
+    end)
+    if not ok or type(event) ~= "table" or type(event.cnId) ~= "string" then
+        return { active = false, balance = 0, today = 0, capped = true }
+    end
+    local dayMax = type(event.feature) == "table" and tonumber(event.feature["每日糖果上限"]) or nil
+    local saved = Env.data("halloweenCandy")
+    local mine = type(saved) == "table" and type(saved[event.cnId]) == "table" and saved[event.cnId] or {}
+    local okDay, dayKey = Env.call(function()
+        return Env.loadModule("TimeService").getDayKeyAt(now, 0)
+    end)
+    local today = okDay and mine.dayKey == dayKey and tonumber(mine.dailyEarned) or 0
+    local okLeft, left = Env.call(Env.loadModule("HalloweenCandyRules").remainingSeconds, event, now)
+    return {
+        active = true,
+        eventId = event.cnId,
+        balance = tonumber(mine.balance) or 0,
+        today = today,
+        dayMax = dayMax,
+        capped = dayMax ~= nil and today >= dayMax,
+        endsIn = okLeft and tonumber(left) or nil,
+    }
+end
+
 return Limits
 end
 __modules["core/match"] = function(use) -- src/games/ballvsball/core/match.luau
@@ -321,9 +371,11 @@ local Match = {
     aimStartedAt = 0, -- os.clock() when it did
     aimLocked = nil, -- { direction, at }
     teammateAim = nil, -- 2v2: { userId, direction, at } as the teammate drags their aim
+    liveAims = {}, -- per-userId { direction, at } from any aim-preview relay seen this round
     replays = {}, -- this match's replays by round
     lastReplay = nil,
     capped = false, -- the server said today's duel coins are used up
+    queueRefusal = nil, -- { reason, at } when Quick Play last said no
     status = nil, -- what auto duel is doing (set by features/duel, shown on Home)
     prediction = nil, -- the solver's reasoning for the round in play (set by features/duel)
     history = nil, -- recent rounds and whether their predictions held (set by features/duel)
@@ -377,6 +429,7 @@ local function newMatch()
     Match.offer, Match.selectList, Match.upgradeOffer = nil, nil, nil
     Match.ballLocked, Match.aimLocked = nil, nil
     Match.aimToken, Match.teammateAim = nil, nil
+    table.clear(Match.liveAims)
 end
 
 local function applyState(state)
@@ -391,6 +444,7 @@ local function applyState(state)
     if state.state == "Aiming" and (Match.phase() ~= "Aiming" or Match.aimToken == nil) then
         Match.aimToken, Match.aimLocked, Match.teammateAim = {}, nil, nil
         Match.aimStartedAt = os.clock()
+        table.clear(Match.liveAims)
     end
     Match.tableId = state.tableId
     if typeof(state.table) == "Instance" then
@@ -545,10 +599,18 @@ end)
 listen("DuelTableAimPreview", function(model, userId, direction)
     if model == Match.tableModel and typeof(direction) == "Vector2" then
         Match.teammateAim = { userId = userId, direction = direction, at = os.clock() }
+        if type(userId) == "number" then
+            Match.liveAims[userId] = { direction = direction, at = os.clock() }
+        end
     end
 end, true)
 listen("DuelCoinLimitReached", function()
     Match.capped = true
+end)
+-- Quick Play's answer: (false, "noAvailableTable") when this server has no free seat. The game
+-- then offers to move you to another server; auto duel only reports it.
+listen("DuelQuickPlayResult", function(ok, reason)
+    Match.queueRefusal = ok == false and { reason = tostring(reason or "refused"), at = os.clock() } or nil
 end)
 
 listen("DuelTableReplayStream", function(replay)
@@ -715,6 +777,17 @@ function Match.keepsAim(player)
     return typeof(a) == "Vector2" and typeof(b) == "Vector2" and (a - b).Magnitude < 1e-3
 end
 
+-- A direction relayed for `userId` this round, if fresher than `maxAge` seconds. The server relays
+-- a teammate's drag; this reads the same store for anyone, so an opponent direction is used the
+-- moment the server ever leaks one, and costs nothing while it never does.
+function Match.liveAim(userId, maxAge)
+    local found = Match.liveAims[userId]
+    if found and typeof(found.direction) == "Vector2" and (not maxAge or os.clock() - found.at <= maxAge) then
+        return found.direction
+    end
+    return nil
+end
+
 -- The arena the round is fought in: nil for the 1v1 board, the 2v2 board's layout otherwise.
 function Match.arena()
     local options = Match.lastReplay and Match.lastReplay.replayOptions
@@ -728,6 +801,19 @@ function Match.arena()
         return ok and arena or nil
     end
     return nil
+end
+
+function Match.excitementSelection()
+    local ok, result = Env.call(function()
+        local config = Env.loadModule("BattleConfig")
+        local replay = config and config.replay
+        if not replay then return nil end
+        return {
+            enabled = replay.enableExcitementSelection == true,
+            candidates = type(replay.candidateCount) == "number" and replay.candidateCount or 1,
+        }
+    end)
+    return ok and result or nil
 end
 
 Life.onCleanup(function()
@@ -955,6 +1041,32 @@ function Profile.likelyBall(userId)
     return best, bestCount / total
 end
 
+-- The opponent's balls as weights that sum to 1, most-played first, up to `max` entries, or nil
+-- when we have not seen them pick. Unlike likelyBall this keeps the spread, so a ball-switcher is
+-- met with a hedge across their likely balls rather than a bet on one.
+function Profile.ballDistribution(userId, max)
+    local found = players[tostring(userId)]
+    if not found then
+        return nil
+    end
+    local list, total = {}, 0
+    for ball, count in pairs(found.balls) do
+        list[#list + 1] = { roleId = ball, count = count }
+        total += count
+    end
+    if total == 0 then
+        return nil
+    end
+    table.sort(list, function(a, b)
+        return a.count > b.count
+    end)
+    local out = {}
+    for index = 1, math.min(max or #list, #list) do
+        out[index] = { roleId = list[index].roleId, weight = list[index].count / total }
+    end
+    return out
+end
+
 -- A line per opponent for the Intel tab. `name` is what to call them (their user id otherwise).
 function Profile.describe(player, name)
     local found = players[tostring(player.userId)]
@@ -1054,56 +1166,9 @@ function Sim.breathe()
     return Life.alive
 end
 
--- The shipped step() has no scratch-buffer argument. Keep its dispatch order, but reuse the
--- event container for this simulation only. Helpers still emit their event records; suppressing
--- those would require replacing combat code and could change deterministic results. No shared
--- module, table.insert, or live replay is patched.
-local function headlessStep(self, dt)
-    local events, state = self._headlessEvents, self.state
-    table.clear(events)
-    if state.finished then
-        return state
-    end
-    state.elapsed += dt
-    if self.multiEntityMode then
-        self:_stepMultiEntity(dt, events)
-    else
-        local blue, yellow = state.balls.Blue, state.balls.Yellow
-        self:_updateBallSkill(blue, yellow, dt, events)
-        self:_updateBallSkill(yellow, blue, dt, events)
-        if blue.vampireStateRemaining > 0 and type(blue.vampireAttachedTargetId) == "string"
-            and blue.vampireAttachedTargetId == yellow.id then
-            self:_moveAttachedPair(blue, yellow, dt, events)
-            self:_handlePoisonSpikeCollisions(blue, events)
-            self:_handlePoisonSpikeCollisions(yellow, events)
-        elseif yellow.vampireStateRemaining > 0 and type(yellow.vampireAttachedTargetId) == "string"
-            and yellow.vampireAttachedTargetId == blue.id then
-            self:_moveAttachedPair(yellow, blue, dt, events)
-            self:_handlePoisonSpikeCollisions(blue, events)
-            self:_handlePoisonSpikeCollisions(yellow, events)
-        else
-            self:_moveBall(blue, dt, events)
-            if not ((blue.traits.ChessPath and blue.traits.ChessPath.isActive)
-                or (blue.traits.OnePunch and blue.traits.OnePunch.phase == "Dash")) then
-                self:_handleWallBounce(blue, events)
-                self:_handlePoisonSpikeCollisions(blue, events)
-            end
-            self:_moveBall(yellow, dt, events)
-            if not ((yellow.traits.ChessPath and yellow.traits.ChessPath.isActive)
-                or (yellow.traits.OnePunch and yellow.traits.OnePunch.phase == "Dash")) then
-                self:_handleWallBounce(yellow, events)
-                self:_handlePoisonSpikeCollisions(yellow, events)
-            end
-        end
-        self:_updateThomas(blue, dt, events)
-        self:_updateThomas(yellow, dt, events)
-        self:_handleBallCollision(events)
-        self:_handleDiceCollisions(events)
-    end
-    self:_refreshAllBuffIndicators()
-    self:_updateWinner(events)
-    return state
-end
+-- Battles run on the game's own step(). A copy of it used to reuse one event table per battle, but
+-- the Halloween update added clean-up calls (CandySpill, GraveHaunt) to the real step that the copy
+-- missed, so rounds with the new balls were predicted on different rules. The copy saved about 1.5%.
 
 -- The battle config for an arena (nil: the 1v1 board), resolved once per board.
 local configs = {}
@@ -1188,8 +1253,6 @@ function Sim.run(seed, roles, directions, statLevels, traits, arena, deadline, v
     local cfg = battleConfig(arena)
     local ok, winner, elapsed = Env.call(function()
         local sim = Env.loadModule("BattleSimulation").new(cfg, seed, roles, traits, statLevels, directions)
-        sim._headlessEvents = {}
-        sim.step = headlessStep
         local dt = cfg.replay.fixedDt
         assert(type(dt) == "number" and dt > 0 and dt < math.huge, "invalid simulation time step")
         local duration = cfg.replay.maxDuration
@@ -1208,7 +1271,6 @@ function Sim.run(seed, roles, directions, statLevels, traits, arena, deadline, v
             end
         end
         local state = sim:getState()
-        table.clear(sim._headlessEvents)
         return state.finished and state.winner or "Draw", state.elapsed
     end)
     if not ok then
@@ -1330,7 +1392,7 @@ end
 -- coarse pass completed. Returns the best direction, its expected score (0..1), how many coarse
 -- directions win the first scenario, and who wins the first scenario with the best direction.
 function Sim.bestDirection(spec)
-    if not ready or not Life.alive then return nil, 0, 0, nil end
+    if not Sim.ready() or not Life.alive then return nil, 0, 0, nil end
     local started = os.clock()
     local coarseDeadline = started + (spec.deadline - started) * COARSE_SHARE
     -- Scenario 1 (the likely one) may use the whole think time; more only fit in the coarse share.
@@ -1638,6 +1700,10 @@ function Solver.solve(spec)
         return widened[1], full
     end
 
+    if widened[1].worst >= 1 then
+        return widened[1], full
+    end
+
     -- A winning window can be narrower than the gap between two coarse directions.
     local gap = math.pi * 2 / #spec.ours
     local finer = table.move(widened, 1, #widened, 1, {})
@@ -1809,7 +1875,7 @@ function Trajectory.show(player, direction, expected, detail)
     text.TextColor3, text.TextStrokeTransparency = color, 0.25
     text.Font, text.TextSize = Enum.Font.GothamBold, 18
     local outcome = expected > 0.60 and "Win" or expected >= 0.45 and "Even" or "Loss"
-    text.Text = string.format("Predicted: %s (%d%%)", outcome, math.floor(expected * 100 + 0.5))
+    text.Text = string.format("Predicted: %s (%d%%)", outcome, math.clamp(math.floor(expected * 100 + 0.5), 0, 100))
         .. (detail and "\n" .. detail or "")
     text.Parent = label
     return true
@@ -1842,7 +1908,7 @@ return Ui.create({
         { "Home", "house", "Welcome to Slopix Hub" },
         { "Duel", "swords", "Auto duel, ball picks and aim" },
         { "Intel", "radar", "Opponents, the aim solver and prediction accuracy" },
-        { "Rewards", "gift", "Daily quests, online rewards, check-in, mail and crates" },
+        { "Rewards", "gift", "Daily quests, Halloween candy, check-in, mail, fusion and crates" },
         { "Settings", "settings", "Menu, themes and configs" },
     },
 })
@@ -2138,7 +2204,10 @@ local TEAMMATE_SETTLE = 2
 local TEAMMATE_PICK_WAIT, PICK_THINK_RESERVE = 12, 8
 
 local MODES = { "1v1 (3 HP)", "2v2" }
-local QUEUE_REMOTE = { ["1v1 (3 HP)"] = "DuelQuickPlayRequest", ["2v2"] = "Duel2v2QuickPlayRequest" }
+-- Since the October 16 update each mode has its own servers (Env.serverType) and Quick Play seats
+-- you at whatever tables this server has, so the mode decides the server, not the request.
+local SERVER_FOR_MODE = { ["1v1 (3 HP)"] = "standard", ["2v2"] = "twoVTwoServer" }
+local SERVER_NAME = { standard = "1v1", twoVTwoServer = "2v2", tradeServer = "trading" }
 local STRATEGIES = { "Smart", "Best win rate", "First offered", "Selected inventory ball" }
 
 -- Ball names for the "Never pick" list.
@@ -2158,11 +2227,34 @@ auto:AddToggle("AutoDuel", {
     Tooltip = "Queues with Quick Play, picks your ball, aims, and queues again after each match.",
 })
 Ui.automation("AutoDuel")
-auto:AddDropdown("DuelMode", { Text = "Mode", Values = MODES, Default = MODES[1] })
+auto:AddDropdown("DuelMode", {
+    Text = "Mode", Values = MODES, Default = MODES[1],
+    Tooltip = "Each mode has its own servers now. On the wrong kind, auto duel waits: use Switch server below or the game's mode button.",
+})
 auto:AddToggle("StopAtCoinCap", {
     Text = "Stop at the coin cap",
     Default = true,
     Tooltip = "Duels pay nothing past the daily (and weekly) coin cap. Stops after the match in progress.",
+})
+auto:AddToggle("DuelForCandy", {
+    Text = "Keep going for Halloween candy",
+    Default = true,
+    Tooltip = "During the Halloween event every match still pays 1 candy past the coin cap, up to 30 a day. Stops at whichever cap comes last.",
+})
+auto:AddButton({
+    Text = "Switch server for this mode",
+    Func = function()
+        local wanted = SERVER_FOR_MODE[Options.DuelMode.Value]
+        if not wanted then return end
+        if Env.serverType() == wanted then
+            Ui.notify("Auto duel", "You are already on a " .. SERVER_NAME[wanted] .. " server.", 5)
+            return
+        end
+        -- The same request as the game's mode button; the server teleports you.
+        Env.event("ModeTeleportRequest"):FireServer(wanted)
+        Ui.notify("Auto duel", "Moving to a " .. SERVER_NAME[wanted] .. " server. Run the script again there if it does not load by itself.", 8)
+    end,
+    Tooltip = "Teleports you to a server for the selected mode, as the game's own mode button does.",
 })
 auto:AddButton({
     Text = "Leave the table",
@@ -2325,6 +2417,11 @@ aimBox:AddSlider("AimThinkTime", {
     Tooltip = "Longer tries more of the opponent's possible aims. Each simulation stalls the game for a moment.",
 })
 aimBox:AddLabel("From round 2 the seed is exact and every ball is locked, so the round is solved as a grid: your directions against theirs. You get the aim that beats the opponent you expect and the one that cannot be punished, and the Intel tab shows which is which.", true)
+aimBox:AddToggle("SeedResilience", {
+    Text = "Seed resilience",
+    Default = false,
+    Tooltip = "When the game uses excitement selection (BestOfN seeds) or recent seed predictions have failed, falls back to multi-seed sampling instead of trusting one exact seed. Enable when Intel shows seed accuracy dropping.",
+})
 
 local matchBox = tab:AddGroupbox({ Side = "Right", Name = "Match", IconName = "activity" })
 local panel = Ui.panel(matchBox, 6)
@@ -2536,33 +2633,66 @@ local function bySimulation(candidates, deadline, valid)
     end
     local options = Match.lastReplay.replayOptions or {}
     local arena = Match.arena()
-    local best, bestScore, bestWins = nil, -1, 0
-    local perBall = math.max(1, (deadline - os.clock()) / #candidates)
-    for _, ball in ipairs(candidates) do
-        local direction, expected, wins = Sim.bestDirection({
-            team = Match.team(),
-            roles = byTeam(players, function(player)
-                return player.me and ball or lastRole[player.userId]
-            end),
-            place = function(direction)
-                return byTeam(players, function(player)
-                    return player.me and direction or lastDirection[player.userId]
-                end)
-            end,
-            directions = Sim.directions(PICK_DIRECTIONS),
-            scenarios = { { seed = seed, weight = 1 } },
-            statLevels = options.statLevels,
-            traits = options.selectedSecondaryTraits,
-            arena = arena,
-            deadline = math.min(deadline, os.clock() + perBall),
-            valid = valid,
-        })
-        if not direction then return nil end
-        -- Can it win at all, how forgiving is the aim, and how good is the ball in general.
-        local score = (expected >= 1 and 0.6 or 0) + 0.25 * wins / PICK_DIRECTIONS + 0.15 * (Stats.winRate(ball) or 0.5)
-        if score > bestScore then
-            best, bestScore, bestWins = ball, score, wins
+
+    -- The opponent's ball next round is their last one if they keep it; for a switcher (a spread
+    -- ball history) hedge our pick across their likeliest balls instead of a single guess. A
+    -- concentrated history, no history, or a 2v2 leaves one hypothesis: the old behaviour exactly.
+    local opponent = soleOpponent(players)
+    local hypotheses = { { roles = lastRole, weight = 1 } }
+    if opponent then
+        local dist = Profile.ballDistribution(opponent.userId, 2)
+        if dist and #dist == 2 and dist[1].weight < 0.75 then
+            hypotheses = {}
+            for _, item in ipairs(dist) do
+                local roles = table.clone(lastRole)
+                roles[opponent.userId] = item.roleId
+                hypotheses[#hypotheses + 1] = { roles = roles, weight = item.weight }
+            end
         end
+    end
+
+    local best, bestScore, bestWins = nil, -1, 0
+    local perCall = math.max(1, (deadline - os.clock()) / (#candidates * #hypotheses))
+    for _, ball in ipairs(candidates) do
+        local weighted, weights, minWins = 0, 0, math.huge
+        for _, hypothesis in ipairs(hypotheses) do
+            local direction, expected, wins = Sim.bestDirection({
+                team = Match.team(),
+                roles = byTeam(players, function(player)
+                    return player.me and ball or hypothesis.roles[player.userId]
+                end),
+                place = function(direction)
+                    return byTeam(players, function(player)
+                        return player.me and direction or lastDirection[player.userId]
+                    end)
+                end,
+                directions = Sim.directions(PICK_DIRECTIONS),
+                scenarios = { { seed = seed, weight = 1 } },
+                statLevels = options.statLevels,
+                traits = options.selectedSecondaryTraits,
+                arena = arena,
+                deadline = math.min(deadline, os.clock() + perCall),
+                valid = valid,
+            })
+            if not direction then return nil end
+            weighted += expected * hypothesis.weight
+            weights += hypothesis.weight
+            minWins = math.min(minWins, wins)
+        end
+        -- Weighted win chance across the opponent's likely balls, then the most forgiving aim in the
+        -- worst of them, then the ball itself. A guaranteed win needs every hypothesis to win.
+        local expected = weights > 0 and weighted / weights or 0
+        local score = (expected >= 1 and 0.6 or 0) + 0.25 * minWins / PICK_DIRECTIONS + 0.15 * (Stats.winRate(ball) or 0.5)
+        if score > bestScore then
+            best, bestScore, bestWins = ball, score, minWins
+        end
+    end
+    if not best then
+        return nil
+    end
+    if #hypotheses > 1 then
+        return best, string.format("%s: robust across %d likely opponent balls, %d/%d aims win (simulated)",
+            Env.ballName(best), #hypotheses, bestWins, PICK_DIRECTIONS)
     end
     return best, string.format("%s: wins with %d/%d aims against last round's balls (simulated)", Env.ballName(best),
         bestWins, PICK_DIRECTIONS)
@@ -2783,6 +2913,12 @@ end
 
 -- Aiming -----------------------------------------------------------------------------------------
 
+-- A score as a percentage. Scores carry a small bonus for quick wins (core/sim's tie-break), which
+-- pushes a certain win just past 1, and "101% expected" reads as a bug.
+local function percent(score)
+    return math.clamp(math.floor(score * 100 + 0.5), 0, 100)
+end
+
 local function aim()
     if not Sim.ready() then
         Match.status = "Waiting for simulation modules"
@@ -2834,8 +2970,9 @@ local function aim()
     for _, player in ipairs(players) do
         if not player.me then
             local _, lastDirection = Match.lastPlay(player)
-            local live = player.teammate and Match.teammateAim and Match.teammateAim.userId == player.userId
-                and Match.teammateAim.direction
+            -- A direction relayed this round beats last round's guess: a teammate's always, an
+            -- opponent's only if the server ever leaks one (then it is their actual aim, not a guess).
+            local live = Match.liveAim(player.userId, 10)
             likely[player.userId] = live or (Match.keepsAim(player) ~= false and lastDirection) or nil
         end
     end
@@ -2856,7 +2993,28 @@ local function aim()
     -- figures never judge a call the hub abandoned at the last moment.
     local direction, expected, detail, call
 
-    if seed then
+    local seedReliable = true
+    if Ui.on("SeedResilience") and seed then
+        local excitement = Match.excitementSelection()
+        if excitement and excitement.enabled then
+            seedReliable = false
+        end
+        if seedReliable then
+            local misses, checks = 0, 0
+            for i = math.max(1, #history - 4), #history do
+                local entry = history[i]
+                if entry and entry.seedRight ~= nil then
+                    checks += 1
+                    if not entry.seedRight then misses += 1 end
+                end
+            end
+            if checks >= 2 and misses / checks > 0.4 then
+                seedReliable = false
+            end
+        end
+    end
+
+    if seed and seedReliable then
         -- The round is fully determined except for where the others launch, so solve it as a grid
         -- instead of answering one guess. The first opponent column is who the model expects, and
         -- its weight is how often these specific players have actually repeated an aim.
@@ -2888,7 +3046,7 @@ local function aim()
         call = {
             text = string.format("%s: %s (%s, %d%% expected, %s style at lambda %.2f)", versus,
                 row.winner == team and "expect a win" or row.winner == "Draw" and "expect a draw" or "likely a loss",
-                detail, math.floor(row.expected * 100 + 0.5), Options.AimStyle.Value, lambda),
+                detail, percent(row.expected), Options.AimStyle.Value, lambda),
             seed = seed,
             assumed = likely,
             predicted = row.winner == team,
@@ -2898,6 +3056,43 @@ local function aim()
             columns = columns,
             lambda = lambda,
             modelled = modelled,
+        }
+    elseif seed then
+        local samples = math.clamp(math.floor(thinkTime / 3), 3, 8)
+        local others = {}
+        for _, player in ipairs(players) do
+            if not player.me then
+                others[player.userId] = likely[player.userId] or Sim.randomDirection()
+            end
+        end
+        local scenarios = { { seed = seed, others = others, weight = 0.4 } }
+        local altWeight = 0.6 / math.max(1, samples - 1)
+        for _ = 2, samples do
+            scenarios[#scenarios + 1] = { seed = Sim.randomSeed(), others = others, weight = altWeight }
+        end
+        local firstWins
+        direction, expected, firstWins = Sim.bestDirection({
+            team = team,
+            roles = roles,
+            place = place,
+            directions = Sim.directions(directionCount),
+            scenarios = scenarios,
+            arena = arena,
+            deadline = deadline,
+            valid = valid,
+        })
+        if not direction or not valid() then
+            return
+        end
+        detail = string.format("seed unreliable | %d candidates", samples)
+        local versus = string.format("%s vs %s", teamBalls(roles, team), teamBalls(roles, otherTeam(team)))
+        call = {
+            text = string.format("%s: %d%% expected over %d seed candidates (%d/%d directions win the primary)",
+                versus, percent(expected), samples, firstWins or 0, directionCount),
+            seed = seed,
+            assumed = likely,
+            expected = expected,
+            seedReliable = false,
         }
     else
         -- Round 1: the seed is unknown, so there is no grid. Every scenario is a guessed seed and
@@ -2933,7 +3128,7 @@ local function aim()
         local versus = string.format("%s vs %s", teamBalls(roles, team), teamBalls(roles, otherTeam(team)))
         call = {
             text = string.format("%s: round 1, best aim wins %d%% of %d sampled seeds (%d/%d directions win the first)",
-                versus, math.floor(expected * 100 + 0.5), samples, firstWins or 0, directionCount),
+                versus, percent(expected), samples, firstWins or 0, directionCount),
             expected = expected,
         }
     end
@@ -2957,7 +3152,7 @@ local function aim()
     end
     Env.event("DuelTableLaunchDirection"):FireServer(Match.tableModel, direction)
     prediction = call
-    Match.status = string.format("Aim selected (%d%% expected, %s)", math.floor(expected * 100 + 0.5), detail)
+    Match.status = string.format("Aim selected (%d%% expected, %s)", percent(expected), detail)
     return true
 end
 
@@ -3085,16 +3280,32 @@ local function step()
         return
     end
     if not Match.seated() then
+        local forCandy = nil
         if Ui.on("StopAtCoinCap") and (Match.capped or Limits.coins().capped) then
-            Match.status = "Stopped at the coin cap"
-            Ui.set("AutoDuel", false)
-            Ui.notify("Auto duel", "Coin cap reached: duels pay nothing more until the reset.", 8)
+            local candy = Limits.candy()
+            if not (Ui.on("DuelForCandy") and candy.active and not candy.capped) then
+                local both = Ui.on("DuelForCandy") and candy.active
+                Match.status = both and "Stopped at the coin and candy caps" or "Stopped at the coin cap"
+                Ui.set("AutoDuel", false)
+                Ui.notify("Auto duel", (both and "Coin and candy caps" or "Coin cap")
+                    .. " reached: duels pay nothing more until the reset.", 8)
+                return
+            end
+            forCandy = string.format(" for candy, %d/%s today", candy.today, tostring(candy.dayMax or "?"))
+        end
+        local wanted, server = SERVER_FOR_MODE[Options.DuelMode.Value], Env.serverType()
+        if wanted and server and server ~= wanted then
+            Match.status = string.format("%s is played on %s servers and this is a %s server: press Switch server",
+                Options.DuelMode.Value, SERVER_NAME[wanted], SERVER_NAME[server] or server)
             return
         end
-        Match.status = "Queueing (" .. Options.DuelMode.Value .. ")"
+        local refusal = Match.queueRefusal
+        Match.status = "Queueing (" .. Options.DuelMode.Value .. ")" .. (forCandy or "")
+            .. (refusal and refusal.reason == "noAvailableTable" and os.clock() - refusal.at < 30
+                and " - no free table on this server yet" or "")
         if os.clock() - lastQueue > QUEUE_INTERVAL then
             lastQueue = os.clock()
-            Env.event(QUEUE_REMOTE[Options.DuelMode.Value] or QUEUE_REMOTE[MODES[1]]):FireServer()
+            Env.event("DuelQuickPlayRequest"):FireServer()
         end
         return
     end
@@ -3314,6 +3525,9 @@ Life.loop("intel:opponents", 1, function()
         for _, player in ipairs(players) do
             if not player.me then
                 local tag = player.teammate and " (teammate)" or ""
+                if not player.teammate and Match.liveAim(player.userId, 10) then
+                    tag = tag .. " [LIVE AIM READ]"
+                end
                 lines[#lines + 1] = Profile.describe(player, nameOf(player.userId)) .. tag
             end
         end
@@ -3348,6 +3562,10 @@ Life.loop("intel:solver", 0.5, function()
     if Match.seated() then
         lines[#lines + 1] = string.format("Round %d | seed %s | hp %s vs %s", Match.round(),
             Match.nextSeed() and "known" or "unknown", tostring(ours or "?"), tostring(theirs or "?"))
+        local excitement = Match.excitementSelection()
+        if excitement and excitement.enabled then
+            lines[#lines + 1] = string.format("BestOfN active (%d candidates) — seed prediction unreliable", excitement.candidates)
+        end
     end
     if prediction and prediction.columns then
         lines[#lines + 1] = string.format("Expected result: %s", percent(prediction.expected))
@@ -3422,11 +3640,13 @@ __modules["features/rewards"] = function(use) -- src/games/ballvsball/features/r
 --   check-in       CheckInService.client.getState() "claimable" days -> CheckInService.client.claim(day)
 --   mail           mailbox.mails[id].claimedAt == 0 -> MailService/Claim(id)
 -- Crates: GachaRoll(crateId, "coins"), rolled and granted by the server.
+-- Halloween: the candy balance and the event's candy shop (below).
 
 local Env = use("core/env")
 local Life = use("shared/life")
 local Ui = use("core/ui")
 local Fusion = use("core/fusion")
+local Limits = use("core/limits")
 
 local Options = Ui.Options
 local Config = Env.loadModule("Config")
@@ -3681,6 +3901,160 @@ Life.loop("rewards:claim", CLAIM_INTERVAL, function()
         lines[#lines + 1] = entry
     end
     claimPanel.set(lines, Ui.on("AutoClaim") and "Claiming automatically." or "Auto claim is off.")
+end)
+
+-- Halloween -----------------------------------------------------------------------------------------
+-- Candy comes from matches (see core/limits). The event shop (Config.eventShop, rows for the
+-- running event) sells balls for candy or diamonds: HalloweenShop/Buy(eventId, row index, "candy").
+-- Only candy is ever spent here. A candy-bought copy cannot be traded but can be fused.
+
+local CANDY_INTERVAL = 3
+local SHOP_REST = 30 -- after a refusal
+
+local halloween = tab:AddGroupbox({ Side = "Left", Name = "Halloween", IconName = "candy" })
+local candyLabel = halloween:AddLabel("Loading...", true)
+
+-- The shop for whichever event is configured, read once: rows carry the event id they belong to.
+local shopRows, shopLabels, shopByLabel = {}, {}, {}
+for index, row in ipairs(type(Config.eventShop) == "table" and Config.eventShop.list or {}) do
+    local ball = type(row) == "table" and Config.ball.byCnId[row.ballId]
+    local price = type(row) == "table" and tonumber(row.candyPrice)
+    if ball and price and price > 0 then
+        local name = ball.displayName or row.ballId
+        local label = string.format("%s (%d candy)", name, price)
+        local entry = { index = index, eventId = row.eventId, ballId = row.ballId, price = price, label = label, name = name }
+        shopRows[#shopRows + 1] = entry
+        shopLabels[#shopLabels + 1] = label
+        shopByLabel[label] = entry
+    end
+end
+halloween:AddDropdown("CandyShopPicks", {
+    Text = "Buy with candy",
+    Values = #shopLabels > 0 and shopLabels or { "No event shop" },
+    Multi = true,
+    Default = {},
+    Tooltip = "Balls to buy from the Halloween shop. Diamonds are never spent.",
+})
+halloween:AddSlider("CandyShopCopies", {
+    Text = "Copies of each",
+    Default = 1,
+    Min = 1,
+    Max = 6,
+    Rounding = 0,
+    Tooltip = "Buys until you own this many of each ticked ball, the ball you have fewest of first. Six copies make a Shiny.",
+})
+halloween:AddToggle("AutoCandyShop", {
+    Text = "Auto buy",
+    Default = false,
+    Tooltip = "Spends candy on the ticked balls as soon as you can afford the next one.",
+})
+Ui.automation("AutoCandyShop", true)
+
+local function ownedCopies(ballId)
+    local count = 0
+    for _, item in pairs(Env.data("items") or {}) do
+        if type(item) == "table" and item.itemType == "Ball" and item.itemId == ballId
+            and (item.ownerUserId == nil or item.ownerUserId == Env.LocalPlayer.UserId) then
+            count += 1
+        end
+    end
+    return count
+end
+
+-- A bought copy reaches the inventory a moment after the reply. Until it shows up (or 30s pass)
+-- it is counted anyway, so a slow replication cannot buy one copy too many.
+local credited = {}
+local function heldCopies(ballId)
+    local actual = ownedCopies(ballId)
+    local credit = credited[ballId]
+    if credit and (actual >= credit.count or os.clock() >= credit.untilAt) then
+        credited[ballId], credit = nil, nil
+    end
+    return credit and math.max(actual, credit.count) or actual
+end
+
+local shopNote, shopRestUntil = "", 0
+local function candyShop(candy)
+    if not Ui.on("AutoCandyShop") or os.clock() < shopRestUntil then
+        return
+    end
+    local picks, keep = Options.CandyShopPicks.Value or {}, tonumber(Options.CandyShopCopies.Value) or 1
+    local chosen, chosenHeld
+    for _, entry in ipairs(shopRows) do
+        if picks[entry.label] and entry.eventId == candy.eventId then
+            local held = heldCopies(entry.ballId)
+            -- Strictly fewer, so ties go to the shop's order (cheapest first).
+            if held < keep and (not chosen or held < chosenHeld) then
+                chosen, chosenHeld = entry, held
+            end
+        end
+    end
+    if not chosen then
+        local any = false
+        for _ in pairs(picks) do any = true break end
+        shopNote = any and string.format("Shop: you own %d of every ticked ball.", keep) or "Shop: tick the balls to buy."
+        return
+    end
+    if candy.balance < chosen.price then
+        shopNote = string.format("Shop: saving for %s, %d of %d candy.", chosen.name, candy.balance, chosen.price)
+        return
+    end
+    if not mayTry("candyshop:" .. chosen.ballId) then
+        return
+    end
+    local ok, result = Env.invoke("HalloweenShop/Buy", candy.eventId, chosen.index, "candy")
+    if not Life.alive then
+        return
+    end
+    local name = chosen.name
+    if ok and type(result) == "table" and result.ok == true then
+        attemptedAt["candyshop:" .. chosen.ballId] = nil
+        credited[chosen.ballId] = { count = chosenHeld + 1, untilAt = os.clock() + 30 }
+        shopRestUntil = os.clock() + CANDY_INTERVAL
+        shopNote = "Shop: bought " .. name .. "."
+        Ui.notify("Halloween shop", "Bought " .. name .. " for " .. chosen.price .. " candy", 5)
+    else
+        local reason = ok and type(result) == "table" and tostring(result.reason) or tostring(result or "no reply")
+        shopRestUntil = os.clock() + SHOP_REST
+        shopNote = "Shop: " .. name .. " refused (" .. reason .. ")."
+    end
+end
+
+local function duration(seconds)
+    local days, hours = seconds // 86400, seconds % 86400 // 3600
+    return days > 0 and string.format("%dd %dh", days, hours) or string.format("%dh %dm", hours, seconds % 3600 // 60)
+end
+
+Life.loop("rewards:halloween", CANDY_INTERVAL, function()
+    local candy = Limits.candy()
+    if candy.active then
+        candyShop(candy)
+        candy = Limits.candy()
+    end
+    if not Life.alive then
+        return
+    end
+    Env.elevate()
+    if not candy.active then
+        candyLabel:SetText("No Halloween event right now.")
+        return
+    end
+    local lines = {
+        string.format("Candy: %d  |  today %d / %s%s", candy.balance, candy.today, tostring(candy.dayMax or "?"),
+            candy.capped and " (cap reached)" or ""),
+    }
+    if candy.endsIn then
+        lines[#lines + 1] = "Event ends in " .. duration(math.floor(candy.endsIn))
+    end
+    for _, entry in ipairs(shopRows) do
+        if entry.eventId == candy.eventId then
+            lines[#lines + 1] = string.format("%s: own %d", entry.label, ownedCopies(entry.ballId))
+        end
+    end
+    if Ui.on("AutoCandyShop") and shopNote ~= "" then
+        lines[#lines + 1] = shopNote
+    end
+    candyLabel:SetText(table.concat(lines, "\n"))
 end)
 
 -- Fusion --------------------------------------------------------------------------------------------
@@ -4552,7 +4926,9 @@ end
 function Life.wait(seconds)
     local deadline = os.clock() + seconds
     repeat
-        task.wait(math.min(0.1, seconds))
+        -- In slices of at most 0.1s so an unload is noticed, but never past the deadline: a full
+        -- 0.1s slice after a 0.11s wait's first one made it 0.2s.
+        task.wait(math.min(0.1, math.max(0, deadline - os.clock())))
     until not Life.alive or os.clock() >= deadline
     Env.elevate()
     return Life.alive
