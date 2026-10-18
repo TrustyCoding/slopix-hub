@@ -1,4 +1,4 @@
--- Slopix Hub (Tap Simulator), built 2026-10-17 12:37 UTC by build.py. Edit the files in src/, not this one.
+-- Slopix Hub (Tap Simulator), built 2026-10-18 11:49 UTC by build.py. Edit the files in src/, not this one.
 local __modules, __cache, __loading = {}, {}, {}
 local function use(name)
     local cached = __cache[name]
@@ -146,6 +146,25 @@ function Env.invoke(service, name, ...)
     return table.unpack(result, 1, result.n)
 end
 
+-- Asks the server to stream in the world around `position` before a teleport there. The request
+-- sometimes never answers at all, which froze whole trips (a creature hunt, an obby sweep), so it
+-- runs on its own thread and is waited on for at most `seconds` (capped at 4); the teleport that
+-- follows works either way, the area just finishes loading after it.
+function Env.streamAround(position, seconds)
+    local done = false
+    task.spawn(function()
+        pcall(function()
+            Env.LocalPlayer:RequestStreamAroundAsync(position, seconds or 5)
+        end)
+        done = true
+    end)
+    local deadline = os.clock() + math.min(seconds or 5, 4)
+    while not done and os.clock() < deadline do
+        task.wait(0.05)
+    end
+    Env.elevate()
+end
+
 -- Where the hub's own overlays go, out of the game's PlayerGui.
 function Env.guiParent()
     local ok, hidden = pcall(function()
@@ -242,11 +261,13 @@ return Ui.create({
     footer = "Tap Simulator",
     tabs = {
         { "Home", "house", "Welcome to Slopix Hub" },
-        { "Tapping", "hand", "Auto tap, auto clicker, rebirth and upgrades" },
-        { "Pets", "egg", "Auto hatch eggs, equip your strongest pets and feed them treats" },
-        { "Craft", "hammer", "Golden, Diamond and Rainbow machines, and potions" },
-        { "Skills", "git-branch", "Auto unlock the skill tree" },
-        { "Rewards", "gift", "Offline earnings, quests, Pet Index, chests, spins, ducks, balloons and digging" },
+        { "Tapping", "hand", "Auto tap, auto clicker, rebirth, upgrades and the skill tree" },
+        { "Pets", "egg", "Hatching, the Shrine blessing, equip, treats and enchanting" },
+        { "Craft", "hammer", "Golden, Diamond and Rainbow machines, the Honey Pot and potions" },
+        { "Rewards", "gift", "Offline earnings, quests, Pet Index, chests, spins, Shiny Stars and items" },
+        { "World", "globe", "Lucky Ducky, balloons, pigs, island creatures, events and digging" },
+        { "Minigames", "gamepad-2", "Pet Defense, the mine, Memory Match and quests" },
+        { "Halloween", "ghost", "The Hallow Boss, trick or treat, the Candy Witch and the CandyCorn shop" },
         { "Settings", "settings", "Menu, themes and configs" },
     },
 })
@@ -593,10 +614,7 @@ local function goTo(def)
     for _, target in ipairs(places) do
         local point = findPoint(def.point, target)
         if not point then
-            pcall(function()
-                Env.LocalPlayer:RequestStreamAroundAsync(target, 10)
-            end)
-            Env.elevate()
+            Env.streamAround(target, 10)
             if not teleport(CFrame.new(target + Vector3.new(0, 6, 0))) then
                 return false
             end
@@ -978,6 +996,462 @@ end)
 
 return {}
 end
+__modules["features/creatures"] = function(use) -- src/games/tapsim/features/creatures.luau
+-- Rewards tab: things in the world you break or pick up.
+--
+-- Island creatures (Shared.Game.IslandBreakableConfig): one per island, yours alone - Fluffy
+-- Cloud, Giant Pumpkin, Glow Mushroom, Prickly Cactus, Crystal Cluster, Void Crystal. Each appears
+-- at its spot (workspace.IslandBreakableSpots, one Vector3 attribute per spot) once you are within
+-- 100 studs and it is ready (Data.IslandBreakables[spot] = ready-at), takes 20-35 hits, and pays
+-- 150-400 taps of coins plus Honey Pot ingredients (the mushroom adds 4 Slime). It hops away when
+-- hit, so you are kept beside it.
+--
+-- Events (Shared.Admin.WorldEventConfig, EggDropConfig, BreakableConfig): meteors from a Meteor
+-- Shower and the Mystery Egg are breakables anyone can hit; Cloud Rain drops pickups you collect by
+-- touching. Breakables of every kind take damage from your taps when you stand within TapRange (14
+-- studs, 12 up or down) of them, so this keeps auto tap running while it works (Ui.tapDemand).
+
+local Env = use("core/env")
+local Life = use("shared/life")
+local Ui = use("core/ui")
+
+local CollectionService = game:GetService("CollectionService")
+local tab = Ui.Tabs.World
+local RS = Env.ReplicatedStorage
+
+local function load(...)
+    local path = { ... }
+    local ok, module = Env.call(function()
+        local node = RS
+        for _, part in ipairs(path) do
+            node = node:FindFirstChild(part)
+        end
+        return node and require(node)
+    end)
+    return ok and type(module) == "table" and module or nil
+end
+
+local IslandBreakables = load("Shared", "Game", "IslandBreakableConfig")
+local BreakableConfig = load("Shared", "Game", "BreakableConfig")
+local WorldEventConfig = load("Shared", "Admin", "WorldEventConfig")
+local EggDropConfig = load("Shared", "Admin", "EggDropConfig")
+
+local TAG = BreakableConfig and BreakableConfig.Tag or "Breakable"
+local ATTRS = BreakableConfig and BreakableConfig.Attributes or {
+    Type = "BreakableType", Owner = "BreakableOwner", Rest = "BreakableRest", Broken = "BreakableBroken",
+    Despawned = "BreakableDespawned", Size = "BreakableSize",
+}
+local CLOUD_TAG = WorldEventConfig and WorldEventConfig.Cloud and WorldEventConfig.Cloud.Tag or "CloudRainPickup"
+
+-- Spots measured in the game, used until workspace.IslandBreakableSpots arrives.
+local SPOT_FALLBACK = {
+    SkyIsland = Vector3.new(85.9, -42.5, -1868.2),
+    Autumn = Vector3.new(15.7, 882.1, -1910.3),
+    Mushroom = Vector3.new(-138.8, 2018.1, -1700.9),
+    Desert = Vector3.new(37.2, 3622.7, -1879.8),
+    CrystalCave = Vector3.new(30.6, 5448.5, -1680.7),
+    ShadowRelm = Vector3.new(-147.2, 7676.3, -1648.5),
+}
+
+local EVENT_TYPES = {}
+for _, tier in pairs(WorldEventConfig and WorldEventConfig.Meteor and WorldEventConfig.Meteor.Tiers or {}) do
+    if type(tier) == "table" and tier.Breakable then
+        EVENT_TYPES[tier.Breakable] = "Meteor"
+    end
+end
+EVENT_TYPES[EggDropConfig and EggDropConfig.Breakable or "MysteryEgg"] = "Mystery Egg"
+
+local box = tab:AddGroupbox({ Side = "Right", Name = "Creatures and events", IconName = "swords" })
+box:AddToggle("AutoCreatures", {
+    Text = "Break island creatures",
+    Default = false,
+    Tooltip = "Visits each island's creature (Fluffy Cloud, Giant Pumpkin, Glow Mushroom, Prickly Cactus, Crystal Cluster, Void Crystal) when it is back and breaks it with taps: coins plus Honey Pot ingredients.",
+})
+Ui.automation("AutoCreatures", false)
+box:AddToggle("AutoWorldEvents", {
+    Text = "Meteors, Mystery Egg, Cloud Rain",
+    Default = false,
+    Tooltip = "During a Meteor Shower, a Mystery Egg drop or Cloud Rain, breaks the meteors and the egg and collects the cloud pickups.",
+})
+Ui.automation("AutoWorldEvents", false)
+box:AddToggle("CreaturesReturn", {
+    Text = "Return to where I was",
+    Default = true,
+})
+local label = box:AddLabel("Off.", true)
+
+local session = { creatures = 0, meteors = 0, eggs = 0, pickups = 0, note = "" }
+local me = Env.LocalPlayer.UserId
+
+local function root()
+    local character = Env.LocalPlayer.Character
+    return character and character:FindFirstChild("HumanoidRootPart")
+end
+
+local function spotPosition(id)
+    local folder = workspace:FindFirstChild("IslandBreakableSpots")
+    local value = folder and folder:GetAttribute(id)
+    if typeof(value) == "Vector3" then
+        return value
+    end
+    return SPOT_FALLBACK[id]
+end
+
+local function alive(breakable)
+    return breakable.Parent ~= nil and breakable:GetAttribute(ATTRS.Broken) ~= true
+        and breakable:GetAttribute(ATTRS.Despawned) ~= true
+end
+
+local function restOf(breakable)
+    local rest = breakable:GetAttribute(ATTRS.Rest)
+    if typeof(rest) == "Vector3" then
+        return rest
+    elseif typeof(rest) == "CFrame" then
+        return rest.Position
+    end
+    local ok, position = pcall(function()
+        return breakable:IsA("Model") and breakable:GetPivot().Position or breakable.Position
+    end)
+    return ok and position or nil
+end
+
+local function sizeOf(breakable)
+    local size = breakable:GetAttribute(ATTRS.Size)
+    return typeof(size) == "Vector3" and size or Vector3.new(6, 6, 6)
+end
+
+-- Your live creature of this type, if it has appeared.
+local function ownCreature(kind)
+    for _, breakable in ipairs(CollectionService:GetTagged(TAG)) do
+        if breakable:GetAttribute(ATTRS.Owner) == me and breakable:GetAttribute(ATTRS.Type) == kind and alive(breakable) then
+            return breakable
+        end
+    end
+    return nil
+end
+
+local function eventBreakables()
+    local list = {}
+    for _, breakable in ipairs(CollectionService:GetTagged(TAG)) do
+        local kind = breakable:GetAttribute(ATTRS.Type)
+        if EVENT_TYPES[kind] and alive(breakable) then
+            list[#list + 1] = breakable
+        end
+    end
+    return list
+end
+
+local function cloudPickups()
+    local list = {}
+    for _, pickup in ipairs(CollectionService:GetTagged(CLOUD_TAG)) do
+        if pickup:IsA("BasePart") and pickup.Parent then
+            list[#list + 1] = pickup
+        elseif pickup:IsA("Model") and pickup.PrimaryPart then
+            list[#list + 1] = pickup.PrimaryPart
+        end
+    end
+    return list
+end
+
+-- Stands you beside a breakable and lets the taps work until it breaks, it goes, or time runs out.
+-- The stand point is re-taken every frame-ish from where the server says it rests, since island
+-- creatures hop away from whoever hits them.
+local function breakIt(breakable, seconds)
+    local deadline = os.clock() + (seconds or 20)
+    Ui.tapDemand = true
+    local ok = pcall(function()
+        while Life.alive and alive(breakable) and os.clock() < deadline do
+            local rest = restOf(breakable)
+            local hrp = root()
+            if rest and hrp then
+                local size = sizeOf(breakable)
+                local side = math.max(size.X, size.Z) * 0.5 + 3
+                hrp.AssemblyLinearVelocity = Vector3.zero
+                hrp.CFrame = CFrame.new(rest + Vector3.new(side, 0, 0), rest)
+            end
+            Life.wait(0.15)
+        end
+    end)
+    Ui.tapDemand = false
+    Env.elevate()
+    return ok and not alive(breakable)
+end
+
+local function stream(position)
+    Env.streamAround(position, 6)
+end
+
+local function readySpots(data)
+    local list = {}
+    if not (IslandBreakables and data) then
+        return list
+    end
+    local now = workspace:GetServerTimeNow()
+    for id, spot in pairs(IslandBreakables.Spots) do
+        local unlocked = IslandBreakables.IsUnlocked(data, spot)
+        if unlocked and IslandBreakables.GetReadyAt(data, id) <= now and spotPosition(id) then
+            list[#list + 1] = { id = id, spot = spot }
+        end
+    end
+    table.sort(list, function(a, b)
+        return a.id < b.id
+    end)
+    return list
+end
+
+local function huntCreatures()
+    for _, entry in ipairs(readySpots(Env.data())) do
+        if not (Life.alive and Ui.on("AutoCreatures")) then
+            break
+        end
+        local position = spotPosition(entry.id)
+        stream(position)
+        local hrp = root()
+        if hrp then
+            hrp.AssemblyLinearVelocity = Vector3.zero
+            hrp.CFrame = CFrame.new(position + Vector3.new(0, 4, 0))
+        end
+        local creature
+        local deadline = os.clock() + 6
+        repeat
+            Life.wait(0.3)
+            creature = ownCreature(entry.spot.Type)
+        until creature or not Life.alive or os.clock() > deadline
+        if creature then
+            if breakIt(creature, 25) then
+                session.creatures += 1
+                session.note = "Broke the " .. tostring(entry.spot.Title) .. "."
+            else
+                session.note = "The " .. tostring(entry.spot.Title) .. " got away."
+            end
+        end
+    end
+end
+
+-- A Mystery Egg lands on one island (EggDropService.Incoming) and stays EggDropConfig.Lifetime
+-- seconds; the game's own "go to the egg" (Travel) takes you to it.
+local eggUntil = 0
+Life.spawn("creatures:egg-watch", function()
+    Life.connect(Env.remote("EggDropService", "Incoming").OnClientEvent, function()
+        eggUntil = os.clock() + (EggDropConfig and EggDropConfig.Lifetime or 240) + 10
+    end)
+    Life.connect(Env.remote("EggDropService", "Cracked").OnClientEvent, function()
+        eggUntil = 0
+    end)
+    Life.connect(Env.remote("EggDropService", "FlewOff").OnClientEvent, function()
+        eggUntil = 0
+    end)
+end)
+
+local function eggNearby()
+    for _, breakable in ipairs(eventBreakables()) do
+        if EVENT_TYPES[breakable:GetAttribute(ATTRS.Type)] == "Mystery Egg" then
+            return true
+        end
+    end
+    return false
+end
+
+local eggRetryAt = 0
+local function workEvents()
+    if os.clock() < eggUntil and os.clock() >= eggRetryAt and not eggNearby() then
+        Env.invoke("EggDropService", "Travel")
+        local deadline = os.clock() + 6
+        repeat
+            Life.wait(0.3)
+        until eggNearby() or not Life.alive or os.clock() > deadline
+        if not eggNearby() then
+            eggRetryAt = os.clock() + 20
+        end
+    end
+    for _ = 1, 30 do
+        if not (Life.alive and Ui.on("AutoWorldEvents")) then
+            break
+        end
+        local targets = eventBreakables()
+        if #targets == 0 then
+            break
+        end
+        local hrp = root()
+        table.sort(targets, function(a, b)
+            local pa, pb = restOf(a), restOf(b)
+            if not (hrp and pa and pb) then
+                return false
+            end
+            return (pa - hrp.Position).Magnitude < (pb - hrp.Position).Magnitude
+        end)
+        local target = targets[1]
+        local kind = EVENT_TYPES[target:GetAttribute(ATTRS.Type)]
+        if breakIt(target, kind == "Mystery Egg" and 60 or 20) then
+            if kind == "Mystery Egg" then
+                session.eggs += 1
+            else
+                session.meteors += 1
+            end
+        end
+    end
+    for _, pickup in ipairs(cloudPickups()) do
+        if not (Life.alive and Ui.on("AutoWorldEvents")) then
+            break
+        end
+        local hrp = root()
+        if hrp and pickup.Parent then
+            hrp.AssemblyLinearVelocity = Vector3.zero
+            hrp.CFrame = pickup.CFrame
+            Life.wait(0.25)
+            if not pickup.Parent then
+                session.pickups += 1
+            end
+        end
+    end
+end
+
+local function eventsPending()
+    return #eventBreakables() > 0 or #cloudPickups() > 0
+        or (os.clock() < eggUntil and os.clock() >= eggRetryAt and not eggNearby())
+end
+
+local busy = false
+local function trip(kind)
+    if busy or Ui.hatchMoving or Ui.travelling then
+        return
+    end
+    busy = true
+    Ui.travelling = "creatures"
+    local settle = os.clock() + 6
+    while Ui.hatchInFlight and os.clock() < settle do
+        Life.wait(0.05)
+    end
+    local hrp = root()
+    local home = hrp and hrp.CFrame
+    local ok, err = pcall(function()
+        Ui.status = kind == "events" and "World event" or "Hunting creatures"
+        if kind == "events" then
+            workEvents()
+        else
+            huntCreatures()
+        end
+    end)
+    Env.elevate()
+    Ui.tapDemand = false
+    if not ok then
+        Life.errors["creatures:trip"] = tostring(err)
+        session.note = "Error: " .. tostring(err)
+    end
+    if home and Ui.on("CreaturesReturn") then
+        local back = root()
+        if back then
+            back.AssemblyLinearVelocity = Vector3.zero
+            back.CFrame = home
+        end
+    end
+    if Ui.status == "World event" or Ui.status == "Hunting creatures" then
+        Ui.status = "Idle"
+    end
+    Ui.travelling = false
+    busy = false
+end
+
+local nextCreatures, nextEvents = 0, 0
+Life.loop("creatures:auto", 1, function()
+    local data = Env.data()
+    local ready = readySpots(data)
+    local lines = {}
+    if IslandBreakables and data then
+        local now = workspace:GetServerTimeNow()
+        local soonest
+        for id in pairs(IslandBreakables.Spots) do
+            local at = IslandBreakables.GetReadyAt(data, id)
+            if at > now and (not soonest or at < soonest) then
+                soonest = at
+            end
+        end
+        lines[1] = string.format("%d creatures ready%s.", #ready,
+            soonest and string.format(", next in %d:%02d", (soonest - now) // 60, math.floor((soonest - now) % 60)) or "")
+    end
+    lines[#lines + 1] = string.format("This session: %d creatures, %d meteors, %d Mystery Eggs, %d cloud pickups.",
+        session.creatures, session.meteors, session.eggs, session.pickups)
+    if session.note ~= "" then
+        lines[#lines + 1] = session.note
+    end
+    label:SetText(table.concat(lines, "\n"))
+    if busy or Ui.travelling or Ui.hatchMoving then
+        return
+    end
+    if Ui.on("AutoWorldEvents") and os.clock() >= nextEvents and eventsPending() then
+        nextEvents = os.clock() + 5 -- whatever could not be reached is tried again shortly, not every second
+        Life.spawn("creatures:events", trip, "events")
+    elseif Ui.on("AutoCreatures") and #ready > 0 and os.clock() >= nextCreatures then
+        nextCreatures = os.clock() + 30 -- a creature that would not show is not chased again at once
+        Life.spawn("creatures:hunt", trip, "creatures")
+    end
+end)
+
+-- The admins' falling Lucky Block event (LuckyBlockEventService: CreateFalling, CollectRequested,
+-- PlayCutscene) brings its own client code only while it runs, so how a block is picked up is not
+-- known yet. Until it is, what the event sends is written to SlopixHub/TapSimulator/
+-- luckyblock-events.txt, so the next one can be automated from real data.
+Life.spawn("creatures:luckyblock-log", function()
+    local service = Env.ReplicatedStorage.RemoteServices:FindFirstChild("LuckyBlockEventService")
+    local events = service and service:FindFirstChild("RE")
+    local files = Env.files
+    if not (events and files.writefile and files.readfile and files.isfile and files.isfolder and files.makefolder) then
+        return
+    end
+    local path = "SlopixHub/TapSimulator/luckyblock-events.txt"
+    local function describe(value, depth)
+        depth = depth or 0
+        if typeof(value) == "Instance" then
+            return "<" .. value.ClassName .. " " .. value:GetFullName() .. ">"
+        elseif type(value) ~= "table" then
+            return typeof(value) .. ":" .. tostring(value)
+        elseif depth > 3 then
+            return "{...}"
+        end
+        local parts = {}
+        for key, item in pairs(value) do
+            parts[#parts + 1] = tostring(key) .. "=" .. describe(item, depth + 1)
+        end
+        return "{" .. table.concat(parts, ", ") .. "}"
+    end
+    local function record(name, ...)
+        local args = table.pack(...)
+        local parts = {}
+        for index = 1, args.n do
+            parts[#parts + 1] = describe(args[index])
+        end
+        pcall(function()
+            for _, folder in ipairs({ "SlopixHub", "SlopixHub/TapSimulator" }) do
+                if not files.isfolder(folder) then
+                    files.makefolder(folder)
+                end
+            end
+            local old = files.isfile(path) and files.readfile(path) or ""
+            if #old < 200000 then
+                files.writefile(path, old .. string.format("[%s] %s %s\n", os.date("!%H:%M:%S"), name, table.concat(parts, " | ")))
+            end
+        end)
+        Env.elevate()
+        session.note = "Lucky Block event seen (" .. name .. "); recorded for later."
+    end
+    for _, remote in ipairs(events:GetChildren()) do
+        if remote:IsA("RemoteEvent") then
+            Life.connect(remote.OnClientEvent, function(...)
+                record(remote.Name, ...)
+            end)
+        end
+    end
+end)
+
+Life.onCleanup(function()
+    Ui.tapDemand = false
+    if busy then
+        Ui.travelling = false
+    end
+end)
+
+return {}
+end
 __modules["features/defense"] = function(use) -- src/games/tapsim/features/defense.luau
 -- Rewards tab: Pet Defense, the wave defense on Mushroom island (ColosseumService in the game's
 -- code). Pets walk three tracks toward your bone pit; a tap hits the one closest to it, and every
@@ -1005,7 +1479,7 @@ local Ui = use("core/ui")
 
 local Options = Ui.Options
 local RS = Env.ReplicatedStorage
-local tab = Ui.Tabs.Rewards
+local tab = Ui.Tabs.Minigames
 
 local COOLDOWN = 1800
 local TAP_GAP = 0.15 -- the game's own cooldown is ClickCooldown - grace + 0.02 = 0.14s
@@ -1096,10 +1570,7 @@ local function standAtEntrance()
     end
     local entrance = World and World.GetEntrance()
     if not entrance then
-        pcall(function()
-            Env.LocalPlayer:RequestStreamAroundAsync(ENTRANCE_FALLBACK, 10)
-        end)
-        Env.elevate()
+        Env.streamAround(ENTRANCE_FALLBACK, 10)
         hrp.CFrame = CFrame.new(ENTRANCE_FALLBACK + Vector3.new(0, 4, 0))
         local deadline = os.clock() + 8
         while Life.alive and not entrance and os.clock() < deadline do
@@ -1457,7 +1928,7 @@ local Life = use("shared/life")
 local Ui = use("core/ui")
 
 local RunService = game:GetService("RunService")
-local tab = Ui.Tabs.Rewards
+local tab = Ui.Tabs.World
 
 local DigConfig, DigWorld
 do
@@ -1477,7 +1948,7 @@ local SITE_FALLBACK = Vector3.new(-82, 873, -1623)
 -- cursor speeds up, so the middle leaves room for the request's travel time.
 local AIM = { 0.25, 0.6, 1 }
 
-local box = tab:AddGroupbox({ Side = "Right", Name = "Dig site", IconName = "shovel" })
+local box = tab:AddGroupbox({ Side = "Left", Name = "Dig site", IconName = "shovel" })
 box:AddToggle("AutoDig", {
     Text = "Auto dig",
     Default = false,
@@ -1524,10 +1995,7 @@ local function standOnSite()
     end
     local zone = digZone()
     if not zone then
-        pcall(function()
-            Env.LocalPlayer:RequestStreamAroundAsync(SITE_FALLBACK, 10)
-        end)
-        Env.elevate()
+        Env.streamAround(SITE_FALLBACK, 10)
         hrp.CFrame = CFrame.new(SITE_FALLBACK + Vector3.new(0, 4, 0))
         local deadline = os.clock() + 8
         while Life.alive and not zone and os.clock() < deadline do
@@ -1862,7 +2330,7 @@ box:AddDropdown("EnchantKeep", {
 box:AddToggle("EnchantReplace", {
     Text = "Reroll over a trait not on the list",
     Default = true,
-    Tooltip = "A pet whose slot holds a trait you do not keep gets rolled again. Off skips those pets instead.",
+    Tooltip = "A pet whose slot holds a trait you do not keep gets rolled again; tier III and rarer traits (Power III, Glass Cannon, secrets) never are. Off skips those pets instead.",
 })
 local panel = Ui.panel(box, 4)
 
@@ -1943,7 +2411,18 @@ local function needsWork(pet, slot, kept)
     if current == nil then
         return true
     end
-    return not kept[current] and Ui.on("EnchantReplace")
+    if kept[current] then
+        return false
+    end
+    -- A trait the game protects (tier III and up: Power III, Glass Cannon, the secrets) is never
+    -- rolled over automatically, so a keep list that forgot one cannot wipe it.
+    if EnchantConfig then
+        local ok, protected = Env.call(EnchantConfig.IsProtected, current)
+        if ok and protected == true then
+            return false
+        end
+    end
+    return Ui.on("EnchantReplace")
 end
 
 -- The next pet to enchant and the slot, or nil plus a reason.
@@ -2006,10 +2485,7 @@ local function standAtMachine()
     end
     local point = findPoint()
     if not point then
-        pcall(function()
-            Env.LocalPlayer:RequestStreamAroundAsync(POINT_FALLBACK, 10)
-        end)
-        Env.elevate()
+        Env.streamAround(POINT_FALLBACK, 10)
         hrp.AssemblyLinearVelocity = Vector3.zero
         hrp.CFrame = CFrame.new(POINT_FALLBACK + Vector3.new(0, 6, 0))
         local deadline = os.clock() + 8
@@ -2233,6 +2709,569 @@ end)
 
 return {}
 end
+__modules["features/halloween"] = function(use) -- src/games/tapsim/features/halloween.luau
+-- Halloween tab: the Halloween event's Hallow Boss (Shared.Game.HallowBossConfig).
+--
+-- The Hallow Lord fights on the Halloween island at the top of every hour (IntervalSeconds 3600):
+-- a 2-minute warning, then up to 7 minutes of fight. Damage comes from your ordinary taps while you
+-- stand on the boss platform (the part tagged BossPlatform; ZoneSlack/ZoneBelow/ZoneAbove around
+-- it), 1 per tap and 5 per critical. Everyone who deals at least MinDamage (25) gets CandyCorn
+-- (250, plus 0.5 per damage; the top three 600/450/350), a potion roll and a 1 in 5,000 shot at
+-- the Hallow Lord pet, better for the top three.
+--
+-- HallowBossService.RP.State is a Comm property ({ Phase = Idle | Warning | Fight | Defeated,
+-- StartsAt, EndsAt, Health, ... }); firing it asks for the current value. Attack { Targets,
+-- Radius, Delay } is a bomb volley: a bomb knocks you back off the platform if it lands within
+-- Radius (9) of you, so the hub steps to the clear part of the platform when one is coming.
+
+local Env = use("core/env")
+local Life = use("shared/life")
+local Ui = use("core/ui")
+
+local CollectionService = game:GetService("CollectionService")
+local Options = Ui.Options
+local tab = Ui.Tabs.Halloween
+
+local Config
+do
+    local ok, module = Env.call(function()
+        return require(Env.ReplicatedStorage.Shared.Game.HallowBossConfig)
+    end)
+    Config = ok and type(module) == "table" and module or nil
+end
+
+-- workspace.HalloweenIsland.BossPlatform (84 x 82 studs), measured in the game: going straight there
+-- streams the platform in at once.
+local ISLAND_CENTER = Vector3.new(-1680.8, -515.7, -2317.3)
+local PLATFORM_TAG = Config and Config.PlatformTag or "BossPlatform"
+
+local box = tab:AddGroupbox({ Side = "Left", Name = "Hallow Boss", IconName = "skull" })
+box:AddToggle("AutoHallowBoss", {
+    Text = "Fight the Hallow Boss",
+    Default = false,
+    Tooltip = "At the top of every hour, goes to the Halloween island, stands on the boss platform and taps the Hallow Lord down, stepping aside from its bombs. CandyCorn, a potion and a 1 in 5,000 shot at the Hallow Lord pet.",
+})
+Ui.automation("AutoHallowBoss", false)
+local label = box:AddLabel("Off.", true)
+
+local state = {}
+local session = { fights = 0, candy = 0, note = "" }
+local bombs = {} -- { position, radius, at }
+
+Life.spawn("hallow:watch", function()
+    local service = Env.ReplicatedStorage.RemoteServices:FindFirstChild("HallowBossService")
+    if not service then
+        return
+    end
+    local property = service:FindFirstChild("RP") and service.RP:FindFirstChild("State")
+    if property then
+        Life.connect(property.OnClientEvent, function(value)
+            if type(value) == "table" then
+                state = value
+            end
+        end)
+        pcall(function()
+            property:FireServer()
+        end)
+        Env.elevate()
+    end
+    local events = service:FindFirstChild("RE")
+    local attack = events and events:FindFirstChild("Attack")
+    if attack then
+        Life.connect(attack.OnClientEvent, function(volley)
+            if type(volley) ~= "table" or type(volley.Targets) ~= "table" then
+                return
+            end
+            local radius = tonumber(volley.Radius) or (Config and Config.BombRadius) or 9
+            local landsAt = os.clock() + (tonumber(volley.Delay) or (Config and Config.BombDelay) or 1.6)
+            for _, target in ipairs(volley.Targets) do
+                if typeof(target) == "Vector3" then
+                    bombs[#bombs + 1] = { position = target, radius = radius, at = landsAt }
+                end
+            end
+        end)
+    end
+    local reward = events and events:FindFirstChild("Reward")
+    if reward then
+        Life.connect(reward.OnClientEvent, function(result)
+            if type(result) == "table" then
+                session.candy += tonumber(result.Candy or result.CandyCorn or result.Amount) or 0
+                session.note = "Reward: " .. tostring(result.Candy or result.CandyCorn or result.Amount or "?") .. " CandyCorn."
+            end
+        end)
+    end
+end)
+
+local function root()
+    local character = Env.LocalPlayer.Character
+    return character and character:FindFirstChild("HumanoidRootPart")
+end
+
+local function platform()
+    for _, part in ipairs(CollectionService:GetTagged(PLATFORM_TAG)) do
+        if part:IsA("BasePart") and part:IsDescendantOf(workspace) then
+            return part
+        end
+    end
+    return nil
+end
+
+-- A standing spot on the platform as far as possible from the bombs about to land.
+local function safeSpot(part)
+    local top = part.CFrame:PointToWorldSpace(Vector3.new(0, part.Size.Y * 0.5, 0))
+    local half = math.min(part.Size.X, part.Size.Z) * 0.5 - 3
+    local now = os.clock()
+    for index = #bombs, 1, -1 do
+        if bombs[index].at < now - 0.5 then
+            table.remove(bombs, index)
+        end
+    end
+    local best, bestScore
+    for ring = 0, 2 do
+        local steps = ring == 0 and 1 or 8
+        for step = 0, steps - 1 do
+            local angle = step / steps * math.pi * 2
+            local offset = Vector3.new(math.cos(angle), 0, math.sin(angle)) * (half * ring / 2)
+            local spot = top + offset
+            local score = math.huge
+            for _, bomb in ipairs(bombs) do
+                local flat = Vector3.new(spot.X - bomb.position.X, 0, spot.Z - bomb.position.Z).Magnitude
+                score = math.min(score, flat - bomb.radius)
+            end
+            if not best or score > bestScore then
+                best, bestScore = spot, score
+            end
+        end
+    end
+    return best + Vector3.new(0, 3, 0)
+end
+
+local busy = false
+local function fight()
+    if busy or Ui.hatchMoving or Ui.travelling then
+        return
+    end
+    busy = true
+    Ui.travelling = "hallowboss"
+    local settle = os.clock() + 6
+    while Ui.hatchInFlight and os.clock() < settle do
+        Life.wait(0.05)
+    end
+    local hrp = root()
+    local home = hrp and hrp.CFrame
+    local ok, err = pcall(function()
+        Ui.status = "Fighting the Hallow Boss"
+        Env.streamAround(ISLAND_CENTER, 4)
+        local here = root()
+        if here then
+            here.AssemblyLinearVelocity = Vector3.zero
+            here.CFrame = CFrame.new(ISLAND_CENTER + Vector3.new(0, 20, 0))
+        end
+        local part
+        local deadline = os.clock() + 10
+        repeat
+            Life.wait(0.3)
+            part = platform()
+        until part or not Life.alive or os.clock() > deadline
+        if not part then
+            session.note = "Could not find the boss platform."
+            return
+        end
+        session.fights += 1
+        Ui.tapDemand = true
+        local limit = os.clock() + ((Config and Config.FightSeconds) or 420) + 150
+        while Life.alive and Ui.on("AutoHallowBoss") and os.clock() < limit do
+            local phase = state.Phase
+            if phase ~= "Warning" and phase ~= "Fight" then
+                break
+            end
+            local spot = safeSpot(part)
+            local current = root()
+            if current and (current.Position - spot).Magnitude > 2.5 then
+                current.AssemblyLinearVelocity = Vector3.zero
+                current.CFrame = CFrame.new(spot)
+            end
+            Life.wait(0.2)
+        end
+        Ui.tapDemand = false
+    end)
+    Ui.tapDemand = false
+    Env.elevate()
+    if not ok then
+        Life.errors["hallow:fight"] = tostring(err)
+        session.note = "Error: " .. tostring(err)
+    end
+    if home then
+        local back = root()
+        if back then
+            back.AssemblyLinearVelocity = Vector3.zero
+            back.CFrame = home
+        end
+    end
+    if Ui.status == "Fighting the Hallow Boss" then
+        Ui.status = "Idle"
+    end
+    Ui.travelling = false
+    busy = false
+end
+
+local nextTry = 0
+Life.loop("hallow:auto", 1, function()
+    local now = workspace:GetServerTimeNow()
+    local phase = state.Phase or "?"
+    local text
+    if phase == "Fight" then
+        text = string.format("Fight on: %s / %s health.", tostring(state.Health), tostring(state.MaxHealth))
+    elseif phase == "Warning" then
+        text = string.format("Spawning in %ds.", math.max(0, math.floor((tonumber(state.StartsAt) or now) - now)))
+    else
+        local starts = tonumber(state.StartsAt) or (Config and Config.NextStart(now)) or now
+        local wait = math.max(0, starts - now)
+        text = string.format("Next fight in %d:%02d.", wait // 60, math.floor(wait % 60))
+    end
+    local lines = { text, string.format("This session: %d fights, %d CandyCorn.", session.fights, session.candy) }
+    if session.note ~= "" then
+        lines[#lines + 1] = session.note
+    end
+    label:SetText((Ui.on("AutoHallowBoss") and "" or "Off. ") .. table.concat(lines, "\n"))
+    if Ui.on("AutoHallowBoss") and (phase == "Warning" or phase == "Fight") and not busy and os.clock() >= nextTry then
+        nextTry = os.clock() + 20
+        Life.spawn("hallow:fight", fight)
+    end
+end)
+
+-- Trick or treat, the Candy Witch's dailies and the CandyCorn shop -----------------------------
+--
+-- Trick or treat (Shared.Game.TrickOrTreatConfig): 11 houses on the Halloween island, each with a
+-- pad (a "TrickOrTreat" model with a HouseId attribute and a Zone part) in front of its door.
+-- TrickOrTreatService.Knock(houseId) from inside the Zone pays 20-40 CandyCorn (x1.5 on a trick)
+-- and 80% of the time a potion; each house is ready again 30 minutes later (Data.TrickOrTreat
+-- [house] = ready-at), and all 11 fill the bag for another 150 CandyCorn and a Bag of Treats.
+-- Candy Witch (Shared.Quests.HalloweenDailyConfig): HalloweenDailyService.Accept() hands out 3 jobs
+-- a day (100-150 CandyCorn each, 300 more for all three); they are ordinary quests after that.
+-- Shop (Shared.Items.HalloweenShopConfig): HalloweenShopService.Purchase { Id }, from anywhere.
+-- Limits are for the whole event (SoldOut), except Daily items, which restock each day (SoldOutToday).
+
+local TrickConfig, DailyConfig, ShopConfig
+do
+    local function load(path)
+        local ok, module = Env.call(function()
+            local node = Env.ReplicatedStorage
+            for part in path:gmatch("[^%.]+") do
+                node = node:FindFirstChild(part)
+            end
+            return node and require(node)
+        end)
+        return ok and type(module) == "table" and module or nil
+    end
+    TrickConfig = load("Shared.Game.TrickOrTreatConfig")
+    DailyConfig = load("Shared.Quests.HalloweenDailyConfig")
+    ShopConfig = load("Shared.Items.HalloweenShopConfig")
+end
+
+-- Measured in the game; going there streams the house and its pad in.
+local HOUSES = {
+    House01 = Vector3.new(-1689.4, -497.4, -1723.4), House02 = Vector3.new(-1735.6, -492.9, -1791.8),
+    House03 = Vector3.new(-1628.7, -497.6, -1801.2), House04 = Vector3.new(-1734.4, -497.6, -1875.2),
+    House05 = Vector3.new(-1627.4, -492.9, -1874.3), House06 = Vector3.new(-1764.9, -492.9, -1931.0),
+    House07 = Vector3.new(-1596.6, -497.7, -1933.5), House08 = Vector3.new(-1818.5, -498.0, -1955.0),
+    House09 = Vector3.new(-1823.8, -509.5, -2047.3), House10 = Vector3.new(-1761.8, -497.5, -2107.5),
+    House11 = Vector3.new(-1595.7, -492.9, -2100.4),
+}
+local WITCH = Vector3.new(-1649.8, -506.4, -2029.9)
+
+-- The shop, in the shop's own order; nothing is picked by default (CandyCorn is precious).
+local SHOP_ITEMS, SHOP_LABELS, SHOP_ID = {}, {}, {}
+for _, item in ipairs(ShopConfig and (ShopConfig.Items or ShopConfig.List or ShopConfig) or {}) do
+    if type(item) == "table" and type(item.Id) == "string" then
+        local name = (item.DisplayName or item.Name or item.Id) .. string.format(" (%d)", tonumber(item.Price) or 0)
+        SHOP_ITEMS[#SHOP_ITEMS + 1] = item
+        SHOP_LABELS[#SHOP_LABELS + 1] = name
+        SHOP_ID[name] = item
+    end
+end
+
+local candyBox = tab:AddGroupbox({ Side = "Right", Name = "Candy", IconName = "candy" })
+candyBox:AddToggle("AutoTrickOrTreat", {
+    Text = "Trick or treat",
+    Default = false,
+    Tooltip = "Knocks at all 11 houses on the Halloween island whenever they are ready (every 30 minutes): 20-40 CandyCorn and usually a potion each, plus 150 CandyCorn for a full bag.",
+})
+Ui.automation("AutoTrickOrTreat", false)
+candyBox:AddToggle("AutoCandyWitch", {
+    Text = "Take the Candy Witch's jobs",
+    Default = false,
+    Tooltip = "Accepts her 3 daily jobs once a day (100-150 CandyCorn each, 300 more for all three). Finished jobs are claimed like other quests (Auto claim finished quests).",
+})
+Ui.automation("AutoCandyWitch", false)
+candyBox:AddToggle("AutoCandyShop", {
+    Text = "Buy from the CandyCorn shop",
+    Default = false,
+    Tooltip = "Buys your picks as a set you use together: always the one you hold the fewest of next, saving up for it instead of spending on a cheaper pick, until you hold the stock below of each. Sold-out and once-a-day items are skipped.",
+})
+Ui.automation("AutoCandyShop", true)
+candyBox:AddDropdown("CandyShopPicks", {
+    Text = "Buy these",
+    Values = #SHOP_LABELS > 0 and SHOP_LABELS or { "?" },
+    Multi = true,
+    Default = {},
+})
+candyBox:AddSlider("CandyShopStock", {
+    Text = "Keep in stock",
+    Default = 2,
+    Min = 1,
+    Max = 10,
+    Rounding = 0,
+    Tooltip = "Stops buying a pick while you hold this many of it unused (a 3-pack of potions counts as one), so CandyCorn is not sunk into a pile you never use.",
+})
+local candyLabel = candyBox:AddLabel("", true)
+
+local candy = { knocks = 0, earned = 0, bought = 0, note = "", shop = "" }
+
+local function readyHouses(data)
+    local list = {}
+    local now = workspace:GetServerTimeNow()
+    local record = type(data.TrickOrTreat) == "table" and data.TrickOrTreat or {}
+    for _, id in ipairs(TrickConfig and TrickConfig.Houses or {}) do
+        if HOUSES[id] and (tonumber(record[id]) or 0) <= now then
+            list[#list + 1] = id
+        end
+    end
+    return list
+end
+
+local function padZone(id)
+    local folder = workspace:FindFirstChild(TrickConfig and TrickConfig.Folder or "HalloweenIsland")
+    for _, model in ipairs(folder and folder:GetChildren() or {}) do
+        if model.Name == (TrickConfig and TrickConfig.PadName or "TrickOrTreat") and model:GetAttribute("HouseId") == id then
+            local zone = model:FindFirstChild(TrickConfig and TrickConfig.ZoneName or "Zone")
+            if zone and zone:IsA("BasePart") then
+                return zone
+            end
+        end
+    end
+    return nil
+end
+
+-- Keeps you on a spot every frame while `fn` runs (the server checks you are in the pad's zone).
+local function holdAt(position, fn)
+    local hold = game:GetService("RunService").Heartbeat:Connect(function()
+        local hrp = root()
+        if hrp then
+            hrp.AssemblyLinearVelocity = Vector3.zero
+            hrp.CFrame = CFrame.new(position)
+        end
+    end)
+    local ok, result = pcall(fn)
+    hold:Disconnect()
+    Env.elevate()
+    return ok and result
+end
+
+local function trickOrTreat()
+    for _, id in ipairs(readyHouses(Env.data() or {})) do
+        if not (Life.alive and Ui.on("AutoTrickOrTreat")) then
+            break
+        end
+        Env.streamAround(HOUSES[id], 3)
+        local hrp = root()
+        if hrp then
+            hrp.AssemblyLinearVelocity = Vector3.zero
+            hrp.CFrame = CFrame.new(HOUSES[id] + Vector3.new(0, 6, 0))
+        end
+        local zone
+        local deadline = os.clock() + 4
+        repeat
+            Life.wait(0.2)
+            zone = padZone(id)
+        until zone or not Life.alive or os.clock() > deadline
+        if zone then
+            local result = holdAt(zone.Position + Vector3.new(0, 2.5, 0), function()
+                Life.wait(0.8)
+                local ok, answer = Env.invoke("TrickOrTreatService", "Knock", id)
+                return ok and answer
+            end)
+            if type(result) == "table" and result.Success == true then
+                candy.knocks += 1
+                candy.earned += tonumber(result.Candy) or 0
+                candy.note = string.format("%s: %s CandyCorn%s.", id, tostring(result.Candy or 0),
+                    result.Potion and (" and a " .. tostring(result.Potion)) or "")
+            elseif type(result) == "table" then
+                candy.note = id .. ": " .. tostring(result.Reason or "refused")
+            end
+        end
+    end
+end
+
+local function candyWitch()
+    Env.streamAround(WITCH, 3)
+    holdAt(WITCH + Vector3.new(0, 3, 4), function()
+        Life.wait(0.8)
+        local ok, result = Env.invoke("HalloweenDailyService", "Accept")
+        if ok and type(result) == "table" and result.Success == true then
+            candy.note = result.Already and "The Candy Witch's jobs are already taken today." or "Took the Candy Witch's jobs."
+        else
+            candy.note = "Candy Witch: " .. tostring(type(result) == "table" and result.Reason or result)
+        end
+    end)
+end
+
+-- The picks are a set you use together (an Octo Incubator with a Luck Potion II and a Totem of
+-- Luck), so the next buy is always the pick you hold the fewest of, and the hub saves up for it
+-- rather than spending on a cheaper one. Buying "whatever is affordable, in shop order" sank 4,000
+-- CandyCorn into four incubators with nothing to go with them.
+
+-- The shop's own rules (HalloweenShopConfig.IsListed / GetRemaining, which the shop screen uses):
+-- GetRemaining is nil when unlimited and 0 when sold out (for good, or today for daily items).
+local function shopRule(name, data, item, fallback)
+    local rule = ShopConfig and ShopConfig[name]
+    if type(rule) ~= "function" then
+        return fallback
+    end
+    local ok, value = Env.call(rule, data, item)
+    if ok then
+        return value
+    end
+    return fallback
+end
+
+-- Unused copies you hold, in purchases: potions come 3 to a purchase, so 4 of them count as 1.33.
+-- Pets have no stock to count; their limit of 1 is what stops them.
+local function heldPurchases(data, item)
+    local owned
+    if item.Kind == "Boost" then
+        owned = type(data.Boosts) == "table" and data.Boosts[item.Name]
+    elseif item.Kind == "Item" then
+        local items = type(data.Items) == "table" and data.Items.Owned
+        owned = type(items) == "table" and items[item.Name]
+    end
+    return (tonumber(owned) or 0) / math.max(tonumber(item.Amount) or 1, 1)
+end
+
+local shopRestUntil = 0
+local function buyFromShop(data)
+    if os.clock() < shopRestUntil then
+        return
+    end
+    local picks = Options.CandyShopPicks.Value or {}
+    if ShopConfig and type(ShopConfig.IsOpen) == "function" then
+        local ok, open = Env.call(ShopConfig.IsOpen)
+        if ok and open == false then
+            candy.shop = "Shop: the Halloween shop is closed."
+            return
+        end
+    end
+    local keep = tonumber(Options.CandyShopStock.Value) or 2
+    local want, wantHeld, wantIndex
+    for index, item in ipairs(SHOP_ITEMS) do
+        if picks[SHOP_LABELS[index]] and shopRule("IsListed", data, item, true) ~= false
+            and shopRule("GetRemaining", data, item, nil) ~= 0 then
+            local held = heldPurchases(data, item)
+            -- Strictly fewer, so ties go to the shop's order.
+            if held < keep and (not want or held < wantHeld) then
+                want, wantHeld, wantIndex = item, held, index
+            end
+        end
+    end
+    if not want then
+        candy.shop = next(picks) and "Shop: stocked up on everything picked." or ""
+        return
+    end
+    local balance = tonumber(type(data.Currencies) == "table" and data.Currencies.CandyCorn) or 0
+    local price = tonumber(want.Price) or math.huge
+    if balance < price then
+        candy.shop = string.format("Shop: saving for %s, %d of %d.", SHOP_LABELS[wantIndex], balance, price)
+        return
+    end
+    local ok, result = Env.invoke("HalloweenShopService", "Purchase", { Id = want.Id })
+    -- The replica can land after the answer; counting stock again too soon would buy the same pick twice.
+    shopRestUntil = os.clock() + 3
+    if ok and type(result) == "table" and result.Success == true then
+        candy.bought += 1
+        candy.shop = "Shop: bought " .. SHOP_LABELS[wantIndex] .. "."
+    else
+        candy.shop = string.format("Shop: %s refused (%s).", SHOP_LABELS[wantIndex],
+            tostring(type(result) == "table" and result.Reason or result))
+        shopRestUntil = os.clock() + 30
+    end
+end
+
+local candyBusy = false
+local function candyTrip(job)
+    if candyBusy or busy or Ui.hatchMoving or Ui.travelling then
+        return
+    end
+    candyBusy = true
+    Ui.travelling = "halloween"
+    local settle = os.clock() + 6
+    while Ui.hatchInFlight and os.clock() < settle do
+        Life.wait(0.05)
+    end
+    local hrp = root()
+    local home = hrp and hrp.CFrame
+    local ok, err = pcall(job)
+    Env.elevate()
+    if not ok then
+        Life.errors["halloween:trip"] = tostring(err)
+        candy.note = "Error: " .. tostring(err)
+    end
+    if home then
+        local back = root()
+        if back then
+            back.AssemblyLinearVelocity = Vector3.zero
+            back.CFrame = home
+        end
+    end
+    Ui.travelling = false
+    candyBusy = false
+end
+
+local nextKnock, nextWitch, lastWitchDay = 0, 0, nil
+Life.loop("halloween:candy", 2, function()
+    local data = Env.data()
+    if not data then
+        return
+    end
+    local balance = tonumber(type(data.Currencies) == "table" and data.Currencies.CandyCorn) or 0
+    local ready = readyHouses(data)
+    local dailies = type(data.HalloweenDailies) == "table" and data.HalloweenDailies or {}
+    local today = DailyConfig and DailyConfig.Today(os.time()) or math.floor(os.time() / 86400)
+    local lines = {
+        string.format("%d CandyCorn. %d of 11 houses ready.", balance, #ready),
+        string.format("This session: %d knocks for %d CandyCorn, %d bought.", candy.knocks, candy.earned, candy.bought),
+    }
+    if candy.note ~= "" then
+        lines[#lines + 1] = candy.note
+    end
+    if Ui.on("AutoCandyShop") and candy.shop ~= "" then
+        lines[#lines + 1] = candy.shop
+    end
+    candyLabel:SetText(table.concat(lines, "\n"))
+    if Ui.on("AutoCandyShop") then
+        buyFromShop(data)
+    end
+    if candyBusy or busy or Ui.travelling or Ui.hatchMoving then
+        return
+    end
+    if Ui.on("AutoTrickOrTreat") and #ready > 0 and os.clock() >= nextKnock then
+        nextKnock = os.clock() + 60
+        Life.spawn("halloween:knock", candyTrip, trickOrTreat)
+    elseif Ui.on("AutoCandyWitch") and dailies.Day ~= today and lastWitchDay ~= today and os.clock() >= nextWitch then
+        nextWitch = os.clock() + 300
+        lastWitchDay = today
+        Life.spawn("halloween:witch", candyTrip, candyWitch)
+    end
+end)
+
+Life.onCleanup(function()
+    Ui.tapDemand = false
+    if busy or candyBusy then
+        Ui.travelling = false
+    end
+end)
+
+return {}
+end
 __modules["features/hatch"] = function(use) -- src/games/tapsim/features/hatch.luau
 -- Pets tab: auto hatch, done the way the game's own auto hatch does it, minus the waiting.
 --
@@ -2358,6 +3397,8 @@ local EGG_POSITIONS = {
     Crystal = Vector3.new(-53, 5438, -1992),
     Geode = Vector3.new(-68, 5438, -1987),
     Void = Vector3.new(-204, 7676, -1885),
+    Volcanic = Vector3.new(-2, 11073, -1913),
+    Draconic = Vector3.new(9, 11072, -1905),
 }
 
 local function eggModel(egg)
@@ -2507,10 +3548,7 @@ local function goToEgg(egg)
     Ui.hatchMoving = true
     local arrived = false
     pcall(function()
-        pcall(function()
-            Env.LocalPlayer:RequestStreamAroundAsync(target, 10)
-        end)
-        Env.elevate()
+        Env.streamAround(target, 10)
         hrp.AssemblyLinearVelocity = Vector3.zero
         hrp.CFrame = CFrame.new(target + Vector3.new(0, 6, 0))
         -- The model (and its Egg part) stream in once we are here.
@@ -2835,6 +3873,1075 @@ end)
 
 return {}
 end
+__modules["features/honeypot"] = function(use) -- src/games/tapsim/features/honeypot.luau
+-- Craft tab: the Honey Pot (Shared.Items.HoneyPotConfig), up at Sky Island height next to the
+-- Map1 area. It turns the ingredients island creatures drop (Cloud Puff, Pumpkin Seeds, Glow
+-- Spore, Cactus Fruit, Crystal Shard) into treats and pet boosts, in 3 timed slots.
+--
+-- HoneyPotService.Craft(key, amount) starts a batch in a free slot, Claim(slot) collects it and
+-- Stop(slot) cancels; all of them need you within the machine's Range (25 studs). A batch of
+-- `Amount` takes Amount x Seconds (HoneyPotConfig.Progress).
+
+local Env = use("core/env")
+local Life = use("shared/life")
+local Ui = use("core/ui")
+
+local Options = Ui.Options
+local tab = Ui.Tabs.Craft
+
+local Config
+do
+    local ok, module = Env.call(function()
+        return require(Env.ReplicatedStorage.Shared.Items.HoneyPotConfig)
+    end)
+    Config = ok and type(module) == "table" and module or nil
+end
+
+local MACHINE = Vector3.new(40.6, -27.1, -1964.4) -- measured in the game
+-- Rarest first: when ingredients run short, the best recipe gets them.
+local PRIORITY = { "SecretFruit", "RainbowStrawberry", "PetLevels10", "GoldenApple", "DragonFruit", "PetXP3x",
+    "PetClicks2x", "BagOfTreats" }
+local NAMES = {
+    SecretFruit = "Secret Fruit", RainbowStrawberry = "Rainbow Strawberry", PetLevels10 = "+10 Pet Levels",
+    GoldenApple = "Golden Apple", DragonFruit = "Dragon Fruit", PetXP3x = "2x Pet XP", PetClicks2x = "2x Pet Clicks",
+    BagOfTreats = "Bag of Treats",
+}
+
+local labels, keyOf = {}, {}
+for _, key in ipairs(PRIORITY) do
+    if not Config or Config.ByKey[key] then
+        labels[#labels + 1] = NAMES[key] or key
+        keyOf[NAMES[key] or key] = key
+    end
+end
+
+local box = tab:AddGroupbox({ Side = "Left", Name = "Honey Pot", IconName = "cooking-pot" })
+box:AddToggle("AutoHoneyPot", {
+    Text = "Auto Honey Pot",
+    Default = false,
+    Tooltip = "Keeps the Honey Pot's 3 slots cooking the recipes you pick from the ingredients you have, and collects them when done. Island creatures drop the ingredients.",
+})
+Ui.automation("AutoHoneyPot", false)
+box:AddDropdown("HoneyPicks", {
+    Text = "Cook these",
+    Values = labels,
+    Multi = true,
+    Default = labels,
+    Tooltip = "Rarest first: Secret Fruit, Rainbow Strawberry, +10 Pet Levels, Golden Apple, Dragon Fruit, 2x Pet XP, 2x Pet Clicks, Bag of Treats.",
+})
+local label = box:AddLabel("Off.", true)
+
+local session = { crafted = 0, claimed = 0, note = "" }
+
+local function slots(data)
+    local pot = type(data.HoneyPot) == "table" and data.HoneyPot or {}
+    return type(pot.Slots) == "table" and pot.Slots or {}
+end
+
+local function slotEntry(data, index)
+    local all = slots(data)
+    return all["Slot" .. index] or all[tostring(index)] or all[index]
+end
+
+local function finished(entry, now)
+    if type(entry) ~= "table" or not Config then
+        return false
+    end
+    local ok, done, endsAt = pcall(Config.Progress, entry, now)
+    if not ok then
+        return false
+    end
+    return (tonumber(done) or 0) > 0 and (tonumber(endsAt) or math.huge) <= now
+end
+
+-- The highest-priority picked recipe you have the ingredients for, and how many.
+local function nextRecipe(data)
+    if not Config then
+        return nil
+    end
+    local picks = Options.HoneyPicks.Value or {}
+    for _, key in ipairs(PRIORITY) do
+        local recipe = Config.ByKey[key]
+        if recipe and picks[NAMES[key] or key] then
+            local ok, amount = pcall(Config.MaxCraftable, data, recipe)
+            if ok and (tonumber(amount) or 0) > 0 then
+                return recipe, amount
+            end
+        end
+    end
+    return nil
+end
+
+local function work(data)
+    local now = os.time()
+    local claim, free = false, false
+    for index = 1, Config and Config.SlotCount or 3 do
+        local entry = slotEntry(data, index)
+        if entry == nil then
+            free = true
+        elseif finished(entry, now) then
+            claim = true
+        end
+    end
+    return claim, free and nextRecipe(data) ~= nil
+end
+
+local function root()
+    local character = Env.LocalPlayer.Character
+    return character and character:FindFirstChild("HumanoidRootPart")
+end
+
+local function ask(name, ...)
+    local ok, result = Env.invoke("HoneyPotService", name, ...)
+    if ok and type(result) == "table" and result.Success ~= false and not result.Error then
+        return result
+    end
+    return nil, tostring(ok and type(result) == "table" and (result.Error or result.Reason) or result)
+end
+
+local busy = false
+local function trip()
+    if busy or Ui.hatchMoving or Ui.travelling then
+        return
+    end
+    busy = true
+    Ui.travelling = "honeypot"
+    local settle = os.clock() + 6
+    while Ui.hatchInFlight and os.clock() < settle do
+        Life.wait(0.05)
+    end
+    local hrp = root()
+    local home = hrp and hrp.CFrame
+    local ok, err = pcall(function()
+        Env.streamAround(MACHINE, 6)
+        local here = root()
+        if here then
+            here.AssemblyLinearVelocity = Vector3.zero
+            here.CFrame = CFrame.new(MACHINE + Vector3.new(0, 4, 8))
+        end
+        Life.wait(0.6)
+        local now = os.time()
+        for index = 1, Config.SlotCount or 3 do
+            local data = Env.data()
+            local entry = data and slotEntry(data, index)
+            if entry and finished(entry, now) then
+                local result, why = ask("Claim", index)
+                if result then
+                    session.claimed += 1
+                else
+                    session.note = "Collect refused: " .. why .. "."
+                end
+                Life.wait(0.4)
+            end
+        end
+        for index = 1, Config.SlotCount or 3 do
+            local data = Env.data()
+            if data and slotEntry(data, index) == nil then
+                local recipe, amount = nextRecipe(data)
+                if not recipe then
+                    break
+                end
+                local result, why = ask("Craft", recipe.Key, amount)
+                if result then
+                    session.crafted += 1
+                    session.note = string.format("Cooking %d %s.", amount, NAMES[recipe.Key] or recipe.Key)
+                else
+                    session.note = "Craft refused: " .. why .. "."
+                    break
+                end
+                Life.wait(0.5)
+            end
+        end
+    end)
+    Env.elevate()
+    if not ok then
+        Life.errors["honeypot:trip"] = tostring(err)
+    end
+    if home then
+        local back = root()
+        if back then
+            back.AssemblyLinearVelocity = Vector3.zero
+            back.CFrame = home
+        end
+    end
+    Ui.travelling = false
+    busy = false
+end
+
+local nextTrip = 0
+Life.loop("honeypot:auto", 2, function()
+    local data = Env.data()
+    if not (data and Config) then
+        return
+    end
+    local now = os.time()
+    local parts = {}
+    for index = 1, Config.SlotCount or 3 do
+        local entry = slotEntry(data, index)
+        if type(entry) ~= "table" then
+            parts[#parts + 1] = "empty"
+        else
+            local ok, _, endsAt = pcall(Config.Progress, entry, now)
+            local left = ok and math.max(0, (tonumber(endsAt) or now) - now) or 0
+            local key = entry.Recipe or entry.Key or (type(entry.Output) == "table" and entry.Output.Key)
+            local name = NAMES[key] or tostring(key or "?")
+            parts[#parts + 1] = left > 0 and string.format("%s %d:%02d", name, left // 60, left % 60) or (name .. " ready")
+        end
+    end
+    local lines = { "Slots: " .. table.concat(parts, ", "),
+        string.format("This session: %d batches started, %d collected.", session.crafted, session.claimed) }
+    if session.note ~= "" then
+        lines[#lines + 1] = session.note
+    end
+    label:SetText((Ui.on("AutoHoneyPot") and "" or "Off. ") .. table.concat(lines, "\n"))
+    if not Ui.on("AutoHoneyPot") or busy or os.clock() < nextTrip then
+        return
+    end
+    local claim, craft = work(data)
+    if claim or craft then
+        nextTrip = os.clock() + 20
+        Life.spawn("honeypot:trip", trip)
+    end
+end)
+
+Life.onCleanup(function()
+    if busy then
+        Ui.travelling = false
+    end
+end)
+
+return {}
+end
+__modules["features/items"] = function(use) -- src/games/tapsim/features/items.luau
+-- Rewards tab: items that do something when used, and rewards waiting to be claimed.
+--
+--   Totems (Shared.Items.TotemConfig): ItemService.PlaceTotem { TotemName, Position } drops one
+--     where you stand; it boosts everyone within its Range (12-28 studs) for 5-17 minutes. Placed
+--     only while you are standing at your hatch spot, and never on top of a running one of its kind
+--     (ItemService.GetActiveTotems).
+--   Gifts (Shared.Items.GiftConfig): GiftService.OpenGift { Gift, Amount }.
+--   Weather dials: WeatherDialService.CanUse(kind) then Use(kind), "Rain" for the Rain Dial and
+--     "Acid" for the Acid Dial, as the item's own use does.
+--   Mastery rings (Shared.Progression.RelicConfig): earned at mastery level 100; MasteryService
+--     .EquipRelic { Name } wears one.
+--   Leaderboards: LeaderboardService.GetPendingRewards, then ClaimReward(LeaderboardId) each.
+
+local Env = use("core/env")
+local Life = use("shared/life")
+local Ui = use("core/ui")
+
+local Options = Ui.Options
+local tab = Ui.Tabs.Rewards
+local RS = Env.ReplicatedStorage
+
+local function load(...)
+    local path = { ... }
+    local ok, module = Env.call(function()
+        local node = RS
+        for _, part in ipairs(path) do
+            node = node:FindFirstChild(part)
+        end
+        return node and require(node)
+    end)
+    return ok and type(module) == "table" and module or nil
+end
+
+local TotemConfig = load("Shared", "Items", "TotemConfig")
+local GiftConfig = load("Shared", "Items", "GiftConfig")
+local RelicConfig = load("Shared", "Progression", "RelicConfig")
+
+local TOTEMS = {}
+for name in pairs(TotemConfig or {}) do
+    if type(name) == "string" then
+        TOTEMS[#TOTEMS + 1] = name
+    end
+end
+table.sort(TOTEMS)
+
+-- Gift items are the GiftConfig entries that hold a list of prizes.
+local GIFTS = {}
+for name, entry in pairs(GiftConfig or {}) do
+    if type(name) == "string" and type(entry) == "table" and type(entry[1]) == "table" then
+        GIFTS[#GIFTS + 1] = name
+    end
+end
+table.sort(GIFTS)
+
+local DIALS = { RainDial = "Rain", AcidDial = "Acid" }
+local RINGS = RelicConfig and RelicConfig.Order or { "HatchRing", "SecretRing", "TapRing", "GoldenRing", "EnchantRing" }
+
+local box = tab:AddGroupbox({ Side = "Right", Name = "Items and rewards", IconName = "package" })
+box:AddToggle("AutoTotems", {
+    Text = "Place totems",
+    Default = false,
+    Tooltip = "Places the totems you own where you hatch (they boost everything within 12-28 studs for 5-17 minutes), one of each kind at a time.",
+})
+Ui.automation("AutoTotems", true)
+box:AddDropdown("TotemPicks", {
+    Text = "Totems",
+    Values = #TOTEMS > 0 and TOTEMS or { "TotemOfLuck" },
+    Multi = true,
+    Default = TOTEMS,
+})
+box:AddToggle("AutoGifts", {
+    Text = "Open gifts",
+    Default = false,
+    Tooltip = "Opens every gift item you get (Octo Incubators, rare pets and more inside).",
+})
+Ui.automation("AutoGifts", true)
+box:AddToggle("AutoDials", {
+    Text = "Use weather dials",
+    Default = false,
+    Tooltip = "Uses Rain Dials and Acid Dials (from Pet Defense) as soon as the game lets you.",
+})
+Ui.automation("AutoDials", true)
+box:AddToggle("AutoRing", {
+    Text = "Wear a mastery ring",
+    Default = true,
+    Tooltip = "Mastery rings are earned at mastery level 100. When you have one and wear none, the first in the list you own goes on.",
+})
+Ui.automation("AutoRing", true)
+box:AddDropdown("RingOrder", {
+    Text = "Preferred ring",
+    Values = RINGS,
+    Default = RINGS[1],
+})
+box:AddToggle("AutoLeaderboard", {
+    Text = "Claim leaderboard rewards",
+    Default = true,
+    Tooltip = "Claims the weekly leaderboard rewards as soon as you have any.",
+})
+Ui.automation("AutoLeaderboard", true)
+local label = box:AddLabel("", true)
+
+local session = { totems = 0, gifts = 0, dials = 0, rings = 0, boards = 0, note = "" }
+
+local function owned(data, name)
+    local items = type(data.Items) == "table" and type(data.Items.Owned) == "table" and data.Items.Owned or {}
+    return tonumber(items[name]) or 0
+end
+
+local function root()
+    local character = Env.LocalPlayer.Character
+    return character and character:FindFirstChild("HumanoidRootPart")
+end
+
+-- Totems --------------------------------------------------------------------------------------
+
+local function activeTotems()
+    local ok, result = Env.invoke("ItemService", "GetActiveTotems")
+    local kinds = {}
+    for _, entry in pairs(ok and type(result) == "table" and result or {}) do
+        local name = type(entry) == "table" and (entry.TotemName or entry.Name or entry.Totem) or entry
+        if type(name) == "string" then
+            kinds[name] = true
+        end
+    end
+    return kinds
+end
+
+local function placeTotems(data)
+    -- Only where the boost matters: standing still at the egg, not mid-trip.
+    if Ui.travelling or Ui.hatchMoving or not Ui.on("AutoHatch") then
+        return
+    end
+    local picks = Options.TotemPicks.Value or {}
+    local active
+    for _, name in ipairs(TOTEMS) do
+        if picks[name] and owned(data, name) > 0 then
+            active = active or activeTotems()
+            if not active[name] then
+                local hrp = root()
+                if not hrp then
+                    return
+                end
+                local ok, result = Env.invoke("ItemService", "PlaceTotem", { TotemName = name, Position = hrp.Position })
+                if ok and type(result) == "table" and result.Success == true then
+                    session.totems += 1
+                    session.note = "Placed a " .. name .. "."
+                    active[name] = true
+                else
+                    session.note = string.format("%s: %s.", name, tostring(type(result) == "table" and (result.Reason or result.Error) or result))
+                end
+                Life.wait(0.5)
+            end
+        end
+    end
+end
+
+-- Gifts and dials -------------------------------------------------------------------------------
+
+local function openGifts(data)
+    for _, gift in ipairs(GIFTS) do
+        local count = owned(data, gift)
+        if count > 0 then
+            local ok, result = Env.invoke("GiftService", "OpenGift", { Gift = gift, Amount = count })
+            if ok and type(result) == "table" and result.Success ~= false and not result.Error then
+                session.gifts += count
+                session.note = string.format("Opened %d %s.", count, gift)
+            else
+                session.note = string.format("%s: %s.", gift, tostring(type(result) == "table" and (result.Reason or result.Error) or result))
+            end
+            Life.wait(0.6)
+        end
+    end
+end
+
+local dialWait = {}
+local function useDials(data)
+    for item, kind in pairs(DIALS) do
+        if owned(data, item) > 0 and (dialWait[kind] or 0) <= os.clock() then
+            local ok, check = Env.invoke("WeatherDialService", "CanUse", kind)
+            if ok and type(check) == "table" and check.Success == true then
+                local used, result = Env.invoke("WeatherDialService", "Use", kind)
+                if used and type(result) == "table" and result.Success == true then
+                    session.dials += 1
+                    session.note = "Used a " .. item .. "."
+                else
+                    dialWait[kind] = os.clock() + 60
+                end
+            else
+                -- another weather is running, or the game says not yet
+                dialWait[kind] = os.clock() + 60
+            end
+            Life.wait(0.5)
+        end
+    end
+end
+
+-- Mastery ring and leaderboards ---------------------------------------------------------------
+
+local function wearRing(data)
+    local mastery = type(data.Mastery) == "table" and data.Mastery or {}
+    if type(mastery.EquippedRelic) == "string" or type(mastery.RelicInventory) ~= "table" then
+        return
+    end
+    local order = { Options.RingOrder.Value }
+    for _, ring in ipairs(RINGS) do
+        order[#order + 1] = ring
+    end
+    for _, ring in ipairs(order) do
+        if mastery.RelicInventory[ring] == true then
+            local ok, result = Env.invoke("MasteryService", "EquipRelic", { Name = ring })
+            if ok and type(result) == "table" and result.Success == true then
+                session.rings += 1
+                session.note = "Wearing the " .. ring .. "."
+            end
+            return
+        end
+    end
+end
+
+local nextBoards = 0
+local function claimBoards()
+    if os.clock() < nextBoards then
+        return
+    end
+    nextBoards = os.clock() + 300
+    local ok, pending = Env.invoke("LeaderboardService", "GetPendingRewards")
+    for _, entry in pairs(ok and type(pending) == "table" and pending or {}) do
+        if type(entry) == "table" and entry.LeaderboardId ~= nil then
+            local claimed, result = Env.invoke("LeaderboardService", "ClaimReward", entry.LeaderboardId)
+            if claimed and type(result) == "table" and result.Success ~= false then
+                session.boards += 1
+                session.note = "Claimed a leaderboard reward."
+            elseif type(result) == "table" and result.Reason == "StorageFull" then
+                session.note = "Leaderboard reward waiting: your pet storage is full."
+            end
+            Life.wait(0.5)
+        end
+    end
+end
+
+Life.loop("items:auto", 3, function()
+    local data = Env.data()
+    if not data then
+        return
+    end
+    if Ui.on("AutoGifts") then
+        openGifts(data)
+    end
+    if Ui.on("AutoDials") then
+        useDials(data)
+    end
+    if Ui.on("AutoRing") then
+        wearRing(data)
+    end
+    if Ui.on("AutoLeaderboard") then
+        claimBoards()
+    end
+    if Ui.on("AutoTotems") then
+        placeTotems(data)
+    end
+    local counts = {}
+    for _, name in ipairs(TOTEMS) do
+        local n = owned(data, name)
+        if n > 0 then
+            counts[#counts + 1] = string.format("%d %s", n, (name:gsub("^TotemOf", "")))
+        end
+    end
+    local lines = {
+        "Totems owned: " .. (#counts > 0 and table.concat(counts, ", ") or "none"),
+        string.format("This session: %d totems, %d gifts, %d dials, %d leaderboard rewards.", session.totems, session.gifts,
+            session.dials, session.boards),
+    }
+    if session.note ~= "" then
+        lines[#lines + 1] = session.note
+    end
+    label:SetText(table.concat(lines, "\n"))
+end)
+
+return {}
+end
+__modules["features/minigames"] = function(use) -- src/games/tapsim/features/minigames.luau
+-- Rewards tab: Memory Match and Boingo's quest.
+--
+-- Memory Match (MemoryMatchService, pad at workspace.MemoryMatch.TouchToPlay, within 24 studs):
+-- Open(true) deals a board of 12 cards (6 pet pairs) once every 30 minutes; Flip(boardId, card)
+-- turns one over and answers with the board, the flipped card's Pet showing, and after the second
+-- card of a turn whether it was a Match. Cards cannot be flipped before UnlockAt. Played with a
+-- perfect memory: a known pair is taken at once, an unknown card is turned first, and its partner
+-- is taken if it was seen before.
+--
+-- Boingo's quest (Shared.Quests.NpcQuestConfig, line "BouncyBall"): NpcQuestService.Talk { Line }
+-- starts and advances it, Collect { Line, Core } picks up each of the 5 Bounce Cores within 14
+-- studs of it. The other steps (tap 1,000 times, hatch 20 eggs, unlock Sky Island) are progress you
+-- make anyway. Reward: 5 Slime.
+
+local Env = use("core/env")
+local Life = use("shared/life")
+local Ui = use("core/ui")
+
+local tab = Ui.Tabs.Minigames
+local RS = Env.ReplicatedStorage
+
+local PAD = Vector3.new(-3118.3, -526.1, -2179.3)
+local LINE = "BouncyBall"
+
+local NpcQuestConfig
+do
+    local ok, module = Env.call(function()
+        return require(RS.Shared.Quests.NpcQuestConfig)
+    end)
+    NpcQuestConfig = ok and type(module) == "table" and module or nil
+end
+
+local box = tab:AddGroupbox({ Side = "Left", Name = "Memory Match and quests", IconName = "gamepad-2" })
+box:AddToggle("AutoMemory", {
+    Text = "Play Memory Match",
+    Default = false,
+    Tooltip = "Plays Memory Match (by the spawn, every 30 minutes) with a perfect memory, then comes back.",
+})
+Ui.automation("AutoMemory", false)
+box:AddToggle("AutoBoingo", {
+    Text = "Do Boingo's quest",
+    Default = false,
+    Tooltip = "Talks to Boingo and picks up his 5 Bounce Cores around the spawn. Reward: 5 Slime. Once.",
+})
+Ui.automation("AutoBoingo", false)
+-- Off until the game's Bouncy Obby can be finished: the live course has 3 of its 4 checkpoints and
+-- no finish line (swept end to end), so a run can only fail. runObby below is kept for when it is
+-- fixed; uncomment this toggle and the matching branch in the auto loop.
+--[[
+box:AddToggle("AutoObby", {
+    Text = "Get the Bouncy Ball license",
+    Default = false,
+    Tooltip = "Once you have 20 Slime (the Glow Mushroom and Boingo give it), crafts a key, runs the Bouncy Obby checkpoint by checkpoint and finishes it, which earns the Bouncy Ball license. The run takes the game's minimum 45 seconds.",
+})
+Ui.automation("AutoObby", false)
+]]
+local label = box:AddLabel("", true)
+
+local session = { played = 0, won = 0, note = "", boingo = "" }
+
+local function root()
+    local character = Env.LocalPlayer.Character
+    return character and character:FindFirstChild("HumanoidRootPart")
+end
+
+local function teleport(position)
+    Env.streamAround(position, 5)
+    local hrp = root()
+    if hrp then
+        hrp.AssemblyLinearVelocity = Vector3.zero
+        hrp.CFrame = CFrame.new(position + Vector3.new(0, 4, 0))
+    end
+end
+
+-- Memory Match ---------------------------------------------------------------------------------
+
+local function memoryCall(name, ...)
+    for _ = 1, 6 do
+        local ok, result = Env.invoke("MemoryMatchService", name, ...)
+        if ok and type(result) == "table" and result.Error == "Please wait." then
+            Life.wait(0.6)
+        else
+            return ok and type(result) == "table" and result or nil
+        end
+    end
+    return nil
+end
+
+local function waitUnlock(state)
+    local unlock = tonumber(state and state.UnlockAt) or 0
+    local wait = unlock - workspace:GetServerTimeNow()
+    if wait > 0 then
+        Life.wait(wait + 0.15)
+    end
+end
+
+local function playBoard(state)
+    local known = {} -- card -> pet, for cards seen and not matched
+    local function remember(board)
+        for index, card in pairs(type(board.Cards) == "table" and board.Cards or {}) do
+            index = tonumber(index)
+            if index and type(card) == "table" then
+                if card.Matched then
+                    known[index] = nil
+                elseif card.Pet then
+                    known[index] = card.Pet
+                end
+            end
+        end
+    end
+    local function unmatched(board)
+        local list = {}
+        for index, card in pairs(type(board.Cards) == "table" and board.Cards or {}) do
+            index = tonumber(index)
+            if index and type(card) == "table" and not card.Matched then
+                list[#list + 1] = index
+            end
+        end
+        table.sort(list)
+        return list
+    end
+    local function flip(board, index)
+        waitUnlock(board)
+        local result = memoryCall("Flip", board.Id, index)
+        if result then
+            remember(result)
+        end
+        return result
+    end
+    local function knownPair(board)
+        local open = unmatched(board)
+        for a = 1, #open do
+            for b = a + 1, #open do
+                local pa, pb = known[open[a]], known[open[b]]
+                if pa and pa == pb then
+                    return open[a], open[b]
+                end
+            end
+        end
+        return nil
+    end
+    local function unknownCard(board, except)
+        for _, index in ipairs(unmatched(board)) do
+            if known[index] == nil and index ~= except then
+                return index
+            end
+        end
+        return nil
+    end
+    local function partnerOf(board, index)
+        for _, other in ipairs(unmatched(board)) do
+            if other ~= index and known[other] and known[other] == known[index] then
+                return other
+            end
+        end
+        return nil
+    end
+
+    remember(state)
+    local board = state
+    for _ = 1, 40 do
+        if not (Life.alive and board and board.Outcome == "Playing") then
+            break
+        end
+        local a, b = knownPair(board)
+        if a then
+            board = flip(board, a) or board
+            board = flip(board, b) or board
+        else
+            local first = unknownCard(board)
+            if not first then
+                break
+            end
+            board = flip(board, first) or board
+            local second = partnerOf(board, first) or unknownCard(board, first)
+            if not second then
+                break
+            end
+            board = flip(board, second) or board
+        end
+    end
+    return board
+end
+
+local function playMemory()
+    teleport(PAD)
+    Life.wait(0.8)
+    local state = memoryCall("Open", true)
+    if not state then
+        session.note = "Memory Match did not open."
+        return
+    end
+    if state.Outcome ~= "Playing" then
+        session.note = "Memory Match: " .. tostring(state.Error or state.Outcome)
+        return
+    end
+    local final = playBoard(state)
+    session.played += 1
+    local outcome = final and final.Outcome or "?"
+    if outcome == "Won" or (final and tonumber(final.Pairs) == 6) then
+        session.won += 1
+    end
+    session.note = string.format("Memory Match: %s in %s tries.", tostring(outcome), tostring(final and final.Attempts or "?"))
+end
+
+-- Boingo ---------------------------------------------------------------------------------------
+
+local function questLine()
+    if not NpcQuestConfig then
+        return nil
+    end
+    local ok, line = Env.call(NpcQuestConfig.LineForNpc, "Boingo")
+    if ok and type(line) == "table" then
+        return line
+    end
+    return type(NpcQuestConfig.Lines) == "table" and NpcQuestConfig.Lines[LINE] or nil
+end
+
+local function boingoState(data)
+    local line = questLine()
+    if not (line and data) then
+        return nil
+    end
+    local ok, entry = Env.call(NpcQuestConfig.GetEntry, data, line.Id)
+    entry = ok and entry or nil
+    local okStep, step = Env.call(NpcQuestConfig.CurrentStep, line, entry)
+    return line, entry, okStep and step or nil
+end
+
+local function doBoingo()
+    for _ = 1, 12 do
+        local data = Env.data()
+        local line, entry, step = boingoState(data)
+        if not line then
+            session.boingo = "Quest config could not be read."
+            return
+        end
+        if entry and entry.Done == true then
+            session.boingo = "Boingo's quest is done."
+            return
+        end
+        if entry == nil or (step and step.Kind == "Talk") then
+            local ok, result = Env.invoke("NpcQuestService", "Talk", { Line = line.Id })
+            if not (ok and type(result) == "table" and result.Success == true) then
+                session.boingo = "Boingo: " .. tostring(type(result) == "table" and (result.Reason or result.Error) or result)
+                return
+            end
+        elseif step and step.Kind == "Collect" then
+            local okCores, cores = Env.call(NpcQuestConfig.OpenCores, line, entry)
+            local list = okCores and type(cores) == "table" and cores or {}
+            if #list == 0 then
+                Env.invoke("NpcQuestService", "Talk", { Line = line.Id })
+            end
+            for _, core in ipairs(list) do
+                if typeof(core.Position) == "Vector3" then
+                    teleport(core.Position)
+                    Life.wait(0.6)
+                    Env.invoke("NpcQuestService", "Collect", { Line = line.Id, Core = core.Id })
+                    Life.wait(0.3)
+                end
+            end
+        else
+            -- a progress step: done means Boingo moves you on when you talk to him
+            local okDone, done = Env.call(NpcQuestConfig.IsStepComplete, line, entry, data)
+            if okDone and done then
+                Env.invoke("NpcQuestService", "Talk", { Line = line.Id })
+            else
+                session.boingo = "Boingo: waiting on \"" .. tostring(step and step.Title) .. "\"."
+                return
+            end
+        end
+        Life.wait(0.5)
+    end
+end
+
+-- Bouncy Obby ----------------------------------------------------------------------------------
+--
+-- BouncyObbyService: CraftKey turns 20 Slime into a key, Enter puts you on the course, Reach
+-- { Index } saves each checkpoint (parts with a CheckpointIndex attribute in workspace.BouncyObby),
+-- Finish on the part marked Finish ends the run - refused as "TooFast" before MinFinishSeconds (45)
+-- or "MissedCheckpoints". The first finish unlocks the Bouncy Ball license (Data.Unlocks).
+
+local ObbyConfig
+do
+    local ok, module = Env.call(function()
+        return require(RS.Shared.Game.BouncyObbyConfig)
+    end)
+    ObbyConfig = ok and type(module) == "table" and module or nil
+end
+
+local function obbyCall(name, payload)
+    local ok, result
+    if payload ~= nil then
+        ok, result = Env.invoke("BouncyObbyService", name, payload)
+    else
+        ok, result = Env.invoke("BouncyObbyService", name)
+    end
+    return ok and type(result) == "table" and result or {}
+end
+
+-- The course is ~2,400 x 2,000 studs and only streams in 200 studs around you, so its checkpoints
+-- and finish are found by sweeping it once; what was found is kept for later runs (it is built by
+-- the server, the same every time).
+local obbySpots = Env.genv.__SlopixObbySpots or { checkpoints = {}, finish = nil }
+Env.genv.__SlopixObbySpots = obbySpots
+
+local function obbyModel()
+    return workspace:FindFirstChild(ObbyConfig and ObbyConfig.ModelName or "BouncyObby")
+end
+
+local function obbyCount()
+    local count = tonumber(workspace:GetAttribute("BouncyObbyCheckpoints")) or 4
+    local found = 0
+    for _ in pairs(obbySpots.checkpoints) do
+        found += 1
+    end
+    return found, count
+end
+
+local function obbyScan()
+    local model = obbyModel()
+    for _, part in ipairs(model and model:GetDescendants() or {}) do
+        if part:IsA("BasePart") then
+            local index = part:GetAttribute("CheckpointIndex")
+            if type(index) == "number" then
+                obbySpots.checkpoints[index] = part.Position
+            elseif part:GetAttribute("Finish") == true then
+                obbySpots.finish = part.Position
+            end
+        end
+    end
+end
+
+local function streamAround(position, seconds)
+    Env.streamAround(position, seconds)
+end
+
+local function obbySweep()
+    obbyScan()
+    local found, count = obbyCount()
+    if found >= count and obbySpots.finish then
+        return true
+    end
+    local model = obbyModel()
+    if not model then
+        return false
+    end
+    local ok, center, size = pcall(function()
+        local cframe, extents = model:GetBoundingBox()
+        return cframe.Position, extents
+    end)
+    if not ok then
+        return false
+    end
+    local low, high = center - size / 2, center + size / 2
+    -- 250-stud steps keep every point of the course within the 200-stud stream of one visit
+    for y = low.Y + 100, high.Y, 250 do
+        for x = low.X + 125, high.X, 250 do
+            for z = low.Z + 125, high.Z, 250 do
+                if not Life.alive then
+                    return false
+                end
+                local point = Vector3.new(x, y, z)
+                streamAround(point, 2)
+                local hrp = root()
+                if hrp then
+                    hrp.AssemblyLinearVelocity = Vector3.zero
+                    hrp.CFrame = CFrame.new(point)
+                end
+                Life.wait(0.3)
+                obbyScan()
+                found, count = obbyCount()
+                if found >= count and obbySpots.finish then
+                    return true
+                end
+            end
+        end
+    end
+    return false
+end
+
+local function hasLicense(data)
+    return ObbyConfig and ObbyConfig.HasLicense(data) or false
+end
+
+local function slime(data)
+    return ObbyConfig and ObbyConfig.SlimeOwned(data) or 0
+end
+
+local function runObby()
+    local data = Env.data()
+    if not data or hasLicense(data) then
+        return
+    end
+    local progress = ObbyConfig.GetProgress(data)
+    if not progress.Key then
+        local crafted = obbyCall("CraftKey")
+        if crafted.Success ~= true then
+            session.note = "Obby key: " .. tostring(crafted.Reason or crafted.Error or "refused")
+            return
+        end
+    end
+    local entered = obbyCall("Enter")
+    if entered.Success ~= true then
+        session.note = "Obby: " .. tostring(entered.Reason or entered.Error or "could not enter")
+        return
+    end
+    local started = os.clock()
+    local deadline = os.clock() + 15
+    repeat
+        Life.wait(0.5)
+    until obbyModel() or not Life.alive or os.clock() > deadline
+    if not obbySweep() then
+        local found, count = obbyCount()
+        session.note = string.format("Obby: found %d of %d checkpoints%s; leaving, the key is kept.", found, count,
+            obbySpots.finish and "" or " and no finish")
+        obbyCall("Leave")
+        return
+    end
+    local order = {}
+    for index, position in pairs(obbySpots.checkpoints) do
+        order[#order + 1] = { index = index, position = position }
+    end
+    table.sort(order, function(a, b)
+        return a.index < b.index
+    end)
+    local reached = ObbyConfig.GetProgress(Env.data()).Reached or 0
+    for _, checkpoint in ipairs(order) do
+        if not Life.alive then
+            return
+        end
+        if checkpoint.index > reached then
+            streamAround(checkpoint.position, 2)
+            local hrp = root()
+            if hrp then
+                hrp.AssemblyLinearVelocity = Vector3.zero
+                hrp.CFrame = CFrame.new(checkpoint.position + Vector3.new(0, 3, 0))
+            end
+            Life.wait(0.6)
+            local result = obbyCall("Reach", { Index = checkpoint.index })
+            if result.Success ~= true then
+                session.note = string.format("Obby checkpoint %d: %s.", checkpoint.index, tostring(result.Reason or "refused"))
+            end
+            Life.wait(2)
+        end
+    end
+    -- The game refuses a finish sooner than MinFinishSeconds into the run ("TooFast").
+    local minimum = (ObbyConfig.MinFinishSeconds or 45) + 2
+    while Life.alive and os.clock() - started < minimum do
+        Life.wait(0.5)
+    end
+    streamAround(obbySpots.finish, 2)
+    local hrp = root()
+    if hrp then
+        hrp.AssemblyLinearVelocity = Vector3.zero
+        hrp.CFrame = CFrame.new(obbySpots.finish + Vector3.new(0, 3, 0))
+    end
+    Life.wait(0.6)
+    local finished = obbyCall("Finish")
+    session.note = finished.Success == true and "Bouncy Obby finished: license earned."
+        or ("Obby finish: " .. tostring(finished.Reason or "refused") .. " (the key is kept).")
+    obbyCall("Leave")
+end
+
+-- Trips ----------------------------------------------------------------------------------------
+
+local busy = false
+local function trip(job)
+    if busy or Ui.hatchMoving or Ui.travelling then
+        return
+    end
+    busy = true
+    Ui.travelling = "minigames"
+    local settle = os.clock() + 6
+    while Ui.hatchInFlight and os.clock() < settle do
+        Life.wait(0.05)
+    end
+    local hrp = root()
+    local home = hrp and hrp.CFrame
+    local ok, err = pcall(job)
+    Env.elevate()
+    if not ok then
+        Life.errors["minigames:trip"] = tostring(err)
+        session.note = "Error: " .. tostring(err)
+    end
+    if home then
+        local back = root()
+        if back then
+            back.AssemblyLinearVelocity = Vector3.zero
+            back.CFrame = home
+        end
+    end
+    Ui.travelling = false
+    busy = false
+end
+
+local nextMemory, nextBoingo, nextObby = 0, 0, 0
+Life.loop("minigames:auto", 2, function()
+    local data = Env.data()
+    if not data then
+        return
+    end
+    local memory = type(data.MemoryMatch) == "table" and data.MemoryMatch or {}
+    local wait = math.max(0, (tonumber(memory.NextPlay) or 0) - workspace:GetServerTimeNow())
+    local lines = {
+        wait > 0 and string.format("Memory Match in %d:%02d. Won %d.", wait // 60, math.floor(wait % 60), tonumber(memory.Wins) or 0)
+            or string.format("Memory Match is ready. Won %d.", tonumber(memory.Wins) or 0),
+    }
+    local _, entry, step = boingoState(data)
+    lines[#lines + 1] = entry and entry.Done and "Boingo's quest: done."
+        or ("Boingo's quest: " .. (entry and step and tostring(step.Title) or "not started") .. ".")
+    for _, note in ipairs({ session.note, session.boingo }) do
+        if note ~= "" then
+            lines[#lines + 1] = note
+        end
+    end
+    label:SetText(table.concat(lines, "\n"))
+    if busy or Ui.travelling or Ui.hatchMoving then
+        return
+    end
+    if Ui.on("AutoMemory") and wait <= 0 and os.clock() >= nextMemory then
+        nextMemory = os.clock() + 60
+        Life.spawn("minigames:memory", trip, playMemory)
+    elseif Ui.on("AutoBoingo") and not (entry and entry.Done) and os.clock() >= nextBoingo then
+        nextBoingo = os.clock() + 120
+        Life.spawn("minigames:boingo", trip, doBoingo)
+    --[[ Bouncy Obby: see the commented-out toggle above.
+    elseif Ui.on("AutoObby") and ObbyConfig and not hasLicense(data) and os.clock() >= nextObby
+        and (slime(data) >= (ObbyConfig.KeyCost or 20) or ObbyConfig.GetProgress(data).Key) then
+        nextObby = os.clock() + 300
+        Life.spawn("minigames:obby", trip, runObby)
+    ]]
+    end
+end)
+
+Life.onCleanup(function()
+    if busy then
+        Ui.travelling = false
+    end
+end)
+
+return {
+    -- Plays a board now, whatever the timer says (a board left half-played can be finished).
+    memory = function()
+        Life.spawn("minigames:memory", trip, playMemory)
+    end,
+}
+end
 __modules["features/mining"] = function(use) -- src/games/tapsim/features/mining.luau
 -- Rewards tab: the mine under Crystal Cave (MiningService). A 20 x 20 x 25 block mine per player,
 -- fresh every day. Ores fill your bag; selling them gives mining coins, which buy better pickaxes
@@ -2862,7 +4969,7 @@ local Ui = use("core/ui")
 local Options = Ui.Options
 local RS = Env.ReplicatedStorage
 local UserInputService = game:GetService("UserInputService")
-local tab = Ui.Tabs.Rewards
+local tab = Ui.Tabs.Minigames
 
 local function load(...)
     local path = { ... }
@@ -2965,10 +5072,7 @@ local function enter()
     if inMine() then
         return true
     end
-    pcall(function()
-        Env.LocalPlayer:RequestStreamAroundAsync(CRYSTAL_CAVE, 10)
-    end)
-    Env.elevate()
+    Env.streamAround(CRYSTAL_CAVE, 10)
     teleport(CFrame.new(CRYSTAL_CAVE))
     local portal
     local deadline = os.clock() + 10
@@ -3742,7 +5846,7 @@ local Life = use("shared/life")
 local Ui = use("core/ui")
 
 local RunService = game:GetService("RunService")
-local tab = Ui.Tabs.Rewards
+local tab = Ui.Tabs.World
 local RS = Env.ReplicatedStorage
 
 local function load(...)
@@ -4319,10 +6423,7 @@ local function trip()
     local ok, err = pcall(function()
         Ui.status = "At the potion machine"
         local target = machinePosition()
-        pcall(function()
-            Env.LocalPlayer:RequestStreamAroundAsync(target, 10)
-        end)
-        Env.elevate()
+        Env.streamAround(target, 10)
         local here = root()
         if not here then
             return
@@ -4797,6 +6898,134 @@ return Settings.build({
     },
 })
 end
+__modules["features/shrine"] = function(use) -- src/games/tapsim/features/shrine.luau
+-- Pets tab: the Shrine on Autumn (Shared.Game.ShrineConfig). A blessing is Luck (egg luck),
+-- Golden Chance (golden and rainbow hatches) or Auto Clicker (auto click speed), and it grows
+-- the longer you keep it: x1.1, x1.25 after 10 minutes, x1.5 after 25 (TierStarts 0/600/1500).
+-- Your blessing shows on you as attributes (ShrineBlessing, ShrineTier, ShrineBlessingSince).
+--
+-- ShrineService.Choose(key) picks one from within UseDistance (45 studs) of the shrine. Choosing
+-- again restarts the climb, so the hub only goes when you have none, or a different one than the
+-- one picked here.
+
+local Env = use("core/env")
+local Life = use("shared/life")
+local Ui = use("core/ui")
+
+local Options = Ui.Options
+local tab = Ui.Tabs.Pets
+
+local SHRINE = Vector3.new(38.4, 880.7, -1832.4) -- its prompt circle, measured in the game
+local NAMES = { Luck = "Luck (egg luck)", Golden = "Golden Chance", AutoClicker = "Auto Clicker speed" }
+local ORDER = { "Luck", "Golden", "AutoClicker" }
+
+local Config
+do
+    local ok, module = Env.call(function()
+        return require(Env.ReplicatedStorage.Shared.Game.ShrineConfig)
+    end)
+    Config = ok and type(module) == "table" and module or nil
+end
+
+local labels, keyOf = {}, {}
+for _, key in ipairs(ORDER) do
+    labels[#labels + 1] = NAMES[key]
+    keyOf[NAMES[key]] = key
+end
+
+local box = tab:AddGroupbox({ Side = "Left", Name = "Shrine blessing", IconName = "sparkles" })
+box:AddToggle("AutoShrine", {
+    Text = "Keep a blessing",
+    Default = false,
+    Tooltip = "Goes to the Shrine on Autumn and takes the blessing below whenever you have none (after a rejoin, for one). It grows from x1.1 to x1.25 after 10 minutes and x1.5 after 25.",
+})
+Ui.automation("AutoShrine", false)
+box:AddDropdown("ShrineBlessing", {
+    Text = "Blessing",
+    Values = labels,
+    Default = labels[1],
+})
+local label = box:AddLabel("Checking...", true)
+
+local function root()
+    local character = Env.LocalPlayer.Character
+    return character and character:FindFirstChild("HumanoidRootPart")
+end
+
+local function current()
+    local player = Env.LocalPlayer
+    return player:GetAttribute("ShrineBlessing"), tonumber(player:GetAttribute("ShrineTier")),
+        tonumber(player:GetAttribute("ShrineBlessingSince"))
+end
+
+local busy, note, nextTry = false, "", 0
+local function choose(key)
+    if busy or Ui.hatchMoving or Ui.travelling then
+        return
+    end
+    busy = true
+    Ui.travelling = "shrine"
+    local settle = os.clock() + 6
+    while Ui.hatchInFlight and os.clock() < settle do
+        Life.wait(0.05)
+    end
+    local hrp = root()
+    local home = hrp and hrp.CFrame
+    Env.streamAround(SHRINE, 6)
+    if hrp then
+        hrp.AssemblyLinearVelocity = Vector3.zero
+        hrp.CFrame = CFrame.new(SHRINE + Vector3.new(0, 4, 0))
+    end
+    Life.wait(0.6)
+    local ok, result = Env.invoke("ShrineService", "Choose", key)
+    if ok and type(result) == "table" and result.Success ~= false and not result.Error and not result.Reason then
+        note = "Blessed with " .. NAMES[key] .. "."
+    else
+        note = "The Shrine said no: " .. tostring(type(result) == "table" and (result.Reason or result.Error) or result) .. "."
+    end
+    if home then
+        local back = root()
+        if back then
+            back.AssemblyLinearVelocity = Vector3.zero
+            back.CFrame = home
+        end
+    end
+    Ui.travelling = false
+    busy = false
+end
+
+Life.loop("shrine:auto", 2, function()
+    local blessing, tier, since = current()
+    local text
+    if blessing then
+        local held = since and math.max(0, workspace:GetServerTimeNow() - since) or 0
+        local multiplier = Config and Config.GetMultiplier(tier or 1) or nil
+        local nextIn = Config and Config.GetNextTierIn(held) or nil
+        text = string.format("%s, tier %s%s%s.", NAMES[blessing] or tostring(blessing), tostring(tier or 1),
+            multiplier and (" (x" .. tostring(multiplier) .. ")") or "",
+            nextIn and string.format(", next tier in %d:%02d", nextIn // 60, math.floor(nextIn % 60)) or "")
+    else
+        text = "No blessing."
+    end
+    if note ~= "" then
+        text = text .. "\n" .. note
+    end
+    label:SetText(Ui.on("AutoShrine") and text or ("Off. " .. text))
+    local want = keyOf[Options.ShrineBlessing.Value] or "Luck"
+    if Ui.on("AutoShrine") and blessing ~= want and not busy and os.clock() >= nextTry then
+        nextTry = os.clock() + 30
+        Life.spawn("shrine:choose", choose, want)
+    end
+end)
+
+Life.onCleanup(function()
+    if busy then
+        Ui.travelling = false
+    end
+end)
+
+return {}
+end
 __modules["features/skilltree"] = function(use) -- src/games/tapsim/features/skilltree.luau
 -- Skills tab: buys the whole skill tree for you. Nodes cost gems and gate each other
 -- (SubtreeLocked), so this walks every node in the game's config, unlocks the ones you can afford
@@ -4810,7 +7039,7 @@ local Env = use("core/env")
 local Life = use("shared/life")
 local Ui = use("core/ui")
 
-local tab = Ui.Tabs.Skills
+local tab = Ui.Tabs.Tapping
 local box = tab:AddGroupbox({ Side = "Left", Name = "Skill tree", IconName = "git-branch" })
 
 -- Every node name in the game's skill tree config (all branches).
@@ -4909,6 +7138,216 @@ end)
 
 return {}
 end
+__modules["features/stars"] = function(use) -- src/games/tapsim/features/stars.luau
+-- Rewards tab: the 15 Shiny Stars hidden on the islands (Shared.Game.ShinyStarConfig). Finding all
+-- of them doubles the Shiny mutation chance on every hatch, 2% -> 4%, for good.
+--
+-- The stars only exist on the client once streamed in (within ~200 studs), so where they stand is
+-- kept here, measured in the game. ShinyStarService.Collect(id) picks one up when you are within
+-- ServerReach (22 studs) of it; Data.ShinyStars.Found says which you have.
+
+local Env = use("core/env")
+local Life = use("shared/life")
+local Ui = use("core/ui")
+
+local RunService = game:GetService("RunService")
+local tab = Ui.Tabs.Rewards
+
+local Config
+do
+    local ok, module = Env.call(function()
+        return require(Env.ReplicatedStorage.Shared.Game.ShinyStarConfig)
+    end)
+    Config = ok and type(module) == "table" and module or nil
+end
+
+local POSITIONS = {
+    Spawn1 = Vector3.new(53.6, -512.3, -2015.7),
+    Spawn2 = Vector3.new(-4.4, -512.3, -1699.5),
+    Spawn3 = Vector3.new(-98.3, -386.5, -1534.2),
+    SkyIsland1 = Vector3.new(-79.7, -47.9, -1930.4),
+    SkyIsland2 = Vector3.new(-61.9, -52.6, -1791.1),
+    Autumn1 = Vector3.new(-125.5, 906.1, -1978.3),
+    Autumn2 = Vector3.new(23.6, 884.0, -1947.9),
+    Mushroom1 = Vector3.new(78.9, 2035.8, -1996.0),
+    Mushroom2 = Vector3.new(-124.1, 2033.5, -2067.9),
+    Desert1 = Vector3.new(13.2, 3644.1, -2165.9),
+    Desert2 = Vector3.new(59.1, 3637.2, -1979.1),
+    CrystalCave1 = Vector3.new(-235.0, 5445.9, -2050.9),
+    CrystalCave2 = Vector3.new(19.7, 5447.8, -2033.5),
+    ShadowRelm1 = Vector3.new(13.2, 7693.0, -2106.3),
+    ShadowRelm2 = Vector3.new(197.8, 7699.1, -1858.6),
+}
+
+local function starList()
+    local list = {}
+    for _, star in ipairs(Config and Config.Stars or {}) do
+        list[#list + 1] = star
+    end
+    if #list == 0 then
+        for id in pairs(POSITIONS) do
+            list[#list + 1] = { Id = id }
+        end
+        table.sort(list, function(a, b)
+            return a.Id < b.Id
+        end)
+    end
+    return list
+end
+
+local function found(data, id)
+    local stars = data and type(data.ShinyStars) == "table" and data.ShinyStars
+    return type(stars) == "table" and type(stars.Found) == "table" and stars.Found[id] == true
+end
+
+local function unlocked(data)
+    local stars = data and type(data.ShinyStars) == "table" and data.ShinyStars
+    return type(stars) == "table" and stars.Unlocked == true
+end
+
+-- Where the star stands: the streamed-in star itself if it is here, else the measured spot.
+local function positionOf(id)
+    local folder = workspace:FindFirstChild(Config and Config.Folder or "ShinyStars")
+    for _, part in ipairs(folder and folder:GetDescendants() or {}) do
+        if part:GetAttribute("ShinyStarId") == id then
+            local ok, position = pcall(function()
+                return part:IsA("Model") and part:GetPivot().Position or part.Position
+            end)
+            if ok then
+                return position
+            end
+        end
+    end
+    return POSITIONS[id]
+end
+
+local box = tab:AddGroupbox({ Side = "Right", Name = "Shiny Stars", IconName = "star" })
+local label = box:AddLabel("Checking...", true)
+
+local function root()
+    local character = Env.LocalPlayer.Character
+    return character and character:FindFirstChild("HumanoidRootPart")
+end
+
+local busy = false
+local function collectAll()
+    if busy or Ui.hatchMoving or Ui.travelling then
+        Ui.notify("Tap Simulator", Ui.travelling == "mining" and "Auto mine is using your character; turn it off first."
+            or "Busy with another trip; try again in a moment.", 5)
+        return
+    end
+    busy = true
+    Ui.travelling = "stars"
+    local settle = os.clock() + 6
+    while Ui.hatchInFlight and os.clock() < settle do
+        Life.wait(0.05)
+    end
+    local hrp = root()
+    local home = hrp and hrp.CFrame
+    local picked, failed = 0, {}
+    local ok, err = pcall(function()
+        for _, star in ipairs(starList()) do
+            if not Life.alive then
+                break
+            end
+            if not found(Env.data(), star.Id) then
+                local spot = positionOf(star.Id)
+                local here = root()
+                if spot and here then
+                    Env.streamAround(spot, 6)
+                    -- Some stars float in mid-air: you are held on the spot (every frame) until the
+                    -- star is yours, or a fall carries you out of the server's reach first.
+                    local target = CFrame.new(spot + Vector3.new(0, 3, 0))
+                    local hold = RunService.Heartbeat:Connect(function()
+                        local current = root()
+                        if current then
+                            current.AssemblyLinearVelocity = Vector3.zero
+                            current.CFrame = target
+                        end
+                    end)
+                    local okHold = pcall(function()
+                        Life.wait(0.5) -- the server has to see you there before it hands the star over
+                        -- Standing on it, the game's own pickup may get there first; either is fine.
+                        local deadline = os.clock() + 1.5
+                        while Life.alive and not found(Env.data(), star.Id) and os.clock() < deadline do
+                            Life.wait(0.2)
+                        end
+                        for _ = 1, 2 do
+                            if found(Env.data(), star.Id) then
+                                break
+                            end
+                            Env.invoke("ShinyStarService", "Collect", star.Id)
+                            Life.wait(0.6)
+                        end
+                    end)
+                    hold:Disconnect()
+                    Env.elevate()
+                    if not okHold then
+                        failed[#failed + 1] = star.Id
+                    elseif found(Env.data(), star.Id) then
+                        picked += 1
+                    else
+                        failed[#failed + 1] = star.Id
+                    end
+                end
+            end
+        end
+    end)
+    Env.elevate()
+    if not ok then
+        Life.errors["stars:collect"] = tostring(err)
+    end
+    if home then
+        local back = root()
+        if back then
+            back.AssemblyLinearVelocity = Vector3.zero
+            back.CFrame = home
+        end
+    end
+    Ui.travelling = false
+    busy = false
+    local data = Env.data()
+    Ui.notify("Tap Simulator", (#failed == 0 and string.format("Collected %d Shiny Stars.", picked)
+        or string.format("Collected %d; could not get %s.", picked, table.concat(failed, ", ")))
+        .. (unlocked(data) and " Shiny mutation chance is now 4%." or ""), 8)
+end
+
+box:AddButton({
+    Text = "Collect Shiny Stars",
+    Func = function()
+        Life.spawn("stars:collect", collectAll)
+    end,
+    Tooltip = "Goes to each Shiny Star you have not found, picks it up and brings you back. All 15 double the Shiny mutation chance on every hatch (2% to 4%).",
+})
+
+Life.loop("stars:panel", 2, function()
+    local data = Env.data()
+    if not data then
+        return
+    end
+    local count, total = 0, 0
+    for _, star in ipairs(starList()) do
+        total += 1
+        if found(data, star.Id) then
+            count += 1
+        end
+    end
+    label:SetText(unlocked(data) and string.format("All %d found: Shiny mutation chance is 4%%.", total)
+        or string.format("%d / %d found. All of them double the Shiny mutation chance (2%% to 4%%).", count, total))
+end)
+
+Life.onCleanup(function()
+    if busy then
+        Ui.travelling = false
+    end
+end)
+
+return {
+    collect = function()
+        Life.spawn("stars:collect", collectAll)
+    end,
+}
+end
 __modules["features/tap"] = function(use) -- src/games/tapsim/features/tap.luau
 -- Tapping tab: auto tap (the coin engine), the game's own auto clicker, and auto rebirth.
 --
@@ -4981,7 +7420,9 @@ Life.spawn("tap:auto", function()
     local remote = Env.remote("TapService", "TapRequested")
     local session = 0
     while Life.alive do
-        if Ui.on("AutoTap") then
+        -- Ui.tapDemand: another feature (breaking a creature or a meteor, which taps hit from
+        -- 14 studs) needs taps even while auto tap is off.
+        if Ui.on("AutoTap") or Ui.tapDemand then
             if unanswered >= STALL_TAPS and os.clock() - lastAnswer > STALL_SECONDS then
                 sequence = math.max(sequence * 2, sequence + 1000000)
                 lastAnswer, unanswered = os.clock(), 0
@@ -5511,23 +7952,39 @@ end
 local Life = use("shared/life")
 local Ui = use("core/ui")
 
+-- Loaded in tab order, and within a tab in the order the boxes stack in each column.
 local FEATURES = {
+    -- Home
     "features/home",
     "features/performance",
+    -- Tapping
     "features/tap",
     "features/upgrades",
+    "features/skilltree",
+    -- Pets
     "features/hatch",
     "features/pets",
     "features/treats",
     "features/enchant",
+    "features/shrine",
+    -- Craft
     "features/craft",
+    "features/honeypot",
     "features/potions",
-    "features/skilltree",
+    -- Rewards
     "features/rewards",
+    "features/stars",
+    "features/items",
+    -- World
     "features/pickups",
     "features/dig",
+    "features/creatures",
+    -- Minigames
     "features/defense",
+    "features/minigames",
     "features/mining",
+    -- Halloween
+    "features/halloween",
 }
 
 local function load(name)
