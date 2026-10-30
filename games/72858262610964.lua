@@ -1,4 +1,4 @@
--- Slopix Hub (Tap Simulator), built 2026-10-18 11:49 UTC by build.py. Edit the files in src/, not this one.
+-- Slopix Hub (Tap Simulator), built 2026-10-30 14:22 UTC by build.py. Edit the files in src/, not this one.
 local __modules, __cache, __loading = {}, {}, {}
 local function use(name)
     local cached = __cache[name]
@@ -266,8 +266,8 @@ return Ui.create({
         { "Craft", "hammer", "Golden, Diamond and Rainbow machines, the Honey Pot and potions" },
         { "Rewards", "gift", "Offline earnings, quests, Pet Index, chests, spins, Shiny Stars and items" },
         { "World", "globe", "Lucky Ducky, balloons, pigs, island creatures, events and digging" },
-        { "Minigames", "gamepad-2", "Pet Defense, the mine, Memory Match and quests" },
-        { "Halloween", "ghost", "The Hallow Boss, trick or treat, the Candy Witch and the CandyCorn shop" },
+        { "Minigames", "gamepad-2", "Pet Defense, the mine, fishing, Memory Match and quests" },
+        { "Halloween", "ghost", "Count Greg's Mansion, the Hallow Boss, trick or treat, the Candy Witch and the CandyCorn shop" },
         { "Settings", "settings", "Menu, themes and configs" },
     },
 })
@@ -2183,6 +2183,509 @@ end)
 
 return {}
 end
+__modules["features/dungeon"] = function(use) -- src/games/tapsim/features/dungeon.luau
+-- Halloween tab: Count Greg's Mansion, the Halloween dungeon (HalloweenDungeonService;
+-- Shared.Game.HalloweenDungeon.Config and ModifierConfig). Mapped from a full clear on 2026-10-24.
+--
+-- Unlocking takes one word with Count Greg: his intro dialogue fires Talk, the server answers
+-- Unlocked and sets Data.HalloweenDungeon.Unlocked. A run starts when you stand in the circle by his
+-- mansion (10-second countdown, up to 4 players); the server moves you into a dungeon cell and the
+-- rooms (Workspace.HalloweenDungeonRuns.Run_N.RoomK) follow each other along -Z: a foyer, 4 to 6
+-- middle rooms (bat ambush, piñata, treasure vault, mimic hunt, the Elder Bat), then Count Greg.
+-- Once every 30 minutes from the last start.
+--
+--  * Damage is ordinary taps (TapService), 1 per tap, applied to what you have targeted:
+--    SetTarget(mobId) for a mob, SetTarget(nil) for Count Greg. Untargeted taps do nothing, which
+--    is why the game's own client needs you to tap on a bat. The hub keeps auto tap running for the
+--    whole run (Ui.tapDemand) and always targets the weakest mob, so bats die before they bite.
+--  * A cleared room opens its exit door (DoorOpened) but the next room only starts once you are 26
+--    studs into it. The hub steps through as the door finishes opening.
+--  * Each cleared room pays a chest by itself (about the same in coins as everything you held
+--    before the run, and Candy Corn), then offers a choice of 3 blessings. Count Greg pays several
+--    times that. One test run took a 5.8e21 coin balance to 3.3e23.
+--  * Vault and mimic chests are instances tagged HalloweenDungeonChest (ChestId, Hp, Opened, Gem)
+--    targeted with ChestTarget; from 125 studs nothing happens, so the hub stands next to them.
+--    Those rooms also clear on their timer if the chests are left alone.
+
+local Env = use("core/env")
+local Life = use("shared/life")
+local Ui = use("core/ui")
+
+local Options = Ui.Options
+local tab = Ui.Tabs.Halloween
+
+local function shared(...)
+    local path = { ... }
+    local ok, module = Env.call(function()
+        local node = Env.ReplicatedStorage.Shared
+        for _, part in ipairs(path) do
+            node = node:FindFirstChild(part)
+        end
+        return node and require(node)
+    end)
+    return ok and type(module) == "table" and module or nil
+end
+
+local Config = shared("Game", "HalloweenDungeon", "Config")
+local Modifiers = shared("Game", "HalloweenDungeon", "ModifierConfig")
+
+-- Measured in the game.
+local GREG = Vector3.new(-1490.0, -498.7, -2040.0)
+local CIRCLE = Vector3.new(-1433.3, -496.8, -2014.5)
+
+-- Loot first (a run is easy: the test clear took no deaths), then what makes rooms go faster,
+-- then survival. "Candy Corn" focus puts Candy Sack ahead of Lucky Loot.
+local BLESSINGS = { "LuckyLoot", "CandySack", "BatBane", "ChestCracker", "GregSlayer", "BusyPaws", "PetFury",
+    "VampireBite", "IronCape", "ThickFur" }
+local CHEST_ROOMS = { TreasureVault = true, MimicHunt = true }
+local SAFETY_SECONDS = 15 * 60
+
+-- UI -------------------------------------------------------------------------------------------
+
+local box = tab:AddGroupbox({ Side = "Left", Name = "Count Greg's Mansion", IconName = "castle" })
+box:AddToggle("AutoDungeon", {
+    Text = "Auto dungeon",
+    Default = false,
+    Tooltip = "Unlocks the mansion if needed, then runs it every 30 minutes: targets every bat, piñata and the Elder Bat, steps into each next room as its door opens, picks blessings and taps Count Greg down. Each room pays a chest of coins and Candy Corn.",
+})
+Ui.automation("AutoDungeon", false)
+box:AddDropdown("DungeonFocus", {
+    Text = "Blessing focus",
+    Values = { "Coins", "Candy Corn" },
+    Default = "Coins",
+    Tooltip = "Lucky Loot (+20% coins) or Candy Sack (+25% Candy Corn) first. After that: Bat Bane, Chest Cracker, Greg Slayer, Busy Paws, Pet Fury, then the survival ones.",
+})
+box:AddToggle("DungeonChests", {
+    Text = "Break vault chests",
+    Default = true,
+    Tooltip = "In treasure vault and mimic rooms, stands next to each chest (gem chests first) and taps it open once the bats are down. Those rooms clear on their timer either way.",
+})
+local panel = Ui.panel(box, 7)
+
+-- Run state, fed by the dungeon's events ---------------------------------------------------------
+
+local session = { runs = 0, coins = 0, candy = 0, contracts = nil, note = "" }
+local run = nil -- { mobs, boss, room, objective, doors, ended, coins, candy, rooms, started } while a run is live
+
+local function newRun()
+    return { mobs = {}, boss = nil, room = nil, objective = nil, doors = {}, ended = nil, started = nil,
+        coins = 0, candy = 0, rooms = 0, unlocked = false }
+end
+
+local function remoteOf(name)
+    local ok, remote = pcall(Env.remote, "HalloweenDungeonService", name)
+    Env.elevate()
+    return ok and remote or nil
+end
+
+local function send(name, ...)
+    local remote = remoteOf(name)
+    if remote then
+        local args = table.pack(...)
+        pcall(function()
+            remote:FireServer(table.unpack(args, 1, args.n))
+        end)
+        Env.elevate()
+    end
+end
+
+local function on(name, handler)
+    local remote = remoteOf(name)
+    if remote then
+        Life.connect(remote.OnClientEvent, function(...)
+            if run then
+                handler(...)
+            end
+        end, "dungeon:" .. name)
+    end
+end
+
+on("RunStarted", function()
+    run.started = run.started or os.clock()
+    task.delay(0.5, send, "SkipIntro")
+end)
+on("RoomStarted", function(payload)
+    if type(payload) == "table" then
+        run.room, run.objective = payload.RoomName, payload.Objective
+        run.rooms = math.max(run.rooms, tonumber(payload.RoomIndex) or 0)
+        table.clear(run.mobs)
+    end
+end)
+on("MobState", function(payload)
+    if type(payload) == "table" and payload.Id ~= nil and (tonumber(payload.Hp) or 1) > 0 then
+        local mob = run.mobs[payload.Id] or {}
+        mob.hp, mob.kind = tonumber(payload.Hp) or mob.hp or 1, payload.Kind or mob.kind
+        run.mobs[payload.Id] = mob
+    end
+end)
+on("MobHit", function(payload)
+    if type(payload) == "table" and run.mobs[payload.Id] then
+        run.mobs[payload.Id].hp = tonumber(payload.Hp) or run.mobs[payload.Id].hp
+        run.mobs[payload.Id].hitAt = os.clock()
+    end
+end)
+on("MobRemoved", function(payload)
+    if type(payload) == "table" then
+        run.mobs[payload.Id] = nil
+    end
+end)
+on("BossState", function(payload)
+    if type(payload) == "table" then
+        run.boss = { hp = tonumber(payload.Hp) or 0, phase = payload.Phase }
+    end
+end)
+on("BossCutscene", function(payload)
+    if type(payload) == "table" and payload.CanSkip then
+        task.delay(0.3, send, "BossSkip")
+    end
+end)
+on("DoorOpened", function(payload)
+    if type(payload) == "table" and not payload.Entrance and type(payload.RoomName) == "string" then
+        table.insert(run.doors, { room = payload.RoomName, at = os.clock() + (tonumber(payload.Seconds) or 2.5) + 0.4 })
+    end
+end)
+on("BlessingOffer", function(payload)
+    if type(payload) ~= "table" or type(payload.Choices) ~= "table" then
+        return
+    end
+    local order = table.clone(BLESSINGS)
+    if Options.DungeonFocus.Value == "Candy Corn" then
+        order[1], order[2] = "CandySack", "LuckyLoot"
+    end
+    local pick, rank = payload.Choices[1], math.huge
+    for _, choice in ipairs(payload.Choices) do
+        local at = table.find(order, choice) or (#order + 1)
+        if at < rank then
+            pick, rank = choice, at
+        end
+    end
+    task.delay(0.4, send, "BlessingPick", payload.OfferId, pick)
+end)
+on("RelicFound", function(payload)
+    local id = type(payload) == "table" and (payload.Id or payload.RelicId) or payload
+    task.delay(0.3, send, "CollectRelic", id)
+end)
+on("RewardCards", function(payload)
+    for _, card in ipairs(type(payload) == "table" and type(payload.Cards) == "table" and payload.Cards or {}) do
+        if type(card) == "table" and card.Kind == "Coins" then
+            run.coins += tonumber(card.Amount) or 0
+        elseif type(card) == "table" and card.Kind == "Candy" then
+            run.candy += tonumber(card.Amount) or 0
+        end
+    end
+end)
+on("Results", function(payload)
+    run.ended = run.ended or os.clock()
+    if type(payload) == "table" and type(payload.Contracts) == "table" then
+        session.contracts = payload.Contracts
+    end
+end)
+on("RunEnded", function()
+    run.ended = run.ended or os.clock()
+end)
+on("Unlocked", function()
+    run.unlocked = true
+end)
+
+-- Helpers --------------------------------------------------------------------------------------------
+
+local function root()
+    local character = Env.LocalPlayer.Character
+    return character and character:FindFirstChild("HumanoidRootPart")
+end
+
+local function moveTo(position, facing)
+    local hrp = root()
+    if hrp then
+        hrp.AssemblyLinearVelocity = Vector3.zero
+        hrp.CFrame = facing and CFrame.lookAt(position, facing) or CFrame.new(position)
+    end
+end
+
+local function dungeonData(data)
+    return type(data) == "table" and type(data.HalloweenDungeon) == "table" and data.HalloweenDungeon or {}
+end
+
+local function readyIn(data)
+    local ok, at = Env.call(Config.ReadyAt, data)
+    return math.max(0, (ok and tonumber(at) or 0) - workspace:GetServerTimeNow())
+end
+
+local function currentRun()
+    local folder = workspace:FindFirstChild("HalloweenDungeonRuns")
+    if not folder then
+        return nil
+    end
+    -- Every run has the same room names (Room1, Room2, ...), so a name says nothing about whose run
+    -- it is. Runs sit in cells 3000 studs apart along X (Config.CellPitchX) and the server puts us
+    -- in ours, so ours is the run nearest us in X. Runs too far away to stream in have no parts and
+    -- are skipped.
+    local hrp = root()
+    local best, bestGap
+    for _, model in ipairs(folder:GetChildren()) do
+        local part = hrp and model:FindFirstChildWhichIsA("BasePart", true)
+        if part then
+            local gap = math.abs(part.Position.X - hrp.Position.X)
+            if not best or gap < bestGap then
+                best, bestGap = model, gap
+            end
+        end
+    end
+    return best or folder:GetChildren()[1]
+end
+
+local function stepThrough(roomName)
+    local model = currentRun()
+    local room = model and model:FindFirstChild(roomName)
+    local gate = room and room:FindFirstChild("ExitGate")
+    local snap = gate and gate:FindFirstChild("ExitSnap")
+    if snap then
+        -- The next room starts 26 studs in (Config.NextRoomTriggerDepth); 32 clears it.
+        local depth = (Config.NextRoomTriggerDepth or 26) + 6
+        local at = snap.Position + Vector3.new(0, 3, -depth)
+        moveTo(at, at + Vector3.new(0, 0, -1))
+    end
+end
+
+local function weakestMob()
+    local best, bestHp
+    for id, mob in pairs(run.mobs) do
+        local hp = tonumber(mob.hp) or 1
+        if hp > 0 and (not best or hp < bestHp) then
+            best, bestHp = id, hp
+        end
+    end
+    return best
+end
+
+local function bestChest()
+    local model = currentRun()
+    local hrp = root()
+    if not (model and hrp) then
+        return nil
+    end
+    local best, bestScore
+    for _, chest in ipairs(game:GetService("CollectionService"):GetTagged("HalloweenDungeonChest")) do
+        if chest:IsDescendantOf(model) and chest:GetAttribute("Opened") ~= true and (tonumber(chest:GetAttribute("Hp")) or 0) > 0 then
+            local position = chest:IsA("Model") and chest:GetPivot().Position or chest.Position
+            local score = (position - hrp.Position).Magnitude
+                - (chest:GetAttribute("Gem") == true and 400 or 0) - (chest:GetAttribute("Size") == "Big" and 150 or 0)
+            if not best or score < bestScore then
+                best, bestScore = chest, score
+            end
+        end
+    end
+    return best
+end
+
+-- The run -------------------------------------------------------------------------------------------
+
+local function unlock()
+    Env.streamAround(GREG, 4)
+    local mansion = workspace:FindFirstChild("HalloweenIsland") and workspace.HalloweenIsland:FindFirstChild("CountGregMansion")
+    local greg = mansion and mansion:FindFirstChild("CountGreg")
+    local pivot = greg and greg:GetPivot()
+    if pivot then
+        local at = pivot.Position + pivot.LookVector * 6 + Vector3.new(0, 2, 0)
+        moveTo(at, pivot.Position)
+    else
+        moveTo(GREG + Vector3.new(8, 4, 0))
+    end
+    Life.wait(0.8)
+    send("Talk")
+    local deadline = os.clock() + 5
+    while Life.alive and not run.unlocked and os.clock() < deadline do
+        Life.wait(0.1)
+    end
+    return run.unlocked or dungeonData(Env.data()).Unlocked == true
+end
+
+local function enterCircle()
+    Env.streamAround(CIRCLE, 4)
+    local spot = CIRCLE + Vector3.new(0, 3, 0)
+    for _, circle in ipairs(game:GetService("CollectionService"):GetTagged(Config.CircleTag or "HalloweenDungeonCircle")) do
+        if circle:IsDescendantOf(workspace) then
+            local zone = circle:FindFirstChild(Config.ZoneName or "Zone", true)
+            spot = (zone and zone:IsA("BasePart") and zone.Position or circle:GetPivot().Position) + Vector3.new(0, 3, 0)
+        end
+    end
+    local deadline = os.clock() + (Config.CountdownSeconds or 10) + 35
+    while Life.alive and Ui.on("AutoDungeon") and not run.started and os.clock() < deadline do
+        local hrp = root()
+        if hrp and (hrp.Position - spot).Magnitude > 5 then
+            moveTo(spot)
+        end
+        Ui.status = "Waiting in Count Greg's circle"
+        Life.wait(0.25)
+    end
+    return run.started ~= nil
+end
+
+local function fight()
+    local target, targetAt, chestId, chestAt = "none", 0, nil, 0
+    local hardStop = os.clock() + math.min(Config.MaxRunSeconds or 1800, SAFETY_SECONDS)
+    while Life.alive and Ui.on("AutoDungeon") and os.clock() < hardStop do
+        if run.ended and os.clock() - run.ended > 3 then
+            break
+        end
+        Ui.tapDemand = true
+        for index = #run.doors, 1, -1 do
+            if os.clock() >= run.doors[index].at then
+                stepThrough(table.remove(run.doors, index).room)
+            end
+        end
+        local mob = weakestMob()
+        local chest = mob == nil and Ui.on("DungeonChests") and CHEST_ROOMS[run.objective] and bestChest() or nil
+        if mob ~= nil then
+            -- A target that took no hit for 2s is resent: the server may have missed the first.
+            local hitAt = run.mobs[mob] and run.mobs[mob].hitAt
+            if mob ~= target or (os.clock() - targetAt > 2 and not (hitAt and os.clock() - hitAt < 2)) then
+                target, targetAt = mob, os.clock()
+                send("SetTarget", mob)
+            end
+            Ui.status = string.format("Dungeon: %s (%s)", tostring(run.objective or "room"), tostring(run.mobs[mob] and run.mobs[mob].kind or "mob"))
+        elseif chest then
+            local id = chest:GetAttribute("ChestId")
+            local position = chest:IsA("Model") and chest:GetPivot().Position or chest.Position
+            local hrp = root()
+            if hrp and (hrp.Position - position).Magnitude > 9 then
+                moveTo(position + Vector3.new(0, 3, 6), position)
+            end
+            if id ~= chestId or os.clock() - chestAt > 1.5 then
+                chestId, chestAt = id, os.clock()
+                send("ChestTarget", id)
+            end
+            Ui.status = "Dungeon: opening chests"
+        elseif run.boss and run.boss.hp > 0 and run.boss.phase ~= "Defeat" then
+            if target ~= false then
+                target = false
+                send("SetTarget", nil)
+            end
+            Ui.status = string.format("Dungeon: Count Greg %d hp", run.boss.hp)
+        end
+        Life.wait(0.15)
+    end
+    Ui.tapDemand = false
+end
+
+-- Dungeon cells sit far out at Y ~1000 from X -10000 on (Config.CellOriginX, CellPitchX, CellY).
+local function inCell()
+    local hrp = root()
+    if not hrp then
+        return false
+    end
+    local p = hrp.Position
+    return p.X < (Config.CellOriginX or -10000) + 1500 and math.abs(p.Y - (Config.CellY or 1000)) < 600
+end
+
+local busy = false
+local nextTry = 0
+local function trip()
+    if busy or Ui.hatchMoving or Ui.travelling or not Config then
+        return
+    end
+    busy = true
+    Ui.travelling = "dungeon"
+    local settle = os.clock() + 6
+    while Ui.hatchInFlight and os.clock() < settle do
+        Life.wait(0.05)
+    end
+    local hrp = root()
+    local home = hrp and hrp.CFrame
+    run = newRun()
+    local ok, err = pcall(function()
+        if not (Config.IsUnlocked(Env.data()) or unlock()) then
+            session.note = "Count Greg did not unlock the mansion; trying again in 2 minutes."
+            nextTry = os.clock() + 120
+            return
+        end
+        if not enterCircle() then
+            session.note = "The run did not start; trying again in 2 minutes."
+            nextTry = os.clock() + 120
+            return
+        end
+        fight()
+        session.runs += 1
+        session.coins += run.coins
+        session.candy += run.candy
+        session.note = string.format("Last run: %d rooms, %.3g coins and %d Candy Corn in %ds.", run.rooms, run.coins,
+            run.candy, math.floor(os.clock() - run.started))
+        -- The server takes you out of the cell after its results screen. Going home first would
+        -- only be undone by that move, so wait it out (bounded).
+        local deadline = os.clock() + (Config.ResultsSeconds or 12) + 8
+        while Life.alive and inCell() and os.clock() < deadline do
+            Life.wait(0.25)
+        end
+    end)
+    Env.elevate()
+    if not ok then
+        Life.errors["dungeon:trip"] = tostring(err)
+    end
+    Ui.tapDemand = false
+    run = nil
+    if home then
+        moveTo(home.Position)
+        local back = root()
+        if back then
+            back.CFrame = home
+        end
+    end
+    if type(Ui.status) == "string" and Ui.status:find("^Dungeon") or Ui.status == "Waiting in Count Greg's circle" then
+        Ui.status = "Idle"
+    end
+    Ui.travelling = false
+    busy = false
+end
+
+-- The loop -----------------------------------------------------------------------------------------
+
+Life.loop("dungeon:auto", 2, function()
+    if not Config then
+        panel.set({ "The mansion is not in this version of the game." })
+        return
+    end
+    local data = Env.data()
+    if not data then
+        return
+    end
+    local stats = dungeonData(data)
+    local wait = readyIn(data)
+    local lines = {
+        Config.IsUnlocked(data) and (wait > 0 and string.format("Next run in %d:%02d", wait // 60, wait % 60) or "Ready to run")
+            or "Locked: the hub unlocks it by talking to Count Greg",
+        string.format("Runs %d, clears %d, Count Greg defeated %d times", tonumber(stats.Runs) or 0, tonumber(stats.Clears) or 0,
+            tonumber(stats.BossKills) or 0),
+        string.format("This session: %d runs, %.3g coins, %d Candy Corn", session.runs, session.coins, session.candy),
+    }
+    if session.note ~= "" then
+        lines[#lines + 1] = session.note
+    end
+    for _, contract in ipairs(session.contracts or {}) do
+        if #lines >= 7 then
+            break
+        end
+        if type(contract) == "table" and (tonumber(contract.Done) or 0) < (tonumber(contract.Total) or 0) then
+            lines[#lines + 1] = string.format("Contract: %s %d/%d", tostring(contract.Text), contract.Done, contract.Total)
+        end
+    end
+    panel.set(lines, Ui.on("AutoDungeon") and "Runs whenever the cooldown is over." or "Auto dungeon is off.")
+
+    if Ui.on("AutoDungeon") and not busy and os.clock() >= nextTry and (not Config.IsUnlocked(data) or wait <= 0) then
+        nextTry = math.max(nextTry, os.clock() + 30)
+        Life.spawn("dungeon:trip", trip)
+    end
+end)
+
+Life.onCleanup(function()
+    if busy then
+        Ui.travelling = false
+        Ui.tapDemand = false
+    end
+    run = nil
+end)
+
+return {}
+end
 __modules["features/enchant"] = function(use) -- src/games/tapsim/features/enchant.luau
 -- Pets tab: auto enchant, run by the game's own server-side enchant loop.
 --
@@ -2705,6 +3208,684 @@ Life.onCleanup(function()
     if state.running then
         pcall(Env.invoke, "EnchantService", "AutoStop")
     end
+end)
+
+return {}
+end
+__modules["features/fishing"] = function(use) -- src/games/tapsim/features/fishing.luau
+-- Minigames tab: fishing (FishingService; Shared.Minigames.Fishing.FishingConfig and FishingSim).
+--
+-- Fishing is idle. Each spot has 3 rod stands (4 with the FourthRod mastery unlock). A rod is cast
+-- with up to 10 bait and catches one thing every bait interval (a Worm every 15 minutes, a Firefly
+-- every 20 with x3 luck) until its bait runs out. Small catches go to the Fish Bowl when it is
+-- unlocked; everything else stays hooked on the line (at most 3) until it is reeled in at the dock.
+--
+-- Catches depend on water zones and bait quality:
+--
+--  * Zones. Lucky (x1.5 luck), Golden (x2.5) and Rare (x4) patches drift across the pond on a
+--    seeded, deterministic path (FishingSim.ZonePosition), and the Rare one surfaces for 30
+--    seconds in 40% of 90-second windows (ZoneShown). The server stamps a rod with the luck of the
+--    zone its cast landed in, at the time the cast says it was thrown (aim.T, up to 3s old), and
+--    the rod keeps it for its whole load. Every cast goes to the centre of the best zone that
+--    is up; casting at the computed Golden centre lands ZoneLuck = 2.5.
+--  * Server Seeds (v4046+). Seeds are generated and kept server-side, so predictions and lucky
+--    recasting are retired. The hub automates full-cycle idle fishing: optimal zone aiming,
+--    auto-reeling, bowl clearing, and bait restocking.
+--
+-- Everything needs you at the dock (FishingConfig.Range, 26 studs), so the hub makes short trips:
+-- reel, recast, top up bait, and back. The rods keep fishing while you are away.
+
+local Env = use("core/env")
+local Life = use("shared/life")
+local Ui = use("core/ui")
+
+local Options = Ui.Options
+local tab = Ui.Tabs.Minigames
+
+local function shared(...)
+    local path = { ... }
+    local ok, module = Env.call(function()
+        local node = Env.ReplicatedStorage.Shared
+        for _, part in ipairs(path) do
+            node = node:FindFirstChild(part)
+        end
+        return node and require(node)
+    end)
+    return ok and type(module) == "table" and module or nil
+end
+
+local Config = shared("Minigames", "Fishing", "FishingConfig")
+local Sim = shared("Minigames", "Fishing", "FishingSim")
+
+-- Measured in the game. The Heaven Falls dock is always loaded; the Haunted Pond streams with
+-- Halloween Island, so it is looked for around the island centre the first time it is wanted.
+local DOCKS = { HeavenFalls = Vector3.new(36.9, 15348.6, -2059.8) }
+local HALLOWEEN_ISLAND = Vector3.new(-1680.8, -515.7, -2317.3)
+
+local spotIds, spotByName = {}, {}
+local baitNames, baitByName = {}, {}
+if Config then
+    for id, spot in pairs(Config.Spots) do
+        spotIds[#spotIds + 1] = spot.Name
+        spotByName[spot.Name] = id
+    end
+    table.sort(spotIds, function(a, b)
+        return (spotByName[a] == "HeavenFalls") and spotByName[b] ~= "HeavenFalls" or (spotByName[b] ~= "HeavenFalls" and a < b)
+    end)
+    for _, key in ipairs(Config.BaitOrder) do
+        local bait = Config.Baits[key]
+        baitNames[#baitNames + 1] = bait.Name
+        baitByName[bait.Name] = key
+    end
+end
+-- Shrimp and up: worth every one the Fisherman stocks. Eyeballs cost Candy Corn and are left alone.
+local LUCK_BAIT = 1.5
+
+-- UI -------------------------------------------------------------------------------------------
+
+local box = tab:AddGroupbox({ Side = "Right", Name = "Fishing", IconName = "fish" })
+box:AddToggle("AutoFish", {
+    Text = "Auto fish",
+    Default = false,
+    Tooltip = "Keeps every rod in the water at the chosen spot, reels in what they hook and loads fresh bait. Short trips to the dock; the rods keep fishing while you are away.",
+})
+Ui.automation("AutoFish", false)
+box:AddDropdown("FishSpot", {
+    Text = "Spot",
+    Values = #spotIds > 0 and spotIds or { "Heaven Falls" },
+    Default = spotIds[1] or "Heaven Falls",
+    Tooltip = "Heaven Falls needs Heaven unlocked. The Haunted Pond is on Halloween Island during the event.",
+})
+box:AddDropdown("FishBaits", {
+    Text = "Use these baits",
+    Values = baitNames,
+    Multi = true,
+    Default = baitNames,
+    Tooltip = "The luckiest bait you hold goes on first: Rainbow Squid x12, Golden Worm x6, Firefly x3, Shrimp and Eyeball x1.5, then Cricket and Worm.",
+})
+box:AddToggle("FishWaitRare", {
+    Text = "Wait for the Rare zone",
+    Default = true,
+    Tooltip = "With a luck bait (Firefly and better), waits up to a minute for the Rare zone (x4 luck) to surface instead of taking Golden (x2.5). The zone's timing is computed, not guessed.",
+})
+box:AddToggle("FishBuyBait", {
+    Text = "Buy bait with Gems",
+    Default = true,
+    Tooltip = "Buys the Fisherman's offers for the baits you use while you hold fewer than 10, and takes his free gift once.",
+})
+box:AddToggle("FishStockUp", {
+    Text = "Stock up on luck bait",
+    Default = true,
+    Tooltip = "Buys every Shrimp, Firefly, Golden Worm and Rainbow Squid the Fisherman has, whatever you already hold: they are what makes secrets likely, and his 3 rotating offers change every 3 hours. Paid in Gems; Eyeballs (Candy Corn) are never bought.",
+})
+local label = box:AddLabel("Off.", true)
+
+-- Reading the game ------------------------------------------------------------------------------
+
+local session = { trips = 0, casts = 0, reeled = 0, bought = 0, rings = 0, secrets = 0, note = "" }
+
+local function fishingData(data)
+    return type(data) == "table" and type(data.Fishing) == "table" and data.Fishing or {}
+end
+
+local function root()
+    local character = Env.LocalPlayer.Character
+    return character and character:FindFirstChild("HumanoidRootPart")
+end
+
+local function serverNow()
+    return workspace:GetServerTimeNow()
+end
+
+local function spotModel(spotId)
+    local ok, model = Env.call(Config.FindSpotModel, spotId)
+    return ok and model or nil
+end
+
+local function pondOf(model)
+    local pond = model and model:FindFirstChild("Pond")
+    if not (pond and pond:IsA("BasePart")) then
+        return nil
+    end
+    return { X = pond.Position.X, Z = pond.Position.Z, RadiusX = pond.Size.X / 2, RadiusZ = pond.Size.Z / 2, Y = pond.Position.Y }
+end
+
+local function rodLimit(data)
+    local ok, limit = Env.call(Config.RodLimit, data)
+    return ok and tonumber(limit) or Config.MaxRods
+end
+
+-- The baits to use, with how many you hold. Sorted by bait luck (luckiest first).
+local function baitQueue(data, spotId)
+    local owned = fishingData(data).Bait or {}
+    local picks = Options.FishBaits.Value or {}
+    local out = {}
+    for _, key in ipairs(Config.BaitOrder) do
+        local bait = Config.Baits[key]
+        if picks[bait.Name] and (tonumber(owned[key]) or 0) > 0 then
+            out[#out + 1] = { key = key, bait = bait, owned = tonumber(owned[key]) }
+        end
+    end
+    table.sort(out, function(a, b)
+        if a.bait.Luck ~= b.bait.Luck then
+            return a.bait.Luck > b.bait.Luck
+        end
+        return a.bait.Order < b.bait.Order
+    end)
+    return out
+end
+
+-- The best zone that is up right now, and where to aim for its centre.
+local function bestAim(spotId, pond, castPart, now)
+    local spot = Config.Spots[spotId]
+    local best
+    for index, key in ipairs(spot.Zones or {}) do
+        local zone = Config.Zones[key]
+        local shown = Sim.ZoneShown(spot, index, now)
+        if zone and shown and shown > 0 then
+            local x, z = Sim.ZonePosition(spot, index, pond, now)
+            local reach = Vector3.new(x - castPart.Position.X, 0, z - castPart.Position.Z).Magnitude
+            local _, landed = Sim.ZoneAt(spot, pond, x, z, now)
+            if landed == key and reach <= Config.Cast.MaxDistance and (not best or zone.Luck > best.luck) then
+                best = { x = x, z = z, key = key, luck = zone.Luck }
+            end
+        end
+    end
+    if best then
+        return best
+    end
+    -- No zone in reach: the pond's centre still catches, at plain luck.
+    return { x = pond.X, z = pond.Z, key = nil, luck = 1 }
+end
+
+-- Seconds until the Rare zone next surfaces (0 when it is up), or nil beyond `horizon`.
+local function rareIn(spotId, now, horizon)
+    local spot = Config.Spots[spotId]
+    local index = table.find(spot.Zones or {}, "Rare")
+    if not index then
+        return nil
+    end
+    for wait = 0, horizon do
+        if (Sim.ZoneShown(spot, index, now + wait)) > 0.3 then
+            return wait
+        end
+    end
+    return nil
+end
+
+-- Server calls ------------------------------------------------------------------------------------
+
+-- The server takes about one Cast and one Remove a second (measured: ten casts a second apart all
+-- went through; at 0.75s or 0.5s every other one was refused). Recasting faster than that does not
+-- recast faster, it just loses rods to refusals, so both are paced and a refusal is waited out.
+local PACED = { Cast = 1.05, Remove = 1.05 }
+local lastCall = {}
+
+local function ask(name, ...)
+    local why
+    for _ = 1, 4 do
+        local gap = PACED[name] and PACED[name] - (os.clock() - (lastCall[name] or 0)) or 0
+        if gap > 0 then
+            Life.wait(gap)
+        end
+        lastCall[name] = os.clock()
+        local ok, result = Env.invoke("FishingService", name, ...)
+        if ok and type(result) == "table" and result.Success then
+            return result
+        end
+        why = ok and type(result) == "table" and (result.Error or result.Reason) or result
+        if why ~= "RateLimited" then
+            break
+        end
+        Life.wait(1.1)
+    end
+    session.lastRefusal = string.format("%s refused: %s", name, tostring(why))
+    return nil, tostring(why)
+end
+
+local function cast(rodId, spotId, pond, castPart, bait, load)
+    -- The aim and its T are taken before ask's pacing wait. The server judges the zone at T (it
+    -- accepts a T up to 3 seconds old), so the cast lands where the zone was when it was aimed.
+    local aim = bestAim(spotId, pond, castPart, serverNow())
+    local result, why = ask("Cast", rodId, bait, load, { X = aim.x, Z = aim.z, T = serverNow() })
+    if result then
+        session.casts += 1
+    end
+    return result, why
+end
+
+-- Rings: a better tier always wins; within a tier, more fishing luck.
+local function ringScore(ring)
+    if type(ring) ~= "table" then
+        return -1
+    end
+    local def = Config.Rings[ring.Name]
+    local score = (def and def.Order or 0) * 1000
+    for _, boost in ipairs(type(ring.Boosts) == "table" and ring.Boosts or {}) do
+        if type(boost) == "table" and boost.Type == "FishingLuck" then
+            score += (tonumber(boost.Value) or 0) * 100
+        end
+    end
+    return score
+end
+
+local function settleRing()
+    local fishing = fishingData(Env.data())
+    if type(fishing.PendingRing) ~= "table" then
+        return
+    end
+    local choice = ringScore(fishing.PendingRing) > ringScore(fishing.Ring) and "replace" or "keep"
+    local result = ask("ClaimRing", choice)
+    if result then
+        session.rings += 1
+        session.note = choice == "replace" and ("Equipped " .. tostring(fishing.PendingRing.Name) .. ".") or "Kept your fishing ring."
+    end
+end
+
+-- The Fisherman's offers this 3-hour window (FishingSim.ShopOffers: the permanent Worms plus 3
+-- rotating ones) and how many of each are left, from what this window's Shop.Bought records.
+local function shopNow(data)
+    local now = serverNow()
+    local shop = fishingData(data).Shop or {}
+    -- ShopOffers takes the window number, not the time: given the time it rolled a different
+    -- rotation on every call, and the server refused those as "NotOffered".
+    local okWindow, window = Env.call(Sim.ShopWindow, now)
+    window = okWindow and tonumber(window) or math.floor(now / (Config.Shop.WindowSeconds or 10800))
+    local okOffers, offers = Env.call(Sim.ShopOffers, window, nil)
+    local bought = shop.Window == window and type(shop.Bought) == "table" and shop.Bought or {}
+    local out = {}
+    for _, offer in ipairs(okOffers and type(offers) == "table" and offers or {}) do
+        if type(offer) == "table" and type(offer.Id) == "string" then
+            out[#out + 1] = { offer = offer, window = window,
+                left = math.max(0, (tonumber(offer.Stock) or 1) - (tonumber(bought[offer.Id]) or 0)) }
+        end
+    end
+    return out
+end
+
+-- Every luck bait with Stock up on (what makes secrets likely, and rarely in stock); otherwise a bait
+-- you use and hold fewer than 10 of. Eyeballs cost Candy Corn and are never bought.
+local function wantOffer(data, offer)
+    local bait = Config.Baits[offer.Bait]
+    if not bait or offer.Currency == "CandyCorn" then
+        return false
+    end
+    if Ui.on("FishStockUp") and bait.Luck >= LUCK_BAIT then
+        return true
+    end
+    local owned = tonumber((fishingData(data).Bait or {})[offer.Bait]) or 0
+    return (Options.FishBaits.Value or {})[bait.Name] == true and owned < 10
+end
+
+local refusedWindow = {} -- window:offer -> refused once this window (not offered, not affordable)
+local function shopToBuy(data)
+    if not Ui.on("FishBuyBait") then
+        return {}
+    end
+    local list = {}
+    for _, entry in ipairs(shopNow(data)) do
+        if entry.left > 0 and not refusedWindow[entry.window .. ":" .. entry.offer.Id] and wantOffer(data, entry.offer) then
+            list[#list + 1] = entry
+        end
+    end
+    -- The luckiest first, in case the Gems run out partway.
+    table.sort(list, function(a, b)
+        return Config.Baits[a.offer.Bait].Luck > Config.Baits[b.offer.Bait].Luck
+    end)
+    return list
+end
+
+local function buyBait(data)
+    for _, entry in ipairs(shopToBuy(data)) do
+        for _ = 1, entry.left do
+            local result, why = ask("Buy", entry.offer.Id)
+            if not result then
+                refusedWindow[entry.window .. ":" .. entry.offer.Id] = true
+                if why ~= "NotOffered" and why ~= "SoldOut" then
+                    session.note = "Bait purchase refused: " .. why .. "."
+                end
+                break
+            end
+            session.bought += 1
+            Life.wait(0.3)
+        end
+    end
+end
+
+local giftTried = false
+-- A refusal that will not go away by itself (a locked spot, a pond this server does not have)
+-- would otherwise send you to the dock every 15 seconds.
+local backoffUntil = 0
+local function backoff(note)
+    session.note = note
+    backoffUntil = os.clock() + 120
+end
+
+-- The trip ---------------------------------------------------------------------------------------
+
+local function dockOf(spotId)
+    local model = spotModel(spotId)
+    if model and model:FindFirstChild("RootPart") then
+        return model, model.RootPart.Position
+    end
+    local known = DOCKS[spotId]
+    Env.streamAround(known or HALLOWEEN_ISLAND, 4)
+    model = spotModel(spotId)
+    if model and model:FindFirstChild("RootPart") then
+        DOCKS[spotId] = model.RootPart.Position
+        return model, model.RootPart.Position
+    end
+    return nil, known
+end
+
+local function tend(spotId)
+    local model, dock = dockOf(spotId)
+    if not dock then
+        backoff(Config.Spots[spotId].Name .. " is not in this server; trying again in 2 minutes.")
+        return
+    end
+    local here = root()
+    if here then
+        here.AssemblyLinearVelocity = Vector3.zero
+        here.CFrame = CFrame.new(dock + Vector3.new(0, 3, 0))
+    end
+    Life.wait(0.7)
+    model = model or spotModel(spotId)
+    local pond, castPart = pondOf(model), model and model:FindFirstChild("Cast")
+    if not (pond and castPart) then
+        backoff("The dock did not load; trying again in 2 minutes.")
+        return
+    end
+
+    if Ui.on("FishBuyBait") and not giftTried then
+        giftTried = true
+        if ask("ClaimGift") then
+            session.note = "Took the Fisherman's gift."
+        end
+    end
+    settleRing()
+
+    local spot = Config.Spots[spotId]
+    local limit = math.min(spot.Slots, rodLimit(Env.data()))
+    -- How many of each secret pet you have caught, to tell you when a reel brings one in.
+    local function secretCounts()
+        local caught = fishingData(Env.data()).Caught or {}
+        local counts = {}
+        for key, catch in pairs(Config.Catches) do
+            if catch.Kind == "Pet" then
+                counts[key] = tonumber(caught[key]) or 0
+            end
+        end
+        return counts
+    end
+    local before = secretCounts()
+    -- Reel first: a rod with 3 fish on the line stops catching.
+    for slot = 1, spot.Slots do
+        local rodId = Config.RodId(spotId, slot)
+        for _ = 1, 6 do
+            local rod = (fishingData(Env.data()).Rods or {})[rodId]
+            if not (rod and type(rod.Hooked) == "table" and #rod.Hooked > 0) then
+                break
+            end
+            local result, why = ask("Reel", rodId)
+            if not result then
+                if why == "ClaimRingFirst" then
+                    settleRing()
+                else
+                    break
+                end
+            else
+                session.reeled += 1
+                if type(result.Ring) == "table" then
+                    Life.wait(0.3)
+                    settleRing()
+                end
+            end
+            Life.wait(0.25)
+        end
+    end
+    Life.wait(0.3)
+    for key, count in pairs(secretCounts()) do
+        local gained = count - (before[key] or 0)
+        if gained > 0 then
+            local name = Config.Catches[key].Name
+            session.secrets = (session.secrets or 0) + gained
+            session.note = string.format("Caught %s! (%d this session)", name, session.secrets)
+            Ui.notify("Fishing", string.format("You caught %s%s!", gained > 1 and (gained .. "x ") or "", name), 15)
+        end
+    end
+    local data = Env.data()
+    local fishing = fishingData(data)
+    local okBowl, bowlSize = Env.call(Config.BowlSize, data)
+    local okCount, bowlCount = Env.call(Sim.BowlCount, fishing.Bowl or {})
+    if okBowl and (bowlSize or 0) > 0 and okCount and (bowlCount or 0) > 0 then
+        ask("Collect")
+    end
+    buyBait(Env.data())
+
+    local function rodNow(rodId)
+        return (fishingData(Env.data()).Rods or {})[rodId]
+    end
+    -- Replication of the rod can trail the server's answer, so wait for the change to arrive
+    -- before reading it: a rod gone after Remove, a new seed after Cast.
+    local function settled(rodId, test)
+        local deadline = os.clock() + 1.5
+        while os.clock() < deadline and not test(rodNow(rodId)) do
+            Life.wait(0.05)
+        end
+        return test(rodNow(rodId))
+    end
+    local function pickUp(rodId)
+        local result, why = ask("Remove", rodId)
+        if result then
+            settled(rodId, function(rod)
+                return rod == nil
+            end)
+        end
+        return result, why
+    end
+    local function castAndSettle(rodId, bait, load, oldCast)
+        local result, why = cast(rodId, spotId, pond, castPart, bait, load)
+        if result then
+            settled(rodId, function(rod)
+                if not rod then
+                    return false
+                end
+                if oldCast ~= nil then
+                    return rod.Cast ~= oldCast
+                end
+                return true
+            end)
+        end
+        return result, why
+    end
+
+    for slot = 1, limit do
+        if not (Life.alive and Ui.on("AutoFish")) then
+            break
+        end
+        local rodId = Config.RodId(spotId, slot)
+        local rod = rodNow(rodId)
+        local spent = rod ~= nil and (tonumber(rod.Left) or 0) <= 0
+        local hooked = rod ~= nil and type(rod.Hooked) == "table" and #rod.Hooked > 0
+        if not rod or spent then
+            -- Picked up first, so its bait is back in the bag when the next bait is chosen.
+            if rod then
+                local removed, whyRemove = pickUp(rodId)
+                if not removed then
+                    session.stopped = string.format("%s: could not pick it up (%s).", rodId, tostring(whyRemove))
+                    break
+                end
+            end
+            local pick = baitQueue(Env.data(), spotId)[1]
+            if not pick then
+                session.note = "Out of bait" .. (Ui.on("FishBuyBait") and "; the Fisherman's offers are bought as they come." or ".")
+                break
+            end
+            local load = math.min(pick.owned, Config.Cast.Load)
+            -- A luck bait is worth waiting a little for x4 instead of x2.5:
+            -- the Rare zone is up 30s in ~225s, and casting into Rare finds better catches.
+            if Ui.on("FishWaitRare") and pick.bait.Luck >= 3 then
+                local wait = rareIn(spotId, serverNow(), 60)
+                if wait and wait > 0 then
+                    session.note = string.format("Waiting %ds for the Rare zone.", wait)
+                    Life.wait(wait + 0.5)
+                end
+            end
+            local result, why = castAndSettle(rodId, pick.key, load, nil)
+            if not result then
+                session.note = "Cast refused: " .. why .. "."
+                if why == "SpotLocked" or why == "TooFar" or why == "RodLimit" or why == "EventOver" then
+                    backoff("Cast refused: " .. why .. "; trying again in 2 minutes.")
+                    break
+                end
+            end
+            Life.wait(0.3)
+        end
+    end
+end
+
+local busy = false
+local function trip(spotId)
+    if busy or Ui.hatchMoving or Ui.travelling then
+        return
+    end
+    busy = true
+    Ui.travelling = "fishing"
+    local settle = os.clock() + 6
+    while Ui.hatchInFlight and os.clock() < settle do
+        Life.wait(0.05)
+    end
+    local hrp = root()
+    local home = hrp and hrp.CFrame
+    Ui.status = "Fishing at " .. Config.Spots[spotId].Name
+    local ok, err = pcall(tend, spotId)
+    Env.elevate()
+    if not ok then
+        Life.errors["fishing:trip"] = tostring(err)
+    end
+    session.trips += 1
+    if home then
+        local back = root()
+        if back then
+            back.AssemblyLinearVelocity = Vector3.zero
+            back.CFrame = home
+        end
+    end
+    if Ui.status == "Fishing at " .. Config.Spots[spotId].Name then
+        Ui.status = "Idle"
+    end
+    Ui.travelling = false
+    busy = false
+end
+
+-- Whether the spot needs a visit: an empty or spent rod, something hooked, a ring waiting, or
+-- bait to buy from the Fisherman.
+local function needsVisit(data, spotId)
+    local fishing = fishingData(data)
+    if type(fishing.PendingRing) == "table" then
+        return true
+    end
+    -- Luck bait on offer goes when it is offered: the window changes every 3 hours.
+    if #shopToBuy(data) > 0 then
+        return true
+    end
+    local spot = Config.Spots[spotId]
+    local limit = math.min(spot.Slots, rodLimit(data))
+    local haveBait = #baitQueue(data, spotId) > 0
+    for slot = 1, spot.Slots do
+        local rod = (fishing.Rods or {})[Config.RodId(spotId, slot)]
+        if rod and type(rod.Hooked) == "table" and #rod.Hooked > 0 then
+            return true
+        end
+        if slot <= limit and haveBait and (not rod or (tonumber(rod.Left) or 0) <= 0) then
+            return true
+        end
+    end
+    return false
+end
+
+-- The loop -----------------------------------------------------------------------------------------
+
+local nextTrip = 0
+Life.loop("fishing:auto", 2, function()
+    if not (Config and Sim) then
+        label:SetText("Fishing is not available in this version of the game.")
+        return
+    end
+    local data = Env.data()
+    if not data then
+        return
+    end
+    local spotId = spotByName[Options.FishSpot.Value] or "HeavenFalls"
+    local fishing = fishingData(data)
+    local now = serverNow()
+    local lines = {}
+    for slot = 1, Config.Spots[spotId].Slots do
+        local rodId = Config.RodId(spotId, slot)
+        local rod = (fishing.Rods or {})[rodId]
+        if not rod then
+            lines[#lines + 1] = string.format("Rod %d: in its stand", slot)
+        else
+            local bait = Config.Baits[rod.Bait]
+            local hooked = type(rod.Hooked) == "table" and #rod.Hooked or 0
+            local nextIn = (tonumber(rod.Next) or now) - now
+            lines[#lines + 1] = string.format("Rod %d: %s x%d%s, %s", slot, bait and bait.Name or tostring(rod.Bait),
+                tonumber(rod.Left) or 0, rod.Zone and (" in " .. rod.Zone) or "",
+                hooked > 0 and string.format("%d hooked", hooked)
+                    or (tonumber(rod.Left) or 0) > 0 and string.format("next in %d:%02d", math.max(0, nextIn) // 60, math.max(0, nextIn) % 60)
+                    or "out of bait")
+        end
+    end
+    local queue = baitQueue(data, spotId)
+    local owned = {}
+    for _, item in ipairs(queue) do
+        owned[#owned + 1] = string.format("%s %d", item.bait.Name, item.owned)
+    end
+    lines[#lines + 1] = "Bait: " .. (#owned > 0 and table.concat(owned, ", ") or "none selected in stock")
+    local offers = {}
+    for _, entry in ipairs(shopNow(data)) do
+        local bait = Config.Baits[entry.offer.Bait]
+        if bait and entry.offer.Currency ~= "CandyCorn" then
+            offers[#offers + 1] = string.format("%s x%d%s", bait.Name, tonumber(entry.offer.Amount) or 1,
+                entry.left > 0 and string.format(" (%d left)", entry.left) or " (bought)")
+        end
+    end
+    if #offers > 0 then
+        local window = Config.Shop.WindowSeconds or 10800
+        local endsIn = window - math.floor(now % window)
+        lines[#lines + 1] = string.format("Fisherman: %s; new offers in %dh%02dm", table.concat(offers, ", "), endsIn // 3600, (endsIn % 3600) // 60)
+    end
+    if (session.secrets or 0) > 0 then
+        lines[#lines + 1] = string.format("Secret pets caught this session: %d", session.secrets)
+    end
+    if session.stopped then
+        lines[#lines + 1] = session.stopped
+    end
+    if session.lastRefusal then
+        lines[#lines + 1] = "Last refusal: " .. session.lastRefusal
+    end
+    lines[#lines + 1] = string.format("This session: %d casts, %d reeled, %d bait offers bought.",
+        session.casts, session.reeled, session.bought)
+    if session.note ~= "" then
+        lines[#lines + 1] = session.note
+    end
+    label:SetText((Ui.on("AutoFish") and "" or "Off. ") .. table.concat(lines, "\n"))
+
+    if not Ui.on("AutoFish") or busy or os.clock() < nextTrip or os.clock() < backoffUntil then
+        return
+    end
+    if needsVisit(data, spotId) then
+        nextTrip = os.clock() + 15
+        Life.spawn("fishing:trip", trip, spotId)
+    end
+end)
+
+Life.onCleanup(function()
+    if busy then
+        Ui.travelling = false
+    end
+    table.clear(refusedWindow)
 end)
 
 return {}
@@ -3280,8 +4461,9 @@ __modules["features/hatch"] = function(use) -- src/games/tapsim/features/hatch.l
 -- opened again -- so the fastest rate that never trips RateLimited is one request in flight and the
 -- next sent the moment its answer lands. A timer either wastes time or gets refused.
 --
--- The server only hatches an egg you stand next to (Error "TooFar"), so the hub walks you to it:
--- every egg is a model in workspace.Eggs whose pivot is readable even before it streams in.
+-- The server only hatches an egg you stand next to (Error "TooFar"), so the hub walks you to it.
+-- Each egg is a model in workspace.Eggs, but only while it is streamed in (near you), so where each
+-- one stands is also recorded below and learned from the map as you pass eggs (see EGG_POSITIONS).
 -- Count follows the game's rule: 8 with the x8 pass or an OctoHatch boost, else 3, else 1, each
 -- only if affordable. Auto = true is what the real auto hatch sends, so secret pity keeps building.
 
@@ -3380,9 +4562,12 @@ local function hatchCount(data, egg)
     return nil
 end
 
--- workspace.Eggs is streamed: in a fresh server it can be empty until you have been near each egg,
--- so where each one stands is also kept here (read from the map when the hub was written).
+-- workspace.Eggs is streamed: it only holds the eggs near you, so where each one stands is also
+-- kept here (read from the map when the hub was written). An egg missing from this list dropped
+-- out of auto hatch whenever you were elsewhere -- the October 24 Heaven egg, the priciest one,
+-- did exactly that -- so eggs are also learned as they stream in, and saved (see learn below).
 local EGG_POSITIONS = {
+    Heaven = Vector3.new(-8, 15352, -2108),
     Basic = Vector3.new(6, -511, -1833),
     Spotted = Vector3.new(-5, -511, -1822),
     Spiked = Vector3.new(-23, -513, -1707),
@@ -3401,17 +4586,64 @@ local EGG_POSITIONS = {
     Draconic = Vector3.new(9, 11072, -1905),
 }
 
+-- Spots learned from the map, kept between sessions so the next update's eggs work once seen.
+local LEARNED_FILE = "SlopixHub/TapSimulator/egg-spots.json"
+local files = Env.files
+do
+    local ok, saved = pcall(function()
+        return Env.canCache and files.isfile(LEARNED_FILE) and Env.HttpService:JSONDecode(files.readfile(LEARNED_FILE))
+    end)
+    Env.elevate()
+    for name, spot in pairs(ok and type(saved) == "table" and saved or {}) do
+        local x, y, z = type(spot) == "table" and tonumber(spot[1]), type(spot) == "table" and tonumber(spot[2]),
+            type(spot) == "table" and tonumber(spot[3])
+        -- A saved spot was seen on the map, so it beats the list above if an update moved an egg.
+        if type(name) == "string" and x and y and z and EGGS[name] then
+            EGG_POSITIONS[name] = Vector3.new(x, y, z)
+        end
+    end
+end
+
+local function saveLearned()
+    if not (files.writefile and files.isfolder and files.makefolder) then
+        return
+    end
+    local out = {}
+    for name, spot in pairs(EGG_POSITIONS) do
+        out[name] = { math.floor(spot.X * 10) / 10, math.floor(spot.Y * 10) / 10, math.floor(spot.Z * 10) / 10 }
+    end
+    pcall(function()
+        for _, folder in ipairs({ "SlopixHub", "SlopixHub/TapSimulator" }) do
+            if not files.isfolder(folder) then
+                files.makefolder(folder)
+            end
+        end
+        files.writefile(LEARNED_FILE, Env.HttpService:JSONEncode(out))
+    end)
+    Env.elevate()
+end
+
+-- Records where an egg stands the first time it is seen (or when it has moved), and saves it.
+local function learn(egg, position)
+    local known = EGG_POSITIONS[egg]
+    if EGGS[egg] and (not known or (known - position).Magnitude > 5) then
+        EGG_POSITIONS[egg] = position
+        saveLearned()
+    end
+end
+
 local function eggModel(egg)
     local folder = workspace:FindFirstChild("Eggs")
     return folder and folder:FindFirstChild(egg)
 end
 
--- Where the egg is: the live model when it has streamed in, else the recorded spot.
+-- Where the egg is: the live model when it has streamed in (learned for later), else the recorded spot.
 local function eggPosition(egg)
     local model = eggModel(egg)
     if model then
         local ok, pivot = pcall(model.GetPivot, model)
         if ok then
+            learn(egg, pivot.Position)
             return pivot.Position
         end
     end
@@ -7670,6 +8902,347 @@ end)
 
 return {}
 end
+__modules["features/tradepost"] = function(use) -- src/games/tapsim/features/tradepost.luau
+-- Pets tab (right): a trade post for Discord, built from your rarest pets and copied to the
+-- clipboard, ready to paste into a trading channel.
+--
+-- Lists every owned Secret and every other pet above 10M Power, one pet per line. Posts are paged
+-- to preserve each pet's serial while staying within the trading channel's message limits.
+--
+-- Trading channels auto-delete a post that has more than 18 lines, 18 emojis or 30% capitals, a
+-- line repeated more than 3 times, or blank lines and runs of spaces. The post is checked against
+-- all of those before it is copied, with no blank lines, no double spaces and no line used twice.
+-- Posts list pets only (the trading rules: pets and Tokens, no cross-trading), so anything that
+-- mentions Robux or real money is not copied.
+
+local Env = use("core/env")
+local Life = use("shared/life")
+local Ui = use("core/ui")
+
+local Options = Ui.Options
+local tab = Ui.Tabs.Pets
+
+local function shared(...)
+    local path = { ... }
+    local ok, module = Env.call(function()
+        local node = Env.ReplicatedStorage.Shared
+        for _, part in ipairs(path) do
+            node = node:FindFirstChild(part)
+        end
+        return node and require(node)
+    end)
+    return ok and type(module) == "table" and module or nil
+end
+
+local PetOdds = shared("Pets", "PetOdds")
+local PetPower = shared("Pets", "PetPower")
+local IndexCatalog = shared("Pets", "PetIndexCatalog")
+local TIER_NAMES = IndexCatalog and IndexCatalog.TierNames
+    or { Normal = "Normal", Golden = "Golden", Diamond = "Diamond", Shiny = "Rainbow" }
+
+local LIMITS = { lines = 18, emojis = 18, capitals = 0.3, chars = 2000 }
+local HEADERS = {
+    ["Looking for offers"] = "📢 Looking for offers on these pets:",
+    ["Trading"] = "🤝 Trading these pets:",
+}
+-- Cross-trading words. Premium Tokens are fine, but by value, never as Robux.
+local BANNED = { "robux", "rbx", "r%$", "paypal", "cashapp", "real money", "usd", "nitro", "gift card" }
+
+local box = tab:AddGroupbox({ Side = "Right", Name = "Trade post", IconName = "megaphone" })
+box:AddDropdown("TradePostKind", {
+    Text = "Post",
+    Values = { "Looking for offers", "Trading" },
+    Default = "Looking for offers",
+})
+box:AddSlider("TradePostCount", {
+    Text = "Pets per post",
+    Default = 12,
+    Min = 1,
+    Max = 15,
+    Rounding = 0,
+    Tooltip = "Every owned Secret is included, plus other pets above 10,000,000 Power. Each pet gets its own line.",
+})
+box:AddInput("TradePostWant", {
+    Text = "In return",
+    Default = "pets or Tokens",
+    Placeholder = "e.g. Secret pets or Tokens",
+    Finished = true,
+    ClearTextOnFocus = false,
+    Tooltip = "What you want for them. The trading rules want this on every post. Premium Tokens by their value, never Robux.",
+})
+box:AddInput("TradePostNote", {
+    Text = "Last line (optional)",
+    Default = "",
+    Placeholder = "e.g. DM me or reply here",
+    Finished = true,
+    ClearTextOnFocus = false,
+})
+
+-- Formatting -------------------------------------------------------------------------------------
+
+-- One line of free text from an input: no line breaks, no runs of spaces.
+local function clean(text)
+    return (tostring(text or ""):gsub("[\r\n\t]", " "):gsub("  +", " "):gsub("^ ", ""):gsub(" $", ""))
+end
+
+local function emojiFor(pet)
+    if pet.Mutation == "Shiny" then
+        return "✨"
+    elseif pet.Tier == "Shiny" then
+        return "🌈"
+    elseif pet.Tier == "Diamond" then
+        return "💎"
+    elseif pet.Tier == "Golden" then
+        return "⭐"
+    elseif type(pet.Rarity) == "string" and pet.Rarity:sub(1, 6) == "Secret" then
+        return "🔮"
+    elseif pet.Rarity == "Godly" then
+        return "👑"
+    end
+    return "🔥"
+end
+
+local function displayName(pet)
+    local parts = {}
+    if type(pet.Mutation) == "string" and pet.Mutation ~= "" then
+        parts[#parts + 1] = pet.Mutation
+    end
+    local tier = TIER_NAMES[pet.Tier]
+    if tier and tier ~= "Normal" then
+        parts[#parts + 1] = tier
+    end
+    parts[#parts + 1] = tostring(pet.Name)
+    return clean(table.concat(parts, " "))
+end
+
+-- The game's 1-in-X for this exact pet (tier and mutation included), or nil when it has none.
+local function oddsOf(pet)
+    if not (PetOdds and type(pet.Name) == "string") then
+        return nil
+    end
+    local ok, base = Env.call(PetOdds.OneIn, pet.Name)
+    if not (ok and type(base) == "number") then
+        return nil
+    end
+    local ok2, odds = Env.call(PetOdds.Variant, base, pet.Tier, pet.Mutation, pet.Name)
+    return ok2 and type(odds) == "number" and odds or base
+end
+
+local POWER_THRESHOLD = 10000000
+
+local function isSecret(pet)
+    return type(pet.Rarity) == "string" and pet.Rarity:lower():find("secret", 1, true) ~= nil
+end
+
+local function formatNumber(number)
+    local value = tostring(math.floor((tonumber(number) or 0) + 0.5))
+    local formatted, count
+    repeat
+        formatted, count = value:gsub("^(-?%d+)(%d%d%d)", "%1,%2")
+        value = formatted
+    until count == 0
+    return value
+end
+
+-- Keep every qualifying pet separate so its own serial and power are shown.
+local function qualifyingPets(data)
+    local pets = type(data) == "table" and type(data.Pets) == "table" and data.Pets or {}
+    local owned = type(pets.Owned) == "table" and pets.Owned or {}
+    local ownedPowers
+    if PetPower and type(PetPower.GetOwnedPowers) == "function" then
+        local ok, result = Env.call(PetPower.GetOwnedPowers, owned)
+        if ok and type(result) == "table" then
+            ownedPowers = result
+        end
+    end
+    local result = {}
+    for id, pet in pairs(owned) do
+        local power = ownedPowers and tonumber(ownedPowers[id])
+        if not power and PetPower and type(PetPower.GetPercentage) == "function" and type(PetPower.Get) == "function" then
+            local okPercentage, percentage = Env.call(PetPower.GetPercentage, pet)
+            if okPercentage and percentage == nil then
+                local okPower, value = Env.call(PetPower.Get, pet)
+                power = okPower and tonumber(value) or nil
+            end
+        end
+        if type(pet) == "table" and type(pet.Name) == "string"
+            and (isSecret(pet) or (power and power > POWER_THRESHOLD)) then
+            result[#result + 1] = {
+                pet = pet,
+                id = tostring(id),
+                power = power,
+                serial = tonumber(pet.Serial) or tonumber(pet.LeaderboardSerial),
+                odds = oddsOf(pet),
+                secret = isSecret(pet),
+            }
+        end
+    end
+    table.sort(result, function(a, b)
+        if a.secret ~= b.secret then
+            return a.secret
+        end
+        if a.odds and b.odds and a.odds ~= b.odds then
+            return a.odds > b.odds
+        end
+        if a.odds ~= nil and b.odds == nil then
+            return true
+        elseif a.odds == nil and b.odds ~= nil then
+            return false
+        end
+        if (tonumber(a.pet.Power) or 0) ~= (tonumber(b.pet.Power) or 0) then
+            return (tonumber(a.pet.Power) or 0) > (tonumber(b.pet.Power) or 0)
+        end
+        return tostring(a.serial or a.id) < tostring(b.serial or b.id)
+    end)
+    return result
+end
+
+local function petLine(entry)
+    local pet = entry.pet
+    local rarity = type(pet.Rarity) == "string" and pet.Rarity or "Rarity unknown"
+    local serial = entry.serial and ("#" .. formatNumber(entry.serial))
+        or ("pending (ID " .. entry.id:sub(-8) .. ")")
+    local odds = entry.odds and ("1 in " .. formatNumber(entry.odds)) or "unavailable"
+    local power = entry.power and formatNumber(entry.power) or "unavailable"
+    local text = emojiFor(pet) .. " **" .. rarity .. "** · " .. displayName(pet)
+        .. " · Serial **" .. serial .. "** · Power **" .. power .. "** · Odds " .. odds
+    return text
+end
+
+-- The rule check ---------------------------------------------------------------------------------
+
+local function isEmoji(code)
+    return code >= 0x1F000 or (code >= 0x2600 and code <= 0x27BF) or (code >= 0x2B00 and code <= 0x2BFF)
+end
+
+-- What the post would be deleted for, or nothing. Counts the way the channel's filters read it.
+local function problems(text)
+    local found = {}
+    local lines = string.split(text, "\n")
+    if #lines > LIMITS.lines then
+        found[#found + 1] = string.format("%d lines (max %d)", #lines, LIMITS.lines)
+    end
+    local emojis, upper, letters = 0, 0, 0
+    for _, code in utf8.codes(text) do
+        if isEmoji(code) then
+            emojis += 1
+        elseif code >= 65 and code <= 90 then
+            upper += 1
+            letters += 1
+        elseif code >= 97 and code <= 122 then
+            letters += 1
+        end
+    end
+    if emojis > LIMITS.emojis then
+        found[#found + 1] = string.format("%d emojis (max %d)", emojis, LIMITS.emojis)
+    end
+    if letters > 0 and upper / letters > LIMITS.capitals then
+        found[#found + 1] = string.format("%d%% capitals (max 30%%)", math.floor(upper / letters * 100 + 0.5))
+    end
+    local seen = {}
+    for _, line in ipairs(lines) do
+        if line:match("^%s*$") then
+            found[#found + 1] = "a blank line"
+            break
+        end
+        seen[line] = (seen[line] or 0) + 1
+        if seen[line] == 2 then
+            found[#found + 1] = "a repeated line"
+        end
+    end
+    if text:find("  ") then
+        found[#found + 1] = "a run of spaces"
+    end
+    if #text > LIMITS.chars then
+        found[#found + 1] = string.format("%d characters (Discord's max is %d)", #text, LIMITS.chars)
+    end
+    local lower = text:lower()
+    for _, word in ipairs(BANNED) do
+        if lower:find(word) then
+            found[#found + 1] = "a mention of Robux or real money (cross-trading)"
+            break
+        end
+    end
+    return found
+end
+
+local page = 1
+
+local function buildPost()
+    local pets = qualifyingPets(Env.data())
+    if #pets == 0 then
+        return nil, { "no owned Secrets or pets above 10,000,000 Power" }, 0, 0
+    end
+    local want = clean(Options.TradePostWant.Value)
+    local note = clean(Options.TradePostNote.Value)
+    local perPage = math.clamp(math.floor(tonumber(Options.TradePostCount.Value) or 12), 1, 15)
+    local totalPages = math.ceil(#pets / perPage)
+    page = math.clamp(page, 1, totalPages)
+    local first = (page - 1) * perPage + 1
+    local last = math.min(first + perPage - 1, #pets)
+    local lines = { HEADERS[Options.TradePostKind.Value] or HEADERS["Looking for offers"] }
+    for index = first, last do
+        lines[#lines + 1] = petLine(pets[index])
+    end
+    lines[#lines + 1] = "**In return:** " .. (want ~= "" and want or "offers")
+    if note ~= "" then
+        lines[#lines + 1] = note
+    end
+    local text = table.concat(lines, "\n")
+    return text, problems(text), totalPages, #pets, first, last
+end
+
+local preview = box:AddLabel("", true)
+
+box:AddButton({
+    Text = "Previous post",
+    Func = function()
+        page = math.max(1, page - 1)
+    end,
+})
+
+box:AddButton({
+    Text = "Next post",
+    Func = function()
+        page += 1
+    end,
+})
+
+box:AddButton({
+    Text = "Copy current post",
+    Func = function()
+        local text, found, totalPages = buildPost()
+        if not text then
+            Ui.notify("Trade post", "No owned Secrets or pets above 10,000,000 Power.", 4)
+        elseif #found > 0 then
+            Ui.notify("Trade post", "Not copied: it would be deleted for " .. table.concat(found, ", ") .. ".", 8)
+        elseif not Env.setClipboard then
+            Ui.notify("Trade post", "Your executor cannot copy to the clipboard. The post is printed in the console (F9).", 8)
+            print(text)
+        else
+            Env.setClipboard(text)
+            Ui.notify("Trade post", string.format("Copied post %d of %d. Send each post as a separate message.", page, totalPages), 5)
+        end
+    end,
+    Tooltip = "Copies only this page. Send it as one separate Discord message; each page is checked against the channel rules.",
+})
+
+Life.loop("tradepost:preview", 3, function()
+    local text, found, totalPages, totalPets, first, last = buildPost()
+    if not text then
+        preview:SetText("No pets to list.")
+        return
+    end
+    local lines = #string.split(text, "\n")
+    local status = #found == 0 and string.format("Passes the channel rules (%d of %d lines).", lines, LIMITS.lines)
+        or ("Would be deleted for " .. table.concat(found, ", ") .. ".")
+    local pageInfo = string.format("Post %d/%d · Pets %d–%d of %d qualifying", page, totalPages, first, last, totalPets)
+    local oddsInfo = not PetOdds and "Odds data unavailable; rarity and power are still shown.\n" or ""
+    preview:SetText(pageInfo .. "\n" .. oddsInfo .. text .. "\n\n" .. status)
+end)
+
+return {}
+end
 __modules["features/treats"] = function(use) -- src/games/tapsim/features/treats.luau
 -- Pets tab (right): feed treats to the team. Treats (from digging, quests and drops) give pet XP,
 -- and a pet's level multiplies its power, so they are worth more on the pets you actually use.
@@ -7967,6 +9540,7 @@ local FEATURES = {
     "features/treats",
     "features/enchant",
     "features/shrine",
+    "features/tradepost",
     -- Craft
     "features/craft",
     "features/honeypot",
@@ -7983,8 +9557,10 @@ local FEATURES = {
     "features/defense",
     "features/minigames",
     "features/mining",
+    "features/fishing",
     -- Halloween
     "features/halloween",
+    "features/dungeon",
 }
 
 local function load(name)
