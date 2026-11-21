@@ -1,4 +1,4 @@
--- Slopix Hub (Tap Simulator), built 2026-10-30 14:22 UTC by build.py. Edit the files in src/, not this one.
+-- Slopix Hub (Tap Simulator), built 2026-11-21 09:53 UTC by build.py. Edit the files in src/, not this one.
 local __modules, __cache, __loading = {}, {}, {}
 local function use(name)
     local cached = __cache[name]
@@ -82,11 +82,144 @@ function Env.data()
     return replica and replica.Data or nil
 end
 
--- One field of Currencies (Coins, Gems, Tokens, PaidTokens), as a number, or 0.
+-- One field of Currencies (Coins, Gems, RiftCoins, RiftGems, Tokens, PaidTokens), as a number, or 0.
 function Env.currency(name)
     local data = Env.data()
     local value = data and type(data.Currencies) == "table" and data.Currencies[name]
     return tonumber(value) or 0
+end
+
+-- WorldConfig (Main vs TimeRift), loaded lazily so every feature reads the same world definitions.
+local FALLBACK_MAIN = {
+    Key = "Main",
+    Name = "World 1",
+    CoinsKey = "Coins",
+    GemsKey = "Gems",
+    RebirthsKey = "Rebirths",
+    ButtonsKey = "RebirthButtons",
+    CoinName = "Coins",
+    GemName = "Gems",
+}
+local worldConfig
+function Env.worldConfig()
+    if worldConfig == nil then
+        local ok, module = Env.call(function()
+            local shared = RS:FindFirstChild("Shared")
+            local prog = shared and shared:FindFirstChild("Progression")
+            local node = prog and prog:FindFirstChild("WorldConfig")
+            return node and require(node)
+        end)
+        worldConfig = ok and type(module) == "table" and module or false
+    end
+    return worldConfig or nil
+end
+
+function Env.world(data, key)
+    local cfg = Env.worldConfig()
+    if cfg then
+        local ok, entry
+        if type(key) == "string" then
+            ok, entry = Env.call(cfg.GetByKey, key)
+        else
+            ok, entry = Env.call(cfg.Get, data or Env.data() or {})
+        end
+        if ok and type(entry) == "table" then
+            return entry
+        end
+    end
+    return FALLBACK_MAIN
+end
+
+function Env.worldKey(data)
+    return Env.world(data).Key or "Main"
+end
+
+function Env.worldUnlocked(key, data)
+    if key == "Main" then
+        return true
+    end
+    local d = data or Env.data()
+    local cfg = Env.worldConfig()
+    if cfg and d then
+        local ok, unlocked = Env.call(function()
+            local w = cfg.GetByKey(key)
+            return w ~= nil and cfg.IsUnlocked(d, w)
+        end)
+        if ok then
+            return unlocked == true
+        end
+    end
+    local prog = type(d) == "table" and type(d.Progression) == "table" and d.Progression
+    local worlds = prog and type(prog.UnlockedWorlds) == "table" and prog.UnlockedWorlds
+    return worlds ~= nil and worlds[key] == true
+end
+
+function Env.worldCoins(data, world)
+    local d = data or Env.data()
+    if not d then
+        return 0
+    end
+    local w = type(world) == "string" and Env.world(d, world) or world or Env.world(d)
+    local cfg = Env.worldConfig()
+    if cfg and type(cfg.GetCoins) == "function" then
+        local ok, amount = Env.call(cfg.GetCoins, d, w)
+        if ok and type(amount) == "number" then
+            return amount
+        end
+    end
+    local currencies = type(d.Currencies) == "table" and d.Currencies
+    return tonumber(currencies and currencies[w.CoinsKey or "Coins"]) or 0
+end
+
+function Env.worldGems(data, world)
+    local d = data or Env.data()
+    if not d then
+        return 0
+    end
+    local w = type(world) == "string" and Env.world(d, world) or world or Env.world(d)
+    local cfg = Env.worldConfig()
+    if cfg and type(cfg.GetGems) == "function" then
+        local ok, amount = Env.call(cfg.GetGems, d, w)
+        if ok and type(amount) == "number" then
+            return amount
+        end
+    end
+    local currencies = type(d.Currencies) == "table" and d.Currencies
+    return tonumber(currencies and currencies[w.GemsKey or "Gems"]) or 0
+end
+
+function Env.worldRebirths(data, world)
+    local d = data or Env.data()
+    if not d then
+        return 0
+    end
+    local w = type(world) == "string" and Env.world(d, world) or world or Env.world(d)
+    local cfg = Env.worldConfig()
+    if cfg and type(cfg.GetRebirths) == "function" then
+        local ok, amount = Env.call(cfg.GetRebirths, d, w)
+        if ok and type(amount) == "number" then
+            return amount
+        end
+    end
+    local stats = type(d.Statistics) == "table" and d.Statistics
+    return tonumber(stats and stats[w.RebirthsKey or "Rebirths"]) or 0
+end
+
+function Env.worldButtons(data, world)
+    local d = data or Env.data()
+    if not d then
+        return 0
+    end
+    local w = type(world) == "string" and Env.world(d, world) or world or Env.world(d)
+    local cfg = Env.worldConfig()
+    if cfg and type(cfg.GetRebirthButtons) == "function" then
+        local ok, amount = Env.call(cfg.GetRebirthButtons, d, w)
+        if ok and type(amount) == "number" then
+            return amount
+        end
+    end
+    local upgrades = type(d.Upgrades) == "table" and d.Upgrades
+    return tonumber(upgrades and upgrades[w.ButtonsKey or "RebirthButtons"]) or 0
 end
 
 -- A RemoteEvent or RemoteFunction under RemoteServices.<service>.(RE|RF).<name>, cached.
@@ -146,11 +279,43 @@ function Env.invoke(service, name, ...)
     return table.unpack(result, 1, result.n)
 end
 
--- Asks the server to stream in the world around `position` before a teleport there. The request
--- sometimes never answers at all, which froze whole trips (a creature hunt, an obby sweep), so it
--- runs on its own thread and is waited on for at most `seconds` (capped at 4); the teleport that
--- follows works either way, the area just finishes loading after it.
+-- Travels to an island in World 1 ("Main", IslandService) or World 2 ("TimeRift",
+-- TimeRiftIslandService), switching Progression.World on the server cleanly. Both services expect
+-- Island = "Spawn" for their spawn hub (not "World 2 Spawn").
+function Env.travel(worldKey, island)
+    local key = worldKey == "TimeRift" and "TimeRift" or "Main"
+    local service = key == "TimeRift" and "TimeRiftIslandService" or "IslandService"
+    local target = (island == nil or island == "World 2 Spawn") and "Spawn" or island
+    local ok, res = Env.invoke(service, "Travel", { Source = "Menu", Island = target })
+    local success = ok and type(res) == "table" and res.Success == true
+    if success then
+        local deadline = os.clock() + 3
+        while Env.worldKey() ~= key and os.clock() < deadline do
+            task.wait(0.05)
+        end
+        Env.elevate()
+    end
+    return success, res
+end
+
+-- Switches the server's Progression.World to `worldKey` if needed (no-op when already there).
+function Env.ensureWorld(worldKey, island)
+    local key = worldKey == "TimeRift" and "TimeRift" or "Main"
+    if Env.worldKey() == key then
+        return true
+    end
+    if not Env.worldUnlocked(key) then
+        return false, "World locked"
+    end
+    return Env.travel(key, island or "Spawn")
+end
+
+-- Asks the server to stream in the world around `position` before a teleport there. Skipped at once
+-- when StreamingEnabled is false (as in the World 2 update, where the whole map is already loaded).
 function Env.streamAround(position, seconds)
+    if not workspace.StreamingEnabled then
+        return
+    end
     local done = false
     task.spawn(function()
         pcall(function()
@@ -267,10 +432,382 @@ return Ui.create({
         { "Rewards", "gift", "Offline earnings, quests, Pet Index, chests, spins, Shiny Stars and items" },
         { "World", "globe", "Lucky Ducky, balloons, pigs, island creatures, events and digging" },
         { "Minigames", "gamepad-2", "Pet Defense, the mine, fishing, Memory Match and quests" },
-        { "Halloween", "ghost", "Count Greg's Mansion, the Hallow Boss, trick or treat, the Candy Witch and the CandyCorn shop" },
+        { "TimeRift", "clock", "World 2 travel, Blazing Sovereign Boss, Expeditions, Glitched Egg and Lucky Egg Machine" },
         { "Settings", "settings", "Menu, themes and configs" },
     },
 })
+end
+__modules["features/boss"] = function(use) -- src/games/tapsim/features/boss.luau
+-- TimeRift tab (left): the Blazing Sovereign Boss (Shared.Game.BlazingSovereignBossConfig).
+--
+-- Replaces the retired Hallow Boss. Spawns on the top of every hour (IntervalSeconds = 3600) in
+-- World 2's Blazing Sovereign arena (Workspace.World2.BlazingSovereignBossArena.Platform).
+-- Damage comes from ordinary taps while standing inside the platform zone (ZoneSlack 4, ZoneAbove
+-- 2000), 1 per tap, 5 per critical, and 3x during Roar weak windows. Deals with both attacks:
+--   - Bomb volleys (Attack { Targets, Radius, Delay }): steps to the clearest part of the platform.
+--   - FlameRing shockwaves (Attack { Kind = "FlameRing", Center, Delay, Speed, Width, Reach }):
+--     hovers ~9 studs above the platform top while the ring sweeps past (well above RingClearance
+--     2.2 and inside ZoneAbove 2000), completely avoiding knockback without interrupting taps.
+-- Rewards: guaranteed Luck/Coins II potions, bonus potions & totems, 1 in 10,000 Blazing Sovereign
+-- pet, and Sovereign Ring progress/drop.
+
+local Env = use("core/env")
+local Life = use("shared/life")
+local Ui = use("core/ui")
+
+local CollectionService = game:GetService("CollectionService")
+local tab = Ui.Tabs.TimeRift
+local RS = Env.ReplicatedStorage
+
+local function load(...)
+    local path = { ... }
+    local ok, module = Env.call(function()
+        local node = RS
+        for _, part in ipairs(path) do
+            node = node:FindFirstChild(part)
+        end
+        return node and require(node)
+    end)
+    return ok and type(module) == "table" and module or nil
+end
+
+local Config = load("Shared", "Game", "BlazingSovereignBossConfig")
+local RingConfig = load("Shared", "Game", "SovereignRingConfig")
+
+-- Measured in v4103: Workspace.World2.BlazingSovereignBossArena.Platform (87 x 1.5 x 84.8).
+local PLATFORM_FALLBACK = Vector3.new(2824.4, 1932.4, 7134.4)
+local PLATFORM_TAG = Config and Config.PlatformTag or "BlazingSovereignBossPlatform"
+
+local box = tab:AddGroupbox({ Side = "Left", Name = "Blazing Sovereign Boss", IconName = "flame" })
+box:AddToggle("AutoBlazingBoss", {
+    Text = "Fight the Blazing Sovereign",
+    Default = false,
+    Tooltip = "Every hour on the hour, goes to the World 2 boss arena, taps the Blazing Sovereign down, dodges bombs and jumps/hovers over Flame Rings, then returns. Drops Potions, Totems, Blazing Sovereign pet and the Sovereign Ring.",
+})
+Ui.automation("AutoBlazingBoss", false)
+local label = box:AddLabel("Off.", true)
+
+local state = {}
+local session = { fights = 0, myDamage = 0, rank = nil, rewards = 0, note = "" }
+local bombs = {} -- { position, radius, at }
+local rings = {} -- { center, delay, speed, width, reach, firedAt }
+
+Life.spawn("boss:watch", function()
+    local service = RS.RemoteServices:FindFirstChild("BlazingSovereignBossService")
+    if not service then
+        return
+    end
+    local property = service:FindFirstChild("RP") and service.RP:FindFirstChild("State")
+    if property then
+        Life.connect(property.OnClientEvent, function(value)
+            if type(value) == "table" then
+                state = value
+                if value.Phase ~= "Fight" then
+                    session.myDamage = 0
+                    session.rank = nil
+                end
+            end
+        end)
+        pcall(function()
+            property:FireServer()
+        end)
+        Env.elevate()
+    end
+    local events = service:FindFirstChild("RE")
+    local hit = events and events:FindFirstChild("Hit")
+    if hit then
+        Life.connect(hit.OnClientEvent, function(info)
+            if type(info) == "table" then
+                if tonumber(info.MyDamage) then
+                    session.myDamage = tonumber(info.MyDamage)
+                end
+                if tonumber(info.Rank) then
+                    session.rank = tonumber(info.Rank)
+                end
+            end
+        end)
+    end
+    local attack = events and events:FindFirstChild("Attack")
+    if attack then
+        Life.connect(attack.OnClientEvent, function(volley)
+            if type(volley) ~= "table" then
+                return
+            end
+            local now = os.clock()
+            if volley.Kind == "FlameRing" then
+                if typeof(volley.Center) ~= "Vector3" then
+                    return
+                end
+                rings[#rings + 1] = {
+                    center = volley.Center,
+                    delay = tonumber(volley.Delay) or (Config and Config.RingDelay) or 1.4,
+                    speed = tonumber(volley.Speed) or (Config and Config.RingSpeed) or 26,
+                    width = tonumber(volley.Width) or (Config and Config.RingWidth) or 3,
+                    reach = tonumber(volley.Reach) or 90,
+                    firedAt = now,
+                }
+                return
+            end
+            if type(volley.Targets) ~= "table" then
+                return
+            end
+            local radius = tonumber(volley.Radius) or (Config and Config.BombRadius) or 9
+            local landsAt = now + (tonumber(volley.Delay) or (Config and Config.BombDelay) or 1.6)
+            for _, target in ipairs(volley.Targets) do
+                if typeof(target) == "Vector3" then
+                    bombs[#bombs + 1] = { position = target, radius = radius, at = landsAt }
+                end
+            end
+        end)
+    end
+    local reward = events and events:FindFirstChild("Reward")
+    if reward then
+        Life.connect(reward.OnClientEvent, function(result)
+            if type(result) ~= "table" then
+                return
+            end
+            session.rewards += 1
+            local parts = {}
+            if type(result.Pet) == "string" then
+                parts[#parts + 1] = "PET: " .. result.Pet
+                Ui.notify("Blazing Sovereign", "You won the " .. result.Pet .. " pet!", 15)
+            end
+            if result.Ring == true or type(result.Ring) == "string" then
+                parts[#parts + 1] = "Sovereign Ring!"
+                Ui.notify("Blazing Sovereign", "You won the Sovereign Ring!", 15)
+            end
+            if tonumber(result.Rank) then
+                parts[#parts + 1] = "Rank #" .. tostring(result.Rank)
+            end
+            session.note = "Last reward: " .. (#parts > 0 and table.concat(parts, ", ") or "Loot received") .. "."
+        end)
+    end
+end)
+
+local function root()
+    local character = Env.LocalPlayer.Character
+    return character and character:FindFirstChild("HumanoidRootPart")
+end
+
+local function platform()
+    for _, part in ipairs(CollectionService:GetTagged(PLATFORM_TAG)) do
+        if part:IsA("BasePart") and part:IsDescendantOf(workspace) then
+            return part
+        end
+    end
+    local w2 = workspace:FindFirstChild("World2")
+    local arena = w2 and w2:FindFirstChild("BlazingSovereignBossArena")
+    local part = arena and arena:FindFirstChild("Platform")
+    return part and part:IsA("BasePart") and part or nil
+end
+
+local function ringThreatAt(spot, now)
+    for index = #rings, 1, -1 do
+        local ring = rings[index]
+        local duration = ring.delay + ring.reach / math.max(ring.speed, 1)
+        if now > ring.firedAt + duration + 0.5 then
+            table.remove(rings, index)
+        else
+            local elapsed = now - ring.firedAt - ring.delay
+            if elapsed >= -0.35 then
+                local radius = math.max(0, elapsed) * ring.speed
+                local flat = Vector3.new(spot.X - ring.center.X, 0, spot.Z - ring.center.Z).Magnitude
+                if math.abs(flat - radius) <= ring.width * 0.5 + 10 then
+                    return true
+                end
+            end
+        end
+    end
+    return false
+end
+
+-- Safest standing/hover spot on the platform: avoids all active bombs, and lifts 9 studs above the
+-- platform surface whenever a FlameRing wave is sweeping through that radius.
+local function safeSpot(part)
+    local top = part.CFrame:PointToWorldSpace(Vector3.new(0, part.Size.Y * 0.5, 0))
+    local half = math.min(part.Size.X, part.Size.Z) * 0.5 - 4
+    local now = os.clock()
+    for index = #bombs, 1, -1 do
+        if bombs[index].at < now - 0.5 then
+            table.remove(bombs, index)
+        end
+    end
+    local best, bestScore
+    for ring = 0, 2 do
+        local steps = ring == 0 and 1 or 8
+        for step = 0, steps - 1 do
+            local angle = step / steps * math.pi * 2
+            local offset = Vector3.new(math.cos(angle), 0, math.sin(angle)) * (half * ring / 2)
+            local spot = top + offset
+            local score = math.huge
+            for _, bomb in ipairs(bombs) do
+                local flat = Vector3.new(spot.X - bomb.position.X, 0, spot.Z - bomb.position.Z).Magnitude
+                score = math.min(score, flat - bomb.radius)
+            end
+            if not best or score > bestScore then
+                best, bestScore = spot, score
+            end
+        end
+    end
+    local lift = ringThreatAt(best, now) and 10 or 3.2
+    return best + Vector3.new(0, lift, 0)
+end
+
+local busy = false
+local function fight()
+    if busy or Ui.hatchMoving or Ui.travelling then
+        return
+    end
+    if not Env.worldUnlocked("TimeRift") then
+        session.note = "Unlock Time Rift (World 2) first."
+        return
+    end
+    busy = true
+    Ui.travelling = "blazingboss"
+    local settle = os.clock() + 6
+    while Ui.hatchInFlight and os.clock() < settle do
+        Life.wait(0.05)
+    end
+    local hrp = root()
+    local home = hrp and hrp.CFrame
+    local origWorld = Env.worldKey()
+    table.clear(bombs)
+    table.clear(rings)
+    local ok, err = pcall(function()
+        Ui.status = "Fighting Blazing Sovereign"
+        if Env.worldKey() ~= "TimeRift" then
+            Env.ensureWorld("TimeRift")
+            Life.wait(0.25)
+        end
+        Env.streamAround(PLATFORM_FALLBACK, 4)
+        local part = platform()
+        local here = root()
+        if here then
+            here.AssemblyLinearVelocity = Vector3.zero
+            here.CFrame = CFrame.new((part and part.Position or PLATFORM_FALLBACK) + Vector3.new(0, 6, 0))
+        end
+        local deadline = os.clock() + 8
+        while not part and os.clock() < deadline and Life.alive do
+            part = platform()
+            Life.wait(0.2)
+        end
+        if not part then
+            session.note = "Could not find the Blazing Sovereign platform."
+            return
+        end
+        session.fights += 1
+        Ui.tapDemand = true
+        while Life.alive and Ui.on("AutoBlazingBoss") and (state.Phase == "Warning" or state.Phase == "Fight") do
+            local target = safeSpot(part)
+            local current = root()
+            if current then
+                local dist = (current.Position - target).Magnitude
+                if dist > 2.5 or target.Y > part.Position.Y + 6 then
+                    current.AssemblyLinearVelocity = Vector3.zero
+                    current.CFrame = CFrame.new(target)
+                end
+            end
+            Life.wait(0.08)
+        end
+        Ui.tapDemand = false
+        Life.wait(1.5)
+    end)
+    Ui.tapDemand = false
+    Env.elevate()
+    if not ok then
+        Life.errors["boss:fight"] = tostring(err)
+    end
+    if Env.worldKey() ~= origWorld then
+        Env.ensureWorld(origWorld)
+        Life.wait(0.2)
+    end
+    if home then
+        local back = root()
+        if back then
+            back.AssemblyLinearVelocity = Vector3.zero
+            back.CFrame = home
+        end
+    end
+    if Ui.status == "Fighting Blazing Sovereign" then
+        Ui.status = "Idle"
+    end
+    Ui.travelling = false
+    busy = false
+end
+
+local function formatLeft(seconds)
+    local s = math.max(0, math.ceil(seconds))
+    return string.format("%d:%02d", s // 60, s % 60)
+end
+
+Life.loop("boss:auto", 1, function()
+    if not Config or Config.Enabled ~= true then
+        label:SetText("Blazing Sovereign Boss is currently disabled in this server.")
+        return
+    end
+    local data = Env.data()
+    local now = workspace:GetServerTimeNow()
+    local phase = state.Phase or "Idle"
+    local lines = {}
+    if phase == "Fight" then
+        local hp = tonumber(state.Health) or 0
+        local maxHp = math.max(tonumber(state.MaxHealth) or 1, 1)
+        local elapsed = now - (tonumber(state.StartsAt) or now)
+        local okWeak, weak = Env.call(Config.WeakAt, elapsed)
+        lines[#lines + 1] = string.format("FIGHT (Stage %s)%s  HP: %d / %d",
+            tostring(state.Stage or 1), (okWeak and weak) and " [WEAK 3x!]" or "", math.ceil(hp), math.ceil(maxHp))
+        lines[#lines + 1] = string.format("Your damage: %d%s", session.myDamage,
+            session.rank and (" (Rank #" .. tostring(session.rank) .. ")") or "")
+    elseif phase == "Warning" then
+        local startsIn = (tonumber(state.StartsAt) or now) - now
+        lines[#lines + 1] = "AWAKENING in " .. formatLeft(startsIn) .. "!"
+    else
+        local okNext, nextAt = Env.call(Config.NextStart, now)
+        local left = (okNext and tonumber(nextAt) or (math.ceil(now / 3600) * 3600)) - now
+        lines[#lines + 1] = "Next spawn in " .. formatLeft(left) .. "."
+    end
+    if data and RingConfig then
+        local okOwn, owns = Env.call(RingConfig.Owned, data)
+        if okOwn and owns == true then
+            lines[#lines + 1] = "Sovereign Ring: Owned!"
+        else
+            local okPity, pityNow = Env.call(RingConfig.PityCount, data)
+            local sr = type(data.SovereignRing) == "table" and data.SovereignRing or {}
+            local count = okPity and tonumber(pityNow) or tonumber(sr.Pity) or 0
+            local cap = tonumber(RingConfig.Pity) or 75
+            local oneIn = tonumber(RingConfig.OneIn) or 100
+            lines[#lines + 1] = string.format("Sovereign Ring pity: %d / %d (1 in %d)", count, cap, oneIn)
+        end
+    end
+    if session.fights > 0 or session.rewards > 0 then
+        lines[#lines + 1] = string.format("This session: %d fight(s), %d reward(s).", session.fights, session.rewards)
+    end
+    if session.note ~= "" then
+        lines[#lines + 1] = session.note
+    end
+    label:SetText((Ui.on("AutoBlazingBoss") and "" or "Off. ") .. table.concat(lines, "\n"))
+
+    if not Ui.on("AutoBlazingBoss") or busy then
+        return
+    end
+    if phase == "Fight" then
+        Life.spawn("boss:fight", fight)
+    elseif phase == "Warning" then
+        local startsIn = (tonumber(state.StartsAt) or now) - now
+        if startsIn <= 20 then
+            Life.spawn("boss:fight", fight)
+        end
+    end
+end)
+
+Life.onCleanup(function()
+    if busy then
+        Ui.tapDemand = false
+        Ui.travelling = false
+    end
+end)
+
+return {}
 end
 __modules["features/craft"] = function(use) -- src/games/tapsim/features/craft.luau
 -- Craft tab: the pet machines (Normal -> Golden -> Diamond -> Rainbow). Potions are features/potions.
@@ -308,13 +845,18 @@ local FALLBACK_CONFIG = {
     Shiny = { SourceTier = "Diamond", MinPets = 2, MaxQueue = 3, Durations = { 28800, 18000, 9000, 3600, 30 } },
 }
 
-local MachineConfig, Mastery, EnchantFormula, CraftAllPlan
+local MachineConfig, Mastery, EnchantFormula, CraftAllPlan, CraftLock
 do
     local okPlan, plan = Env.call(function()
         local module = RS.Shared.Pets:FindFirstChild("CraftAllPlan")
         return module and require(module)
     end)
     CraftAllPlan = okPlan and type(plan) == "table" and plan or nil
+    local okLock, lockMod = Env.call(function()
+        local module = RS.Shared.Pets:FindFirstChild("CraftLock")
+        return module and require(module)
+    end)
+    CraftLock = okLock and type(lockMod) == "table" and lockMod or nil
     local ok, config = Env.call(function()
         return require(RS.Shared.Pets.MachineConfig)
     end)
@@ -329,19 +871,27 @@ do
     EnchantFormula = okEnchant and formula or nil
 end
 
--- Where each machine stands; a machine can stand in several places and the nearest one is used.
--- `model` is the machine's model (its pivot is readable once it exists, even far away); `fallback`
--- is where its interaction point was when the hub was written. The Shadow Realm has its own Golden
--- machine beside the Rainbow one and the Void egg, so a hatch-and-craft loop barely moves.
+-- Where each machine stands across both World 1 and World 2 (measured in v4103). goTo() checks
+-- live tagged InteractionPoints first so crafting in World 2 stays right in World 2.
 local MACHINES = {
     Golden = { label = "Golden", point = "Golden", places = {
+        { model = { "World2", "World 2 Spawn", "Spawn", "PlaceholderAssets", "Placeholder" }, fallback = Vector3.new(74.9, 496.9, 7087.8) },
+        { model = { "World2", "Prehistoric Island", "PlaceholderAssets", "GoldenMachine" }, fallback = Vector3.new(1071.5, 887.2, 7000.2) },
+        { model = { "World2", "Ice Age", "Gameplay", "PlaceholderAssets", "Placeholder" }, fallback = Vector3.new(1478.8, 1355.6, 6995.4) },
+        { model = { "World2", "Medieval Island", "Gameplay", "PlaceholderAssets", "Placeholder" }, fallback = Vector3.new(2530.9, 1940.3, 6937.5) },
+        { model = { "Ts2Islands", "Heaven", "GoldenMachine" }, fallback = Vector3.new(-141.6, 15315.3, -1811.3) },
         { model = { "Ts2Islands", "Shadow Realm", "Folder", "GoldenMachine" }, fallback = Vector3.new(47, 7679, -1723) },
-        { model = { "GoldenMachine" }, fallback = Vector3.new(14.5, -516, -1885.6) },
+        { model = { "GoldenMachine" }, fallback = Vector3.new(1.1, -516, -1873.2) },
     } },
     Diamond = { label = "Diamond", point = "Diamond", places = {
+        { model = { "World2", "Ice Age", "Gameplay", "DiamondMachine" }, fallback = Vector3.new(1487.9, 1375.4, 6773.0) },
+        { model = { "World2", "Medieval Island", "Gameplay", "DiamondMachine" }, fallback = Vector3.new(2457.8, 1942.4, 6937.1) },
         { model = { "DiamondMachine" }, fallback = Vector3.new(-186.6, 5444.4, -2002.3) },
     } },
     Shiny = { label = "Rainbow", point = "Rainbow", places = {
+        { model = { "World2", "Ice Age", "Gameplay", "RainbowMachine" }, fallback = Vector3.new(1403.6, 1372.0, 6894.0) },
+        { model = { "World2", "Medieval Island", "Gameplay", "RainbowMachine" }, fallback = Vector3.new(2343.8, 1934.3, 7244.8) },
+        { model = { "Ts2Islands", "Heaven", "RainbowMachine" }, fallback = Vector3.new(134.2, 15320.4, -1812.3) },
         { model = { "Ts2Islands", "Shadow Realm", "Folder", "RainbowMachine" }, fallback = Vector3.new(90.7, 7677.6, -1933.5) },
     } },
 }
@@ -414,7 +964,9 @@ local function groups(tier, data)
     local keepEquipped, keepMutated = Ui.on("CraftKeepEquipped"), Ui.on("CraftKeepMutated")
     local byName = {}
     for id, pet in pairs(type(data.Pets.Owned) == "table" and data.Pets.Owned or {}) do
+        local lockedByEgg = CraftLock and type(CraftLock.IsLocked) == "function" and CraftLock.IsLocked(pet) == true
         if type(pet) == "table" and pet.Tier == tier and pet.Locked ~= true and pet.Frozen == nil
+            and not lockedByEgg
             and not never[pet.Name]
             and not (keepEquipped and equipped[id])
             and not (keepMutated and pet.Mutation ~= nil) then
@@ -596,14 +1148,27 @@ local function teleport(cframe)
     return true
 end
 
--- Stands in a machine's interaction point, trying its places nearest first. False when none of
--- them streamed in.
+-- Stands in the nearest live machine interaction point, falling back to known places if needed.
 local function goTo(def)
     local hrp = root()
     if not hrp then
         return false
     end
     local here = hrp.Position
+    local nearestLive, nearestDist
+    for _, part in ipairs(Env.CollectionService:GetTagged("InteractionPoint")) do
+        if part:IsA("BasePart") and part.Name == def.point and part:IsDescendantOf(workspace) then
+            local d = (part.Position - here).Magnitude
+            if not nearestLive or d < nearestDist then
+                nearestLive, nearestDist = part, d
+            end
+        end
+    end
+    if nearestLive then
+        teleport(nearestLive.CFrame)
+        Life.wait(0.35)
+        return true
+    end
     local places = {}
     for _, place in ipairs(def.places) do
         places[#places + 1] = modelPivot(place.model) or place.fallback
@@ -1045,12 +1610,13 @@ local CLOUD_TAG = WorldEventConfig and WorldEventConfig.Cloud and WorldEventConf
 
 -- Spots measured in the game, used until workspace.IslandBreakableSpots arrives.
 local SPOT_FALLBACK = {
-    SkyIsland = Vector3.new(85.9, -42.5, -1868.2),
+    SkyIsland = Vector3.new(85.9, -43.0, -1868.2),
     Autumn = Vector3.new(15.7, 882.1, -1910.3),
     Mushroom = Vector3.new(-138.8, 2018.1, -1700.9),
     Desert = Vector3.new(37.2, 3622.7, -1879.8),
     CrystalCave = Vector3.new(30.6, 5448.5, -1680.7),
     ShadowRelm = Vector3.new(-147.2, 7676.3, -1648.5),
+    Volcano = Vector3.new(-164.0, 11045.2, -1840.0),
 }
 
 local EVENT_TYPES = {}
@@ -2183,509 +2749,6 @@ end)
 
 return {}
 end
-__modules["features/dungeon"] = function(use) -- src/games/tapsim/features/dungeon.luau
--- Halloween tab: Count Greg's Mansion, the Halloween dungeon (HalloweenDungeonService;
--- Shared.Game.HalloweenDungeon.Config and ModifierConfig). Mapped from a full clear on 2026-10-24.
---
--- Unlocking takes one word with Count Greg: his intro dialogue fires Talk, the server answers
--- Unlocked and sets Data.HalloweenDungeon.Unlocked. A run starts when you stand in the circle by his
--- mansion (10-second countdown, up to 4 players); the server moves you into a dungeon cell and the
--- rooms (Workspace.HalloweenDungeonRuns.Run_N.RoomK) follow each other along -Z: a foyer, 4 to 6
--- middle rooms (bat ambush, piñata, treasure vault, mimic hunt, the Elder Bat), then Count Greg.
--- Once every 30 minutes from the last start.
---
---  * Damage is ordinary taps (TapService), 1 per tap, applied to what you have targeted:
---    SetTarget(mobId) for a mob, SetTarget(nil) for Count Greg. Untargeted taps do nothing, which
---    is why the game's own client needs you to tap on a bat. The hub keeps auto tap running for the
---    whole run (Ui.tapDemand) and always targets the weakest mob, so bats die before they bite.
---  * A cleared room opens its exit door (DoorOpened) but the next room only starts once you are 26
---    studs into it. The hub steps through as the door finishes opening.
---  * Each cleared room pays a chest by itself (about the same in coins as everything you held
---    before the run, and Candy Corn), then offers a choice of 3 blessings. Count Greg pays several
---    times that. One test run took a 5.8e21 coin balance to 3.3e23.
---  * Vault and mimic chests are instances tagged HalloweenDungeonChest (ChestId, Hp, Opened, Gem)
---    targeted with ChestTarget; from 125 studs nothing happens, so the hub stands next to them.
---    Those rooms also clear on their timer if the chests are left alone.
-
-local Env = use("core/env")
-local Life = use("shared/life")
-local Ui = use("core/ui")
-
-local Options = Ui.Options
-local tab = Ui.Tabs.Halloween
-
-local function shared(...)
-    local path = { ... }
-    local ok, module = Env.call(function()
-        local node = Env.ReplicatedStorage.Shared
-        for _, part in ipairs(path) do
-            node = node:FindFirstChild(part)
-        end
-        return node and require(node)
-    end)
-    return ok and type(module) == "table" and module or nil
-end
-
-local Config = shared("Game", "HalloweenDungeon", "Config")
-local Modifiers = shared("Game", "HalloweenDungeon", "ModifierConfig")
-
--- Measured in the game.
-local GREG = Vector3.new(-1490.0, -498.7, -2040.0)
-local CIRCLE = Vector3.new(-1433.3, -496.8, -2014.5)
-
--- Loot first (a run is easy: the test clear took no deaths), then what makes rooms go faster,
--- then survival. "Candy Corn" focus puts Candy Sack ahead of Lucky Loot.
-local BLESSINGS = { "LuckyLoot", "CandySack", "BatBane", "ChestCracker", "GregSlayer", "BusyPaws", "PetFury",
-    "VampireBite", "IronCape", "ThickFur" }
-local CHEST_ROOMS = { TreasureVault = true, MimicHunt = true }
-local SAFETY_SECONDS = 15 * 60
-
--- UI -------------------------------------------------------------------------------------------
-
-local box = tab:AddGroupbox({ Side = "Left", Name = "Count Greg's Mansion", IconName = "castle" })
-box:AddToggle("AutoDungeon", {
-    Text = "Auto dungeon",
-    Default = false,
-    Tooltip = "Unlocks the mansion if needed, then runs it every 30 minutes: targets every bat, piñata and the Elder Bat, steps into each next room as its door opens, picks blessings and taps Count Greg down. Each room pays a chest of coins and Candy Corn.",
-})
-Ui.automation("AutoDungeon", false)
-box:AddDropdown("DungeonFocus", {
-    Text = "Blessing focus",
-    Values = { "Coins", "Candy Corn" },
-    Default = "Coins",
-    Tooltip = "Lucky Loot (+20% coins) or Candy Sack (+25% Candy Corn) first. After that: Bat Bane, Chest Cracker, Greg Slayer, Busy Paws, Pet Fury, then the survival ones.",
-})
-box:AddToggle("DungeonChests", {
-    Text = "Break vault chests",
-    Default = true,
-    Tooltip = "In treasure vault and mimic rooms, stands next to each chest (gem chests first) and taps it open once the bats are down. Those rooms clear on their timer either way.",
-})
-local panel = Ui.panel(box, 7)
-
--- Run state, fed by the dungeon's events ---------------------------------------------------------
-
-local session = { runs = 0, coins = 0, candy = 0, contracts = nil, note = "" }
-local run = nil -- { mobs, boss, room, objective, doors, ended, coins, candy, rooms, started } while a run is live
-
-local function newRun()
-    return { mobs = {}, boss = nil, room = nil, objective = nil, doors = {}, ended = nil, started = nil,
-        coins = 0, candy = 0, rooms = 0, unlocked = false }
-end
-
-local function remoteOf(name)
-    local ok, remote = pcall(Env.remote, "HalloweenDungeonService", name)
-    Env.elevate()
-    return ok and remote or nil
-end
-
-local function send(name, ...)
-    local remote = remoteOf(name)
-    if remote then
-        local args = table.pack(...)
-        pcall(function()
-            remote:FireServer(table.unpack(args, 1, args.n))
-        end)
-        Env.elevate()
-    end
-end
-
-local function on(name, handler)
-    local remote = remoteOf(name)
-    if remote then
-        Life.connect(remote.OnClientEvent, function(...)
-            if run then
-                handler(...)
-            end
-        end, "dungeon:" .. name)
-    end
-end
-
-on("RunStarted", function()
-    run.started = run.started or os.clock()
-    task.delay(0.5, send, "SkipIntro")
-end)
-on("RoomStarted", function(payload)
-    if type(payload) == "table" then
-        run.room, run.objective = payload.RoomName, payload.Objective
-        run.rooms = math.max(run.rooms, tonumber(payload.RoomIndex) or 0)
-        table.clear(run.mobs)
-    end
-end)
-on("MobState", function(payload)
-    if type(payload) == "table" and payload.Id ~= nil and (tonumber(payload.Hp) or 1) > 0 then
-        local mob = run.mobs[payload.Id] or {}
-        mob.hp, mob.kind = tonumber(payload.Hp) or mob.hp or 1, payload.Kind or mob.kind
-        run.mobs[payload.Id] = mob
-    end
-end)
-on("MobHit", function(payload)
-    if type(payload) == "table" and run.mobs[payload.Id] then
-        run.mobs[payload.Id].hp = tonumber(payload.Hp) or run.mobs[payload.Id].hp
-        run.mobs[payload.Id].hitAt = os.clock()
-    end
-end)
-on("MobRemoved", function(payload)
-    if type(payload) == "table" then
-        run.mobs[payload.Id] = nil
-    end
-end)
-on("BossState", function(payload)
-    if type(payload) == "table" then
-        run.boss = { hp = tonumber(payload.Hp) or 0, phase = payload.Phase }
-    end
-end)
-on("BossCutscene", function(payload)
-    if type(payload) == "table" and payload.CanSkip then
-        task.delay(0.3, send, "BossSkip")
-    end
-end)
-on("DoorOpened", function(payload)
-    if type(payload) == "table" and not payload.Entrance and type(payload.RoomName) == "string" then
-        table.insert(run.doors, { room = payload.RoomName, at = os.clock() + (tonumber(payload.Seconds) or 2.5) + 0.4 })
-    end
-end)
-on("BlessingOffer", function(payload)
-    if type(payload) ~= "table" or type(payload.Choices) ~= "table" then
-        return
-    end
-    local order = table.clone(BLESSINGS)
-    if Options.DungeonFocus.Value == "Candy Corn" then
-        order[1], order[2] = "CandySack", "LuckyLoot"
-    end
-    local pick, rank = payload.Choices[1], math.huge
-    for _, choice in ipairs(payload.Choices) do
-        local at = table.find(order, choice) or (#order + 1)
-        if at < rank then
-            pick, rank = choice, at
-        end
-    end
-    task.delay(0.4, send, "BlessingPick", payload.OfferId, pick)
-end)
-on("RelicFound", function(payload)
-    local id = type(payload) == "table" and (payload.Id or payload.RelicId) or payload
-    task.delay(0.3, send, "CollectRelic", id)
-end)
-on("RewardCards", function(payload)
-    for _, card in ipairs(type(payload) == "table" and type(payload.Cards) == "table" and payload.Cards or {}) do
-        if type(card) == "table" and card.Kind == "Coins" then
-            run.coins += tonumber(card.Amount) or 0
-        elseif type(card) == "table" and card.Kind == "Candy" then
-            run.candy += tonumber(card.Amount) or 0
-        end
-    end
-end)
-on("Results", function(payload)
-    run.ended = run.ended or os.clock()
-    if type(payload) == "table" and type(payload.Contracts) == "table" then
-        session.contracts = payload.Contracts
-    end
-end)
-on("RunEnded", function()
-    run.ended = run.ended or os.clock()
-end)
-on("Unlocked", function()
-    run.unlocked = true
-end)
-
--- Helpers --------------------------------------------------------------------------------------------
-
-local function root()
-    local character = Env.LocalPlayer.Character
-    return character and character:FindFirstChild("HumanoidRootPart")
-end
-
-local function moveTo(position, facing)
-    local hrp = root()
-    if hrp then
-        hrp.AssemblyLinearVelocity = Vector3.zero
-        hrp.CFrame = facing and CFrame.lookAt(position, facing) or CFrame.new(position)
-    end
-end
-
-local function dungeonData(data)
-    return type(data) == "table" and type(data.HalloweenDungeon) == "table" and data.HalloweenDungeon or {}
-end
-
-local function readyIn(data)
-    local ok, at = Env.call(Config.ReadyAt, data)
-    return math.max(0, (ok and tonumber(at) or 0) - workspace:GetServerTimeNow())
-end
-
-local function currentRun()
-    local folder = workspace:FindFirstChild("HalloweenDungeonRuns")
-    if not folder then
-        return nil
-    end
-    -- Every run has the same room names (Room1, Room2, ...), so a name says nothing about whose run
-    -- it is. Runs sit in cells 3000 studs apart along X (Config.CellPitchX) and the server puts us
-    -- in ours, so ours is the run nearest us in X. Runs too far away to stream in have no parts and
-    -- are skipped.
-    local hrp = root()
-    local best, bestGap
-    for _, model in ipairs(folder:GetChildren()) do
-        local part = hrp and model:FindFirstChildWhichIsA("BasePart", true)
-        if part then
-            local gap = math.abs(part.Position.X - hrp.Position.X)
-            if not best or gap < bestGap then
-                best, bestGap = model, gap
-            end
-        end
-    end
-    return best or folder:GetChildren()[1]
-end
-
-local function stepThrough(roomName)
-    local model = currentRun()
-    local room = model and model:FindFirstChild(roomName)
-    local gate = room and room:FindFirstChild("ExitGate")
-    local snap = gate and gate:FindFirstChild("ExitSnap")
-    if snap then
-        -- The next room starts 26 studs in (Config.NextRoomTriggerDepth); 32 clears it.
-        local depth = (Config.NextRoomTriggerDepth or 26) + 6
-        local at = snap.Position + Vector3.new(0, 3, -depth)
-        moveTo(at, at + Vector3.new(0, 0, -1))
-    end
-end
-
-local function weakestMob()
-    local best, bestHp
-    for id, mob in pairs(run.mobs) do
-        local hp = tonumber(mob.hp) or 1
-        if hp > 0 and (not best or hp < bestHp) then
-            best, bestHp = id, hp
-        end
-    end
-    return best
-end
-
-local function bestChest()
-    local model = currentRun()
-    local hrp = root()
-    if not (model and hrp) then
-        return nil
-    end
-    local best, bestScore
-    for _, chest in ipairs(game:GetService("CollectionService"):GetTagged("HalloweenDungeonChest")) do
-        if chest:IsDescendantOf(model) and chest:GetAttribute("Opened") ~= true and (tonumber(chest:GetAttribute("Hp")) or 0) > 0 then
-            local position = chest:IsA("Model") and chest:GetPivot().Position or chest.Position
-            local score = (position - hrp.Position).Magnitude
-                - (chest:GetAttribute("Gem") == true and 400 or 0) - (chest:GetAttribute("Size") == "Big" and 150 or 0)
-            if not best or score < bestScore then
-                best, bestScore = chest, score
-            end
-        end
-    end
-    return best
-end
-
--- The run -------------------------------------------------------------------------------------------
-
-local function unlock()
-    Env.streamAround(GREG, 4)
-    local mansion = workspace:FindFirstChild("HalloweenIsland") and workspace.HalloweenIsland:FindFirstChild("CountGregMansion")
-    local greg = mansion and mansion:FindFirstChild("CountGreg")
-    local pivot = greg and greg:GetPivot()
-    if pivot then
-        local at = pivot.Position + pivot.LookVector * 6 + Vector3.new(0, 2, 0)
-        moveTo(at, pivot.Position)
-    else
-        moveTo(GREG + Vector3.new(8, 4, 0))
-    end
-    Life.wait(0.8)
-    send("Talk")
-    local deadline = os.clock() + 5
-    while Life.alive and not run.unlocked and os.clock() < deadline do
-        Life.wait(0.1)
-    end
-    return run.unlocked or dungeonData(Env.data()).Unlocked == true
-end
-
-local function enterCircle()
-    Env.streamAround(CIRCLE, 4)
-    local spot = CIRCLE + Vector3.new(0, 3, 0)
-    for _, circle in ipairs(game:GetService("CollectionService"):GetTagged(Config.CircleTag or "HalloweenDungeonCircle")) do
-        if circle:IsDescendantOf(workspace) then
-            local zone = circle:FindFirstChild(Config.ZoneName or "Zone", true)
-            spot = (zone and zone:IsA("BasePart") and zone.Position or circle:GetPivot().Position) + Vector3.new(0, 3, 0)
-        end
-    end
-    local deadline = os.clock() + (Config.CountdownSeconds or 10) + 35
-    while Life.alive and Ui.on("AutoDungeon") and not run.started and os.clock() < deadline do
-        local hrp = root()
-        if hrp and (hrp.Position - spot).Magnitude > 5 then
-            moveTo(spot)
-        end
-        Ui.status = "Waiting in Count Greg's circle"
-        Life.wait(0.25)
-    end
-    return run.started ~= nil
-end
-
-local function fight()
-    local target, targetAt, chestId, chestAt = "none", 0, nil, 0
-    local hardStop = os.clock() + math.min(Config.MaxRunSeconds or 1800, SAFETY_SECONDS)
-    while Life.alive and Ui.on("AutoDungeon") and os.clock() < hardStop do
-        if run.ended and os.clock() - run.ended > 3 then
-            break
-        end
-        Ui.tapDemand = true
-        for index = #run.doors, 1, -1 do
-            if os.clock() >= run.doors[index].at then
-                stepThrough(table.remove(run.doors, index).room)
-            end
-        end
-        local mob = weakestMob()
-        local chest = mob == nil and Ui.on("DungeonChests") and CHEST_ROOMS[run.objective] and bestChest() or nil
-        if mob ~= nil then
-            -- A target that took no hit for 2s is resent: the server may have missed the first.
-            local hitAt = run.mobs[mob] and run.mobs[mob].hitAt
-            if mob ~= target or (os.clock() - targetAt > 2 and not (hitAt and os.clock() - hitAt < 2)) then
-                target, targetAt = mob, os.clock()
-                send("SetTarget", mob)
-            end
-            Ui.status = string.format("Dungeon: %s (%s)", tostring(run.objective or "room"), tostring(run.mobs[mob] and run.mobs[mob].kind or "mob"))
-        elseif chest then
-            local id = chest:GetAttribute("ChestId")
-            local position = chest:IsA("Model") and chest:GetPivot().Position or chest.Position
-            local hrp = root()
-            if hrp and (hrp.Position - position).Magnitude > 9 then
-                moveTo(position + Vector3.new(0, 3, 6), position)
-            end
-            if id ~= chestId or os.clock() - chestAt > 1.5 then
-                chestId, chestAt = id, os.clock()
-                send("ChestTarget", id)
-            end
-            Ui.status = "Dungeon: opening chests"
-        elseif run.boss and run.boss.hp > 0 and run.boss.phase ~= "Defeat" then
-            if target ~= false then
-                target = false
-                send("SetTarget", nil)
-            end
-            Ui.status = string.format("Dungeon: Count Greg %d hp", run.boss.hp)
-        end
-        Life.wait(0.15)
-    end
-    Ui.tapDemand = false
-end
-
--- Dungeon cells sit far out at Y ~1000 from X -10000 on (Config.CellOriginX, CellPitchX, CellY).
-local function inCell()
-    local hrp = root()
-    if not hrp then
-        return false
-    end
-    local p = hrp.Position
-    return p.X < (Config.CellOriginX or -10000) + 1500 and math.abs(p.Y - (Config.CellY or 1000)) < 600
-end
-
-local busy = false
-local nextTry = 0
-local function trip()
-    if busy or Ui.hatchMoving or Ui.travelling or not Config then
-        return
-    end
-    busy = true
-    Ui.travelling = "dungeon"
-    local settle = os.clock() + 6
-    while Ui.hatchInFlight and os.clock() < settle do
-        Life.wait(0.05)
-    end
-    local hrp = root()
-    local home = hrp and hrp.CFrame
-    run = newRun()
-    local ok, err = pcall(function()
-        if not (Config.IsUnlocked(Env.data()) or unlock()) then
-            session.note = "Count Greg did not unlock the mansion; trying again in 2 minutes."
-            nextTry = os.clock() + 120
-            return
-        end
-        if not enterCircle() then
-            session.note = "The run did not start; trying again in 2 minutes."
-            nextTry = os.clock() + 120
-            return
-        end
-        fight()
-        session.runs += 1
-        session.coins += run.coins
-        session.candy += run.candy
-        session.note = string.format("Last run: %d rooms, %.3g coins and %d Candy Corn in %ds.", run.rooms, run.coins,
-            run.candy, math.floor(os.clock() - run.started))
-        -- The server takes you out of the cell after its results screen. Going home first would
-        -- only be undone by that move, so wait it out (bounded).
-        local deadline = os.clock() + (Config.ResultsSeconds or 12) + 8
-        while Life.alive and inCell() and os.clock() < deadline do
-            Life.wait(0.25)
-        end
-    end)
-    Env.elevate()
-    if not ok then
-        Life.errors["dungeon:trip"] = tostring(err)
-    end
-    Ui.tapDemand = false
-    run = nil
-    if home then
-        moveTo(home.Position)
-        local back = root()
-        if back then
-            back.CFrame = home
-        end
-    end
-    if type(Ui.status) == "string" and Ui.status:find("^Dungeon") or Ui.status == "Waiting in Count Greg's circle" then
-        Ui.status = "Idle"
-    end
-    Ui.travelling = false
-    busy = false
-end
-
--- The loop -----------------------------------------------------------------------------------------
-
-Life.loop("dungeon:auto", 2, function()
-    if not Config then
-        panel.set({ "The mansion is not in this version of the game." })
-        return
-    end
-    local data = Env.data()
-    if not data then
-        return
-    end
-    local stats = dungeonData(data)
-    local wait = readyIn(data)
-    local lines = {
-        Config.IsUnlocked(data) and (wait > 0 and string.format("Next run in %d:%02d", wait // 60, wait % 60) or "Ready to run")
-            or "Locked: the hub unlocks it by talking to Count Greg",
-        string.format("Runs %d, clears %d, Count Greg defeated %d times", tonumber(stats.Runs) or 0, tonumber(stats.Clears) or 0,
-            tonumber(stats.BossKills) or 0),
-        string.format("This session: %d runs, %.3g coins, %d Candy Corn", session.runs, session.coins, session.candy),
-    }
-    if session.note ~= "" then
-        lines[#lines + 1] = session.note
-    end
-    for _, contract in ipairs(session.contracts or {}) do
-        if #lines >= 7 then
-            break
-        end
-        if type(contract) == "table" and (tonumber(contract.Done) or 0) < (tonumber(contract.Total) or 0) then
-            lines[#lines + 1] = string.format("Contract: %s %d/%d", tostring(contract.Text), contract.Done, contract.Total)
-        end
-    end
-    panel.set(lines, Ui.on("AutoDungeon") and "Runs whenever the cooldown is over." or "Auto dungeon is off.")
-
-    if Ui.on("AutoDungeon") and not busy and os.clock() >= nextTry and (not Config.IsUnlocked(data) or wait <= 0) then
-        nextTry = math.max(nextTry, os.clock() + 30)
-        Life.spawn("dungeon:trip", trip)
-    end
-end)
-
-Life.onCleanup(function()
-    if busy then
-        Ui.travelling = false
-        Ui.tapDemand = false
-    end
-    run = nil
-end)
-
-return {}
-end
 __modules["features/enchant"] = function(use) -- src/games/tapsim/features/enchant.luau
 -- Pets tab: auto enchant, run by the game's own server-side enchant loop.
 --
@@ -2969,10 +3032,12 @@ local function root()
 end
 
 local function findPoint()
+    local hrp = root()
+    local origin = hrp and hrp.Position or POINT_FALLBACK
     local best, bestDistance
     for _, part in ipairs(Env.CollectionService:GetTagged("InteractionPoint")) do
         if part:IsA("BasePart") and part.Name == POINT and part:IsDescendantOf(workspace) then
-            local distance = (part.Position - POINT_FALLBACK).Magnitude
+            local distance = (part.Position - origin).Magnitude
             if not best or distance < bestDistance then
                 best, bestDistance = part, distance
             end
@@ -3212,6 +3277,420 @@ end)
 
 return {}
 end
+__modules["features/expeditions"] = function(use) -- src/games/tapsim/features/expeditions.luau
+-- TimeRift tab (right): Expeditions (ExpeditionService, Shared.Game.ExpeditionMapConfig &
+-- ExpeditionFormula).
+--
+-- Sends up to MaxCrew (5) pets on timed voyages (1h to 24h) across Starter Isles for Gems,
+-- Potions, Totems, Golden Apples, Rainbow Strawberries, Secret Fruits, Octo Incubators,
+-- +10 Pet Levels, and passive pet XP. Completing each island unlocks the next one in sequence
+-- up to MysteryIsland ("???", 24h).
+--
+-- ExpeditionService RF:
+--   Send(mapId, islandId, crewIds)  -> starts a voyage in map.Slot ("Regular")
+--   Collect(slot)                   -> collects a finished voyage (ReadyAt <= serverNow)
+--   Seen(reportId)                  -> marks a returned report seen so popups do not stack
+
+local Env = use("core/env")
+local Life = use("shared/life")
+local Ui = use("core/ui")
+
+local Options = Ui.Options
+local tab = Ui.Tabs.TimeRift
+local RS = Env.ReplicatedStorage
+
+local function load(...)
+    local path = { ... }
+    local ok, module = Env.call(function()
+        local node = RS
+        for _, part in ipairs(path) do
+            node = node:FindFirstChild(part)
+        end
+        return node and require(node)
+    end)
+    return ok and type(module) == "table" and module or nil
+end
+
+local MapConfig = load("Shared", "Game", "ExpeditionMapConfig")
+local Formula = load("Shared", "Game", "ExpeditionFormula")
+
+local MAP_ID = "StarterIsles"
+local SLOT = MapConfig and MapConfig.Maps and MapConfig.Maps[MAP_ID] and MapConfig.Maps[MAP_ID].Slot or "Regular"
+local MAX_CREW = MapConfig and tonumber(MapConfig.MaxCrew) or 5
+local PAD_FALLBACK = Vector3.new(1676.8, 1355.5, 6911.5) -- World 2 Ice Age ExpeditionsPad
+
+local PROGRESSION = "Progression (unlock next, then best)"
+local ISLAND_LABELS, ISLAND_BY_LABEL = { PROGRESSION }, {}
+local ISLANDS = MapConfig and MapConfig.Maps and MapConfig.Maps[MAP_ID] and MapConfig.Maps[MAP_ID].Islands or {}
+for _, isl in ipairs(ISLANDS) do
+    local text = string.format("%s (%s)", tostring(isl.Name), tostring(isl.Duration))
+    ISLAND_LABELS[#ISLAND_LABELS + 1] = text
+    ISLAND_BY_LABEL[text] = isl
+end
+
+local box = tab:AddGroupbox({ Side = "Right", Name = "Expeditions", IconName = "map" })
+box:AddToggle("AutoExpeditions", {
+    Text = "Auto expeditions",
+    Default = false,
+    Tooltip = "Automatically collects finished voyages and dispatches up to 5 pets on the next expedition for passive Gems, Potions, Totems, Secret Fruits and pet XP.",
+})
+Ui.automation("AutoExpeditions", true)
+box:AddDropdown("ExpeditionIsland", {
+    Text = "Destination",
+    Values = ISLAND_LABELS,
+    Default = PROGRESSION,
+    Tooltip = "Progression unlocks Green Meadows -> Frozen Cavern -> Sandy Dunes -> Ancient Ruins -> Molten Peak -> ??? in order, then repeats the deepest unlocked island.",
+})
+box:AddToggle("ExpKeepEquipped", {
+    Text = "Keep equipped pets out of expeditions",
+    Default = true,
+    Tooltip = "Never sends your currently equipped team pets away on voyages.",
+})
+
+local session = { sent = 0, collected = 0, note = "" }
+local backoffUntil = 0
+local seenIds = {}
+
+local function formatTime(seconds)
+    local s = math.max(0, math.ceil(seconds))
+    local h = s // 3600
+    local m = (s % 3600) // 60
+    if h > 0 then
+        return string.format("%dh %02dm", h, m)
+    end
+    if m > 0 then
+        return string.format("%dm %02ds", m, s % 60)
+    end
+    return string.format("%ds", s)
+end
+
+local function islandState(data, isl)
+    if Formula and type(Formula.State) == "function" then
+        local ok, st = Env.call(Formula.State, data, MAP_ID, isl)
+        if ok and type(st) == "string" then
+            return st
+        end
+    end
+    local exp = type(data.Expeditions) == "table" and data.Expeditions or {}
+    local done = type(exp.Completed) == "table" and exp.Completed or {}
+    if done[isl.Id] == true then
+        return "Done"
+    end
+    if isl.Requires == nil or done[isl.Requires] == true then
+        return "Open"
+    end
+    return "Hidden"
+end
+
+local function chooseIsland(data)
+    local pick = ISLAND_BY_LABEL[Options.ExpeditionIsland.Value or ""]
+    if pick then
+        local st = islandState(data, pick)
+        if st == "Open" or st == "Done" then
+            return pick
+        end
+    end
+    -- Progression: take the first "Open" (not yet completed) island; once all are done, take the
+    -- highest unlocked ("Done") island.
+    local bestDone = nil
+    for _, isl in ipairs(ISLANDS) do
+        local st = islandState(data, isl)
+        if st == "Open" then
+            return isl
+        elseif st == "Done" then
+            bestDone = isl
+        end
+    end
+    return bestDone
+end
+
+-- Pets already away on any expedition run cannot be sent again.
+local function busyPetSet(data)
+    local set = {}
+    local exp = type(data.Expeditions) == "table" and data.Expeditions
+    local runs = exp and type(exp.Runs) == "table" and exp.Runs
+    if runs then
+        for _, run in pairs(runs) do
+            if type(run) == "table" and type(run.Crew) == "table" then
+                for _, entry in ipairs(run.Crew) do
+                    local id = type(entry) == "table" and (entry.Uid or entry.Id) or entry
+                    if type(id) == "string" then
+                        set[id] = true
+                    end
+                end
+            end
+        end
+    end
+    return set
+end
+
+-- Up to MaxCrew eligible pets: highest CrewBonus rarity first, then lowest level (passive XP),
+-- then lowest power so weaker high-rarity pets go first.
+local function chooseCrew(data)
+    local pets = type(data.Pets) == "table" and data.Pets
+    local owned = pets and type(pets.Owned) == "table" and pets.Owned
+    if not owned then
+        return {}
+    end
+    local equipped = {}
+    if Ui.on("ExpKeepEquipped") and type(pets.Equipped) == "table" then
+        for _, id in pairs(pets.Equipped) do
+            equipped[id] = true
+        end
+    end
+    local busyPets = busyPetSet(data)
+    local bonusTable = MapConfig and MapConfig.CrewBonus or {}
+    local candidates = {}
+    for id, pet in pairs(owned) do
+        if type(pet) == "table" and not equipped[id] and not busyPets[id] and pet.Frozen == nil then
+            candidates[#candidates + 1] = {
+                id = id,
+                bonus = tonumber(bonusTable[pet.Rarity]) or 3,
+                level = tonumber(pet.Level) or 1,
+                power = tonumber(pet.Power) or 0,
+            }
+        end
+    end
+    table.sort(candidates, function(a, b)
+        if a.bonus ~= b.bonus then
+            return a.bonus > b.bonus
+        end
+        if a.level ~= b.level then
+            return a.level < b.level
+        end
+        return a.power < b.power
+    end)
+    local crew = {}
+    for i = 1, math.min(#candidates, MAX_CREW) do
+        crew[i] = candidates[i].id
+    end
+    return crew
+end
+
+local function ackReturned(data)
+    local exp = type(data.Expeditions) == "table" and data.Expeditions
+    local returned = exp and type(exp.Returned) == "table" and exp.Returned or {}
+    for _, report in pairs(returned) do
+        local id = type(report) == "table" and report.Id
+        if type(id) == "string" and not seenIds[id] then
+            seenIds[id] = true
+            pcall(Env.invoke, "ExpeditionService", "Seen", id)
+            Life.wait(0.15)
+        end
+    end
+end
+
+local function padPosition()
+    for _, inst in ipairs(Env.CollectionService:GetTagged("InteractionPoint")) do
+        if inst.Name == "ExpeditionsPad" and inst:IsA("BasePart") and inst:IsDescendantOf(workspace) then
+            return inst.Position
+        end
+    end
+    return PAD_FALLBACK
+end
+
+local padBusy = false
+local function sendWithPadTrip(island, crew)
+    if padBusy or Ui.hatchMoving or Ui.travelling then
+        return false, "Busy"
+    end
+    padBusy = true
+    Ui.travelling = "expeditions"
+    local settle = os.clock() + 6
+    while Ui.hatchInFlight and os.clock() < settle do
+        Life.wait(0.05)
+    end
+    local char = Env.LocalPlayer.Character
+    local hrp = char and char:FindFirstChild("HumanoidRootPart")
+    local home = hrp and hrp.CFrame
+    local origWorld = Env.worldKey()
+    local sentOk, errReason = false, nil
+    pcall(function()
+        if Env.worldKey() ~= "TimeRift" and Env.worldUnlocked("TimeRift") then
+            Env.ensureWorld("TimeRift")
+            Life.wait(0.25)
+        end
+        local spot = padPosition()
+        Env.streamAround(spot, 6)
+        local here = Env.LocalPlayer.Character and Env.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+        if here then
+            here.AssemblyLinearVelocity = Vector3.zero
+            here.CFrame = CFrame.new(spot + Vector3.new(0, 4, 0))
+        end
+        Life.wait(0.55)
+        local ok, res = Env.invoke("ExpeditionService", "Send", MAP_ID, island.Id, crew)
+        if ok and type(res) == "table" and res.Success == true then
+            sentOk = true
+        else
+            errReason = ok and type(res) == "table" and (res.Error or res.Reason) or res
+        end
+    end)
+    Env.elevate()
+    if Env.worldKey() ~= origWorld then
+        Env.ensureWorld(origWorld)
+        Life.wait(0.2)
+    end
+    if home then
+        local back = Env.LocalPlayer.Character and Env.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+        if back then
+            back.AssemblyLinearVelocity = Vector3.zero
+            back.CFrame = home
+        end
+    end
+    Ui.travelling = false
+    padBusy = false
+    return sentOk, errReason
+end
+
+local runningStep = false
+local function stepOnce(manual)
+    if runningStep then
+        return
+    end
+    local data = Env.data()
+    if not data then
+        return
+    end
+    runningStep = true
+    pcall(function()
+        ackReturned(data)
+        local exp = type(data.Expeditions) == "table" and data.Expeditions or {}
+        local run = type(exp.Runs) == "table" and exp.Runs[SLOT]
+        local now = workspace:GetServerTimeNow()
+        if type(run) == "table" then
+            if (tonumber(run.ReadyAt) or math.huge) <= now then
+                local ok, res = Env.invoke("ExpeditionService", "Collect", SLOT)
+                if ok and type(res) == "table" and res.Success == true then
+                    session.collected += 1
+                    session.note = "Collected " .. tostring(run.IslandId or "expedition") .. "!"
+                    if type(res.Id) == "string" then
+                        seenIds[res.Id] = true
+                        pcall(Env.invoke, "ExpeditionService", "Seen", res.Id)
+                    end
+                    Life.wait(0.6)
+                    data = Env.data() or data
+                    exp = type(data.Expeditions) == "table" and data.Expeditions or {}
+                    run = type(exp.Runs) == "table" and exp.Runs[SLOT]
+                else
+                    local why = ok and type(res) == "table" and (res.Error or res.Reason) or res
+                    session.note = "Collect refused: " .. tostring(why)
+                    backoffUntil = os.clock() + 30
+                    return
+                end
+            else
+                if manual then
+                    Ui.notify("Expeditions", "Voyage still out: " .. formatTime((tonumber(run.ReadyAt) or now) - now) .. " left.", 4)
+                end
+                return
+            end
+        end
+
+        if run == nil then
+            local island = chooseIsland(data)
+            if not island then
+                session.note = "No expedition island available."
+                backoffUntil = os.clock() + 60
+                return
+            end
+            local crew = chooseCrew(data)
+            if #crew == 0 then
+                session.note = "No eligible idle pets to send (uncheck Keep equipped or hatch more pets)."
+                backoffUntil = os.clock() + 20
+                return
+            end
+            local ok, res = Env.invoke("ExpeditionService", "Send", MAP_ID, island.Id, crew)
+            local success = ok and type(res) == "table" and res.Success == true
+            local why = not success and (ok and type(res) == "table" and (res.Error or res.Reason) or res) or nil
+            if not success and tostring(why):lower():find("far") then
+                success, why = sendWithPadTrip(island, crew)
+            end
+            if success then
+                session.sent += 1
+                session.note = string.format("Sent %d pets to %s (%s).", #crew, island.Name, island.Duration)
+                if manual then
+                    Ui.notify("Expeditions", session.note, 5)
+                end
+            else
+                session.note = "Send refused: " .. tostring(why)
+                backoffUntil = os.clock() + 60
+                if manual then
+                    Ui.notify("Expeditions", session.note, 5)
+                end
+            end
+        end
+    end)
+    Env.elevate()
+    runningStep = false
+end
+
+box:AddButton({
+    Text = "Collect & send now",
+    Func = function()
+        backoffUntil = 0
+        Life.spawn("expeditions:manual", stepOnce, true)
+    end,
+})
+local label = box:AddLabel("Off.", true)
+
+Life.loop("expeditions:auto", 3, function()
+    local data = Env.data()
+    if not data then
+        return
+    end
+    local exp = type(data.Expeditions) == "table" and data.Expeditions or {}
+    local run = type(exp.Runs) == "table" and exp.Runs[SLOT]
+    local now = workspace:GetServerTimeNow()
+    local doneCount = 0
+    for _, isl in ipairs(ISLANDS) do
+        if islandState(data, isl) == "Done" then
+            doneCount += 1
+        end
+    end
+    local lines = {
+        string.format("Starter Isles completed: %d / %d   Total voyages: %d",
+            doneCount, #ISLANDS, tonumber(exp.Voyages) or 0),
+    }
+    if type(run) == "table" then
+        local left = (tonumber(run.ReadyAt) or now) - now
+        local isl = Formula and Formula.FindIsland and select(2, Env.call(Formula.FindIsland, run.MapId or MAP_ID, run.IslandId))
+        local name = type(isl) == "table" and isl.Name or tostring(run.IslandId or "?")
+        lines[#lines + 1] = left <= 0
+            and ("Active: " .. name .. " — READY to collect!")
+            or string.format("Active: %s (+%s%% luck) — %s left", name, tostring(run.Bonus or 0), formatTime(left))
+    else
+        local nextIsl = chooseIsland(data)
+        lines[#lines + 1] = "Idle. Next destination: " .. (nextIsl and (nextIsl.Name .. " (" .. nextIsl.Duration .. ")") or "none")
+    end
+    if session.sent > 0 or session.collected > 0 then
+        lines[#lines + 1] = string.format("This session: %d sent, %d collected.", session.sent, session.collected)
+    end
+    if session.note ~= "" then
+        lines[#lines + 1] = session.note
+    end
+    label:SetText((Ui.on("AutoExpeditions") and "" or "Off. ") .. table.concat(lines, "\n"))
+
+    if not Ui.on("AutoExpeditions") or runningStep or os.clock() < backoffUntil then
+        return
+    end
+    local shouldAct = false
+    if type(run) == "table" then
+        shouldAct = (tonumber(run.ReadyAt) or math.huge) <= now
+    else
+        shouldAct = true
+    end
+    if shouldAct then
+        Life.spawn("expeditions:step", stepOnce, false)
+    end
+end)
+
+Life.onCleanup(function()
+    if padBusy then
+        Ui.travelling = false
+    end
+end)
+
+return {}
+end
 __modules["features/fishing"] = function(use) -- src/games/tapsim/features/fishing.luau
 -- Minigames tab: fishing (FishingService; Shared.Minigames.Fishing.FishingConfig and FishingSim).
 --
@@ -3256,11 +3735,39 @@ end
 
 local Config = shared("Minigames", "Fishing", "FishingConfig")
 local Sim = shared("Minigames", "Fishing", "FishingSim")
+local RiftIslands = shared("Progression", "RiftIslandConfig")
 
--- Measured in the game. The Heaven Falls dock is always loaded; the Haunted Pond streams with
--- Halloween Island, so it is looked for around the island centre the first time it is wanted.
-local DOCKS = { HeavenFalls = Vector3.new(36.9, 15348.6, -2059.8) }
-local HALLOWEEN_ISLAND = Vector3.new(-1680.8, -515.7, -2317.3)
+-- Measured in place version 4103. Heaven Falls is in World 1; Prehistoric Falls is on Prehistoric
+-- Island in World 2 (Time Rift) with 3 new secrets (Riptide Pterowyrm, Coral Seraph, Falls Devourer).
+local DOCKS = {
+    HeavenFalls = Vector3.new(36.9, 15348.6, -2059.8),
+    PrehistoricFalls = Vector3.new(1142.7, 893.2, 7033.2),
+}
+
+local function spotWorld(spotId)
+    local spot = Config and Config.Spots[spotId]
+    if spot and RiftIslands and type(RiftIslands.IsRift) == "function" then
+        local ok, isRift = Env.call(RiftIslands.IsRift, spot.Island)
+        if ok and isRift == true then
+            return "TimeRift"
+        end
+    end
+    return spotId == "PrehistoricFalls" and "TimeRift" or "Main"
+end
+
+local function spotOpen(data, spotId)
+    local spot = Config and Config.Spots[spotId]
+    if not spot then
+        return false
+    end
+    if type(Config.SpotOpen) == "function" then
+        local ok, open = Env.call(Config.SpotOpen, data, spot)
+        if ok then
+            return open == true
+        end
+    end
+    return true
+end
 
 local spotIds, spotByName = {}, {}
 local baitNames, baitByName = {}, {}
@@ -3270,7 +3777,11 @@ if Config then
         spotByName[spot.Name] = id
     end
     table.sort(spotIds, function(a, b)
-        return (spotByName[a] == "HeavenFalls") and spotByName[b] ~= "HeavenFalls" or (spotByName[b] ~= "HeavenFalls" and a < b)
+        local ia, ib = spotByName[a], spotByName[b]
+        if ia == "PrehistoricFalls" or ib == "PrehistoricFalls" then
+            return ia == "PrehistoricFalls" and ib ~= "PrehistoricFalls"
+        end
+        return (ia == "HeavenFalls") and ib ~= "HeavenFalls" or (ib ~= "HeavenFalls" and a < b)
     end)
     for _, key in ipairs(Config.BaitOrder) do
         local bait = Config.Baits[key]
@@ -3292,9 +3803,9 @@ box:AddToggle("AutoFish", {
 Ui.automation("AutoFish", false)
 box:AddDropdown("FishSpot", {
     Text = "Spot",
-    Values = #spotIds > 0 and spotIds or { "Heaven Falls" },
-    Default = spotIds[1] or "Heaven Falls",
-    Tooltip = "Heaven Falls needs Heaven unlocked. The Haunted Pond is on Halloween Island during the event.",
+    Values = #spotIds > 0 and spotIds or { "Prehistoric Falls", "Heaven Falls" },
+    Default = spotIds[1] or "Prehistoric Falls",
+    Tooltip = "Prehistoric Falls needs Prehistoric Island (World 2) unlocked; Heaven Falls needs Heaven (World 1).",
 })
 box:AddDropdown("FishBaits", {
     Text = "Use these baits",
@@ -3566,14 +4077,17 @@ end
 local function dockOf(spotId)
     local model = spotModel(spotId)
     if model and model:FindFirstChild("RootPart") then
+        DOCKS[spotId] = model.RootPart.Position
         return model, model.RootPart.Position
     end
     local known = DOCKS[spotId]
-    Env.streamAround(known or HALLOWEEN_ISLAND, 4)
-    model = spotModel(spotId)
-    if model and model:FindFirstChild("RootPart") then
-        DOCKS[spotId] = model.RootPart.Position
-        return model, model.RootPart.Position
+    if known then
+        Env.streamAround(known, 4)
+        model = spotModel(spotId)
+        if model and model:FindFirstChild("RootPart") then
+            DOCKS[spotId] = model.RootPart.Position
+            return model, model.RootPart.Position
+        end
     end
     return nil, known
 end
@@ -3758,6 +4272,12 @@ local function trip(spotId)
     end
     local hrp = root()
     local home = hrp and hrp.CFrame
+    local origWorld = Env.worldKey()
+    local wantWorld = spotWorld(spotId)
+    if origWorld ~= wantWorld then
+        Env.ensureWorld(wantWorld)
+        Life.wait(0.25)
+    end
     Ui.status = "Fishing at " .. Config.Spots[spotId].Name
     local ok, err = pcall(tend, spotId)
     Env.elevate()
@@ -3765,6 +4285,10 @@ local function trip(spotId)
         Life.errors["fishing:trip"] = tostring(err)
     end
     session.trips += 1
+    if origWorld ~= Env.worldKey() then
+        Env.ensureWorld(origWorld)
+        Life.wait(0.2)
+    end
     if home then
         local back = root()
         if back then
@@ -3782,6 +4306,9 @@ end
 -- Whether the spot needs a visit: an empty or spent rod, something hooked, a ring waiting, or
 -- bait to buy from the Fisherman.
 local function needsVisit(data, spotId)
+    if not spotOpen(data, spotId) then
+        return false
+    end
     local fishing = fishingData(data)
     if type(fishing.PendingRing) == "table" then
         return true
@@ -3890,565 +4417,185 @@ end)
 
 return {}
 end
-__modules["features/halloween"] = function(use) -- src/games/tapsim/features/halloween.luau
--- Halloween tab: the Halloween event's Hallow Boss (Shared.Game.HallowBossConfig).
+__modules["features/glitched"] = function(use) -- src/games/tapsim/features/glitched.luau
+-- TimeRift tab (right): Glitched Egg tier unlocks & Operating System evolution
+-- (Shared.Pets.GlitchedEggTiers, Shared.Pets.GlitchedEvolutionConfig).
 --
--- The Hallow Lord fights on the Halloween island at the top of every hour (IntervalSeconds 3600):
--- a 2-minute warning, then up to 7 minutes of fight. Damage comes from your ordinary taps while you
--- stand on the boss platform (the part tagged BossPlatform; ZoneSlack/ZoneBelow/ZoneAbove around
--- it), 1 per tap and 5 per critical. Everyone who deals at least MinDamage (25) gets CandyCorn
--- (250, plus 0.5 per damage; the top three 600/450/350), a potion roll and a 1 in 5,000 shot at
--- the Hallow Lord pet, better for the top three.
---
--- HallowBossService.RP.State is a Comm property ({ Phase = Idle | Warning | Fight | Defeated,
--- StartsAt, EndsAt, Health, ... }); firing it asks for the current value. Attack { Targets,
--- Radius, Delay } is a bomb volley: a bomb knocks you back off the platform if it lands within
--- Radius (9) of you, so the hub steps to the clear part of the platform when one is coming.
+-- GlitchedEggService.RF.AckTier(tier): acknowledges unlocked Glitched Egg hatch milestones
+--   (14k, 30k, 46k) so the upgraded secret odds take effect immediately without waiting on popups.
+-- GlitchedEvolutionService.RF.Evolve { Stage, Tier, ConsumeEquipped }: evolves 3 matching copies
+--   along the Operating System chain (Base -> Evo -> Evo 2 -> OBLITERATED) per tier (Normal,
+--   Golden, Diamond, Shiny/Rainbow).
 
 local Env = use("core/env")
 local Life = use("shared/life")
 local Ui = use("core/ui")
 
-local CollectionService = game:GetService("CollectionService")
-local Options = Ui.Options
-local tab = Ui.Tabs.Halloween
+local tab = Ui.Tabs.TimeRift
+local RS = Env.ReplicatedStorage
 
-local Config
-do
+local function load(...)
+    local path = { ... }
     local ok, module = Env.call(function()
-        return require(Env.ReplicatedStorage.Shared.Game.HallowBossConfig)
+        local node = RS
+        for _, part in ipairs(path) do
+            node = node:FindFirstChild(part)
+        end
+        return node and require(node)
     end)
-    Config = ok and type(module) == "table" and module or nil
+    return ok and type(module) == "table" and module or nil
 end
 
--- workspace.HalloweenIsland.BossPlatform (84 x 82 studs), measured in the game: going straight there
--- streams the platform in at once.
-local ISLAND_CENTER = Vector3.new(-1680.8, -515.7, -2317.3)
-local PLATFORM_TAG = Config and Config.PlatformTag or "BossPlatform"
+local Tiers = load("Shared", "Pets", "GlitchedEggTiers")
+local Evo = load("Shared", "Pets", "GlitchedEvolutionConfig")
 
-local box = tab:AddGroupbox({ Side = "Left", Name = "Hallow Boss", IconName = "skull" })
-box:AddToggle("AutoHallowBoss", {
-    Text = "Fight the Hallow Boss",
-    Default = false,
-    Tooltip = "At the top of every hour, goes to the Halloween island, stands on the boss platform and taps the Hallow Lord down, stepping aside from its bombs. CandyCorn, a potion and a 1 in 5,000 shot at the Hallow Lord pet.",
+local box = tab:AddGroupbox({ Side = "Right", Name = "Glitched Egg & Evolution", IconName = "cpu" })
+box:AddToggle("AutoGlitchedTier", {
+    Text = "Auto claim Glitched Egg tiers",
+    Default = true,
+    Tooltip = "Acknowledges Glitched Egg tier milestones (14k / 30k / 46k hatches) automatically so boosted secret odds take effect right away.",
 })
-Ui.automation("AutoHallowBoss", false)
-local label = box:AddLabel("Off.", true)
+Ui.automation("AutoGlitchedTier", true)
+box:AddToggle("AutoGlitchedEvolve", {
+    Text = "Auto evolve Operating System",
+    Default = false,
+    Tooltip = "Evolves 3 matching copies along the Operating System chain (Base -> Evo -> Evo 2 -> OBLITERATED) across Normal, Golden, Diamond and Rainbow.",
+})
+Ui.automation("AutoGlitchedEvolve", false)
+box:AddToggle("GlitchedConsumeEquipped", {
+    Text = "Allow consuming equipped copies",
+    Default = false,
+    Tooltip = "Off by default so evolving never sacrifices a pet you have equipped unless you allow it.",
+})
 
-local state = {}
-local session = { fights = 0, candy = 0, note = "" }
-local bombs = {} -- { position, radius, at }
+local session = { acked = 0, evolved = 0, note = "" }
+local lastAck, lastEvolve = 0, 0
 
-Life.spawn("hallow:watch", function()
-    local service = Env.ReplicatedStorage.RemoteServices:FindFirstChild("HallowBossService")
-    if not service then
-        return
+local function formatOneIn(n)
+    local v = tonumber(n) or 0
+    if v >= 1e6 then
+        return string.format("1 in %.2fM", v / 1e6)
+    elseif v >= 1e3 then
+        return string.format("1 in %.1fK", v / 1e3)
     end
-    local property = service:FindFirstChild("RP") and service.RP:FindFirstChild("State")
-    if property then
-        Life.connect(property.OnClientEvent, function(value)
-            if type(value) == "table" then
-                state = value
-            end
-        end)
-        pcall(function()
-            property:FireServer()
-        end)
-        Env.elevate()
+    return "1 in " .. tostring(math.floor(v))
+end
+
+local function evolvePass(manual)
+    if not (Evo and Evo.Enabled) then
+        if manual then
+            Ui.notify("Glitched Evolution", "Glitched Evolution is currently disabled.", 4)
+        end
+        return 0
     end
-    local events = service:FindFirstChild("RE")
-    local attack = events and events:FindFirstChild("Attack")
-    if attack then
-        Life.connect(attack.OnClientEvent, function(volley)
-            if type(volley) ~= "table" or type(volley.Targets) ~= "table" then
-                return
-            end
-            local radius = tonumber(volley.Radius) or (Config and Config.BombRadius) or 9
-            local landsAt = os.clock() + (tonumber(volley.Delay) or (Config and Config.BombDelay) or 1.6)
-            for _, target in ipairs(volley.Targets) do
-                if typeof(target) == "Vector3" then
-                    bombs[#bombs + 1] = { position = target, radius = radius, at = landsAt }
+    local data = Env.data()
+    if not data then
+        return 0
+    end
+    local allowEq = Ui.on("GlitchedConsumeEquipped")
+    local count = 0
+    for _, stage in ipairs(Evo.Chain or {}) do
+        for _, tier in ipairs(Evo.Tiers or { "Normal", "Golden", "Diamond", "Shiny" }) do
+            local okCan, can = Env.call(Evo.CanEvolve, data, stage.Index, tier)
+            if okCan and can == true then
+                local okPick, uids, eqCount = Env.call(Evo.PickCopies, data, stage.Index, tier)
+                if okPick and type(uids) == "table" and #uids >= stage.Copies and (allowEq or (tonumber(eqCount) or 0) == 0) then
+                    local ok, res = Env.invoke("GlitchedEvolutionService", "Evolve", {
+                        Stage = stage.Index,
+                        Tier = tier,
+                        ConsumeEquipped = allowEq and (tonumber(eqCount) or 0) > 0 and true or nil,
+                    })
+                    if ok and type(res) == "table" and res.Success == true then
+                        count += 1
+                        session.evolved += 1
+                        local tierLabel = Evo.TierNames and Evo.TierNames[tier] or tier
+                        session.note = string.format("Evolved %s (%s)!", stage.To, tierLabel)
+                        Ui.notify("Glitched Evolution", session.note, 6)
+                        lastEvolve = os.clock()
+                        Life.wait((tonumber(Evo.Cooldown) or 1.5) + 0.3)
+                        data = Env.data() or data
+                    else
+                        local why = ok and type(res) == "table" and (res.Reason or res.Error) or res
+                        session.note = "Evolve refused: " .. tostring(why)
+                        lastEvolve = os.clock() + 10
+                        return count
+                    end
                 end
             end
-        end)
+        end
     end
-    local reward = events and events:FindFirstChild("Reward")
-    if reward then
-        Life.connect(reward.OnClientEvent, function(result)
-            if type(result) == "table" then
-                session.candy += tonumber(result.Candy or result.CandyCorn or result.Amount) or 0
-                session.note = "Reward: " .. tostring(result.Candy or result.CandyCorn or result.Amount or "?") .. " CandyCorn."
-            end
-        end)
+    if manual and count == 0 then
+        Ui.notify("Glitched Evolution", "No Operating System evolutions ready right now.", 4)
     end
-end)
-
-local function root()
-    local character = Env.LocalPlayer.Character
-    return character and character:FindFirstChild("HumanoidRootPart")
+    return count
 end
 
-local function platform()
-    for _, part in ipairs(CollectionService:GetTagged(PLATFORM_TAG)) do
-        if part:IsA("BasePart") and part:IsDescendantOf(workspace) then
-            return part
-        end
-    end
-    return nil
-end
-
--- A standing spot on the platform as far as possible from the bombs about to land.
-local function safeSpot(part)
-    local top = part.CFrame:PointToWorldSpace(Vector3.new(0, part.Size.Y * 0.5, 0))
-    local half = math.min(part.Size.X, part.Size.Z) * 0.5 - 3
-    local now = os.clock()
-    for index = #bombs, 1, -1 do
-        if bombs[index].at < now - 0.5 then
-            table.remove(bombs, index)
-        end
-    end
-    local best, bestScore
-    for ring = 0, 2 do
-        local steps = ring == 0 and 1 or 8
-        for step = 0, steps - 1 do
-            local angle = step / steps * math.pi * 2
-            local offset = Vector3.new(math.cos(angle), 0, math.sin(angle)) * (half * ring / 2)
-            local spot = top + offset
-            local score = math.huge
-            for _, bomb in ipairs(bombs) do
-                local flat = Vector3.new(spot.X - bomb.position.X, 0, spot.Z - bomb.position.Z).Magnitude
-                score = math.min(score, flat - bomb.radius)
-            end
-            if not best or score > bestScore then
-                best, bestScore = spot, score
-            end
-        end
-    end
-    return best + Vector3.new(0, 3, 0)
-end
-
-local busy = false
-local function fight()
-    if busy or Ui.hatchMoving or Ui.travelling then
-        return
-    end
-    busy = true
-    Ui.travelling = "hallowboss"
-    local settle = os.clock() + 6
-    while Ui.hatchInFlight and os.clock() < settle do
-        Life.wait(0.05)
-    end
-    local hrp = root()
-    local home = hrp and hrp.CFrame
-    local ok, err = pcall(function()
-        Ui.status = "Fighting the Hallow Boss"
-        Env.streamAround(ISLAND_CENTER, 4)
-        local here = root()
-        if here then
-            here.AssemblyLinearVelocity = Vector3.zero
-            here.CFrame = CFrame.new(ISLAND_CENTER + Vector3.new(0, 20, 0))
-        end
-        local part
-        local deadline = os.clock() + 10
-        repeat
-            Life.wait(0.3)
-            part = platform()
-        until part or not Life.alive or os.clock() > deadline
-        if not part then
-            session.note = "Could not find the boss platform."
-            return
-        end
-        session.fights += 1
-        Ui.tapDemand = true
-        local limit = os.clock() + ((Config and Config.FightSeconds) or 420) + 150
-        while Life.alive and Ui.on("AutoHallowBoss") and os.clock() < limit do
-            local phase = state.Phase
-            if phase ~= "Warning" and phase ~= "Fight" then
-                break
-            end
-            local spot = safeSpot(part)
-            local current = root()
-            if current and (current.Position - spot).Magnitude > 2.5 then
-                current.AssemblyLinearVelocity = Vector3.zero
-                current.CFrame = CFrame.new(spot)
-            end
-            Life.wait(0.2)
-        end
-        Ui.tapDemand = false
-    end)
-    Ui.tapDemand = false
-    Env.elevate()
-    if not ok then
-        Life.errors["hallow:fight"] = tostring(err)
-        session.note = "Error: " .. tostring(err)
-    end
-    if home then
-        local back = root()
-        if back then
-            back.AssemblyLinearVelocity = Vector3.zero
-            back.CFrame = home
-        end
-    end
-    if Ui.status == "Fighting the Hallow Boss" then
-        Ui.status = "Idle"
-    end
-    Ui.travelling = false
-    busy = false
-end
-
-local nextTry = 0
-Life.loop("hallow:auto", 1, function()
-    local now = workspace:GetServerTimeNow()
-    local phase = state.Phase or "?"
-    local text
-    if phase == "Fight" then
-        text = string.format("Fight on: %s / %s health.", tostring(state.Health), tostring(state.MaxHealth))
-    elseif phase == "Warning" then
-        text = string.format("Spawning in %ds.", math.max(0, math.floor((tonumber(state.StartsAt) or now) - now)))
-    else
-        local starts = tonumber(state.StartsAt) or (Config and Config.NextStart(now)) or now
-        local wait = math.max(0, starts - now)
-        text = string.format("Next fight in %d:%02d.", wait // 60, math.floor(wait % 60))
-    end
-    local lines = { text, string.format("This session: %d fights, %d CandyCorn.", session.fights, session.candy) }
-    if session.note ~= "" then
-        lines[#lines + 1] = session.note
-    end
-    label:SetText((Ui.on("AutoHallowBoss") and "" or "Off. ") .. table.concat(lines, "\n"))
-    if Ui.on("AutoHallowBoss") and (phase == "Warning" or phase == "Fight") and not busy and os.clock() >= nextTry then
-        nextTry = os.clock() + 20
-        Life.spawn("hallow:fight", fight)
-    end
-end)
-
--- Trick or treat, the Candy Witch's dailies and the CandyCorn shop -----------------------------
---
--- Trick or treat (Shared.Game.TrickOrTreatConfig): 11 houses on the Halloween island, each with a
--- pad (a "TrickOrTreat" model with a HouseId attribute and a Zone part) in front of its door.
--- TrickOrTreatService.Knock(houseId) from inside the Zone pays 20-40 CandyCorn (x1.5 on a trick)
--- and 80% of the time a potion; each house is ready again 30 minutes later (Data.TrickOrTreat
--- [house] = ready-at), and all 11 fill the bag for another 150 CandyCorn and a Bag of Treats.
--- Candy Witch (Shared.Quests.HalloweenDailyConfig): HalloweenDailyService.Accept() hands out 3 jobs
--- a day (100-150 CandyCorn each, 300 more for all three); they are ordinary quests after that.
--- Shop (Shared.Items.HalloweenShopConfig): HalloweenShopService.Purchase { Id }, from anywhere.
--- Limits are for the whole event (SoldOut), except Daily items, which restock each day (SoldOutToday).
-
-local TrickConfig, DailyConfig, ShopConfig
-do
-    local function load(path)
-        local ok, module = Env.call(function()
-            local node = Env.ReplicatedStorage
-            for part in path:gmatch("[^%.]+") do
-                node = node:FindFirstChild(part)
-            end
-            return node and require(node)
-        end)
-        return ok and type(module) == "table" and module or nil
-    end
-    TrickConfig = load("Shared.Game.TrickOrTreatConfig")
-    DailyConfig = load("Shared.Quests.HalloweenDailyConfig")
-    ShopConfig = load("Shared.Items.HalloweenShopConfig")
-end
-
--- Measured in the game; going there streams the house and its pad in.
-local HOUSES = {
-    House01 = Vector3.new(-1689.4, -497.4, -1723.4), House02 = Vector3.new(-1735.6, -492.9, -1791.8),
-    House03 = Vector3.new(-1628.7, -497.6, -1801.2), House04 = Vector3.new(-1734.4, -497.6, -1875.2),
-    House05 = Vector3.new(-1627.4, -492.9, -1874.3), House06 = Vector3.new(-1764.9, -492.9, -1931.0),
-    House07 = Vector3.new(-1596.6, -497.7, -1933.5), House08 = Vector3.new(-1818.5, -498.0, -1955.0),
-    House09 = Vector3.new(-1823.8, -509.5, -2047.3), House10 = Vector3.new(-1761.8, -497.5, -2107.5),
-    House11 = Vector3.new(-1595.7, -492.9, -2100.4),
-}
-local WITCH = Vector3.new(-1649.8, -506.4, -2029.9)
-
--- The shop, in the shop's own order; nothing is picked by default (CandyCorn is precious).
-local SHOP_ITEMS, SHOP_LABELS, SHOP_ID = {}, {}, {}
-for _, item in ipairs(ShopConfig and (ShopConfig.Items or ShopConfig.List or ShopConfig) or {}) do
-    if type(item) == "table" and type(item.Id) == "string" then
-        local name = (item.DisplayName or item.Name or item.Id) .. string.format(" (%d)", tonumber(item.Price) or 0)
-        SHOP_ITEMS[#SHOP_ITEMS + 1] = item
-        SHOP_LABELS[#SHOP_LABELS + 1] = name
-        SHOP_ID[name] = item
-    end
-end
-
-local candyBox = tab:AddGroupbox({ Side = "Right", Name = "Candy", IconName = "candy" })
-candyBox:AddToggle("AutoTrickOrTreat", {
-    Text = "Trick or treat",
-    Default = false,
-    Tooltip = "Knocks at all 11 houses on the Halloween island whenever they are ready (every 30 minutes): 20-40 CandyCorn and usually a potion each, plus 150 CandyCorn for a full bag.",
+box:AddButton({
+    Text = "Evolve available now",
+    Func = function()
+        Life.spawn("glitched:evolve-now", evolvePass, true)
+    end,
 })
-Ui.automation("AutoTrickOrTreat", false)
-candyBox:AddToggle("AutoCandyWitch", {
-    Text = "Take the Candy Witch's jobs",
-    Default = false,
-    Tooltip = "Accepts her 3 daily jobs once a day (100-150 CandyCorn each, 300 more for all three). Finished jobs are claimed like other quests (Auto claim finished quests).",
-})
-Ui.automation("AutoCandyWitch", false)
-candyBox:AddToggle("AutoCandyShop", {
-    Text = "Buy from the CandyCorn shop",
-    Default = false,
-    Tooltip = "Buys your picks as a set you use together: always the one you hold the fewest of next, saving up for it instead of spending on a cheaper pick, until you hold the stock below of each. Sold-out and once-a-day items are skipped.",
-})
-Ui.automation("AutoCandyShop", true)
-candyBox:AddDropdown("CandyShopPicks", {
-    Text = "Buy these",
-    Values = #SHOP_LABELS > 0 and SHOP_LABELS or { "?" },
-    Multi = true,
-    Default = {},
-})
-candyBox:AddSlider("CandyShopStock", {
-    Text = "Keep in stock",
-    Default = 2,
-    Min = 1,
-    Max = 10,
-    Rounding = 0,
-    Tooltip = "Stops buying a pick while you hold this many of it unused (a 3-pack of potions counts as one), so CandyCorn is not sunk into a pile you never use.",
-})
-local candyLabel = candyBox:AddLabel("", true)
+local label = box:AddLabel("Checking...", true)
 
-local candy = { knocks = 0, earned = 0, bought = 0, note = "", shop = "" }
-
-local function readyHouses(data)
-    local list = {}
-    local now = workspace:GetServerTimeNow()
-    local record = type(data.TrickOrTreat) == "table" and data.TrickOrTreat or {}
-    for _, id in ipairs(TrickConfig and TrickConfig.Houses or {}) do
-        if HOUSES[id] and (tonumber(record[id]) or 0) <= now then
-            list[#list + 1] = id
-        end
-    end
-    return list
-end
-
-local function padZone(id)
-    local folder = workspace:FindFirstChild(TrickConfig and TrickConfig.Folder or "HalloweenIsland")
-    for _, model in ipairs(folder and folder:GetChildren() or {}) do
-        if model.Name == (TrickConfig and TrickConfig.PadName or "TrickOrTreat") and model:GetAttribute("HouseId") == id then
-            local zone = model:FindFirstChild(TrickConfig and TrickConfig.ZoneName or "Zone")
-            if zone and zone:IsA("BasePart") then
-                return zone
-            end
-        end
-    end
-    return nil
-end
-
--- Keeps you on a spot every frame while `fn` runs (the server checks you are in the pad's zone).
-local function holdAt(position, fn)
-    local hold = game:GetService("RunService").Heartbeat:Connect(function()
-        local hrp = root()
-        if hrp then
-            hrp.AssemblyLinearVelocity = Vector3.zero
-            hrp.CFrame = CFrame.new(position)
-        end
-    end)
-    local ok, result = pcall(fn)
-    hold:Disconnect()
-    Env.elevate()
-    return ok and result
-end
-
-local function trickOrTreat()
-    for _, id in ipairs(readyHouses(Env.data() or {})) do
-        if not (Life.alive and Ui.on("AutoTrickOrTreat")) then
-            break
-        end
-        Env.streamAround(HOUSES[id], 3)
-        local hrp = root()
-        if hrp then
-            hrp.AssemblyLinearVelocity = Vector3.zero
-            hrp.CFrame = CFrame.new(HOUSES[id] + Vector3.new(0, 6, 0))
-        end
-        local zone
-        local deadline = os.clock() + 4
-        repeat
-            Life.wait(0.2)
-            zone = padZone(id)
-        until zone or not Life.alive or os.clock() > deadline
-        if zone then
-            local result = holdAt(zone.Position + Vector3.new(0, 2.5, 0), function()
-                Life.wait(0.8)
-                local ok, answer = Env.invoke("TrickOrTreatService", "Knock", id)
-                return ok and answer
-            end)
-            if type(result) == "table" and result.Success == true then
-                candy.knocks += 1
-                candy.earned += tonumber(result.Candy) or 0
-                candy.note = string.format("%s: %s CandyCorn%s.", id, tostring(result.Candy or 0),
-                    result.Potion and (" and a " .. tostring(result.Potion)) or "")
-            elseif type(result) == "table" then
-                candy.note = id .. ": " .. tostring(result.Reason or "refused")
-            end
-        end
-    end
-end
-
-local function candyWitch()
-    Env.streamAround(WITCH, 3)
-    holdAt(WITCH + Vector3.new(0, 3, 4), function()
-        Life.wait(0.8)
-        local ok, result = Env.invoke("HalloweenDailyService", "Accept")
-        if ok and type(result) == "table" and result.Success == true then
-            candy.note = result.Already and "The Candy Witch's jobs are already taken today." or "Took the Candy Witch's jobs."
-        else
-            candy.note = "Candy Witch: " .. tostring(type(result) == "table" and result.Reason or result)
-        end
-    end)
-end
-
--- The picks are a set you use together (an Octo Incubator with a Luck Potion II and a Totem of
--- Luck), so the next buy is always the pick you hold the fewest of, and the hub saves up for it
--- rather than spending on a cheaper one. Buying "whatever is affordable, in shop order" sank 4,000
--- CandyCorn into four incubators with nothing to go with them.
-
--- The shop's own rules (HalloweenShopConfig.IsListed / GetRemaining, which the shop screen uses):
--- GetRemaining is nil when unlimited and 0 when sold out (for good, or today for daily items).
-local function shopRule(name, data, item, fallback)
-    local rule = ShopConfig and ShopConfig[name]
-    if type(rule) ~= "function" then
-        return fallback
-    end
-    local ok, value = Env.call(rule, data, item)
-    if ok then
-        return value
-    end
-    return fallback
-end
-
--- Unused copies you hold, in purchases: potions come 3 to a purchase, so 4 of them count as 1.33.
--- Pets have no stock to count; their limit of 1 is what stops them.
-local function heldPurchases(data, item)
-    local owned
-    if item.Kind == "Boost" then
-        owned = type(data.Boosts) == "table" and data.Boosts[item.Name]
-    elseif item.Kind == "Item" then
-        local items = type(data.Items) == "table" and data.Items.Owned
-        owned = type(items) == "table" and items[item.Name]
-    end
-    return (tonumber(owned) or 0) / math.max(tonumber(item.Amount) or 1, 1)
-end
-
-local shopRestUntil = 0
-local function buyFromShop(data)
-    if os.clock() < shopRestUntil then
-        return
-    end
-    local picks = Options.CandyShopPicks.Value or {}
-    if ShopConfig and type(ShopConfig.IsOpen) == "function" then
-        local ok, open = Env.call(ShopConfig.IsOpen)
-        if ok and open == false then
-            candy.shop = "Shop: the Halloween shop is closed."
-            return
-        end
-    end
-    local keep = tonumber(Options.CandyShopStock.Value) or 2
-    local want, wantHeld, wantIndex
-    for index, item in ipairs(SHOP_ITEMS) do
-        if picks[SHOP_LABELS[index]] and shopRule("IsListed", data, item, true) ~= false
-            and shopRule("GetRemaining", data, item, nil) ~= 0 then
-            local held = heldPurchases(data, item)
-            -- Strictly fewer, so ties go to the shop's order.
-            if held < keep and (not want or held < wantHeld) then
-                want, wantHeld, wantIndex = item, held, index
-            end
-        end
-    end
-    if not want then
-        candy.shop = next(picks) and "Shop: stocked up on everything picked." or ""
-        return
-    end
-    local balance = tonumber(type(data.Currencies) == "table" and data.Currencies.CandyCorn) or 0
-    local price = tonumber(want.Price) or math.huge
-    if balance < price then
-        candy.shop = string.format("Shop: saving for %s, %d of %d.", SHOP_LABELS[wantIndex], balance, price)
-        return
-    end
-    local ok, result = Env.invoke("HalloweenShopService", "Purchase", { Id = want.Id })
-    -- The replica can land after the answer; counting stock again too soon would buy the same pick twice.
-    shopRestUntil = os.clock() + 3
-    if ok and type(result) == "table" and result.Success == true then
-        candy.bought += 1
-        candy.shop = "Shop: bought " .. SHOP_LABELS[wantIndex] .. "."
-    else
-        candy.shop = string.format("Shop: %s refused (%s).", SHOP_LABELS[wantIndex],
-            tostring(type(result) == "table" and result.Reason or result))
-        shopRestUntil = os.clock() + 30
-    end
-end
-
-local candyBusy = false
-local function candyTrip(job)
-    if candyBusy or busy or Ui.hatchMoving or Ui.travelling then
-        return
-    end
-    candyBusy = true
-    Ui.travelling = "halloween"
-    local settle = os.clock() + 6
-    while Ui.hatchInFlight and os.clock() < settle do
-        Life.wait(0.05)
-    end
-    local hrp = root()
-    local home = hrp and hrp.CFrame
-    local ok, err = pcall(job)
-    Env.elevate()
-    if not ok then
-        Life.errors["halloween:trip"] = tostring(err)
-        candy.note = "Error: " .. tostring(err)
-    end
-    if home then
-        local back = root()
-        if back then
-            back.AssemblyLinearVelocity = Vector3.zero
-            back.CFrame = home
-        end
-    end
-    Ui.travelling = false
-    candyBusy = false
-end
-
-local nextKnock, nextWitch, lastWitchDay = 0, 0, nil
-Life.loop("halloween:candy", 2, function()
+Life.loop("glitched:auto", 2, function()
     local data = Env.data()
     if not data then
         return
     end
-    local balance = tonumber(type(data.Currencies) == "table" and data.Currencies.CandyCorn) or 0
-    local ready = readyHouses(data)
-    local dailies = type(data.HalloweenDailies) == "table" and data.HalloweenDailies or {}
-    local today = DailyConfig and DailyConfig.Today(os.time()) or math.floor(os.time() / 86400)
-    local lines = {
-        string.format("%d CandyCorn. %d of 11 houses ready.", balance, #ready),
-        string.format("This session: %d knocks for %d CandyCorn, %d bought.", candy.knocks, candy.earned, candy.bought),
-    }
-    if candy.note ~= "" then
-        lines[#lines + 1] = candy.note
+    local lines = {}
+    if Tiers then
+        local okRead, st = Env.call(Tiers.Read, data)
+        if okRead and type(st) == "table" then
+            local okRem, rem = Env.call(Tiers.GetRemainingToNext, st.Count)
+            local okOdds, oneIn = Env.call(Tiers.GetSecretOneIn, st.Tier)
+            local okLuck, luckLbl = Env.call(Tiers.GetLuckLabel, st.Tier)
+            lines[#lines + 1] = string.format("Glitched Egg: Tier %d / %d (%d hatches)",
+                st.Tier, tonumber(Tiers.MaxTier) or 4, st.Count)
+            lines[#lines + 1] = string.format("Secret odds: %s (%s)%s",
+                okOdds and formatOneIn(oneIn) or "?",
+                okLuck and tostring(luckLbl) or "1x",
+                (okRem and tonumber(rem) and rem > 0) and string.format(" · %d to next tier", rem) or " · MAX TIER")
+            if Ui.on("AutoGlitchedTier") and st.Tier < st.PendingTier and os.clock() - lastAck >= 3 then
+                local nextTier = st.Tier + 1
+                local okCan, canAck = Env.call(Tiers.CanAck, st, nextTier)
+                if not okCan or canAck then
+                    lastAck = os.clock()
+                    local ok, res = Env.invoke("GlitchedEggService", "AckTier", nextTier)
+                    if ok and type(res) == "table" and res.Success ~= false then
+                        session.acked += 1
+                        session.note = string.format("Claimed Glitched Egg Tier %d!", nextTier)
+                        Ui.notify("Glitched Egg", session.note, 5)
+                    end
+                end
+            end
+        end
     end
-    if Ui.on("AutoCandyShop") and candy.shop ~= "" then
-        lines[#lines + 1] = candy.shop
+    if Evo then
+        local names = { Evo.Base }
+        for _, stage in ipairs(Evo.Chain or {}) do
+            names[#names + 1] = stage.To
+        end
+        local ownedParts = {}
+        for _, petName in ipairs(names) do
+            local okC, n = Env.call(Evo.CountOwned, data, petName)
+            if okC and tonumber(n) and n > 0 then
+                ownedParts[#ownedParts + 1] = string.format("%s x%d", petName:gsub("^Operating System ?", "OS "), n)
+            end
+        end
+        lines[#lines + 1] = "Owned chain: " .. (#ownedParts > 0 and table.concat(ownedParts, ", ") or "none yet")
+        if Ui.on("AutoGlitchedEvolve") and os.clock() - lastEvolve >= ((tonumber(Evo.Cooldown) or 1.5) + 1) then
+            evolvePass(false)
+        end
     end
-    candyLabel:SetText(table.concat(lines, "\n"))
-    if Ui.on("AutoCandyShop") then
-        buyFromShop(data)
+    if session.acked > 0 or session.evolved > 0 then
+        lines[#lines + 1] = string.format("This session: %d tier(s) claimed, %d evolution(s).",
+            session.acked, session.evolved)
     end
-    if candyBusy or busy or Ui.travelling or Ui.hatchMoving then
-        return
+    if session.note ~= "" then
+        lines[#lines + 1] = session.note
     end
-    if Ui.on("AutoTrickOrTreat") and #ready > 0 and os.clock() >= nextKnock then
-        nextKnock = os.clock() + 60
-        Life.spawn("halloween:knock", candyTrip, trickOrTreat)
-    elseif Ui.on("AutoCandyWitch") and dailies.Day ~= today and lastWitchDay ~= today and os.clock() >= nextWitch then
-        nextWitch = os.clock() + 300
-        lastWitchDay = today
-        Life.spawn("halloween:witch", candyTrip, candyWitch)
-    end
-end)
-
-Life.onCleanup(function()
-    Ui.tapDemand = false
-    if busy or candyBusy then
-        Ui.travelling = false
-    end
+    label:SetText(table.concat(lines, "\n"))
 end)
 
 return {}
@@ -4477,8 +4624,9 @@ local tab = Ui.Tabs.Pets
 
 -- Rules ----------------------------------------------------------------------------------------
 
--- Egg name -> { price, island, pets = { name = chance% } } from LaunchEggConfig.
+-- Egg name -> { price, island, world, limited, endsAt, pets = { name = chance% } } from LaunchEggConfig.
 local EGGS = {}
+local RETIRED_EGGS = { Test = true, ["30M Visits"] = true }
 local EggPricing, GamepassPerks, BoostFormula
 do
     local ok, cfg = Env.call(function()
@@ -4486,11 +4634,13 @@ do
     end)
     if ok and type(cfg) == "table" then
         for name, def in pairs(cfg) do
-            -- Test has no stand anywhere in the world; it is what the first version kept picking.
-            if type(def) == "table" and name ~= "Test" then
+            if type(def) == "table" and not RETIRED_EGGS[name] then
                 EGGS[name] = {
                     price = tonumber(def.Price) or 0,
                     island = def.Island,
+                    world = type(def.World) == "string" and def.World or "Main",
+                    limited = def.Limited == true,
+                    endsAt = tonumber(def.EndsAt),
                     pets = type(def.Pets) == "table" and def.Pets or {},
                 }
             end
@@ -4513,6 +4663,19 @@ end
 
 local SECRET_PITY_SECONDS, SECRET_PITY_MAX = 86400, 4 -- HatchRulesConfig
 local STAND_RANGE = 9 -- the client counts you as at an egg within 10 studs
+
+local function eggWorld(egg)
+    local info = EGGS[egg]
+    return info and info.world or "Main"
+end
+
+local function eggCoins(data, egg)
+    return Env.worldCoins(data, eggWorld(egg))
+end
+
+local function eggCoinName(egg)
+    return eggWorld(egg) == "TimeRift" and "Rift Coins" or "Coins"
+end
 
 local function unitPrice(data, egg)
     local price = EGGS[egg].price
@@ -4547,9 +4710,9 @@ local function canOcto(data)
     return has(GamepassPerks, "Has", "x8Egg") or has(BoostFormula, "HasType", "OctoHatch")
 end
 
--- The game's own pickAutoHatchCount: the biggest batch you have the pass and the coins for.
+-- The game's own pickAutoHatchCount: the biggest batch you have the pass and the world's coins for.
 local function hatchCount(data, egg)
-    local coins = tonumber(type(data.Currencies) == "table" and data.Currencies.Coins) or 0
+    local coins = eggCoins(data, egg)
     if canOcto(data) and totalPrice(data, egg, 8) <= coins then
         return 8
     end
@@ -4562,28 +4725,36 @@ local function hatchCount(data, egg)
     return nil
 end
 
--- workspace.Eggs is streamed: it only holds the eggs near you, so where each one stands is also
--- kept here (read from the map when the hub was written). An egg missing from this list dropped
--- out of auto hatch whenever you were elsewhere -- the October 24 Heaven egg, the priciest one,
--- did exactly that -- so eggs are also learned as they stream in, and saved (see learn below).
+-- Measured in place version 4103 across both World 1 and World 2 (Time Rift), and also learned
+-- live from workspace.Eggs whenever an egg moves or a new update adds one.
 local EGG_POSITIONS = {
-    Heaven = Vector3.new(-8, 15352, -2108),
-    Basic = Vector3.new(6, -511, -1833),
-    Spotted = Vector3.new(-5, -511, -1822),
-    Spiked = Vector3.new(-23, -513, -1707),
-    Sky = Vector3.new(-88, -48, -1904),
-    Nimbus = Vector3.new(-97, -48, -1891),
-    Pumpkin = Vector3.new(-143, 881, -1833),
+    -- World 1 (Main)
+    Heaven = Vector3.new(-8.4, 15351.9, -2108.0),
+    Basic = Vector3.new(-0.2, -509.2, -1841.3),
+    Spotted = Vector3.new(-13.7, -509.2, -1828.7),
+    Spiked = Vector3.new(-22.9, -511.4, -1725.3),
+    Sky = Vector3.new(-88.3, -47.5, -1904.1),
+    Nimbus = Vector3.new(-96.6, -47.8, -1891.4),
+    Pumpkin = Vector3.new(-134.9, 884.7, -1725.6),
     Forest = Vector3.new(-297, 1228, 267),
-    Mushroom = Vector3.new(-6, 2032, -1925),
-    Mycelium = Vector3.new(-21, 2032, -1932),
+    Mushroom = Vector3.new(-5.9, 2031.9, -1924.8),
+    Mycelium = Vector3.new(-21.2, 2031.8, -1932.0),
     Snowman = Vector3.new(-258, 2547, 345),
-    Cactus = Vector3.new(-203, 3632, -1863),
-    Crystal = Vector3.new(-53, 5438, -1992),
-    Geode = Vector3.new(-68, 5438, -1987),
-    Void = Vector3.new(-204, 7676, -1885),
-    Volcanic = Vector3.new(-2, 11073, -1913),
-    Draconic = Vector3.new(9, 11072, -1905),
+    Cactus = Vector3.new(-202.5, 3631.9, -1862.8),
+    Crystal = Vector3.new(-52.9, 5438.2, -1991.6),
+    Geode = Vector3.new(-67.7, 5438.2, -1986.9),
+    Void = Vector3.new(-203.6, 7675.9, -1885.1),
+    Volcanic = Vector3.new(-2.4, 11072.6, -1913.2),
+    Draconic = Vector3.new(8.9, 11072.5, -1905.3),
+    -- World 2 (TimeRift)
+    Grove = Vector3.new(194.9, 507.0, 6987.0),
+    Rift = Vector3.new(218.2, 507.1, 6987.0),
+    Jurassic = Vector3.new(926.0, 900.2, 6986.0),
+    Glacier = Vector3.new(1609.7, 1371.6, 6772.1),
+    Permafrost = Vector3.new(1628.6, 1371.5, 6775.5),
+    Medieval = Vector3.new(2515.5, 1950.1, 6854.7),
+    Royal = Vector3.new(2503.8, 1950.1, 6852.9),
+    ["Glitched Egg"] = Vector3.new(2480.7, 1938.3, 7278.9),
 }
 
 -- Spots learned from the map, kept between sessions so the next update's eggs work once seen.
@@ -4650,29 +4821,59 @@ local function eggPosition(egg)
     return EGG_POSITIONS[egg]
 end
 
--- Unlocked, on an unlocked island, and standing somewhere in the world.
+-- Unlocked, in an unlocked world, on an unlocked island, not expired, and standing in the world.
 local function hatchable(data, egg)
-    local eggs = type(data.Eggs) == "table" and data.Eggs.Unlocked
-    if type(eggs) ~= "table" or eggs[egg] ~= true or not eggPosition(egg) then
+    local info = EGGS[egg]
+    if not info then
         return false
     end
-    local island = EGGS[egg].island
+    if info.endsAt and info.endsAt > 0 and info.endsAt <= workspace:GetServerTimeNow() then
+        return false
+    end
+    if egg == "Ghost Ship Egg" and not eggModel(egg) then
+        return false
+    end
+    if not Env.worldUnlocked(info.world, data) then
+        return false
+    end
+    if not eggPosition(egg) then
+        return false
+    end
+    local eggs = type(data.Eggs) == "table" and data.Eggs.Unlocked
+    if not info.limited and (type(eggs) ~= "table" or eggs[egg] ~= true) then
+        return false
+    end
+    local island = info.island
+    if island == nil or island == "Spawn" or island == "World 2 Spawn" then
+        return true
+    end
     local islands = type(data.Progression) == "table" and data.Progression.UnlockedIslands
-    return island == nil or island == "Spawn" or (type(islands) == "table" and islands[island] == true)
+    return type(islands) == "table" and islands[island] == true
 end
 
 -- Choosing the egg -----------------------------------------------------------------------------
 
 local BEST, CHOSEN, ISLAND = "Best egg I can afford", "Chosen egg", "Egg on my island"
+local W_CURRENT, W_MAIN, W_RIFT = "Current world", "World 1", "Time Rift"
 local UPGRADE_BUFFER = 5 -- move up to a pricier egg only with this many full batches of it in the bank
 
 local current -- the egg being hatched now
 local refused = {} -- egg -> os.clock() until which it is skipped (NotEnoughCoins, IslandLocked)
 
-local function eggsByPrice(data)
+local function targetWorld(data)
+    local pick = Options.HatchWorld and Options.HatchWorld.Value or W_CURRENT
+    if pick == W_MAIN then
+        return "Main"
+    elseif pick == W_RIFT then
+        return "TimeRift"
+    end
+    return Env.worldKey(data)
+end
+
+local function eggsByPrice(data, worldFilter)
     local list = {}
     for egg in pairs(EGGS) do
-        if hatchable(data, egg) and os.clock() >= (refused[egg] or 0) then
+        if hatchable(data, egg) and (not worldFilter or eggWorld(egg) == worldFilter) and os.clock() >= (refused[egg] or 0) then
             list[#list + 1] = egg
         end
     end
@@ -4688,9 +4889,9 @@ local function chooseEgg(data)
         local egg = Options.HatchEgg.Value
         return egg and EGGS[egg] and hatchable(data, egg) and egg or nil
     end
-    local list = eggsByPrice(data)
     if mode == ISLAND then
         local island = Env.LocalPlayer:GetAttribute("CurrentIsland")
+        local list = eggsByPrice(data, Env.worldKey(data))
         for _, egg in ipairs(list) do
             if EGGS[egg].island == island and hatchCount(data, egg) then
                 return egg
@@ -4698,10 +4899,13 @@ local function chooseEgg(data)
         end
         return nil
     end
-    -- Best affordable, with a buffer before moving up so a coin balance hovering at one egg's price
-    -- does not fly you back and forth (and split secret pity) every few hatches.
-    local coins = tonumber(type(data.Currencies) == "table" and data.Currencies.Coins) or 0
-    local stay = current and EGGS[current] and hatchable(data, current) and hatchCount(data, current) ~= nil
+    -- Best affordable inside the chosen world (default: your current world, so World 1 Coins and
+    -- World 2 Rift Coins never fight each other). Uses a buffer before moving up to avoid bouncing.
+    local world = targetWorld(data)
+    local list = eggsByPrice(data, world)
+    local coins = Env.worldCoins(data, world)
+    local stay = current and EGGS[current] and eggWorld(current) == world and hatchable(data, current)
+        and hatchCount(data, current) ~= nil
     for _, egg in ipairs(list) do
         if stay and egg == current then
             return current
@@ -4780,7 +4984,16 @@ local function goToEgg(egg)
     Ui.hatchMoving = true
     local arrived = false
     pcall(function()
+        local wantWorld = eggWorld(egg)
+        if Env.worldKey() ~= wantWorld then
+            Env.ensureWorld(wantWorld)
+            Life.wait(0.25)
+        end
         Env.streamAround(target, 10)
+        hrp = root()
+        if not hrp or Ui.travelling then
+            return
+        end
         hrp.AssemblyLinearVelocity = Vector3.zero
         hrp.CFrame = CFrame.new(target + Vector3.new(0, 6, 0))
         -- The model (and its Egg part) stream in once we are here.
@@ -4877,6 +5090,10 @@ local function eggChoices()
         end
     end
     table.sort(names, function(a, b)
+        local wa, wb = eggWorld(a) == "TimeRift", eggWorld(b) == "TimeRift"
+        if wa ~= wb then
+            return wa -- World 2 eggs on top, then World 1
+        end
         return EGGS[a].price > EGGS[b].price
     end)
     return names
@@ -4886,7 +5103,7 @@ local box = tab:AddGroupbox({ Side = "Left", Name = "Auto hatch", IconName = "eg
 box:AddToggle("AutoHatch", {
     Text = "Auto hatch",
     Default = false,
-    Tooltip = "Walks you to the egg and hatches as fast as the server allows: the next hatch goes the instant the last one lands.",
+    Tooltip = "Walks you to the egg (hopping between World 1 and Time Rift when needed) and hatches as fast as the server allows.",
 })
 Ui.automation("AutoHatch")
 box:AddDropdown("HatchMode", {
@@ -4895,13 +5112,19 @@ box:AddDropdown("HatchMode", {
     Default = BEST,
     Tooltip = "Best egg I can afford moves up as your coins grow and drops down instead of stopping when they run low.",
 })
+box:AddDropdown("HatchWorld", {
+    Text = "World",
+    Values = { W_CURRENT, W_MAIN, W_RIFT },
+    Default = W_CURRENT,
+    Tooltip = "Used for Best egg I can afford. Current world hatches from whichever world you are in right now.",
+})
 local initialEggs = eggChoices()
 box:AddDropdown("HatchEgg", {
     Text = "Chosen egg",
     Values = initialEggs,
     Default = initialEggs[1],
     Searchable = true,
-    Tooltip = "Used when Egg is set to Chosen egg. Priciest first.",
+    Tooltip = "Used when Egg is set to Chosen egg. Time Rift eggs first, then World 1, priciest first.",
 })
 box:AddToggle("HatchTeleport", {
     Text = "Teleport to the egg",
@@ -4981,10 +5204,10 @@ Life.spawn("hatch:auto", function()
         end
         local count = hatchCount(data, egg)
         if not count then
-            pause("Not enough coins for the " .. egg .. " egg.", 0.5)
+            pause(string.format("Not enough %s for the %s egg.", eggCoinName(egg), egg), 0.5)
             continue
         end
-        if Ui.on("HatchTeleport") and not nearEgg(egg) then
+        if Ui.on("HatchTeleport") and (not nearEgg(egg) or Env.worldKey(data) ~= eggWorld(egg)) then
             Ui.status = "Walking to the " .. egg .. " egg"
             if not goToEgg(egg) then
                 pause("Could not reach the " .. egg .. " egg.", 2)
@@ -5045,7 +5268,8 @@ Life.loop("hatch:panel", 0.5, function()
     local lines = {}
     if current and EGGS[current] then
         local count = hatchCount(data, current) or 0
-        lines[#lines + 1] = string.format("Egg: %s (%s each), %d per hatch", current, shortNumber(unitPrice(data, current)), count)
+        lines[#lines + 1] = string.format("Egg: %s (%s %s each), %d per hatch",
+            current, shortNumber(unitPrice(data, current)), eggCoinName(current), count)
         local drought = type(data.Eggs) == "table" and type(data.Eggs.SecretDroughtSeconds) == "table"
             and tonumber(data.Eggs.SecretDroughtSeconds[current]) or 0
         local fill = math.clamp(drought / SECRET_PITY_SECONDS, 0, 1)
@@ -5068,7 +5292,7 @@ Life.onCleanup(stop)
 return {}
 end
 __modules["features/home"] = function(use) -- src/games/tapsim/features/home.luau
--- Home tab: the shared welcome box plus your live currencies and progress.
+-- Home tab: the shared welcome box plus your live currencies and progress across both worlds.
 
 local Env = use("core/env")
 local Life = use("shared/life")
@@ -5079,8 +5303,21 @@ local _, statusLabel = Home.build()
 local statsBox = Ui.Tabs.Home:AddGroupbox({ Side = "Right", Name = "You", IconName = "user" })
 local stats = statsBox:AddLabel("Loading...", true)
 
-local function comma(n)
-    local text = string.format("%d", math.floor(tonumber(n) or 0))
+local UNITS = {
+    { 1e33, "Dc" }, { 1e30, "No" }, { 1e27, "Oc" }, { 1e24, "Sp" }, { 1e21, "Sx" },
+    { 1e18, "Qi" }, { 1e15, "Q" }, { 1e12, "T" }, { 1e9, "B" }, { 1e6, "M" }, { 1e3, "K" },
+}
+
+local function formatNum(n)
+    local v = tonumber(n) or 0
+    if v >= 1e9 then
+        for _, unit in ipairs(UNITS) do
+            if v >= unit[1] then
+                return string.format("%.2f%s", v / unit[1], unit[2])
+            end
+        end
+    end
+    local text = string.format("%d", math.floor(v))
     local out = text:reverse():gsub("(%d%d%d)", "%1,"):reverse()
     return (out:gsub("^,", ""))
 end
@@ -5093,14 +5330,29 @@ Life.loop("home:stats", 1, function()
         return
     end
     local prog = type(data.Progression) == "table" and data.Progression or {}
-    local rebirths = type(data.Statistics) == "table" and data.Statistics.Rebirths
-    stats:SetText(string.format(
-        "Coins: %s\nGems: %s   Tokens: %s\nWorld: %s   Island: %s\nZone: %s%s",
-        comma(Env.currency("Coins")),
-        comma(Env.currency("Gems")), comma(Env.currency("Tokens")),
-        tostring(prog.World or "?"), tostring(prog.Island or "?"),
-        tostring(prog.Zone or "?"),
-        rebirths and ("\nRebirths: " .. comma(rebirths)) or ""))
+    local world = Env.world(data)
+    local lines = {
+        string.format("World: %s   Island: %s   Zone: %s",
+            tostring(world.Name or prog.World or "?"),
+            tostring(prog.Island or "?"),
+            tostring(prog.Zone or "?")),
+        string.format("W1 Coins: %s   Gems: %s   Rebirths: %s",
+            formatNum(Env.currency("Coins")),
+            formatNum(Env.currency("Gems")),
+            formatNum(Env.worldRebirths(data, "Main"))),
+    }
+    if Env.worldUnlocked("TimeRift", data) then
+        lines[#lines + 1] = string.format("W2 Rift Coins: %s   Rift Gems: %s   Rift Rebirths: %s",
+            formatNum(Env.currency("RiftCoins")),
+            formatNum(Env.currency("RiftGems")),
+            formatNum(Env.worldRebirths(data, "TimeRift")))
+    end
+    local tokens = Env.currency("Tokens")
+    local paidTokens = Env.currency("PaidTokens")
+    if tokens > 0 or paidTokens > 0 then
+        lines[#lines + 1] = string.format("Tokens: %s   Paid Tokens: %s", formatNum(tokens), formatNum(paidTokens))
+    end
+    stats:SetText(table.concat(lines, "\n"))
 end)
 
 return {}
@@ -7243,7 +7495,8 @@ Life.spawn("pickups:balloon-events", function()
             addReward(reward)
         end
     end)
-    -- A party already running when the hub loads.
+    -- Register for Balloon Party broadcasts (added in v4103) and pick up any party already running.
+    pcall(Env.invoke, "BalloonPartyService", "Listen")
     local ok, active = Env.invoke("BalloonPartyService", "GetActive")
     for _, flight in ipairs(ok and type(active) == "table" and active or {}) do
         trackBalloon(flight)
@@ -7831,18 +8084,28 @@ Life.loop("rewards:quests", 2, function()
     if not quests then
         return
     end
-    local pending = 0
+    local ready = {}
     for id, quest in pairs(quests) do
         if type(quest) == "table" and quest.Completed and not quest.Claimed then
-            pending += 1
-            local ok, res = Env.invoke("QuestService", "ClaimQuest", { Quest = id })
-            if ok and (res == nil or type(res) ~= "table" or res.Success ~= false) then
-                claimedQuests += 1
-            end
-            Life.wait(0.3)
+            ready[#ready + 1] = id
         end
     end
-    questLabel:SetText(pending > 0
+    if #ready > 1 then
+        local okAll, resAll = Env.invoke("QuestService", "ClaimAllQuests", { Quests = ready })
+        if okAll and type(resAll) == "table" and resAll.Success ~= false then
+            claimedQuests += #ready
+            questLabel:SetText(string.format("Claimed %d quests this session.", claimedQuests))
+            return
+        end
+    end
+    for _, id in ipairs(ready) do
+        local ok, res = Env.invoke("QuestService", "ClaimQuest", { Quest = id })
+        if ok and (res == nil or type(res) ~= "table" or res.Success ~= false) then
+            claimedQuests += 1
+        end
+        Life.wait(0.3)
+    end
+    questLabel:SetText(#ready > 0
         and string.format("Claimed %d quests this session.", claimedQuests)
         or string.format("No quests ready. %d claimed this session.", claimedQuests))
 end)
@@ -8019,37 +8282,162 @@ end)
 
 -- Tap chests ---------------------------------------------------------------------------------
 
+local TapChestConfig
+do
+    local ok, mod = Env.call(function()
+        return require(Env.ReplicatedStorage.Shared.Game.TapChestConfig)
+    end)
+    TapChestConfig = ok and type(mod) == "table" and mod or nil
+end
+
+local CHEST_POSITIONS = {
+    SkyIsland = Vector3.new(-15.4, -57.3, -1871.5),
+    Desert = Vector3.new(-63.4, 3644.6, -2109.4),
+    PrehistoricIsland = Vector3.new(1089.5, 898.5, 6922.5),
+}
+
+local function chestPosition(id)
+    local attr = TapChestConfig and TapChestConfig.Attributes and TapChestConfig.Attributes.Id or "TapChestId"
+    for _, inst in ipairs(Env.CollectionService:GetTagged(TapChestConfig and TapChestConfig.Tag or "TapChest")) do
+        if inst:GetAttribute(attr) == id and inst:IsDescendantOf(workspace) then
+            local ok, pos = pcall(function()
+                return inst:IsA("Model") and inst:GetPivot().Position or inst.Position
+            end)
+            if ok then
+                CHEST_POSITIONS[id] = pos
+                return pos
+            end
+        end
+    end
+    return CHEST_POSITIONS[id]
+end
+
+local function chestUnlocked(data, def)
+    if not Env.worldUnlocked(def.World or "Main", data) then
+        return false
+    end
+    local islands = type(data.Progression) == "table" and data.Progression.UnlockedIslands
+    return def.Island == nil or (type(islands) == "table" and islands[def.Island] == true)
+end
+
 local chestBox = tab:AddGroupbox({ Side = "Right", Name = "Tap chests", IconName = "box" })
 chestBox:AddToggle("AutoClaimChests", {
     Text = "Auto claim tap chests",
     Default = true,
-    Tooltip = "Claims any tap chest the server shows as ready for you.",
+    Tooltip = "Claims ready Tap Chests across World 1 (Sky Island, Desert) and Time Rift (Prehistoric Island), visiting the chest when the server checks distance.",
 })
 Ui.automation("AutoClaimChests", true)
 local chestLabel = chestBox:AddLabel("Idle.", true)
 
 local claimedChests = 0
-Life.loop("rewards:chests", 3, function()
+local chestRefused = {} -- id -> os.clock() backoff
+local chestBusy = false
+
+local function visitAndClaimChest(id, def)
+    if chestBusy or Ui.hatchMoving or Ui.travelling then
+        return false
+    end
+    local spot = chestPosition(id)
+    if not spot then
+        return false
+    end
+    chestBusy = true
+    Ui.travelling = "tapchest"
+    local settle = os.clock() + 6
+    while Ui.hatchInFlight and os.clock() < settle do
+        Life.wait(0.05)
+    end
+    local char = Env.LocalPlayer.Character
+    local hrp = char and char:FindFirstChild("HumanoidRootPart")
+    local home = hrp and hrp.CFrame
+    local origWorld = Env.worldKey()
+    local claimed = false
+    pcall(function()
+        local wantWorld = def.World or "Main"
+        if Env.worldKey() ~= wantWorld then
+            Env.ensureWorld(wantWorld)
+            Life.wait(0.25)
+        end
+        hrp = Env.LocalPlayer.Character and Env.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+        if hrp then
+            hrp.AssemblyLinearVelocity = Vector3.zero
+            hrp.CFrame = CFrame.new(spot + Vector3.new(0, 4, 6))
+            Life.wait(0.5)
+            local ok, res = Env.invoke("TapChestService", "Claim", id)
+            if ok and type(res) == "table" and res.Success == true then
+                claimed = true
+                claimedChests += 1
+            else
+                chestRefused[id] = os.clock() + 60
+            end
+        end
+    end)
+    Env.elevate()
+    if Env.worldKey() ~= origWorld then
+        Env.ensureWorld(origWorld)
+        Life.wait(0.2)
+    end
+    if home then
+        local back = Env.LocalPlayer.Character and Env.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+        if back then
+            back.AssemblyLinearVelocity = Vector3.zero
+            back.CFrame = home
+        end
+    end
+    Ui.travelling = false
+    chestBusy = false
+    return claimed
+end
+
+Life.loop("rewards:chests", 4, function()
     if not Ui.on("AutoClaimChests") then
+        chestLabel:SetText("Off.")
         return
     end
     local data = Env.data()
-    local chests = data and type(data.TapChests) == "table" and data.TapChests
-    if not chests then
+    if not data then
         return
     end
-    local any = false
-    for id in pairs(chests) do
-        any = true
-        local ok = Env.invoke("TapChestService", "Claim", id)
-        if ok then
-            claimedChests += 1
+    local now = workspace:GetServerTimeNow()
+    local defs = TapChestConfig and TapChestConfig.Chests or {
+        SkyIsland = { Id = "SkyIsland", Island = "Sky Island", World = "Main" },
+        Desert = { Id = "Desert", Island = "Desert", World = "Main" },
+        PrehistoricIsland = { Id = "PrehistoricIsland", Island = "Prehistoric Island", World = "TimeRift" },
+    }
+    local soonest, readyCount = nil, 0
+    for id, def in pairs(defs) do
+        if chestUnlocked(data, def) then
+            local readyAt = TapChestConfig and TapChestConfig.GetReadyAt(data, id)
+                or (type(data.TapChests) == "table" and tonumber(data.TapChests[id])) or 0
+            local left = readyAt - now
+            if left <= 0 then
+                readyCount += 1
+                if os.clock() >= (chestRefused[id] or 0) then
+                    local ok, res = Env.invoke("TapChestService", "Claim", id)
+                    local why = ok and type(res) == "table" and tostring(res.Reason or res.Error or "") or ""
+                    local whyLower = why:lower()
+                    if ok and type(res) == "table" and res.Success == true then
+                        claimedChests += 1
+                    elseif whyLower:find("closer") or whyLower:find("far") or whyLower:find("near") then
+                        Life.spawn("rewards:chest-trip", visitAndClaimChest, id, def)
+                    else
+                        chestRefused[id] = os.clock() + 60
+                    end
+                    Life.wait(0.3)
+                end
+            else
+                soonest = math.min(soonest or math.huge, left)
+            end
         end
-        Life.wait(0.3)
     end
-    chestLabel:SetText(any
-        and string.format("Tried; %d chests claimed this session.", claimedChests)
-        or "No tap chests ready.")
+    if readyCount > 0 then
+        chestLabel:SetText(string.format("%d chest(s) ready. %d claimed this session.", readyCount, claimedChests))
+    elseif soonest then
+        chestLabel:SetText(string.format("Next chest in %dh%02dm. %d claimed this session.",
+            soonest // 3600, (soonest % 3600) // 60, claimedChests))
+    else
+        chestLabel:SetText(string.format("No tap chests ready. %d claimed this session.", claimedChests))
+    end
 end)
 
 -- Event spin wheel ---------------------------------------------------------------------------
@@ -8096,6 +8484,12 @@ Life.loop("rewards:spin", 1, function()
         Life.wait(0.3)
     end
     spinLabel:SetText(any and string.format("%d spins attempted this session.", spins) or "No event wheel active.")
+end)
+
+Life.onCleanup(function()
+    if chestBusy then
+        Ui.travelling = false
+    end
 end)
 
 return {
@@ -8259,51 +8653,72 @@ end)
 return {}
 end
 __modules["features/skilltree"] = function(use) -- src/games/tapsim/features/skilltree.luau
--- Skills tab: buys the whole skill tree for you. Nodes cost gems and gate each other
--- (SubtreeLocked), so this walks every node in the game's config, unlocks the ones you can afford
--- now, and keeps trying -- a node that is SubtreeLocked today opens once its parent is bought.
+-- Skills tab: buys the whole skill tree for you across all branches (Origin, Clicking, Eggs, Pets,
+-- Fishing and TimeRift). Nodes cost Gems or Rift Gems and gate each other (SubtreeLocked), so this
+-- walks every node in the chosen branches, unlocks the ones you can afford now, and keeps trying.
 --
--- SkillTreeService.Unlock { Name } answers { Success, Reason, Price, Missing }. The strong nodes
--- for a tapper are Click Power, Critical, Auto Clicker and Pet Power; auto-unlock just takes them
--- in config order as gems allow.
+-- SkillTreeService.Unlock { Name } answers { Success, Reason, Price, Missing }.
 
 local Env = use("core/env")
 local Life = use("shared/life")
 local Ui = use("core/ui")
 
+local Options = Ui.Options
 local tab = Ui.Tabs.Tapping
 local box = tab:AddGroupbox({ Side = "Left", Name = "Skill tree", IconName = "git-branch" })
 
--- Every node name in the game's skill tree config (all branches).
-local NODES = {}
+-- Every node in the game's skill tree config, grouped with its branch name.
+local NODES = {} -- { name = string, branch = string }
+local BRANCHES = {}
 do
     local ok, cfg = Env.call(function()
         return require(Env.ReplicatedStorage.Shared.Progression.SkillTreeConfig)
     end)
     if ok and type(cfg) == "table" then
-        local seen = {}
-        local function walk(node)
+        local seen, branchSeen = {}, {}
+        local function walk(node, branch)
             for _, value in pairs(node) do
                 if type(value) == "table" then
                     local name = value.Name
                     if type(name) == "string" and not seen[name] then
                         seen[name] = true
-                        NODES[#NODES + 1] = name
+                        NODES[#NODES + 1] = { name = name, branch = branch }
                     end
-                    walk(value)
+                    walk(value, branch)
                 end
             end
         end
-        walk(cfg)
+        local topKeys = {}
+        for key, value in pairs(cfg) do
+            if type(key) == "string" and type(value) == "table" then
+                topKeys[#topKeys + 1] = key
+            end
+        end
+        table.sort(topKeys)
+        for _, branch in ipairs(topKeys) do
+            local before = #NODES
+            walk(cfg[branch], branch)
+            if #NODES > before and not branchSeen[branch] then
+                branchSeen[branch] = true
+                BRANCHES[#BRANCHES + 1] = branch
+            end
+        end
     end
 end
 
 box:AddToggle("AutoSkillTree", {
     Text = "Auto unlock skill tree",
     Default = false,
-    Tooltip = "Buys every skill node you can afford. Nodes cost gems; locked subtrees open as their parent nodes are bought.",
+    Tooltip = "Buys every skill node you can afford in the chosen branches (including Fishing and Time Rift). Locked subtrees open as their parent nodes are bought.",
 })
 Ui.automation("AutoSkillTree", true)
+box:AddDropdown("SkillBranches", {
+    Text = "Branches",
+    Values = #BRANCHES > 0 and BRANCHES or { "Origin", "Clicking", "Eggs", "Pets", "Fishing", "TimeRift" },
+    Multi = true,
+    Default = #BRANCHES > 0 and BRANCHES or { "Origin", "Clicking", "Eggs", "Pets", "Fishing", "TimeRift" },
+    Tooltip = "Pick which skill tree branches to spend gems on.",
+})
 box:AddButton({
     Text = "Unlock all affordable now",
     Func = function()
@@ -8311,7 +8726,7 @@ box:AddButton({
         Ui.notify("Tap Simulator", "Unlocking everything you can afford...", 4)
     end,
 })
-local label = box:AddLabel(string.format("%d skill nodes in the tree.", #NODES), true)
+local label = box:AddLabel(string.format("%d skill nodes across %d branches.", #NODES, #BRANCHES), true)
 
 local PACE = 0.3
 local unlockedCount = 0
@@ -8327,22 +8742,24 @@ Life.spawn("skills:auto", function()
             Life.wait(0.4)
             continue
         end
+        local picks = Options.SkillBranches and Options.SkillBranches.Value or {}
         local data = Env.data()
         local progressed, blocked, remaining = false, {}, 0
-        for _, node in ipairs(NODES) do
+        for _, entry in ipairs(NODES) do
             if not (Life.alive and Ui.on("AutoSkillTree")) then
                 break
             end
-            if not isUnlocked(data, node) then
+            if picks[entry.branch] and not isUnlocked(data, entry.name) then
                 remaining += 1
-                local ok, res = Env.invoke("SkillTreeService", "Unlock", { Name = node })
+                local ok, res = Env.invoke("SkillTreeService", "Unlock", { Name = entry.name })
                 if ok and type(res) == "table" then
                     if res.Success then
                         progressed = true
                         unlockedCount += 1
                         Ui.status = "Unlocking skills"
-                        label:SetText(string.format("Unlocked %s (%d this session).", node, unlockedCount))
-                        data = Env.data() -- refresh so a freed subtree is seen this pass
+                        label:SetText(string.format("Unlocked %s [%s] (%d this session).",
+                            entry.name, entry.branch, unlockedCount))
+                        data = Env.data()
                     else
                         local reason = res.Reason or "unavailable"
                         blocked[reason] = (blocked[reason] or 0) + 1
@@ -8352,10 +8769,9 @@ Life.spawn("skills:auto", function()
             end
         end
         if remaining == 0 then
-            label:SetText(string.format("Whole skill tree unlocked (%d this session).", unlockedCount))
+            label:SetText(string.format("Selected branches unlocked (%d this session).", unlockedCount))
             Life.wait(5)
         elseif not progressed then
-            -- Nothing affordable right now: show why and wait for gems to build up.
             local notes = {}
             for reason, count in pairs(blocked) do
                 notes[#notes + 1] = string.format("%s x%d", reason, count)
@@ -8371,12 +8787,12 @@ end)
 return {}
 end
 __modules["features/stars"] = function(use) -- src/games/tapsim/features/stars.luau
--- Rewards tab: the 15 Shiny Stars hidden on the islands (Shared.Game.ShinyStarConfig). Finding all
--- of them doubles the Shiny mutation chance on every hatch, 2% -> 4%, for good.
+-- Rewards tab: the 24 Shiny Stars hidden across World 1 (15) and World 2 / Time Rift (9)
+-- (Shared.Game.ShinyStarConfig). Finding every star in a world doubles that world's Shiny mutation
+-- chance on hatches (2% -> 4%) permanently.
 --
--- The stars only exist on the client once streamed in (within ~200 studs), so where they stand is
--- kept here, measured in the game. ShinyStarService.Collect(id) picks one up when you are within
--- ServerReach (22 studs) of it; Data.ShinyStars.Found says which you have.
+-- ShinyStarService.Collect(id) picks one up within ServerReach (22 studs); Data.ShinyStars.Found
+-- says which you have, and ShinyStarConfig.IsUnlocked(data, world) reports each world's unlock.
 
 local Env = use("core/env")
 local Life = use("shared/life")
@@ -8393,32 +8809,52 @@ do
     Config = ok and type(module) == "table" and module or nil
 end
 
+-- Measured live in place version 4103 (World 1: 15 stars, Time Rift: 9 stars).
 local POSITIONS = {
-    Spawn1 = Vector3.new(53.6, -512.3, -2015.7),
-    Spawn2 = Vector3.new(-4.4, -512.3, -1699.5),
-    Spawn3 = Vector3.new(-98.3, -386.5, -1534.2),
-    SkyIsland1 = Vector3.new(-79.7, -47.9, -1930.4),
+    -- World 1 (Main)
+    Spawn1 = Vector3.new(17.7, -512.8, -2040.7),
+    Spawn2 = Vector3.new(-4.4, -515.1, -1702.9),
+    Spawn3 = Vector3.new(-83.2, -403.0, -1480.0),
+    SkyIsland1 = Vector3.new(-79.7, -48.1, -1930.4),
     SkyIsland2 = Vector3.new(-61.9, -52.6, -1791.1),
     Autumn1 = Vector3.new(-125.5, 906.1, -1978.3),
-    Autumn2 = Vector3.new(23.6, 884.0, -1947.9),
-    Mushroom1 = Vector3.new(78.9, 2035.8, -1996.0),
+    Autumn2 = Vector3.new(23.6, 883.8, -1947.9),
+    Mushroom1 = Vector3.new(78.9, 2035.5, -1996.0),
     Mushroom2 = Vector3.new(-124.1, 2033.5, -2067.9),
-    Desert1 = Vector3.new(13.2, 3644.1, -2165.9),
-    Desert2 = Vector3.new(59.1, 3637.2, -1979.1),
+    Desert1 = Vector3.new(13.2, 3644.3, -2165.9),
+    Desert2 = Vector3.new(59.1, 3637.4, -1979.1),
     CrystalCave1 = Vector3.new(-235.0, 5445.9, -2050.9),
-    CrystalCave2 = Vector3.new(19.7, 5447.8, -2033.5),
-    ShadowRelm1 = Vector3.new(13.2, 7693.0, -2106.3),
-    ShadowRelm2 = Vector3.new(197.8, 7699.1, -1858.6),
+    CrystalCave2 = Vector3.new(19.7, 5447.5, -2033.5),
+    ShadowRelm1 = Vector3.new(13.2, 7693.2, -2106.3),
+    ShadowRelm2 = Vector3.new(197.8, 7699.6, -1858.6),
+    -- World 2 (TimeRift)
+    RiftSpawn1 = Vector3.new(82.7, 499.7, 6963.5),
+    RiftSpawn2 = Vector3.new(-59.9, 502.2, 7169.2),
+    RiftSpawn3 = Vector3.new(206.1, 501.8, 7057.5),
+    PrehistoricIsland1 = Vector3.new(1037.6, 891.3, 7150.1),
+    PrehistoricIsland2 = Vector3.new(1098.2, 898.6, 6932.5),
+    IceAge1 = Vector3.new(1583.0, 1368.1, 6791.1),
+    IceAge2 = Vector3.new(1543.2, 1356.4, 6966.5),
+    MedievalIsland1 = Vector3.new(2522.0, 1933.5, 6824.0),
+    MedievalIsland2 = Vector3.new(2786.0, 2039.5, 6890.0),
 }
 
-local function starList()
+local function starList(worldFilter)
     local list = {}
-    for _, star in ipairs(Config and Config.Stars or {}) do
-        list[#list + 1] = star
+    if Config and type(Config.Stars) == "table" then
+        for _, star in ipairs(Config.Stars) do
+            if not worldFilter or (star.World or "Main") == worldFilter then
+                list[#list + 1] = star
+            end
+        end
     end
     if #list == 0 then
         for id in pairs(POSITIONS) do
-            list[#list + 1] = { Id = id }
+            local world = (id:find("^Rift") or id:find("^Prehistoric") or id:find("^IceAge") or id:find("^Medieval"))
+                and "TimeRift" or "Main"
+            if not worldFilter or world == worldFilter then
+                list[#list + 1] = { Id = id, World = world }
+            end
         end
         table.sort(list, function(a, b)
             return a.Id < b.Id
@@ -8428,25 +8864,72 @@ local function starList()
 end
 
 local function found(data, id)
+    if Config and type(Config.IsFound) == "function" then
+        local ok, value = Env.call(Config.IsFound, data, id)
+        if ok then
+            return value == true
+        end
+    end
     local stars = data and type(data.ShinyStars) == "table" and data.ShinyStars
     return type(stars) == "table" and type(stars.Found) == "table" and stars.Found[id] == true
 end
 
-local function unlocked(data)
+local function worldUnlockedBonus(data, world)
+    if Config and type(Config.IsUnlocked) == "function" then
+        local ok, value = Env.call(Config.IsUnlocked, data, world)
+        if ok then
+            return value == true
+        end
+    end
     local stars = data and type(data.ShinyStars) == "table" and data.ShinyStars
-    return type(stars) == "table" and stars.Unlocked == true
+    if type(stars) ~= "table" then
+        return false
+    end
+    if world == "Main" then
+        return stars.Unlocked == true
+    end
+    return type(stars.Worlds) == "table" and stars.Worlds[world] == true
 end
 
--- Where the star stands: the streamed-in star itself if it is here, else the measured spot.
+local function starReachable(data, star)
+    local world = star.World or "Main"
+    if not Env.worldUnlocked(world, data) then
+        return false
+    end
+    local island = star.Island
+    if island == nil or island == "Spawn" or island == "World 2 Spawn" then
+        return true
+    end
+    local islands = type(data.Progression) == "table" and data.Progression.UnlockedIslands
+    return type(islands) == "table" and islands[island] == true
+end
+
+-- Where the star stands: live tagged/folder star if present, else the measured spot.
 local function positionOf(id)
-    local folder = workspace:FindFirstChild(Config and Config.Folder or "ShinyStars")
-    for _, part in ipairs(folder and folder:GetDescendants() or {}) do
-        if part:GetAttribute("ShinyStarId") == id then
+    local attr = Config and Config.IdAttribute or "ShinyStarId"
+    for _, inst in ipairs(Env.CollectionService:GetTagged(Config and Config.Tag or "ShinyStar")) do
+        if inst:GetAttribute(attr) == id and inst:IsDescendantOf(workspace) then
             local ok, position = pcall(function()
-                return part:IsA("Model") and part:GetPivot().Position or part.Position
+                return inst:IsA("Model") and inst:GetPivot().Position or inst.Position
             end)
             if ok then
                 return position
+            end
+        end
+    end
+    for _, path in pairs(Config and Config.Folders or { Main = { "ShinyStars" }, TimeRift = { "World2", "ShinyStars" } }) do
+        local folder = workspace
+        for _, partName in ipairs(path) do
+            folder = folder and folder:FindFirstChild(partName)
+        end
+        for _, part in ipairs(folder and folder:GetDescendants() or {}) do
+            if part:GetAttribute(attr) == id then
+                local ok, position = pcall(function()
+                    return part:IsA("Model") and part:GetPivot().Position or part.Position
+                end)
+                if ok then
+                    return position
+                end
             end
         end
     end
@@ -8462,7 +8945,7 @@ local function root()
 end
 
 local busy = false
-local function collectAll()
+local function collectAll(worldFilter)
     if busy or Ui.hatchMoving or Ui.travelling then
         Ui.notify("Tap Simulator", Ui.travelling == "mining" and "Auto mine is using your character; turn it off first."
             or "Busy with another trip; try again in a moment.", 5)
@@ -8476,50 +8959,59 @@ local function collectAll()
     end
     local hrp = root()
     local home = hrp and hrp.CFrame
-    local picked, failed = 0, {}
+    local origWorld = Env.worldKey()
+    local picked, skippedLocked, failed = 0, 0, {}
     local ok, err = pcall(function()
-        for _, star in ipairs(starList()) do
+        local stars = starList(worldFilter)
+        for _, star in ipairs(stars) do
             if not Life.alive then
                 break
             end
-            if not found(Env.data(), star.Id) then
-                local spot = positionOf(star.Id)
-                local here = root()
-                if spot and here then
-                    Env.streamAround(spot, 6)
-                    -- Some stars float in mid-air: you are held on the spot (every frame) until the
-                    -- star is yours, or a fall carries you out of the server's reach first.
-                    local target = CFrame.new(spot + Vector3.new(0, 3, 0))
-                    local hold = RunService.Heartbeat:Connect(function()
-                        local current = root()
-                        if current then
-                            current.AssemblyLinearVelocity = Vector3.zero
-                            current.CFrame = target
-                        end
-                    end)
-                    local okHold = pcall(function()
-                        Life.wait(0.5) -- the server has to see you there before it hands the star over
-                        -- Standing on it, the game's own pickup may get there first; either is fine.
-                        local deadline = os.clock() + 1.5
-                        while Life.alive and not found(Env.data(), star.Id) and os.clock() < deadline do
-                            Life.wait(0.2)
-                        end
-                        for _ = 1, 2 do
-                            if found(Env.data(), star.Id) then
-                                break
+            local data = Env.data()
+            if data and not found(data, star.Id) then
+                if not starReachable(data, star) then
+                    skippedLocked += 1
+                else
+                    local starWorld = star.World or "Main"
+                    if Env.worldKey() ~= starWorld then
+                        Env.ensureWorld(starWorld)
+                        Life.wait(0.25)
+                    end
+                    local spot = positionOf(star.Id)
+                    local here = root()
+                    if spot and here then
+                        Env.streamAround(spot, 6)
+                        local target = CFrame.new(spot + Vector3.new(0, 3, 0))
+                        local hold = RunService.Heartbeat:Connect(function()
+                            local current = root()
+                            if current then
+                                current.AssemblyLinearVelocity = Vector3.zero
+                                current.CFrame = target
                             end
-                            Env.invoke("ShinyStarService", "Collect", star.Id)
-                            Life.wait(0.6)
+                        end)
+                        local okHold = pcall(function()
+                            Life.wait(0.5)
+                            local deadline = os.clock() + 1.5
+                            while Life.alive and not found(Env.data(), star.Id) and os.clock() < deadline do
+                                Life.wait(0.2)
+                            end
+                            for _ = 1, 2 do
+                                if found(Env.data(), star.Id) then
+                                    break
+                                end
+                                Env.invoke("ShinyStarService", "Collect", star.Id)
+                                Life.wait(0.6)
+                            end
+                        end)
+                        hold:Disconnect()
+                        Env.elevate()
+                        if not okHold then
+                            failed[#failed + 1] = star.Id
+                        elseif found(Env.data(), star.Id) then
+                            picked += 1
+                        else
+                            failed[#failed + 1] = star.Id
                         end
-                    end)
-                    hold:Disconnect()
-                    Env.elevate()
-                    if not okHold then
-                        failed[#failed + 1] = star.Id
-                    elseif found(Env.data(), star.Id) then
-                        picked += 1
-                    else
-                        failed[#failed + 1] = star.Id
                     end
                 end
             end
@@ -8528,6 +9020,10 @@ local function collectAll()
     Env.elevate()
     if not ok then
         Life.errors["stars:collect"] = tostring(err)
+    end
+    if Env.worldKey() ~= origWorld then
+        Env.ensureWorld(origWorld)
+        Life.wait(0.2)
     end
     if home then
         local back = root()
@@ -8538,18 +9034,22 @@ local function collectAll()
     end
     Ui.travelling = false
     busy = false
-    local data = Env.data()
-    Ui.notify("Tap Simulator", (#failed == 0 and string.format("Collected %d Shiny Stars.", picked)
-        or string.format("Collected %d; could not get %s.", picked, table.concat(failed, ", ")))
-        .. (unlocked(data) and " Shiny mutation chance is now 4%." or ""), 8)
+    local msg = string.format("Collected %d Shiny Star%s.", picked, picked == 1 and "" or "s")
+    if skippedLocked > 0 then
+        msg ..= string.format(" Skipped %d on locked islands.", skippedLocked)
+    end
+    if #failed > 0 then
+        msg ..= string.format(" Could not get: %s.", table.concat(failed, ", "))
+    end
+    Ui.notify("Tap Simulator", msg, 8)
 end
 
 box:AddButton({
-    Text = "Collect Shiny Stars",
+    Text = "Collect all unlocked Shiny Stars",
     Func = function()
         Life.spawn("stars:collect", collectAll)
     end,
-    Tooltip = "Goes to each Shiny Star you have not found, picks it up and brings you back. All 15 double the Shiny mutation chance on every hatch (2% to 4%).",
+    Tooltip = "Collects every Shiny Star you have not found yet across World 1 (15) and Time Rift (9) on unlocked islands, then brings you back.",
 })
 
 Life.loop("stars:panel", 2, function()
@@ -8557,15 +9057,25 @@ Life.loop("stars:panel", 2, function()
     if not data then
         return
     end
-    local count, total = 0, 0
-    for _, star in ipairs(starList()) do
-        total += 1
-        if found(data, star.Id) then
-            count += 1
+    local function countFor(world)
+        local c, t = 0, 0
+        for _, star in ipairs(starList(world)) do
+            t += 1
+            if found(data, star.Id) then
+                c += 1
+            end
         end
+        return c, t, worldUnlockedBonus(data, world)
     end
-    label:SetText(unlocked(data) and string.format("All %d found: Shiny mutation chance is 4%%.", total)
-        or string.format("%d / %d found. All of them double the Shiny mutation chance (2%% to 4%%).", count, total))
+    local c1, t1, u1 = countFor("Main")
+    local lines = {
+        string.format("World 1: %d / %d%s", c1, t1, u1 and " (4% Shiny unlocked)" or ""),
+    }
+    if Env.worldUnlocked("TimeRift", data) then
+        local c2, t2, u2 = countFor("TimeRift")
+        lines[#lines + 1] = string.format("Time Rift: %d / %d%s", c2, t2, u2 and " (4% Shiny unlocked)" or "")
+    end
+    label:SetText(table.concat(lines, "\n"))
 end)
 
 Life.onCleanup(function()
@@ -8575,8 +9085,8 @@ Life.onCleanup(function()
 end)
 
 return {
-    collect = function()
-        Life.spawn("stars:collect", collectAll)
+    collect = function(worldFilter)
+        Life.spawn("stars:collect", collectAll, worldFilter)
     end,
 }
 end
@@ -8730,16 +9240,21 @@ local SkillTreeFormula = shared("Progression", "SkillTreeFormula")
 local REBIRTH_GAP = 1.5
 
 local function worldOf(data)
-    return data and type(data.Progression) == "table" and data.Progression.World or "Main"
+    return Env.worldKey(data)
+end
+
+local function coinNameOf(data)
+    local world = Env.world(data)
+    return world and world.CoinName or "Coins"
 end
 
 local function coinsOf(data)
-    return tonumber(type(data.Currencies) == "table" and data.Currencies.Coins) or 0
+    return Env.worldCoins(data)
 end
 
--- How many buttons you have unlocked.
+-- How many buttons you have unlocked in the current world.
 local function buttonCount(data)
-    local upgrades = type(data.Upgrades) == "table" and data.Upgrades.RebirthButtons or 0
+    local upgrades = Env.worldButtons(data)
     if RebirthButtonConfig then
         local ok, count = Env.call(function()
             local world = worldOf(data)
@@ -8752,15 +9267,18 @@ local function buttonCount(data)
     return 1 + math.clamp(math.floor(tonumber(upgrades) or 0), 0, 13)
 end
 
--- How many buttons the game has on this world, unlocked or not.
+-- How many buttons the game has across worlds, unlocked or not.
 local function allButtons(data)
+    local highest = 14
     if RebirthButtonConfig then
-        local ok, count = Env.call(RebirthButtonConfig.GetMaximumOptions, worldOf(data))
-        if ok and type(count) == "number" then
-            return count
+        for _, key in ipairs({ "Main", "TimeRift", worldOf(data) }) do
+            local ok, count = Env.call(RebirthButtonConfig.GetMaximumOptions, key)
+            if ok and type(count) == "number" and count > highest then
+                highest = count
+            end
         end
     end
-    return 14
+    return highest
 end
 
 local function packAmount(index)
@@ -8777,8 +9295,9 @@ local function packPrice(data, index)
     if not RebirthConfig then
         return nil
     end
-    local rebirths = tonumber(type(data.Statistics) == "table" and data.Statistics.Rebirths) or 0
-    local ok, price = Env.call(RebirthConfig.GetPrice, packAmount(index), rebirths)
+    local world = worldOf(data)
+    local rebirths = Env.worldRebirths(data, world)
+    local ok, price = Env.call(RebirthConfig.GetPrice, packAmount(index), rebirths, nil, world)
     return ok and type(price) == "number" and price or nil
 end
 
@@ -8851,7 +9370,7 @@ local function choosePack(data)
         return nil, "rebirth prices are unavailable"
     end
     if price > coinsOf(data) then
-        return nil, string.format("saving for x%s (%s coins)", short(packAmount(pinned)), short(price))
+        return nil, string.format("saving for x%s (%s %s)", short(packAmount(pinned)), short(price), coinNameOf(data))
     end
     return pinned
 end
@@ -8888,8 +9407,8 @@ Life.loop("tap:rebirth", 0.25, function()
         return
     end
     local index, why = choosePack(data)
-    local upcoming = index and string.format("x%s for %s coins (button %d of %d)", short(packAmount(index)),
-        short(packPrice(data, index) or 0), index, buttonCount(data)) or why
+    local upcoming = index and string.format("x%s for %s %s (button %d of %d)", short(packAmount(index)),
+        short(packPrice(data, index) or 0), coinNameOf(data), index, buttonCount(data)) or why
     if not Ui.on("AutoRebirth") then
         rebirthLabel:SetText("Off. Next: " .. tostring(upcoming) .. ".")
         return
@@ -8898,6 +9417,438 @@ Life.loop("tap:rebirth", 0.25, function()
         rebirthNow(data)
     end
     rebirthLabel:SetText(string.format("%s this session. Next: %s.", short(rebirthed), tostring(upcoming)))
+end)
+
+return {}
+end
+__modules["features/timerift"] = function(use) -- src/games/tapsim/features/timerift.luau
+-- TimeRift tab (left): World 2 travel, auto island unlocking, and the Lucky Egg Machine.
+--
+-- World 2 ("TimeRift") runs on its own currency ladder (RiftCoins, RiftGems, RiftRebirths).
+-- Travel between worlds goes through IslandService:Travel (World 1) and TimeRiftIslandService:Travel
+-- (World 2), both taking { Source = "Menu", Island = name } with Island = "Spawn" for each spawn hub.
+-- Unlocking World 2 fires TimeRiftService.RE.UnlockRequested(); unlocking World 2 islands fires
+-- TimeRiftIslandService.RE.IslandUnlockRequested({ Action = "Purchase", Island = name }).
+--
+-- Lucky Egg Machine (Shared.Game.LuckyEggMachineConfig, LuckyEggMachineService.RF.Activate):
+-- stands on both World 2 Spawn and Heaven Island, 6-hour cooldown (Data.Machines.LuckyEgg.Last),
+-- activates the "Lucky Eggs" boost within UseDistance (40 studs).
+
+local Env = use("core/env")
+local Life = use("shared/life")
+local Ui = use("core/ui")
+
+local Options = Ui.Options
+local tab = Ui.Tabs.TimeRift
+local RS = Env.ReplicatedStorage
+
+local function load(...)
+    local path = { ... }
+    local ok, module = Env.call(function()
+        local node = RS
+        for _, part in ipairs(path) do
+            node = node:FindFirstChild(part)
+        end
+        return node and require(node)
+    end)
+    return ok and type(module) == "table" and module or nil
+end
+
+local RiftIslands = load("Shared", "Progression", "RiftIslandConfig")
+local MainIslands = load("Shared", "Progression", "IslandConfig")
+local LuckyEggConfig = load("Shared", "Game", "LuckyEggMachineConfig")
+
+local UNITS = {
+    { 1e24, "Sp" }, { 1e21, "Sx" }, { 1e18, "Qi" }, { 1e15, "Q" },
+    { 1e12, "T" }, { 1e9, "B" }, { 1e6, "M" }, { 1e3, "K" },
+}
+local function short(n)
+    local v = tonumber(n) or 0
+    for _, u in ipairs(UNITS) do
+        if v >= u[1] then
+            return string.format("%.2f%s", v / u[1], u[2])
+        end
+    end
+    return tostring(math.floor(v))
+end
+
+local function formatClock(seconds)
+    local s = math.max(0, math.ceil(seconds))
+    local h = s // 3600
+    local m = (s % 3600) // 60
+    if h > 0 then
+        return string.format("%dh%02dm", h, m)
+    end
+    return string.format("%d:%02d", m, s % 60)
+end
+
+-- Ordered World 2 islands (Prehistoric Island, Ice Age, Medieval Island).
+local RIFT_ORDER = {}
+if RiftIslands and type(RiftIslands.Islands) == "table" then
+    for name, def in pairs(RiftIslands.Islands) do
+        if type(def) == "table" then
+            RIFT_ORDER[#RIFT_ORDER + 1] = {
+                name = name,
+                order = tonumber(def.Order) or 99,
+                price = tonumber(def.Price) or 0,
+            }
+        end
+    end
+    table.sort(RIFT_ORDER, function(a, b)
+        return a.order < b.order
+    end)
+end
+
+-- Travel destinations dropdown (Time Rift first, then World 1).
+local DEST_LABELS, DEST_MAP = {}, {}
+local function addDest(label, worldKey, island)
+    DEST_LABELS[#DEST_LABELS + 1] = label
+    DEST_MAP[label] = { world = worldKey, island = island }
+end
+addDest("Time Rift: Spawn", "TimeRift", "Spawn")
+for _, item in ipairs(RIFT_ORDER) do
+    addDest("Time Rift: " .. item.name, "TimeRift", item.name)
+end
+addDest("World 1: Spawn", "Main", "Spawn")
+if MainIslands and type(MainIslands.Islands) == "table" then
+    local mainList = {}
+    for name, def in pairs(MainIslands.Islands) do
+        if type(def) == "table" then
+            mainList[#mainList + 1] = { name = name, order = tonumber(def.Order) or tonumber(def.Height) or 0 }
+        end
+    end
+    table.sort(mainList, function(a, b)
+        if a.order ~= b.order then
+            return a.order < b.order
+        end
+        return a.name < b.name
+    end)
+    for _, item in ipairs(mainList) do
+        addDest("World 1: " .. item.name, "Main", item.name)
+    end
+end
+
+-- World 2 & travel box -------------------------------------------------------------------------
+
+local travelBox = tab:AddGroupbox({ Side = "Left", Name = "World 2 & travel", IconName = "compass" })
+
+travelBox:AddButton({
+    Text = "Go to Time Rift (World 2)",
+    Func = function()
+        Life.spawn("timerift:go-w2", function()
+            local ok, res = Env.travel("TimeRift", "Spawn")
+            Ui.notify("Time Rift", ok and "Arrived in Time Rift (World 2)."
+                or ("Could not travel: " .. tostring(type(res) == "table" and res.Reason or res)), 4)
+        end)
+    end,
+})
+
+travelBox:AddButton({
+    Text = "Go to World 1 (Spawn)",
+    Func = function()
+        Life.spawn("timerift:go-w1", function()
+            local ok, res = Env.travel("Main", "Spawn")
+            Ui.notify("Time Rift", ok and "Arrived in World 1 (Spawn)."
+                or ("Could not travel: " .. tostring(type(res) == "table" and res.Reason or res)), 4)
+        end)
+    end,
+})
+
+travelBox:AddDropdown("RiftDestination", {
+    Text = "Island",
+    Values = DEST_LABELS,
+    Default = DEST_LABELS[1],
+    Searchable = true,
+})
+
+travelBox:AddButton({
+    Text = "Travel to island",
+    Func = function()
+        local pick = DEST_MAP[Options.RiftDestination.Value or ""]
+        if not pick then
+            return
+        end
+        Life.spawn("timerift:go-island", function()
+            local ok, res = Env.travel(pick.world, pick.island)
+            Ui.notify("Time Rift", ok and ("Arrived at " .. pick.island .. ".")
+                or ("Travel refused: " .. tostring(type(res) == "table" and res.Reason or res)), 4)
+        end)
+    end,
+})
+
+travelBox:AddToggle("AutoUnlockRift", {
+    Text = "Auto unlock World 2 & islands",
+    Default = false,
+    Tooltip = "Unlocks the Time Rift portal (once Heaven is unlocked and you have 20 Qi Coins) and purchases World 2 islands (Prehistoric, Ice Age, Medieval) as soon as you can afford them.",
+})
+Ui.automation("AutoUnlockRift", true)
+local travelLabel = travelBox:AddLabel("Checking...", true)
+
+local unlockAttempted = {} -- key -> os.clock() cooldown
+local unlockedSession = {}
+
+Life.loop("timerift:unlock", 3, function()
+    local data = Env.data()
+    if not data then
+        return
+    end
+    local unlockedW2 = Env.worldUnlocked("TimeRift", data)
+    local islands = type(data.Progression) == "table" and type(data.Progression.UnlockedIslands) == "table"
+        and data.Progression.UnlockedIslands or {}
+
+    local unlockedNames, nextLocked = {}, nil
+    for _, item in ipairs(RIFT_ORDER) do
+        if islands[item.name] == true then
+            unlockedNames[#unlockedNames + 1] = item.name
+        elseif not nextLocked then
+            nextLocked = item
+        end
+    end
+
+    local lines = {
+        string.format("World: %s   Rift Coins: %s   Rift Gems: %s",
+            Env.world(data).Name or Env.worldKey(data),
+            short(Env.currency("RiftCoins")),
+            short(Env.currency("RiftGems"))),
+    }
+    if not unlockedW2 then
+        local w2Cfg = Env.world(data, "TimeRift")
+        local req = w2Cfg and w2Cfg.Unlock
+        lines[#lines + 1] = string.format("Time Rift locked (needs %s + %s Coins).",
+            tostring(req and req.Island or "Heaven"), short(req and req.Price or 2e19))
+    else
+        lines[#lines + 1] = "Islands: " .. (#unlockedNames > 0 and table.concat(unlockedNames, ", ") or "Spawn only")
+        if nextLocked then
+            lines[#lines + 1] = string.format("Next: %s (%s Rift Coins)", nextLocked.name, short(nextLocked.price))
+        else
+            lines[#lines + 1] = "All Time Rift islands unlocked."
+        end
+    end
+    if #unlockedSession > 0 then
+        lines[#lines + 1] = "Unlocked this session: " .. table.concat(unlockedSession, ", ")
+    end
+    travelLabel:SetText(table.concat(lines, "\n"))
+
+    if not Ui.on("AutoUnlockRift") then
+        return
+    end
+
+    local now = os.clock()
+    if not unlockedW2 then
+        local w2Cfg = Env.world(data, "TimeRift")
+        local req = w2Cfg and w2Cfg.Unlock
+        local needIsland = req and req.Island or "Heaven"
+        local needPrice = tonumber(req and req.Price) or 2e19
+        if islands[needIsland] == true and Env.currency("Coins") >= needPrice and now >= (unlockAttempted.TimeRift or 0) then
+            unlockAttempted.TimeRift = now + 15
+            pcall(Env.fire, "TimeRiftService", "UnlockRequested")
+            Ui.notify("Time Rift", "Requested Time Rift portal unlock!", 5)
+        end
+        return
+    end
+
+    if nextLocked and Env.currency("RiftCoins") >= nextLocked.price and now >= (unlockAttempted[nextLocked.name] or 0) then
+        unlockAttempted[nextLocked.name] = now + 15
+        pcall(Env.fire, "TimeRiftIslandService", "IslandUnlockRequested", {
+            Action = "Purchase",
+            Island = nextLocked.name,
+        })
+        Ui.status = "Unlocking " .. nextLocked.name
+        Life.wait(1)
+        local after = Env.data()
+        local afterIslands = after and type(after.Progression) == "table" and after.Progression.UnlockedIslands
+        if type(afterIslands) == "table" and afterIslands[nextLocked.name] == true then
+            unlockedSession[#unlockedSession + 1] = nextLocked.name
+            Ui.notify("Time Rift", "Unlocked " .. nextLocked.name .. "!", 6)
+        end
+    end
+end)
+
+-- Lucky Egg Machine ----------------------------------------------------------------------------
+
+local LUCKY_SPOTS = {
+    TimeRift = Vector3.new(70.2, 514.8, 6813.4),
+    Main = Vector3.new(-232.9, 15409.0, -2177.3),
+}
+
+local luckyBox = tab:AddGroupbox({ Side = "Left", Name = "Lucky Egg Machine", IconName = "clover" })
+luckyBox:AddToggle("AutoLuckyEgg", {
+    Text = "Auto activate Lucky Eggs",
+    Default = false,
+    Tooltip = "Visits the nearest Lucky Egg Machine (World 2 Spawn or Heaven) every 6 hours to trigger the free Lucky Eggs boost, then returns.",
+})
+Ui.automation("AutoLuckyEgg", false)
+
+local function root()
+    local char = Env.LocalPlayer.Character
+    return char and char:FindFirstChild("HumanoidRootPart")
+end
+
+local function luckyReadyIn(data)
+    local cd = LuckyEggConfig and tonumber(LuckyEggConfig.CooldownSeconds) or 21600
+    local machines = type(data.Machines) == "table" and data.Machines
+    local lucky = type(machines) == "table" and type(machines.LuckyEgg) == "table" and machines.LuckyEgg
+    local last = lucky and tonumber(lucky.Last) or 0
+    return (last + cd) - workspace:GetServerTimeNow()
+end
+
+local function luckyBoostLeft(data)
+    local key = LuckyEggConfig and LuckyEggConfig.Boost or "Lucky Eggs"
+    local active = type(data.ActiveBoosts) == "table" and tonumber(data.ActiveBoosts[key])
+    return active and math.max(active, 0) or 0
+end
+
+local function nearestLuckySpot()
+    local hrp = root()
+    local origin = hrp and hrp.Position
+    local best, bestDist
+    local tag = LuckyEggConfig and LuckyEggConfig.Tag or "LuckyEggMachine"
+    for _, inst in ipairs(Env.CollectionService:GetTagged(tag)) do
+        if inst:IsDescendantOf(workspace) then
+            local ok, pos = pcall(function()
+                return inst:IsA("Model") and inst:GetPivot().Position or inst.Position
+            end)
+            if ok and pos then
+                local d = origin and (pos - origin).Magnitude or 0
+                if not best or d < bestDist then
+                    best, bestDist = pos, d
+                end
+            end
+        end
+    end
+    if best then
+        return best
+    end
+    local world = Env.worldKey()
+    return LUCKY_SPOTS[world] or LUCKY_SPOTS.Main
+end
+
+local luckyBusy = false
+local luckySession = { count = 0, note = "" }
+local luckyBackoff = 0
+
+local function activateLuckyEgg(manual)
+    if luckyBusy or Ui.hatchMoving or Ui.travelling then
+        if manual then
+            Ui.notify("Lucky Egg Machine", "Busy with another trip; try again in a moment.", 4)
+        end
+        return
+    end
+    local data = Env.data()
+    if not data then
+        return
+    end
+    local waitLeft = luckyReadyIn(data)
+    if waitLeft > 0 then
+        if manual then
+            Ui.notify("Lucky Egg Machine", "Recharging: ready in " .. formatClock(waitLeft) .. ".", 4)
+        end
+        return
+    end
+    local spot = nearestLuckySpot()
+    if not spot then
+        return
+    end
+    luckyBusy = true
+    Ui.travelling = "luckyegg"
+    local settle = os.clock() + 6
+    while Ui.hatchInFlight and os.clock() < settle do
+        Life.wait(0.05)
+    end
+    local hrp = root()
+    local home = hrp and hrp.CFrame
+    local origWorld = Env.worldKey()
+    local wantWorld = spot.Z > 3000 and "TimeRift" or "Main"
+    Ui.status = "Activating Lucky Egg Machine"
+    local ok, err = pcall(function()
+        if Env.worldKey() ~= wantWorld and Env.worldUnlocked(wantWorld) then
+            Env.ensureWorld(wantWorld)
+            Life.wait(0.25)
+        end
+        Env.streamAround(spot, 6)
+        local here = root()
+        if here then
+            here.AssemblyLinearVelocity = Vector3.zero
+            here.CFrame = CFrame.new(spot + Vector3.new(0, 4, 8))
+        end
+        Life.wait(0.55)
+        local invoked, res = Env.invoke("LuckyEggMachineService", "Activate")
+        if invoked and type(res) == "table" and res.Success == true then
+            luckySession.count += 1
+            luckySession.note = "Activated Lucky Eggs boost!"
+            Ui.notify("Lucky Egg Machine", "Lucky Eggs boost activated!", 5)
+        else
+            local why = invoked and type(res) == "table" and (res.Reason or res.Error) or res
+            luckySession.note = "Refused: " .. tostring(why)
+            luckyBackoff = os.clock() + 90
+            if manual then
+                Ui.notify("Lucky Egg Machine", "Refused: " .. tostring(why), 5)
+            end
+        end
+    end)
+    Env.elevate()
+    if not ok then
+        Life.errors["timerift:luckyegg"] = tostring(err)
+    end
+    if Env.worldKey() ~= origWorld then
+        Env.ensureWorld(origWorld)
+        Life.wait(0.2)
+    end
+    if home then
+        local back = root()
+        if back then
+            back.AssemblyLinearVelocity = Vector3.zero
+            back.CFrame = home
+        end
+    end
+    if Ui.status == "Activating Lucky Egg Machine" then
+        Ui.status = "Idle"
+    end
+    Ui.travelling = false
+    luckyBusy = false
+end
+
+luckyBox:AddButton({
+    Text = "Activate now",
+    Func = function()
+        Life.spawn("timerift:luckyegg-now", activateLuckyEgg, true)
+    end,
+})
+local luckyLabel = luckyBox:AddLabel("Checking...", true)
+
+Life.loop("timerift:luckyegg", 2, function()
+    local data = Env.data()
+    if not data then
+        return
+    end
+    local boost = luckyBoostLeft(data)
+    local readyIn = luckyReadyIn(data)
+    local lines = {}
+    if boost > 0 then
+        lines[#lines + 1] = "Active! " .. formatClock(boost) .. " left."
+    elseif readyIn <= 0 then
+        lines[#lines + 1] = "READY now!"
+    else
+        lines[#lines + 1] = "Ready in " .. formatClock(readyIn) .. "."
+    end
+    if luckySession.count > 0 then
+        lines[#lines + 1] = string.format("Activated %d time%s this session.",
+            luckySession.count, luckySession.count == 1 and "" or "s")
+    end
+    if luckySession.note ~= "" then
+        lines[#lines + 1] = luckySession.note
+    end
+    luckyLabel:SetText((Ui.on("AutoLuckyEgg") and "" or "Off. ") .. table.concat(lines, "\n"))
+
+    if Ui.on("AutoLuckyEgg") and not luckyBusy and boost <= 0 and readyIn <= 0 and os.clock() >= luckyBackoff then
+        Life.spawn("timerift:luckyegg-auto", activateLuckyEgg, false)
+    end
+end)
+
+Life.onCleanup(function()
+    if luckyBusy then
+        Ui.travelling = false
+    end
 end)
 
 return {}
@@ -9558,9 +10509,11 @@ local FEATURES = {
     "features/minigames",
     "features/mining",
     "features/fishing",
-    -- Halloween
-    "features/halloween",
-    "features/dungeon",
+    -- Time Rift (World 2) & Castle Update
+    "features/timerift",
+    "features/boss",
+    "features/expeditions",
+    "features/glitched",
 }
 
 local function load(name)
