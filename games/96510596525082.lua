@@ -1,4 +1,4 @@
--- Slopix Hub (Ball VS Ball), built 2026-11-21 10:43 UTC by build.py. Edit the files in src/, not this one.
+-- Slopix Hub (Ball VS Ball), built 2026-11-21 10:56 UTC by build.py. Edit the files in src/, not this one.
 local __modules, __cache, __loading = {}, {}, {}
 local function use(name)
     local cached = __cache[name]
@@ -2488,7 +2488,9 @@ local SERVER_NAME = {
     tradeServer = "Trading Plaza",
 }
 local STRATEGIES = { "Smart", "Best win rate", "First offered", "Selected inventory ball" }
-local FUSION_PICK_DIRECTIONS = 8
+local FUSION_PICK_DIRECTIONS = 6
+local FUSION_PICK_BUDGET = 10 -- cap Round 2+ Fusion pair simulation so we confirm well before the timer
+local FUSION_AIM_DIRECTIONS = 24 -- 200-HP Fusion sims take ~2x longer; 24 lets the solver widen across opponent aims
 
 -- Ball names for the "Never pick" list.
 local ballNames = {}
@@ -3305,49 +3307,65 @@ local function chooseFusionBySimulation(pairsList, deadline, valid)
     end
     local options = Match.lastReplay and Match.lastReplay.replayOptions or {}
     local arena = Match.arena()
-    local best, bestScore, bestWins = nil, -1, 0
-    local perCall = math.max(0.5, (deadline - os.clock()) / math.max(1, #pairsList))
-    for _, pair in ipairs(pairsList) do
-        if os.clock() >= deadline or not valid() then
+    local maxDuration = Sim.maxDuration(arena)
+    local team = Match.team()
+    local directions = Sim.directions(FUSION_PICK_DIRECTIONS)
+    local simDeadline = math.min(deadline - 2, os.clock() + FUSION_PICK_BUDGET)
+    -- Evaluate best heuristic pairs first so an early deadline cut-off still keeps the strongest candidates.
+    local ordered = table.clone(pairsList)
+    table.sort(ordered, function(a, b)
+        return fusionPairHeuristic(a.main, a.secondary, oppMain) > fusionPairHeuristic(b.main, b.secondary, oppMain)
+    end)
+    local best, bestScore, bestWins, evaluated = nil, -1, 0, 0
+    for _, pair in ipairs(ordered) do
+        if os.clock() >= simDeadline or not valid() then
             break
         end
         local mainMap = { [me.userId] = pair.main, [opponent.userId] = oppMain }
         local subMap = { [me.userId] = pair.secondary, [opponent.userId] = oppSub }
         local hybridHp, traits = Match.fusionSimInputs(players, mainMap, subMap)
-        local direction, expected, wins = Sim.bestDirection({
-            team = Match.team(),
-            roles = byTeam(players, function(player)
-                return mainMap[player.userId]
-            end),
-            place = function(dir)
-                return byTeam(players, function(player)
-                    return player.me and dir or oppDir
-                end)
-            end,
-            directions = Sim.directions(FUSION_PICK_DIRECTIONS),
-            scenarios = { { seed = seed, weight = 1 } },
-            statLevels = options.statLevels,
-            traits = traits,
-            arena = arena,
-            hybridMaxHpByTeam = hybridHp,
-            deadline = math.min(deadline, os.clock() + perCall),
-            valid = valid,
-        })
-        if not direction then
-            return best, best and string.format("%s+%s: wins with %d/%d aims (simulated)",
-                Env.ballName(best.main), Env.ballName(best.secondary), bestWins, FUSION_PICK_DIRECTIONS) or nil
+        local roles = byTeam(players, function(player)
+            return mainMap[player.userId]
+        end)
+        local wins, bestOutcome, bestSimScore, completed = 0, -1, -1, true
+        for _, dir in ipairs(directions) do
+            if os.clock() >= simDeadline or not valid() then
+                completed = false
+                break
+            end
+            local dirs = byTeam(players, function(player)
+                return player.me and dir or oppDir
+            end)
+            local winner, elapsed = Sim.run(seed, roles, dirs, options.statLevels, traits, arena, simDeadline, valid, hybridHp)
+            if not winner then
+                completed = false
+                break
+            end
+            local outcome = Sim.outcome(winner, team)
+            local s = Sim.score(winner, elapsed, team, maxDuration)
+            if outcome >= 1 then
+                wins += 1
+            end
+            if outcome > bestOutcome or (outcome == bestOutcome and s > bestSimScore) then
+                bestOutcome, bestSimScore = outcome, s
+            end
+            Sim.breathe()
         end
-        local score = (expected >= 1 and 0.6 or 0) + 0.25 * wins / FUSION_PICK_DIRECTIONS
-            + 0.15 * fusionPairHeuristic(pair.main, pair.secondary, oppMain)
-        if score > bestScore then
-            best, bestScore, bestWins = pair, score, wins
+        if completed then
+            evaluated += 1
+            local score = (bestOutcome >= 1 and 0.6 or bestOutcome >= 0.5 and 0.3 or 0)
+                + 0.25 * wins / FUSION_PICK_DIRECTIONS
+                + 0.15 * fusionPairHeuristic(pair.main, pair.secondary, oppMain)
+            if score > bestScore then
+                best, bestScore, bestWins = pair, score, wins
+            end
         end
     end
-    if not best then
+    if not best or evaluated == 0 then
         return nil
     end
-    return best, string.format("%s+%s: wins with %d/%d aims (simulated)",
-        Env.ballName(best.main), Env.ballName(best.secondary), bestWins, FUSION_PICK_DIRECTIONS)
+    return best, string.format("%s+%s: wins with %d/%d aims (simulated, %d pairs)",
+        Env.ballName(best.main), Env.ballName(best.secondary), bestWins, FUSION_PICK_DIRECTIONS, evaluated)
 end
 
 local function chooseFusionPair(pairsList, deadline, valid)
@@ -3669,7 +3687,8 @@ local function aim()
             return player.me and ours or scenario.others[player.userId]
         end)
     end
-    local directionCount = math.clamp(math.floor(thinkTime / 10 * AIM_DIRECTIONS / 6) * 6, 12, AIM_DIRECTIONS)
+    local maxDirections = Match.isFusion() and FUSION_AIM_DIRECTIONS or AIM_DIRECTIONS
+    local directionCount = math.clamp(math.floor(thinkTime / 10 * maxDirections / 6) * 6, 12, maxDirections)
     local deadline = math.min(os.clock() + thinkTime, aimEndClock - PICK_MARGIN)
     local arena = Match.arena()
     -- In Fusion Mode each round has fresh (main, secondary) pairs: derive hybridMaxHpByTeam and

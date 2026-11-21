@@ -8,13 +8,22 @@ local PLACES = {
     [136406881576517] = "136406881576517",
     [75556147183481] = "136406881576517", -- Minigames place (Ouwigahara dungeon)
     -- Ball VS Ball
-    [96510596525082] = "96510596525082",
+    [96510596525082] = "96510596525082", -- main / 1v1 / Ranked
+    [128214031474485] = "96510596525082", -- 2v2
+    [96217036211595] = "96510596525082", -- Fusion Mode
+    [132573350032078] = "96510596525082", -- Trading Plaza
     -- Ride A Pet
     [124216119978534] = "124216119978534",
     -- Anime Dice
     [113290951185459] = "113290951185459",
     -- Tap Simulator Reborn
     [72858262610964] = "72858262610964",
+}
+
+-- Fallback by UniverseId (game.GameId) so new mode sub-places keep loading automatically.
+local UNIVERSES = {
+    [10685282333] = "96510596525082", -- Ball VS Ball
+    [10629695169] = "72858262610964", -- Tap Simulator Reborn
 }
 
 local genv = getgenv and getgenv() or _G
@@ -32,7 +41,7 @@ local function notify(text, duration)
     pcall(StarterGui.SetCore, StarterGui, "SendNotification", { Title = "Slopix Hub", Text = text, Duration = duration or 6 })
 end
 
-local id = PLACES[game.PlaceId]
+local id = PLACES[game.PlaceId] or UNIVERSES[game.GameId]
 if not id then
     if not queued then
         notify("Unsupported game.", 6)
