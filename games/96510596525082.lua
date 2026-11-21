@@ -1,4 +1,4 @@
--- Slopix Hub (Ball VS Ball), built 2026-10-18 13:51 UTC by build.py. Edit the files in src/, not this one.
+-- Slopix Hub (Ball VS Ball), built 2026-11-21 10:43 UTC by build.py. Edit the files in src/, not this one.
 local __modules, __cache, __loading = {}, {}, {}
 local function use(name)
     local cached = __cache[name]
@@ -61,7 +61,14 @@ Env.Game, Env.loadModule = Env.modules(RS, {
     GameModeRegistry = service("GameModeRegistry"),
     CheckInService = service("CheckInService"),
     OnlineRewardConfig = service("OnlineRewardConfig"),
-    HalloweenCandyRules = service("HalloweenCandyRules"), -- which event is on, its end, the daily candy cap
+    HalloweenCandyRules = service("HalloweenCandyRules"), -- which holiday event is on, its currency, its end, its daily cap
+    FusionBattleRules = service("FusionBattleRules"), -- Fusion Mode fused maxHp and secondary skill traits
+    BanPickFlow = service("BanPickFlow"), -- Ranked / BanDuel ban-pick phase rules
+    RankedProgressionRules = service("RankedProgressionRules"), -- Ranked tiers and season view
+    WeeklyBallShopService = service("WeeklyBallShopService"), -- weekly coins ball shop (active outside holiday events)
+    WeeklyBallShopRules = service("WeeklyBallShopRules"),
+    DailyShopService = service("DailyShopService"), -- daily shop slots (coins slot only)
+    ThemeBallShopCatalog = service("ThemeBallShopCatalog"),
     StatsCore = { "Engine", "Service", "BallBattleStatsService", "Core" },
     BattleConfig = { "BattleDemo", "BattleConfig" },
     BattleSimulation = { "BattleDemo", "BattleSimulation" },
@@ -145,10 +152,11 @@ function Env.invoke(name, ...)
     return table.unpack(work.result, 1, work.result.n)
 end
 
--- What kind of server this is: "standard" (3 HP tables), "twoVTwoServer" (2v2 tables) or
--- "tradeServer", or nil until the game has said. Since the October 16 update each mode has its own
--- servers and Quick Play seats you at whatever this one has. The game's ServerTeleport package
--- keeps it as an attribute on its module; getServerType() waits for it, this does not.
+-- What kind of server this is: "standard" (1v1), "twoVTwoServer" (2v2), "fusionServer" (Fusion),
+-- "rankedServer" (Ranked), "banDuelServer" (Ban Duel), or "tradeServer", or nil until known.
+-- Each mode has its own servers and Quick Play seats you at whatever tables this server has. The
+-- game's ServerTeleport package keeps it as an attribute on its module; getServerType() waits for
+-- it, this does not.
 function Env.serverType()
     local ok, kind = pcall(function()
         for _, child in ipairs(Env.need(RS, "Packages", 10)._Index:GetChildren()) do
@@ -307,29 +315,58 @@ function Limits.coins()
     return { day = day, dayMax = dayMax, week = week, weekMax = weekMax, capped = capped == true }
 end
 
--- Halloween candy: every 3 HP or 2v2 match pays 1, won or lost, up to the event's daily cap (30),
--- and keeps paying after the coin cap. Saved per event as halloweenCandy[eventId] =
--- { balance, dayKey, dailyEarned }, where dailyEarned only counts for its own dayKey.
--- { active, eventId, balance, today, dayMax, capped, endsIn }; active is false outside the event.
+-- Holiday event currency (Halloween candy, Thanksgiving feathers, etc.): saved per event under
+-- halloweenCandy[eventId] = { balance, dayKey, dailyEarned }, where dailyEarned only counts for
+-- its own dayKey. Keeps paying past the coin cap up to the event's daily cap (30).
+-- { active, eventId, eventType, eventName, currencyName, balance, today, dayMax, capped, endsIn }.
+local EVENT_NAMES = {
+    ["万圣节"] = "Halloween",
+    ["感恩节"] = "Thanksgiving",
+}
+local CURRENCY_NAMES = {
+    ["万圣节"] = "candy",
+    ["感恩节"] = "feathers",
+}
+
 function Limits.candy()
-    local ok, event, now = Env.call(function()
+    local ok, event, now, rules = Env.call(function()
         local now = Env.loadModule("TimeService").now()
-        return Env.loadModule("HalloweenCandyRules").active(Env.loadModule("Config").event.list, now), now
+        local rules = Env.loadModule("HalloweenCandyRules")
+        return rules.active(Env.loadModule("Config").event.list, now), now, rules
     end)
     if not ok or type(event) ~= "table" or type(event.cnId) ~= "string" then
-        return { active = false, balance = 0, today = 0, capped = true }
+        return { active = false, balance = 0, today = 0, capped = true, eventName = "Event", currencyName = "candy" }
     end
-    local dayMax = type(event.feature) == "table" and tonumber(event.feature["每日糖果上限"]) or nil
+    local dayMax
+    if type(rules.dailyLimit) == "function" then
+        local okMax, limit = Env.call(rules.dailyLimit, event)
+        dayMax = okMax and tonumber(limit) or nil
+    end
+    if dayMax == nil and type(event.feature) == "table" then
+        dayMax = tonumber(event.feature["每日货币上限"] or event.feature["每日糖果上限"])
+    end
+    local currencyMeta
+    if type(rules.currency) == "function" then
+        local okCur, meta = Env.call(rules.currency, event)
+        currencyMeta = okCur and type(meta) == "table" and meta or nil
+    end
+    local currencyName = CURRENCY_NAMES[event.type]
+        or (currencyMeta and type(currencyMeta.symbol) == "string" and currencyMeta.symbol ~= "🍬" and currencyMeta.symbol)
+        or "candy"
+    local eventName = EVENT_NAMES[event.type] or (type(event.type) == "string" and event.type ~= "" and event.type) or "Event"
     local saved = Env.data("halloweenCandy")
     local mine = type(saved) == "table" and type(saved[event.cnId]) == "table" and saved[event.cnId] or {}
     local okDay, dayKey = Env.call(function()
         return Env.loadModule("TimeService").getDayKeyAt(now, 0)
     end)
     local today = okDay and mine.dayKey == dayKey and tonumber(mine.dailyEarned) or 0
-    local okLeft, left = Env.call(Env.loadModule("HalloweenCandyRules").remainingSeconds, event, now)
+    local okLeft, left = Env.call(rules.remainingSeconds, event, now)
     return {
         active = true,
         eventId = event.cnId,
+        eventType = event.type,
+        eventName = eventName,
+        currencyName = currencyName,
         balance = tonumber(mine.balance) or 0,
         today = today,
         dayMax = dayMax,
@@ -363,15 +400,19 @@ local Match = {
     slot = nil, -- our key in state.players ("Blue", "Yellow", "Blue1"...)
     left = false, -- a state showed our table, or every table, without us
     offer = nil, -- the latest ball offer: { offer = {roleIds}, selectPrice, rerollPrice, at }
+    fusionOffer = nil, -- Fusion Mode offer: { model, token, revision, main, secondary, rerollPrices, endsAt, confirmedMain, confirmedSecondary, at }
+    banState = nil, -- Ranked / BanDuel state: { model, cycleId, phase, offers, submitted, banned, selected, endsAt, at }
     selectList = nil, -- the free pick's list: { roleIds, at }
     weeklyFreeRoleIds = {}, -- server-provided weekly choices for this match; never infer owned items
     upgradeOffer = nil, -- { offer = { { kind, id } }, at }
     ballLocked = nil, -- { roleId, at }
     aimToken = nil, -- a new table each time Aiming starts
     aimStartedAt = 0, -- os.clock() when it did
+    aimEndsAt = nil, -- server timestamp (countdownEndsAt) when Aiming ends, if provided
     aimLocked = nil, -- { direction, at }
     teammateAim = nil, -- 2v2: { userId, direction, at } as the teammate drags their aim
     liveAims = {}, -- per-userId { direction, at } from any aim-preview relay seen this round
+    lastFusionRoles = {}, -- per-userId secondary fusionRoleId seen in this match
     replays = {}, -- this match's replays by round
     lastReplay = nil,
     capped = false, -- the server said today's duel coins are used up
@@ -422,12 +463,27 @@ local function hasMe(state)
     return nil
 end
 
+local BAN_PHASES = { BanReveal = true, Banning = true, BanPicking = true, BanRevealed = true }
+
+local function applyBanState(model, payload)
+    if typeof(model) ~= "Instance" or type(payload) ~= "table" or type(payload.phase) ~= "string" then
+        return
+    end
+    local copy = table.clone(payload)
+    copy.model = model
+    copy.at = os.clock()
+    Match.tableModel = model
+    Match.banState = copy
+end
+
 local function newMatch()
     table.clear(Match.replays)
     table.clear(Match.weeklyFreeRoleIds)
+    table.clear(Match.lastFusionRoles)
     Match.lastReplay = nil
-    Match.offer, Match.selectList, Match.upgradeOffer = nil, nil, nil
-    Match.ballLocked, Match.aimLocked = nil, nil
+    Match.offer, Match.fusionOffer, Match.banState = nil, nil, nil
+    Match.selectList, Match.upgradeOffer = nil, nil
+    Match.ballLocked, Match.aimLocked, Match.aimEndsAt = nil, nil, nil
     Match.aimToken, Match.teammateAim = nil, nil
     table.clear(Match.liveAims)
 end
@@ -444,11 +500,30 @@ local function applyState(state)
     if state.state == "Aiming" and (Match.phase() ~= "Aiming" or Match.aimToken == nil) then
         Match.aimToken, Match.aimLocked, Match.teammateAim = {}, nil, nil
         Match.aimStartedAt = os.clock()
+        Match.aimEndsAt = type(state.countdownEndsAt) == "number" and state.countdownEndsAt or nil
         table.clear(Match.liveAims)
+    elseif state.state == "Aiming" and type(state.countdownEndsAt) == "number" then
+        Match.aimEndsAt = state.countdownEndsAt
+    elseif state.state ~= "Aiming" then
+        Match.aimEndsAt = nil
+    end
+    if state.state ~= "Picking" and Match.phase() == "Picking" then
+        Match.fusionOffer = nil
     end
     Match.tableId = state.tableId
     if typeof(state.table) == "Instance" then
         Match.tableModel = state.table
+    end
+    for _, player in pairs(type(state.players) == "table" and state.players or {}) do
+        if type(player) == "table" and type(player.userId) == "number"
+            and type(player.fusionRoleId) == "string" and player.fusionRoleId ~= "" then
+            Match.lastFusionRoles[player.userId] = player.fusionRoleId
+        end
+    end
+    if type(state.banPick) == "table" and Match.tableModel then
+        applyBanState(Match.tableModel, state.banPick)
+    elseif not BAN_PHASES[state.state] and Match.banState and Match.banState.phase ~= "BanRevealed" then
+        Match.banState = nil
     end
     Match.state, Match.slot, Match.left = state, slot, false
     return true
@@ -513,6 +588,36 @@ listen("DuelTableBallOffer", function(model, payload)
     Match.tableModel = model
     Match.offer, Match.selectList, Match.ballLocked = stamp(payload), nil, nil
     updateWeeklyFree(payload)
+end)
+listen("DuelTableFusionChoiceState", function(model, payload)
+    if typeof(model) ~= "Instance" or type(payload) ~= "table" then return end
+    local now = workspace:GetServerTimeNow()
+    if type(payload.endsAt) == "number" and payload.endsAt <= now then return end
+    local current = Match.fusionOffer
+    local same = current ~= nil and current.model == model and current.token == payload.token
+    if same and type(payload.revision) == "number" and type(current.revision) == "number"
+        and payload.revision < current.revision then
+        return
+    end
+    local copy = table.clone(payload)
+    copy.model = model
+    copy.at = same and current.at or os.clock()
+    if same then
+        copy.rerollTried = current.rerollTried
+        copy.lastRequestId = current.lastRequestId
+        if current.rerollPending and (copy.revision ~= current.revision
+            or (copy.requestId ~= nil and copy.requestId == current.lastRequestId)
+            or copy.confirmedMain ~= nil or copy.denied ~= nil) then
+            copy.rerollPending = false
+        else
+            copy.rerollPending = current.rerollPending
+        end
+    end
+    Match.tableModel = model
+    Match.fusionOffer = copy
+end)
+listen("DuelTableBanState", function(model, payload)
+    applyBanState(model, payload)
 end)
 -- Keep the offer's identity and original deadline. A reroll is a revision of that offer,
 -- not another picking window. Failed replies also release the response wait.
@@ -661,16 +766,79 @@ function Match.canRerollUpgrade(allowDiamonds)
     return Match.seated() and Match.phase() == "Upgrading" and canReroll(Match.upgradeOffer, allowDiamonds)
 end
 
+function Match.canRerollFusion(group, allowDiamonds)
+    local offer = Match.fusionOffer
+    if not (Match.seated() and Match.phase() == "Picking" and type(offer) == "table"
+        and offer.confirmedMain == nil and not offer.rerollPending) then
+        return false
+    end
+    if type(offer.rerollTried) == "table" and offer.rerollTried[group] then
+        return false
+    end
+    if type(offer.endsAt) == "number" and offer.endsAt <= workspace:GetServerTimeNow() then
+        return false
+    end
+    local price = type(offer.rerollPrices) == "table" and offer.rerollPrices[group]
+    if type(price) ~= "number" or price < 0 then
+        return false
+    end
+    if price == 0 then
+        return true
+    end
+    return allowDiamonds == true and (tonumber(Env.data("diamonds")) or 0) >= price
+end
+
+function Match.canPlayWithBot()
+    if not (Match.seated() and Match.phase() == "Waiting") then
+        return false
+    end
+    local ok, available = pcall(function()
+        local remote = Env.event("DuelTablePlayWithBot")
+        return type(remote.GetAttribute) == "function" and remote:GetAttribute("Available") == true
+    end)
+    Env.elevate()
+    return ok and available == true
+end
+
 -- True while we sit at a table whose match is not over.
 function Match.seated()
     return Match.state ~= nil and not Match.left and Match.phase() ~= "Finished"
+end
+
+function Match.gameMode()
+    return Match.state and Match.state.gameMode or nil
+end
+
+function Match.isRanked()
+    if Env.serverType() == "rankedServer" then
+        return true
+    end
+    local ok, attr = pcall(function()
+        return type(workspace.GetAttribute) == "function" and workspace:GetAttribute("RankedRoom") == true
+    end)
+    return ok and attr == true
+end
+
+function Match.isFusion()
+    if Match.gameMode() == "Fusion" or Match.fusionOffer ~= nil then
+        return true
+    end
+    local players = Match.state and Match.state.players
+    if type(players) == "table" then
+        for _, player in pairs(players) do
+            if type(player) == "table" and type(player.fusionRoleId) == "string" and player.fusionRoleId ~= "" then
+                return true
+            end
+        end
+    end
+    return false
 end
 
 function Match.teamSize()
     return Match.state and Match.state.teamSize or 1
 end
 
--- Everyone at our table: { { userId, team, index, roleId, me, teammate } }, from the latest state.
+-- Everyone at our table: { { userId, team, index, roleId, fusionRoleId, me, teammate } }, from the latest state.
 -- roleId is only there once balls are locked (Aiming on). `index` is the seat within the team
 -- (always 1 in a 1v1).
 function Match.players()
@@ -680,11 +848,14 @@ function Match.players()
     for slot, player in pairs(type(players) == "table" and players or {}) do
         if type(player) == "table" then
             local team = player.team or slot
+            local fusionRoleId = type(player.fusionRoleId) == "string" and player.fusionRoleId ~= ""
+                and player.fusionRoleId or nil
             out[#out + 1] = {
                 userId = player.userId,
                 team = team,
                 index = player.teamIndex or 1,
                 roleId = player.roleId,
+                fusionRoleId = fusionRoleId,
                 me = slot == Match.slot,
                 teammate = slot ~= Match.slot and mine ~= nil and team == (mine.team or Match.slot),
             }
@@ -762,6 +933,83 @@ function Match.lastPlay(player)
     end
     return Match.forPlayer(options.selectedRoles, player.team, player.index),
         Match.forPlayer(options.initialDirections, player.team, player.index)
+end
+
+-- The secondary (fusion) ball `player` used most recently in this match, or nil.
+function Match.lastFusion(player)
+    if not player then
+        return nil
+    end
+    if type(player.fusionRoleId) == "string" and player.fusionRoleId ~= "" then
+        return player.fusionRoleId
+    end
+    local seen = Match.lastFusionRoles[player.userId]
+    if type(seen) == "string" and seen ~= "" then
+        return seen
+    end
+    local replayPlayers = Match.lastReplay and Match.lastReplay.players
+    if type(replayPlayers) == "table" then
+        for _, entry in pairs(replayPlayers) do
+            if type(entry) == "table" and entry.userId == player.userId
+                and type(entry.fusionRoleId) == "string" and entry.fusionRoleId ~= "" then
+                return entry.fusionRoleId
+            end
+        end
+    end
+    return nil
+end
+
+-- Fusion Mode simulation inputs (`hybridMaxHpByTeam`, `selectedSecondaryTraits`) computed from
+-- the game's FusionBattleRules for each team's (main, secondary) pair. Returns nil, nil when not
+-- a Fusion battle or when any team lacks a valid pair.
+function Match.fusionSimInputs(players, mainByUserId, fusionByUserId)
+    local battleCfg = rawget(Env.Game, "BattleConfig")
+    if type(battleCfg) ~= "table" or type(battleCfg.roles) ~= "table" then
+        return nil, nil
+    end
+    local rules = rawget(Env.Game, "FusionBattleRules")
+    if not rules then
+        local ok, loaded = pcall(Env.loadModule, "FusionBattleRules")
+        Env.elevate()
+        rules = ok and loaded or nil
+    end
+    local hybridMaxHp, traits = {}, {}
+    local any = false
+    for _, player in ipairs(players) do
+        local mainRole = (mainByUserId and mainByUserId[player.userId]) or player.roleId
+        local subRole = (fusionByUserId and fusionByUserId[player.userId]) or player.fusionRoleId
+        if type(mainRole) == "string" and type(subRole) == "string" then
+            local r1, r2 = battleCfg.roles[mainRole], battleCfg.roles[subRole]
+            if r1 and r2 then
+                any = true
+                local hp, teamTraits
+                if type(rules) == "table" and type(rules.getMaxHp) == "function" and type(rules.getTraits) == "function" then
+                    local okHp, vHp = Env.call(rules.getMaxHp, battleCfg, mainRole, subRole)
+                    local okTr, vTr = Env.call(rules.getTraits, battleCfg, mainRole, subRole)
+                    if okHp and type(vHp) == "number" then hp = vHp end
+                    if okTr and type(vTr) == "table" then teamTraits = vTr end
+                end
+                if hp == nil then
+                    if mainRole ~= "细胞球" and subRole ~= "细胞球" and mainRole ~= "史莱姆球" and subRole ~= "史莱姆球" then
+                        hp = (r1.maxHp or 100) + (r2.maxHp or 100)
+                    else
+                        hp = math.min(r1.maxHp or 100, r2.maxHp or 100)
+                    end
+                end
+                if teamTraits == nil then
+                    local t1 = r1.skill and r1.skill.trigger
+                    local t2 = r2.skill and r2.skill.trigger
+                    teamTraits = (t2 and t2 ~= t1 and t2 ~= "None") and { t2 } or {}
+                end
+                hybridMaxHp[player.team] = hp
+                traits[player.team] = teamTraits
+            end
+        end
+    end
+    if not any then
+        return nil, nil
+    end
+    return hybridMaxHp, traits
 end
 
 -- Whether `player` launched in the same direction in this match's last two rounds: true or false,
@@ -1117,7 +1365,7 @@ local Sim = {}
 -- both callers already fall back to the 1v1 config when they are missing, so a place that does
 -- not ship them must not hold Smart aim off for the whole session.
 local REQUIRED = { "BattleConfig", "BattleSimulation" }
-local OPTIONAL = { "ArenaOverride", "GameModeRegistry" }
+local OPTIONAL = { "ArenaOverride", "GameModeRegistry", "FusionBattleRules" }
 
 -- Reads the module cache rather than a flag this file sets, so readiness follows what is actually
 -- loaded instead of whether the loader loop below has had its turn yet.
@@ -1170,15 +1418,30 @@ end
 -- the Halloween update added clean-up calls (CandySpill, GraveHaunt) to the real step that the copy
 -- missed, so rounds with the new balls were predicted on different rules. The copy saved about 1.5%.
 
--- The battle config for an arena (nil: the 1v1 board), resolved once per board.
+-- The battle config for an arena (nil: the 1v1 board), plus optional Fusion Mode hybrid overrides
+-- (hybridMode = true, hybridMaxHpByTeam = { Blue = hp, Yellow = hp }), resolved via ArenaOverride.
 local configs = {}
-local function battleConfig(arena)
+local function battleConfig(arena, hybridMaxHpByTeam)
     local key = arena and arena.boardAssetName or "default"
     if not configs[key] then
         local ok, resolved = Env.call(Env.loadModule("ArenaOverride").resolveConfig, Env.loadModule("BattleConfig"), arena)
         configs[key] = ok and resolved or Env.loadModule("BattleConfig")
     end
-    return configs[key]
+    local base = configs[key]
+    if type(hybridMaxHpByTeam) == "table" then
+        local override = rawget(Env.Game, "ArenaOverride")
+        if type(override) == "table" and type(override.resolveReplayConfig) == "function" then
+            local ok, resolved = Env.call(override.resolveReplayConfig, Env.loadModule("BattleConfig"), {
+                arena = arena,
+                hybridMaxHpByTeam = hybridMaxHpByTeam,
+            })
+            if ok and type(resolved) == "table" then
+                return resolved
+            end
+        end
+        return setmetatable({ hybridMode = true, hybridMaxHpByTeam = hybridMaxHpByTeam }, { __index = base })
+    end
+    return base
 end
 
 -- The longest a battle can run on this board, for scoring a fast win.
@@ -1224,7 +1487,7 @@ end
 
 -- The board goes in by name: resolveConfig already keys its own cache that way, and serialising a
 -- whole arena layout per simulation would cost more than the lookup saves.
-local function cacheKey(seed, roles, directions, statLevels, traits, arena)
+local function cacheKey(seed, roles, directions, statLevels, traits, arena, hybridMaxHpByTeam)
     local out = { tostring(seed), "|", arena and tostring(arena.boardAssetName) or "default", "|" }
     keyOf(roles, out)
     out[#out + 1] = "|"
@@ -1233,6 +1496,10 @@ local function cacheKey(seed, roles, directions, statLevels, traits, arena)
     keyOf(statLevels, out)
     out[#out + 1] = "|"
     keyOf(traits, out)
+    if hybridMaxHpByTeam ~= nil then
+        out[#out + 1] = "|"
+        keyOf(hybridMaxHpByTeam, out)
+    end
     return table.concat(out)
 end
 
@@ -1243,14 +1510,14 @@ end
 
 -- Plays one battle out. Returns the winning team ("Blue", "Yellow" or "Draw") and its length in
 -- seconds, or nil and the error.
-function Sim.run(seed, roles, directions, statLevels, traits, arena, deadline, valid)
+function Sim.run(seed, roles, directions, statLevels, traits, arena, deadline, valid, hybridMaxHpByTeam)
     if not Sim.ready() then return nil, "simulation modules are still loading" end
-    local key = cacheKey(seed, roles, directions, statLevels, traits, arena)
+    local key = cacheKey(seed, roles, directions, statLevels, traits, arena, hybridMaxHpByTeam)
     local hit = cache[key]
     if hit then
         return hit[1], hit[2]
     end
-    local cfg = battleConfig(arena)
+    local cfg = battleConfig(arena, hybridMaxHpByTeam)
     local ok, winner, elapsed = Env.call(function()
         local sim = Env.loadModule("BattleSimulation").new(cfg, seed, roles, traits, statLevels, directions)
         local dt = cfg.replay.fixedDt
@@ -1355,7 +1622,7 @@ local function evaluate(spec, directions, scenarios, deadline, firstDeadline)
                 break
             end
             local winner, elapsed = Sim.run(scenario.seed, spec.roles, spec.place(direction, scenario),
-                spec.statLevels, spec.traits, spec.arena, stopAt, spec.valid)
+                spec.statLevels, spec.traits, spec.arena, stopAt, spec.valid, spec.hybridMaxHpByTeam)
             results[index] = winner and score(winner, elapsed, spec.team, maxDuration) or 0
             if not winner then
                 return totals, completed, firstWinners, rates -- errors are not predicted losses
@@ -1497,7 +1764,7 @@ local function fill(spec, row, from, to)
         end
         local scenario = spec.opponents[column]
         local winner, elapsed = Sim.run(spec.seed, spec.roles, spec.place(row.direction, scenario),
-            spec.statLevels, spec.traits, spec.arena, spec.deadline, spec.valid)
+            spec.statLevels, spec.traits, spec.arena, spec.deadline, spec.valid, spec.hybridMaxHpByTeam)
         if not winner then
             return false -- an error or a cancellation is not a predicted loss
         end
@@ -1906,9 +2173,9 @@ return Ui.create({
     footer = "Ball VS Ball",
     tabs = {
         { "Home", "house", "Welcome to Slopix Hub" },
-        { "Duel", "swords", "Auto duel, ball picks and aim" },
+        { "Duel", "swords", "Auto duel, Fusion, Ranked, ball picks and aim" },
         { "Intel", "radar", "Opponents, the aim solver and prediction accuracy" },
-        { "Rewards", "gift", "Daily quests, Halloween candy, check-in, mail, fusion and crates" },
+        { "Rewards", "gift", "Daily quests, events, check-in, mail, shops, fusion and crates" },
         { "Settings", "settings", "Menu, themes and configs" },
     },
 })
@@ -1988,10 +2255,10 @@ function Upgrades.score(candidate, roleId, secondary)
     local traits = string.lower(table.concat(active, " "))
     local target = string.lower(candidate.id .. " " .. textOf(effect) .. " " .. textOf(choice))
     local bonus = 0
-    if contains(traits, { "blade", "axe", "burst" })
+    if contains(traits, { "blade", "axe", "burst", "spear", "trident", "bread", "briefcase", "maple" })
         and contains(target, { "attackspeed", "attack speed", "bounceaccel", "bounce accel", "ballhitaccel" }) then
         bonus = 15
-    elseif contains(traits, { "poison", "acid", "snake", "venom", "virus" })
+    elseif contains(traits, { "poison", "acid", "snake", "venom", "virus", "alchemist", "thorn" })
         and contains(target, { "poisonduration", "poison duration", "poisonampl", "poison ampl", "lastingpoison", "damageamplification", "venom" }) then
         bonus = 15
     elseif contains(traits, { "electric", "electro", "voltaic" })
@@ -2113,7 +2380,7 @@ function Upgrades.bestBySimulation(candidates, context)
     local maxDuration = Sim.maxDuration(context.arena)
     local function play(statLevels, traits)
         local winner, elapsed = Sim.run(context.seed, context.roles, context.directions, statLevels, traits,
-            context.arena, context.deadline, context.valid)
+            context.arena, context.deadline, context.valid, context.hybridMaxHpByTeam)
         if not winner then
             return nil
         end
@@ -2203,12 +2470,25 @@ local TEAMMATE_SETTLE = 2
 -- leaving at least PICK_THINK_RESERVE seconds to simulate.
 local TEAMMATE_PICK_WAIT, PICK_THINK_RESERVE = 12, 8
 
-local MODES = { "1v1 (3 HP)", "2v2" }
--- Since the October 16 update each mode has its own servers (Env.serverType) and Quick Play seats
--- you at whatever tables this server has, so the mode decides the server, not the request.
-local SERVER_FOR_MODE = { ["1v1 (3 HP)"] = "standard", ["2v2"] = "twoVTwoServer" }
-local SERVER_NAME = { standard = "1v1", twoVTwoServer = "2v2", tradeServer = "trading" }
+local MODES = { "1v1 (3 HP)", "2v2", "Fusion Mode", "Ranked" }
+-- Each mode has its own servers (Env.serverType) and Quick Play seats you at whatever tables this
+-- server has, so the mode decides the server, not the request. Ranked queues via RankedRequest.
+local SERVER_FOR_MODE = {
+    ["1v1 (3 HP)"] = "standard",
+    ["2v2"] = "twoVTwoServer",
+    ["Fusion Mode"] = "fusionServer",
+    ["Ranked"] = "rankedServer",
+}
+local SERVER_NAME = {
+    standard = "1v1",
+    twoVTwoServer = "2v2",
+    fusionServer = "Fusion Mode",
+    rankedServer = "Ranked",
+    banDuelServer = "Ban Duel",
+    tradeServer = "Trading Plaza",
+}
 local STRATEGIES = { "Smart", "Best win rate", "First offered", "Selected inventory ball" }
+local FUSION_PICK_DIRECTIONS = 8
 
 -- Ball names for the "Never pick" list.
 local ballNames = {}
@@ -2237,24 +2517,44 @@ auto:AddToggle("StopAtCoinCap", {
     Tooltip = "Duels pay nothing past the daily (and weekly) coin cap. Stops after the match in progress.",
 })
 auto:AddToggle("DuelForCandy", {
-    Text = "Keep going for Halloween candy",
+    Text = "Keep going for event currency",
     Default = true,
-    Tooltip = "During the Halloween event every match still pays 1 candy past the coin cap, up to 30 a day. Stops at whichever cap comes last.",
+    Tooltip = "During holiday events (Thanksgiving feathers, Halloween candy), matches keep paying event currency past the coin cap up to the daily event cap. Stops at whichever cap comes last.",
+})
+auto:AddToggle("AutoPlayWithBot", {
+    Text = "Play with bot when available",
+    Default = false,
+    Tooltip = "In private servers (when the game enables Play with Bot while seated), immediately starts a match against a bot.",
 })
 auto:AddButton({
-    Text = "Switch server for this mode",
+    Text = "Switch server / queue mode",
     Func = function()
-        local wanted = SERVER_FOR_MODE[Options.DuelMode.Value]
+        local mode = Options.DuelMode.Value
+        local wanted = SERVER_FOR_MODE[mode]
         if not wanted then return end
+        if mode == "Ranked" then
+            if Match.isRanked() then
+                Ui.notify("Auto duel", "You are already in a Ranked server.", 5)
+                return
+            end
+            Life.spawn("duel:ranked-queue", function()
+                local ok, result = Env.invoke("RankedRequest", "start")
+                local msg = not ok and tostring(result)
+                    or type(result) == "table" and (result.error or (result.queued and "Queued for Ranked match." or result.teleporting and "Ranked match found, teleporting..." or "Ranked request sent."))
+                    or "Ranked request sent."
+                Ui.notify("Ranked", msg, 6)
+            end)
+            return
+        end
         if Env.serverType() == wanted then
             Ui.notify("Auto duel", "You are already on a " .. SERVER_NAME[wanted] .. " server.", 5)
             return
         end
         -- The same request as the game's mode button; the server teleports you.
-        Env.event("ModeTeleportRequest"):FireServer(wanted)
+        Env.event("ModeTeleportRequest"):FireServer(wanted, nil)
         Ui.notify("Auto duel", "Moving to a " .. SERVER_NAME[wanted] .. " server. Run the script again there if it does not load by itself.", 8)
     end,
-    Tooltip = "Teleports you to a server for the selected mode, as the game's own mode button does.",
+    Tooltip = "Teleports you to a server for 1v1, 2v2 or Fusion Mode, or queues you for Ranked.",
 })
 auto:AddButton({
     Text = "Leave the table",
@@ -2472,11 +2772,19 @@ local function byTeam(players, valueOf)
     return out
 end
 
--- "Ray Ball + Spider Ball" for a team's entry in a replay's selectedRoles.
-local function teamBalls(roles, team)
+-- "Ray Ball + Spider Ball" for a team's entry in a replay's selectedRoles, or "Main+Sub" in Fusion.
+local function teamBalls(roles, team, players)
     local value = type(roles) == "table" and roles[team]
     if type(value) ~= "table" then
-        return Env.ballName(value)
+        local name = Env.ballName(value)
+        if type(players) == "table" then
+            for _, player in ipairs(players) do
+                if player.team == team and player.fusionRoleId then
+                    return name .. "+" .. Env.ballName(player.fusionRoleId)
+                end
+            end
+        end
+        return name
     end
     local names = {}
     for _, role in ipairs(value) do
@@ -2499,10 +2807,11 @@ Match.onRound(function(replay, won)
     end
     local options = replay.replayOptions or {}
     local team = Match.team()
+    local players = Match.players()
     local entry = {
         round = replay.round,
         won = won,
-        balls = string.format("%s vs %s", teamBalls(options.selectedRoles, team), teamBalls(options.selectedRoles, otherTeam(team))),
+        balls = string.format("%s vs %s", teamBalls(options.selectedRoles, team, players), teamBalls(options.selectedRoles, otherTeam(team), players)),
     }
     if prediction and prediction.seed then
         -- Was the seed right, and did everyone else aim where we assumed?
@@ -2911,6 +3220,377 @@ local function pick(offer)
     return true
 end
 
+-- Fusion Mode picking (Main + Secondary ball pair) ------------------------------------------------
+
+local fusionRequestId = 0
+
+local function fusionDeadline(offer)
+    if type(offer.endsAt) == "number" then
+        return os.clock() + math.max(0, offer.endsAt - workspace:GetServerTimeNow()) - PICK_MARGIN
+    end
+    return offer.at + (offer.duration or PICK_WINDOW) - PICK_MARGIN
+end
+
+local function fusionPairHeuristic(mainRole, subRole, versus)
+    local mainRate = Stats.against(mainRole, versus) or 0.5
+    local subRate = Stats.winRate(subRole) or 0.5
+    local score = 0.55 * mainRate + 0.45 * subRate
+    local battleCfg = rawget(Env.Game, "BattleConfig")
+    if type(battleCfg) == "table" and type(battleCfg.roles) == "table" then
+        local r1, r2 = battleCfg.roles[mainRole], battleCfg.roles[subRole]
+        if r1 and r2 then
+            local t1 = r1.skill and r1.skill.trigger
+            local t2 = r2.skill and r2.skill.trigger
+            if not t2 or t2 == "None" or t2 == t1 then
+                score -= 0.20 -- secondary skill would not activate
+            end
+            local fusedHp
+            if mainRole ~= "细胞球" and subRole ~= "细胞球" and mainRole ~= "史莱姆球" and subRole ~= "史莱姆球" then
+                fusedHp = (r1.maxHp or 100) + (r2.maxHp or 100)
+            else
+                fusedHp = math.min(r1.maxHp or 100, r2.maxHp or 100)
+            end
+            if fusedHp < 100 then
+                score -= 0.08
+            else
+                score += math.clamp((fusedHp - 200) / 1000, -0.05, 0.05)
+            end
+        end
+    end
+    return score
+end
+
+local function fusionPairs(mains, secondaries)
+    local clean, partial, all = {}, {}, {}
+    for _, m in ipairs(mains) do
+        for _, s in ipairs(secondaries) do
+            if type(m) == "string" and type(s) == "string" and m ~= s then
+                local pair = { main = m, secondary = s }
+                all[#all + 1] = pair
+                if not never(m) then
+                    partial[#partial + 1] = pair
+                    if not never(s) then
+                        clean[#clean + 1] = pair
+                    end
+                end
+            end
+        end
+    end
+    if #clean > 0 then return clean end
+    if #partial > 0 then return partial end
+    return all
+end
+
+local function chooseFusionBySimulation(pairsList, deadline, valid)
+    local seed = Match.nextSeed()
+    if not seed or not Sim.ready() then
+        return nil
+    end
+    local players = Match.players()
+    local me, opponent
+    for _, player in ipairs(players) do
+        if player.me then
+            me = player
+        elseif not player.teammate then
+            opponent = player
+        end
+    end
+    if not (me and opponent) then
+        return nil
+    end
+    local oppMain, oppDir = Match.lastPlay(opponent)
+    local oppSub = Match.lastFusion(opponent)
+    if not (oppMain and oppSub and oppDir) then
+        return nil
+    end
+    local options = Match.lastReplay and Match.lastReplay.replayOptions or {}
+    local arena = Match.arena()
+    local best, bestScore, bestWins = nil, -1, 0
+    local perCall = math.max(0.5, (deadline - os.clock()) / math.max(1, #pairsList))
+    for _, pair in ipairs(pairsList) do
+        if os.clock() >= deadline or not valid() then
+            break
+        end
+        local mainMap = { [me.userId] = pair.main, [opponent.userId] = oppMain }
+        local subMap = { [me.userId] = pair.secondary, [opponent.userId] = oppSub }
+        local hybridHp, traits = Match.fusionSimInputs(players, mainMap, subMap)
+        local direction, expected, wins = Sim.bestDirection({
+            team = Match.team(),
+            roles = byTeam(players, function(player)
+                return mainMap[player.userId]
+            end),
+            place = function(dir)
+                return byTeam(players, function(player)
+                    return player.me and dir or oppDir
+                end)
+            end,
+            directions = Sim.directions(FUSION_PICK_DIRECTIONS),
+            scenarios = { { seed = seed, weight = 1 } },
+            statLevels = options.statLevels,
+            traits = traits,
+            arena = arena,
+            hybridMaxHpByTeam = hybridHp,
+            deadline = math.min(deadline, os.clock() + perCall),
+            valid = valid,
+        })
+        if not direction then
+            return best, best and string.format("%s+%s: wins with %d/%d aims (simulated)",
+                Env.ballName(best.main), Env.ballName(best.secondary), bestWins, FUSION_PICK_DIRECTIONS) or nil
+        end
+        local score = (expected >= 1 and 0.6 or 0) + 0.25 * wins / FUSION_PICK_DIRECTIONS
+            + 0.15 * fusionPairHeuristic(pair.main, pair.secondary, oppMain)
+        if score > bestScore then
+            best, bestScore, bestWins = pair, score, wins
+        end
+    end
+    if not best then
+        return nil
+    end
+    return best, string.format("%s+%s: wins with %d/%d aims (simulated)",
+        Env.ballName(best.main), Env.ballName(best.secondary), bestWins, FUSION_PICK_DIRECTIONS)
+end
+
+local function chooseFusionPair(pairsList, deadline, valid)
+    if #pairsList == 0 then
+        return nil, "no valid fusion pairs"
+    end
+    local strategy = Options.PickStrategy.Value
+    if strategy == "First offered" then
+        local first = pairsList[1]
+        return first, string.format("%s+%s: first offered", Env.ballName(first.main), Env.ballName(first.secondary))
+    end
+    if strategy == "Smart" then
+        local pair, why = chooseFusionBySimulation(pairsList, deadline, valid)
+        if pair then
+            return pair, why
+        end
+    end
+    local opponent = soleOpponent(Match.players())
+    local oppMain = opponent and (Match.lastPlay(opponent))
+    local best, bestScore = pairsList[1], -math.huge
+    for _, pair in ipairs(pairsList) do
+        local score = fusionPairHeuristic(pair.main, pair.secondary, oppMain)
+        if score > bestScore then
+            best, bestScore = pair, score
+        end
+    end
+    return best, string.format("%s+%s: best fusion score (%d%%)",
+        Env.ballName(best.main), Env.ballName(best.secondary), math.clamp(math.floor(bestScore * 100 + 0.5), 0, 100))
+end
+
+local function fusionPick(offer)
+    local model, token = Match.tableModel, offer.token
+    local function currentOffer()
+        local cur = Match.fusionOffer
+        if cur and cur.model == model and cur.token == token then
+            return cur
+        end
+        return nil
+    end
+    local function valid()
+        local cur = currentOffer()
+        return Life.alive and Ui.on("AutoDuel") and Match.seated() and Match.phase() == "Picking"
+            and Match.tableModel == model and cur ~= nil and cur.confirmedMain == nil
+    end
+    if not valid() then
+        return true
+    end
+    local deadline = fusionDeadline(offer)
+    if Ui.on("RerollBadOffers") then
+        for group, key in ipairs({ "main", "secondary" }) do
+            local cur = currentOffer()
+            if not (cur and valid()) then return true end
+            local list = type(cur[key]) == "table" and cur[key] or {}
+            if badBalls(list) and Match.canRerollFusion(group, Ui.on("UseOwnedDiamondsForRerolls"))
+                and deadline - os.clock() > REROLL_WAIT + 2
+                and mayTry("reroll:fusion:" .. group, REROLL_COOLDOWN) then
+                cur.rerollTried = cur.rerollTried or {}
+                cur.rerollTried[group] = true
+                cur.rerollPending = true
+                fusionRequestId += 1
+                cur.lastRequestId = fusionRequestId
+                local oldRev = cur.revision
+                Match.status = "Rerolling fusion " .. key .. " balls"
+                Env.elevate()
+                Env.event("DuelTableFusionChoiceAction"):FireServer(model, {
+                    action = "Reroll",
+                    group = group,
+                    token = cur.token,
+                    revision = cur.revision,
+                    id = fusionRequestId,
+                })
+                waitFor(function()
+                    local latest = currentOffer()
+                    return not valid() or not latest or not latest.rerollPending or latest.revision ~= oldRev
+                end, math.min(REROLL_WAIT, math.max(0, deadline - os.clock())))
+            end
+        end
+    end
+    local cur = currentOffer()
+    if not (cur and valid()) then
+        return true
+    end
+    if cur.rerollPending and os.clock() < deadline - 1 then
+        Match.status = "Waiting for fusion reroll"
+        return false
+    end
+    local mains = type(cur.main) == "table" and cur.main or {}
+    local secondaries = type(cur.secondary) == "table" and cur.secondary or {}
+    local pairsList = fusionPairs(mains, secondaries)
+    if #pairsList == 0 then
+        return false
+    end
+    Match.status = "Picking fusion pair"
+    local revision = cur.revision
+    local chosen, why = chooseFusionPair(pairsList, deadline - 1, valid)
+    local pickAt = math.min(cur.at + Options.PickDelay.Value, deadline)
+    waitFor(function()
+        return not valid() or os.clock() >= pickAt
+    end, math.max(0, pickAt - os.clock()))
+    cur = currentOffer()
+    if not (cur and valid()) then
+        return true
+    end
+    if not chosen or cur.revision ~= revision then
+        return false
+    end
+    fusionRequestId += 1
+    Env.elevate()
+    Env.event("DuelTableFusionChoiceAction"):FireServer(model, {
+        action = "Confirm",
+        token = cur.token,
+        revision = cur.revision,
+        id = fusionRequestId,
+        main = chosen.main,
+        secondary = chosen.secondary,
+    })
+    prediction = { text = "Fusion picked " .. why }
+    Match.status = "Fusion selected: " .. Env.ballName(chosen.main) .. "+" .. Env.ballName(chosen.secondary)
+    return true
+end
+
+-- Ranked / BanDuel Ban & Pick ---------------------------------------------------------------------
+
+local function banDeadline(state)
+    if type(state.endsAt) == "number" then
+        return os.clock() + math.max(0, state.endsAt - workspace:GetServerTimeNow()) - PICK_MARGIN
+    end
+    return state.at + (state.duration or 25) - PICK_MARGIN
+end
+
+local function banPick(state)
+    local model, cycleId, phase = state.model or Match.tableModel, state.cycleId, state.phase
+    local function valid()
+        local cur = Match.banState
+        return Life.alive and Ui.on("AutoDuel") and Match.seated()
+            and cur ~= nil and cur.cycleId == cycleId and cur.phase == phase
+            and not (cur.submitted and cur.submitted.self == true)
+    end
+    if not valid() or type(state.offers) ~= "table" then
+        return true
+    end
+    local deadline = banDeadline(state)
+    local cardIndex, label
+    if phase == "Banning" then
+        local oppOffers = type(state.offers.opponent) == "table" and state.offers.opponent or {}
+        local myOffers = type(state.offers.self) == "table" and state.offers.self or {}
+        if #oppOffers == 0 then
+            return false
+        end
+        Match.status = "Banning opponent's best ball"
+        local bestIdx, bestThreat = 1, -math.huge
+        for index, oppBall in ipairs(oppOffers) do
+            local threat = Stats.winRate(oppBall) or 0.5
+            if #myOffers > 0 then
+                local sum, count = 0, 0
+                for _, myBall in ipairs(myOffers) do
+                    local rate = Stats.against(oppBall, myBall)
+                    if rate then
+                        sum += rate
+                        count += 1
+                    end
+                end
+                if count > 0 then
+                    threat = sum / count
+                end
+            end
+            if threat > bestThreat then
+                bestIdx, bestThreat = index, threat
+            end
+        end
+        cardIndex = bestIdx
+        label = "Banned " .. Env.ballName(oppOffers[cardIndex])
+    elseif phase == "BanPicking" then
+        local myOffers = type(state.offers.self) == "table" and state.offers.self or {}
+        local oppOffers = type(state.offers.opponent) == "table" and state.offers.opponent or {}
+        local myBanned = state.banned and state.banned.self
+        local oppBanned = state.banned and state.banned.opponent
+        local available, clean = {}, {}
+        for index, ball in ipairs(myOffers) do
+            if index ~= myBanned and type(ball) == "string" then
+                available[#available + 1] = { index = index, ball = ball }
+                if not never(ball) then
+                    clean[#clean + 1] = { index = index, ball = ball }
+                end
+            end
+        end
+        local pool = #clean > 0 and clean or available
+        if #pool == 0 then
+            return false
+        end
+        local oppPool = {}
+        for index, ball in ipairs(oppOffers) do
+            if index ~= oppBanned and type(ball) == "string" then
+                oppPool[#oppPool + 1] = ball
+            end
+        end
+        Match.status = "Picking unbanned ball"
+        local chosen = pool[1]
+        if Options.PickStrategy.Value ~= "First offered" then
+            local bestScore = -math.huge
+            for _, item in ipairs(pool) do
+                local score = Stats.winRate(item.ball) or 0.5
+                if #oppPool > 0 then
+                    local sum, count = 0, 0
+                    for _, oppBall in ipairs(oppPool) do
+                        local rate = Stats.against(item.ball, oppBall)
+                        if rate then
+                            sum += rate
+                            count += 1
+                        end
+                    end
+                    if count > 0 then
+                        score = sum / count
+                    end
+                end
+                if score > bestScore then
+                    chosen, bestScore = item, score
+                end
+            end
+        end
+        cardIndex = chosen.index
+        label = "Picked " .. Env.ballName(chosen.ball)
+    else
+        return true
+    end
+    local pickAt = math.min(state.at + Options.PickDelay.Value, deadline)
+    waitFor(function()
+        return not valid() or os.clock() >= pickAt
+    end, math.max(0, pickAt - os.clock()))
+    if not valid() or not cardIndex then
+        return true
+    end
+    Env.elevate()
+    Env.event("DuelTableBanSubmit"):FireServer(model, {
+        cycleId = cycleId,
+        phase = phase,
+        cardIndex = cardIndex,
+    })
+    Match.status = label
+    prediction = { text = label }
+    return true
+end
+
 -- Aiming -----------------------------------------------------------------------------------------
 
 -- A score as a percentage. Scores carry a small bonus for quick wins (core/sim's tie-break), which
@@ -2944,8 +3624,11 @@ local function aim()
     end
     Match.status = "Aiming"
     -- 2v2: the teammate's aim is known as they drag it, so wait for it to settle first.
+    local aimEndClock = type(Match.aimEndsAt) == "number"
+        and (os.clock() + math.max(0, Match.aimEndsAt - workspace:GetServerTimeNow()))
+        or (Match.aimStartedAt + PICK_WINDOW)
     local thinkTime = math.min(Options.AimThinkTime.Value, PICK_WINDOW - PICK_MARGIN)
-    local latest = Match.aimStartedAt + PICK_WINDOW - PICK_MARGIN - thinkTime
+    local latest = aimEndClock - PICK_MARGIN - thinkTime
     local hasTeammate = false
     for _, player in ipairs(players) do
         hasTeammate = hasTeammate or player.teammate
@@ -2987,8 +3670,15 @@ local function aim()
         end)
     end
     local directionCount = math.clamp(math.floor(thinkTime / 10 * AIM_DIRECTIONS / 6) * 6, 12, AIM_DIRECTIONS)
-    local deadline = math.min(os.clock() + thinkTime, Match.aimStartedAt + PICK_WINDOW - PICK_MARGIN)
+    local deadline = math.min(os.clock() + thinkTime, aimEndClock - PICK_MARGIN)
     local arena = Match.arena()
+    -- In Fusion Mode each round has fresh (main, secondary) pairs: derive hybridMaxHpByTeam and
+    -- secondary traits directly from FusionBattleRules so Round 1 and Round 2+ match the server.
+    local hybridMaxHpByTeam, fusionTraits
+    if Match.isFusion() then
+        hybridMaxHpByTeam, fusionTraits = Match.fusionSimInputs(players)
+    end
+    local simTraits = fusionTraits or options.selectedSecondaryTraits
     -- `call` becomes the round's prediction only once the aim is actually sent, so the accuracy
     -- figures never judge a call the hub abandoned at the last moment.
     local direction, expected, detail, call
@@ -3030,8 +3720,9 @@ local function aim()
             opponents = Solver.columns(players, likely, modelled, sweep),
             place = place,
             statLevels = options.statLevels,
-            traits = options.selectedSecondaryTraits,
+            traits = simTraits,
             arena = arena,
+            hybridMaxHpByTeam = hybridMaxHpByTeam,
             lambda = lambda,
             deadline = deadline,
             valid = valid,
@@ -3042,7 +3733,7 @@ local function aim()
         direction, expected = row.direction, row.expected
         local floor = row.worst >= 1 and "a win" or row.worst >= 0.5 and "a draw" or "a loss"
         detail = string.format("floor %s | beats %d/%d aims", floor, row.wins, columns)
-        local versus = string.format("%s vs %s", teamBalls(roles, team), teamBalls(roles, otherTeam(team)))
+        local versus = string.format("%s vs %s", teamBalls(roles, team, players), teamBalls(roles, otherTeam(team), players))
         call = {
             text = string.format("%s: %s (%s, %d%% expected, %s style at lambda %.2f)", versus,
                 row.winner == team and "expect a win" or row.winner == "Draw" and "expect a draw" or "likely a loss",
@@ -3077,7 +3768,10 @@ local function aim()
             place = place,
             directions = Sim.directions(directionCount),
             scenarios = scenarios,
+            statLevels = options.statLevels,
+            traits = simTraits,
             arena = arena,
+            hybridMaxHpByTeam = hybridMaxHpByTeam,
             deadline = deadline,
             valid = valid,
         })
@@ -3085,7 +3779,7 @@ local function aim()
             return
         end
         detail = string.format("seed unreliable | %d candidates", samples)
-        local versus = string.format("%s vs %s", teamBalls(roles, team), teamBalls(roles, otherTeam(team)))
+        local versus = string.format("%s vs %s", teamBalls(roles, team, players), teamBalls(roles, otherTeam(team), players))
         call = {
             text = string.format("%s: %d%% expected over %d seed candidates (%d/%d directions win the primary)",
                 versus, percent(expected), samples, firstWins or 0, directionCount),
@@ -3117,7 +3811,10 @@ local function aim()
             place = place,
             directions = Sim.directions(directionCount),
             scenarios = scenarios,
+            statLevels = options.statLevels,
+            traits = simTraits,
             arena = arena,
+            hybridMaxHpByTeam = hybridMaxHpByTeam,
             deadline = deadline,
             valid = valid,
         })
@@ -3125,7 +3822,7 @@ local function aim()
             return
         end
         detail = string.format("round 1 | %d seeds sampled", samples)
-        local versus = string.format("%s vs %s", teamBalls(roles, team), teamBalls(roles, otherTeam(team)))
+        local versus = string.format("%s vs %s", teamBalls(roles, team, players), teamBalls(roles, otherTeam(team), players))
         call = {
             text = string.format("%s: round 1, best aim wins %d%% of %d sampled seeds (%d/%d directions win the first)",
                 versus, percent(expected), samples, firstWins or 0, directionCount),
@@ -3251,7 +3948,14 @@ end
 -- The loop ------------------------------------------------------------------------------------------
 
 local lastQueue = -math.huge
-local handledOffer, handledAim, handledUpgrade, seenOffer
+local handledOffer, handledAim, handledUpgrade, seenOffer, handledFusionToken, handledBanKey
+
+local function playerAttr(name)
+    local ok, value = pcall(function()
+        return type(Env.LocalPlayer.GetAttribute) == "function" and Env.LocalPlayer:GetAttribute(name)
+    end)
+    return ok and value or nil
+end
 
 -- Aims once per Aiming token. Past the point where a search could still finish before the game
 -- locks the current aim, the token is given up on: otherwise a solve that cannot complete was
@@ -3262,7 +3966,10 @@ local function tryAim()
         return
     end
     local token = Match.aimToken
-    if os.clock() >= Match.aimStartedAt + PICK_WINDOW - PICK_MARGIN then
+    local aimEndClock = type(Match.aimEndsAt) == "number"
+        and (os.clock() + math.max(0, Match.aimEndsAt - workspace:GetServerTimeNow()))
+        or (Match.aimStartedAt + PICK_WINDOW)
+    if os.clock() >= aimEndClock - PICK_MARGIN then
         handledAim = token
         Match.status = "Aim window closed; the game keeps the current aim"
         return
@@ -3283,26 +3990,58 @@ local function step()
         local forCandy = nil
         if Ui.on("StopAtCoinCap") and (Match.capped or Limits.coins().capped) then
             local candy = Limits.candy()
+            local currencyName = candy.currencyName or "candy"
             if not (Ui.on("DuelForCandy") and candy.active and not candy.capped) then
                 local both = Ui.on("DuelForCandy") and candy.active
-                Match.status = both and "Stopped at the coin and candy caps" or "Stopped at the coin cap"
+                Match.status = both and ("Stopped at the coin and " .. currencyName .. " caps") or "Stopped at the coin cap"
                 Ui.set("AutoDuel", false)
-                Ui.notify("Auto duel", (both and "Coin and candy caps" or "Coin cap")
+                Ui.notify("Auto duel", (both and ("Coin and " .. currencyName .. " caps") or "Coin cap")
                     .. " reached: duels pay nothing more until the reset.", 8)
                 return
             end
-            forCandy = string.format(" for candy, %d/%s today", candy.today, tostring(candy.dayMax or "?"))
+            forCandy = string.format(" for %s, %d/%s today", currencyName, candy.today, tostring(candy.dayMax or "?"))
         end
-        local wanted, server = SERVER_FOR_MODE[Options.DuelMode.Value], Env.serverType()
+        local mode = Options.DuelMode.Value
+        if mode == "Ranked" then
+            if Match.isRanked() then
+                if playerAttr("RankedPostMatchReady") == true then
+                    Match.status = "Ranked finished — queueing next match" .. (forCandy or "")
+                    if os.clock() - lastQueue > QUEUE_INTERVAL then
+                        lastQueue = os.clock()
+                        Env.invoke("RankedRequest", "start")
+                    end
+                else
+                    Match.status = "In Ranked room (waiting for table)" .. (forCandy or "")
+                end
+                return
+            end
+            if playerAttr("RankedQueueActive") == true then
+                Match.status = "Searching for Ranked match..." .. (forCandy or "")
+                return
+            end
+            Match.status = "Queueing (Ranked)" .. (forCandy or "")
+            if os.clock() - lastQueue > QUEUE_INTERVAL then
+                lastQueue = os.clock()
+                Env.invoke("RankedRequest", "start")
+            end
+            return
+        end
+        local wanted, server = SERVER_FOR_MODE[mode], Env.serverType()
         if wanted and server and server ~= wanted then
             Match.status = string.format("%s is played on %s servers and this is a %s server: press Switch server",
-                Options.DuelMode.Value, SERVER_NAME[wanted], SERVER_NAME[server] or server)
+                mode, SERVER_NAME[wanted], SERVER_NAME[server] or server)
             return
         end
         local refusal = Match.queueRefusal
-        Match.status = "Queueing (" .. Options.DuelMode.Value .. ")" .. (forCandy or "")
-            .. (refusal and refusal.reason == "noAvailableTable" and os.clock() - refusal.at < 30
-                and " - no free table on this server yet" or "")
+        local refusalText = ""
+        if refusal and os.clock() - refusal.at < 30 then
+            if refusal.reason == "noAvailableTable" then
+                refusalText = " - no free table on this server yet"
+            elseif refusal.reason == "fusionLocked" then
+                refusalText = " - Fusion Mode unlocks at Lv 6"
+            end
+        end
+        Match.status = "Queueing (" .. mode .. ")" .. (forCandy or "") .. refusalText
         if os.clock() - lastQueue > QUEUE_INTERVAL then
             lastQueue = os.clock()
             Env.event("DuelQuickPlayRequest"):FireServer()
@@ -3312,6 +4051,21 @@ local function step()
     local phase = Match.phase()
     Match.status = phase == "Aiming" and (Match.aimLocked or handledAim == Match.aimToken)
         and "Aim selected (waiting for other players)" or "In a match: " .. tostring(phase)
+    if phase == "Waiting" and Ui.on("AutoPlayWithBot") and Match.canPlayWithBot() and mayTry("playWithBot", 5) then
+        Match.status = "Starting bot match"
+        Env.elevate()
+        Env.event("DuelTablePlayWithBot"):FireServer()
+        return
+    end
+    local ban = Match.banState
+    if ban and (ban.phase == "Banning" or ban.phase == "BanPicking")
+        and not (ban.submitted and ban.submitted.self == true) then
+        local key = tostring(ban.cycleId) .. ":" .. tostring(ban.phase)
+        if handledBanKey ~= key and banPick(ban) then
+            handledBanKey = key
+        end
+        return
+    end
     if phase == "Upgrading" and Match.upgradeOffer and handledUpgrade ~= Match.upgradeOffer then
         local offer = Match.upgradeOffer
         if upgrade(offer) then
@@ -3319,7 +4073,17 @@ local function step()
         end
         return
     end
-    if phase == "Picking" and Match.offer and handledOffer ~= Match.offer and not Match.ballLocked then
+    if phase == "Picking" and Match.fusionOffer and Match.fusionOffer.confirmedMain == nil then
+        local offer = Match.fusionOffer
+        if handledFusionToken ~= offer.token then
+            if seenOffer ~= offer.token then
+                seenOffer, prediction = offer.token, nil
+            end
+            if fusionPick(offer) then
+                handledFusionToken = offer.token
+            end
+        end
+    elseif phase == "Picking" and Match.offer and handledOffer ~= Match.offer and not Match.ballLocked then
         local offer = Match.offer
         -- Cleared once per offer, not on every pass that is still waiting on a reroll or the
         -- teammate: last round's result line used to blink out of the panel four times a second.
@@ -3368,7 +4132,7 @@ end)
 Life.onCleanup(function()
     table.clear(triedAt)
     table.clear(history)
-    prediction, handledOffer, handledAim, handledUpgrade, seenOffer = nil, nil, nil, nil, nil
+    prediction, handledOffer, handledAim, handledUpgrade, seenOffer, handledFusionToken, handledBanKey = nil, nil, nil, nil, nil, nil, nil
     Match.prediction = nil
     Trajectory.clear()
 end)
@@ -3398,6 +4162,14 @@ local RESULTS = {
     INVALID = "not valid",
     INVALID_CODE = "not valid",
 }
+local SERVER_LABELS = {
+    standard = "1v1 (3 HP)",
+    twoVTwoServer = "2v2",
+    fusionServer = "Fusion Mode",
+    rankedServer = "Ranked",
+    banDuelServer = "Ban Duel",
+    tradeServer = "Trading Plaza",
+}
 
 local tab = Ui.Tabs.Home
 local _, statusLabel = Home.build()
@@ -3415,14 +4187,35 @@ Life.loop("home:stats", 1, function()
         wins += mode.wins or 0
     end
     local coins = Limits.coins()
-    stats:SetText(string.format(
-        "Level %s\nCoins: %s  |  Diamonds: %s\nMatches: %d, won %d (%d%%)\nWin streak: %s (best %s)\nDuel coins today: %d / %s",
-        ok and level and tostring(level.level) or "?",
-        tostring(Env.data("coins") or "?"),
-        tostring(Env.data("diamonds") or "?"),
-        matches, wins, matches > 0 and math.floor(wins / matches * 100 + 0.5) or 0,
-        tostring(Env.data("winStreak") or 0), tostring(Env.data("maxWinStreak") or 0),
-        coins.day, tostring(coins.dayMax or "no cap")))
+    local server = Env.serverType()
+    local lines = {
+        string.format("Level %s  |  Server: %s", ok and level and tostring(level.level) or "?",
+            SERVER_LABELS[server] or tostring(server or "?")),
+        string.format("Coins: %s  |  Diamonds: %s",
+            tostring(Env.data("coins") or "?"), tostring(Env.data("diamonds") or "?")),
+        string.format("Matches: %d, won %d (%d%%)", matches, wins,
+            matches > 0 and math.floor(wins / matches * 100 + 0.5) or 0),
+        string.format("Win streak: %s (best %s)",
+            tostring(Env.data("winStreak") or 0), tostring(Env.data("maxWinStreak") or 0)),
+        string.format("Duel coins today: %d / %s", coins.day, tostring(coins.dayMax or "no cap")),
+    }
+    local event = Limits.candy()
+    if event.active then
+        local unit = event.currencyName or "candy"
+        lines[#lines + 1] = string.format("%s %s: %d (%d / %s today)",
+            event.eventName or "Event", unit, event.balance, event.today, tostring(event.dayMax or "?"))
+    end
+    local ranked = Env.data("Ranked")
+    if type(ranked) == "table" and next(ranked) ~= nil then
+        local okRank, view = Env.call(function()
+            local cfg = Env.loadModule("Config")
+            return Env.loadModule("RankedProgressionRules").view(ranked, cfg.rankedTier and cfg.rankedTier.list)
+        end)
+        if okRank and type(view) == "table" and view.tierName then
+            lines[#lines + 1] = string.format("Ranked: %s (%s pts)", tostring(view.tierName), tostring(view.points or 0))
+        end
+    end
+    stats:SetText(table.concat(lines, "\n"))
 end)
 
 local codeList = codesBox:AddLabel("Loading codes...", true)
@@ -3865,11 +4658,45 @@ local function claimCheckIn(lines, allowed)
     lines[#lines + 1] = string.format("Check-in: %d/%d days claimed", claimedDays, #days)
 end
 
+local function mailConfigRow(id)
+    local byCnId = type(Config.mail) == "table" and Config.mail.byCnId
+    if type(byCnId) ~= "table" or type(id) ~= "string" then
+        return nil
+    end
+    local cnId = string.match(id, "^global:(.+)$")
+        or string.match(id, "^weeklyTest:%d+:[^:]+:(.+)$")
+        or string.match(id, "^weekly:%d+:(.+)$")
+        or string.match(id, "^admin:(.+):[^:]+$")
+    return cnId and byCnId[cnId] or nil
+end
+
+local function mailCanClaim(id)
+    local row = mailConfigRow(id)
+    if not row or type(row.rewardId) ~= "string" then
+        return true
+    end
+    local rewards = type(Config.reward) == "table" and Config.reward.byCnId
+    local events = type(Config.event) == "table" and Config.event.byCnId
+    local rules = rawget(Env.Game, "HalloweenCandyRules")
+    local timeSvc = rawget(Env.Game, "TimeService")
+    if type(rewards) == "table" and type(events) == "table"
+        and type(rules) == "table" and type(rules.canClaimMailRewards) == "function"
+        and type(timeSvc) == "table" and type(timeSvc.getDayKey) == "function" then
+        local ok, canClaim = Env.call(function()
+            return rules.canClaimMailRewards(rewards[row.rewardId], events, timeSvc.getDayKey(0))
+        end)
+        if ok and canClaim == false then
+            return false
+        end
+    end
+    return true
+end
+
 local function claimMail(lines, allowed)
     local mailbox = Env.data("mailbox") or {}
     local waiting = 0
     for id, mail in pairs(type(mailbox.mails) == "table" and mailbox.mails or {}) do
-        if type(mail) == "table" and (mail.claimedAt or 0) <= 0 then
+        if type(mail) == "table" and (mail.claimedAt or 0) <= 0 and mailCanClaim(id) then
             if allowed("ClaimMail") and mayTry("mail:" .. id) then
                 local ok, result = Env.invoke("MailService/Claim", id)
                 if claimed(ok, result, "mail:" .. id) then
@@ -3903,37 +4730,58 @@ Life.loop("rewards:claim", CLAIM_INTERVAL, function()
     claimPanel.set(lines, Ui.on("AutoClaim") and "Claiming automatically." or "Auto claim is off.")
 end)
 
--- Halloween -----------------------------------------------------------------------------------------
--- Candy comes from matches (see core/limits). The event shop (Config.eventShop, rows for the
--- running event) sells balls for candy or diamonds: HalloweenShop/Buy(eventId, row index, "candy").
--- Only candy is ever spent here. A candy-bought copy cannot be traded but can be fused.
+-- Event shop ----------------------------------------------------------------------------------------
+-- Holiday event currency (Thanksgiving feathers, Halloween candy, etc.) comes from matches (see
+-- core/limits). The event shop (Config.eventShop, rows for the running event) sells balls via
+-- HalloweenShop/Buy(eventId, row index, "candy") — the server maps "candy" to whichever holiday
+-- currency is active. Diamonds and Robux are never spent here.
 
 local CANDY_INTERVAL = 3
 local SHOP_REST = 30 -- after a refusal
 
-local halloween = tab:AddGroupbox({ Side = "Left", Name = "Halloween", IconName = "candy" })
+local initialEvent = Limits.candy()
+local eventBoxTitle = initialEvent.active and initialEvent.eventName and (initialEvent.eventName .. " Shop") or "Event Shop"
+local halloween = tab:AddGroupbox({ Side = "Left", Name = eventBoxTitle, IconName = "candy" })
 local candyLabel = halloween:AddLabel("Loading...", true)
 
+local function eventCurrencyWord(eventId)
+    if initialEvent.active and initialEvent.eventId == eventId and type(initialEvent.currencyName) == "string" then
+        return initialEvent.currencyName
+    end
+    local events = type(Config.event) == "table" and Config.event.byCnId
+    local event = type(events) == "table" and events[eventId]
+    if type(event) == "table" and event.type == "感恩节" then
+        return "feathers"
+    end
+    return "candy"
+end
+
 -- The shop for whichever event is configured, read once: rows carry the event id they belong to.
-local shopRows, shopLabels, shopByLabel = {}, {}, {}
+-- Show the active event's rows in the dropdown when an event is running so expired events stay out.
+local shopRows, shopLabels, activeLabels, shopByLabel = {}, {}, {}, {}
 for index, row in ipairs(type(Config.eventShop) == "table" and Config.eventShop.list or {}) do
     local ball = type(row) == "table" and Config.ball.byCnId[row.ballId]
     local price = type(row) == "table" and tonumber(row.candyPrice)
     if ball and price and price > 0 then
         local name = ball.displayName or row.ballId
-        local label = string.format("%s (%d candy)", name, price)
-        local entry = { index = index, eventId = row.eventId, ballId = row.ballId, price = price, label = label, name = name }
+        local unit = eventCurrencyWord(row.eventId)
+        local label = string.format("%s (%d %s)", name, price, unit)
+        local entry = { index = index, eventId = row.eventId, ballId = row.ballId, price = price, unit = unit, label = label, name = name }
         shopRows[#shopRows + 1] = entry
         shopLabels[#shopLabels + 1] = label
+        if initialEvent.active and row.eventId == initialEvent.eventId then
+            activeLabels[#activeLabels + 1] = label
+        end
         shopByLabel[label] = entry
     end
 end
+local dropdownLabels = #activeLabels > 0 and activeLabels or shopLabels
 halloween:AddDropdown("CandyShopPicks", {
-    Text = "Buy with candy",
-    Values = #shopLabels > 0 and shopLabels or { "No event shop" },
+    Text = "Buy with event currency",
+    Values = #dropdownLabels > 0 and dropdownLabels or { "No event shop" },
     Multi = true,
     Default = {},
-    Tooltip = "Balls to buy from the Halloween shop. Diamonds are never spent.",
+    Tooltip = "Balls to buy from the active event shop (Feathers / Candy). Diamonds and Robux are never spent.",
 })
 halloween:AddSlider("CandyShopCopies", {
     Text = "Copies of each",
@@ -3946,7 +4794,7 @@ halloween:AddSlider("CandyShopCopies", {
 halloween:AddToggle("AutoCandyShop", {
     Text = "Auto buy",
     Default = false,
-    Tooltip = "Spends candy on the ticked balls as soon as you can afford the next one.",
+    Tooltip = "Spends event currency on the ticked balls as soon as you can afford the next one.",
 })
 Ui.automation("AutoCandyShop", true)
 
@@ -3978,6 +4826,8 @@ local function candyShop(candy)
     if not Ui.on("AutoCandyShop") or os.clock() < shopRestUntil then
         return
     end
+    local unit = candy.currencyName or "candy"
+    local eventTitle = (candy.eventName or "Event") .. " shop"
     local picks, keep = Options.CandyShopPicks.Value or {}, tonumber(Options.CandyShopCopies.Value) or 1
     local chosen, chosenHeld
     for _, entry in ipairs(shopRows) do
@@ -3996,7 +4846,7 @@ local function candyShop(candy)
         return
     end
     if candy.balance < chosen.price then
-        shopNote = string.format("Shop: saving for %s, %d of %d candy.", chosen.name, candy.balance, chosen.price)
+        shopNote = string.format("Shop: saving for %s, %d of %d %s.", chosen.name, candy.balance, chosen.price, unit)
         return
     end
     if not mayTry("candyshop:" .. chosen.ballId) then
@@ -4012,7 +4862,7 @@ local function candyShop(candy)
         credited[chosen.ballId] = { count = chosenHeld + 1, untilAt = os.clock() + 30 }
         shopRestUntil = os.clock() + CANDY_INTERVAL
         shopNote = "Shop: bought " .. name .. "."
-        Ui.notify("Halloween shop", "Bought " .. name .. " for " .. chosen.price .. " candy", 5)
+        Ui.notify(eventTitle, "Bought " .. name .. " for " .. chosen.price .. " " .. unit, 5)
     else
         local reason = ok and type(result) == "table" and tostring(result.reason) or tostring(result or "no reply")
         shopRestUntil = os.clock() + SHOP_REST
@@ -4036,11 +4886,13 @@ Life.loop("rewards:halloween", CANDY_INTERVAL, function()
     end
     Env.elevate()
     if not candy.active then
-        candyLabel:SetText("No Halloween event right now.")
+        candyLabel:SetText("No holiday event right now.")
         return
     end
+    local unit = candy.currencyName or "candy"
+    local unitTitle = unit:sub(1, 1):upper() .. unit:sub(2)
     local lines = {
-        string.format("Candy: %d  |  today %d / %s%s", candy.balance, candy.today, tostring(candy.dayMax or "?"),
+        string.format("%s: %d  |  today %d / %s%s", unitTitle, candy.balance, candy.today, tostring(candy.dayMax or "?"),
             candy.capped and " (cap reached)" or ""),
     }
     if candy.endsIn then
@@ -4253,9 +5105,151 @@ Life.loop("rewards:crates", BUY_INTERVAL, function()
     end
 end)
 
+-- Coin Shops (Daily coin slot & Weekly Ball Shop — coins only, never Robux or diamonds) -------------
+
+local DAILY_COIN_SLOT = "金币格"
+local coinShops = tab:AddGroupbox({ Side = "Right", Name = "Coin Shops", IconName = "shopping-bag" })
+coinShops:AddToggle("AutoBuyDailyCoin", {
+    Text = "Auto buy daily coin item",
+    Default = false,
+    Tooltip = "Buys the daily shop's coin slot when you have its price plus the coin reserve from Crates. Never spends diamonds or Robux.",
+})
+Ui.automation("AutoBuyDailyCoin", true)
+coinShops:AddToggle("AutoBuyWeeklyBalls", {
+    Text = "Auto buy unowned weekly balls",
+    Default = false,
+    Tooltip = "When the Weekly Ball Shop is active (outside holiday events), buys weekly balls you do not own yet with coins, respecting your coin reserve.",
+})
+Ui.automation("AutoBuyWeeklyBalls", true)
+
+local function dailyCoinOffer()
+    local daily = Env.data("dailyShop")
+    if type(daily) ~= "table" or type(daily.slots) ~= "table" then
+        return nil
+    end
+    local slot = daily.slots[DAILY_COIN_SLOT]
+    if type(slot) ~= "table" then
+        return nil
+    end
+    local bought = type(daily.purchased) == "table" and daily.purchased[DAILY_COIN_SLOT] == true
+    local ok, row, offer = Env.call(function()
+        local svc = Env.loadModule("DailyShopService")
+        local r = svc.getSlotRow(DAILY_COIN_SLOT, slot)
+        local o = r and svc.getOffer(DAILY_COIN_SLOT, r.itemType, r.rating) or nil
+        return r, o
+    end)
+    if not (ok and type(row) == "table" and type(offer) == "table" and offer.currency == "金币") then
+        return nil
+    end
+    local label = row.itemType == "小球" and Env.ballName(row.targetId) or tostring(row.targetId)
+    return { targetId = row.targetId, itemType = row.itemType, name = label, price = offer.price, bought = bought, dayKey = daily.dayKey }
+end
+
+local function buyDailyCoin()
+    local offer = dailyCoinOffer()
+    if not offer then
+        return false, "daily coin offer unavailable"
+    end
+    if offer.bought then
+        return false, "already purchased today"
+    end
+    local ok, result = Env.invoke("DailyShop/Buy", DAILY_COIN_SLOT)
+    if not ok or type(result) ~= "table" then
+        return false, not ok and tostring(result) or "the game did not answer"
+    end
+    if not result.ok then
+        return false, tostring(result.reason or "refused")
+    end
+    return true, string.format("Bought %s (%d coins)", offer.name, offer.price)
+end
+
+local coinShopLabel = coinShops:AddLabel("Loading shops...", true)
+coinShops:AddButton({
+    Text = "Buy daily coin item",
+    Func = function()
+        Life.spawn("rewards:daily-coin-once", function()
+            local ok, text = buyDailyCoin()
+            if not Life.alive then return end
+            Env.elevate()
+            Ui.notify("Daily shop", text, 5)
+            coinShopLabel:SetText(text)
+        end)
+    end,
+})
+
+Life.loop("rewards:coinshops", 5, function()
+    local lines = {}
+    local coins = tonumber(Env.data("coins")) or 0
+    local reserve = Options.CrateReserve and tonumber(Options.CrateReserve.Value) or 0
+
+    -- 1. Daily shop coin slot
+    local daily = dailyCoinOffer()
+    if daily then
+        lines[#lines + 1] = daily.bought
+            and string.format("Daily coin slot: %s (purchased)", daily.name)
+            or string.format("Daily coin slot: %s (%d coins)", daily.name, daily.price)
+        if not daily.bought and Ui.on("AutoBuyDailyCoin") and coins >= daily.price + reserve
+            and mayTry("dailyshop:" .. tostring(daily.dayKey)) then
+            local ok, text = buyDailyCoin()
+            if not Life.alive then return end
+            if ok then
+                Ui.notify("Daily shop", text, 5)
+                lines[#lines] = "Daily coin slot: " .. text
+                coins = tonumber(Env.data("coins")) or coins
+            end
+        end
+    else
+        lines[#lines + 1] = "Daily coin slot: unavailable"
+    end
+
+    -- 2. Weekly Ball Shop (only runs outside holiday events)
+    local okWeekly, available, week, rows = Env.call(function()
+        local svc = Env.loadModule("WeeklyBallShopService")
+        local avail = type(svc.isAvailable) == "function" and svc.isAvailable() == true
+        local now = Env.loadModule("TimeService").now()
+        local wk, list = svc.rotationAt(now)
+        return avail, wk, list
+    end)
+    if okWeekly and available and type(rows) == "table" and #rows > 0 then
+        local purchases = Env.data("weeklyBallPurchases")
+        local rulesOk, rules = pcall(Env.loadModule, "WeeklyBallShopRules")
+        Env.elevate()
+        for slotIndex, row in ipairs(rows) do
+            local bought = rulesOk and type(rules.hasPurchased) == "function"
+                and rules.hasPurchased(purchases, week, row.ballId) == true
+            local owned = heldCopies(row.ballId)
+            local name = Env.ballName(row.ballId)
+            lines[#lines + 1] = string.format("Weekly #%d: %s (%d coins)%s", slotIndex, name, row.coinPrice,
+                bought and " [bought]" or owned > 0 and string.format(" [own %d]", owned) or "")
+            if not bought and owned == 0 and Ui.on("AutoBuyWeeklyBalls")
+                and coins >= row.coinPrice + reserve and mayTry("weeklyball:" .. tostring(week) .. ":" .. row.ballId) then
+                local ok, result = Env.invoke("WeeklyBallShop/Buy", week, slotIndex, row.ballId, "coins", row.coinPrice)
+                if not Life.alive then return end
+                if ok and type(result) == "table" and result.ok == true then
+                    credited[row.ballId] = { count = 1, untilAt = os.clock() + 30 }
+                    Ui.notify("Weekly Ball Shop", string.format("Bought %s for %d coins", name, row.coinPrice), 5)
+                    lines[#lines] = string.format("Weekly #%d: %s [bought now]", slotIndex, name)
+                    coins = tonumber(Env.data("coins")) or coins
+                end
+            end
+        end
+    elseif okWeekly and not available then
+        local ev = Limits.candy()
+        lines[#lines + 1] = ev.active
+            and ("Weekly ball shop: paused during " .. (ev.eventName or "event"))
+            or "Weekly ball shop: inactive"
+    else
+        lines[#lines + 1] = "Weekly ball shop: unavailable"
+    end
+
+    Env.elevate()
+    coinShopLabel:SetText(table.concat(lines, "\n"))
+end)
+
 Life.onCleanup(function()
     table.clear(attemptedAt)
     table.clear(reserved)
+    table.clear(credited)
     table.clear(rewardLog)
     table.clear(seenRewards)
     table.clear(seenChests)
